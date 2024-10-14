@@ -1,0 +1,12 @@
+{
+  "language": {
+    "label": "Language"
+  },
+  "topbar": {
+    "sportShooting": "Sport shooting",
+    "recreationalShooting": "Recreational shooting",
+    "account": "Account",
+    "connexion": "Connexion",
+    "register": "Register"
+  }
+}

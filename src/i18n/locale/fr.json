@@ -1,0 +1,12 @@
+{
+  "language": {
+    "label": "Langage"
+  },
+  "topbar": {
+    "sportShooting": "Tir sportif",
+    "recreationalShooting": "Tir de loisir",
+    "account": "Mon compte",
+    "connexion": "Connexion",
+    "register": "S'enregistrer"
+  }
+}
