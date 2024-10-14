@@ -7,6 +7,13 @@
     "recreationalShooting": "Tir de loisir",
     "account": "Mon compte",
     "connexion": "Connexion",
-    "register": "S'enregistrer"
+    "register": "S'enregistrer",
+    "categoryC": "Arme longue cat.C",
+    "categoryBRiffle": "Arme longue cat.B",
+    "categoryBHandgun": "Arme de poing cat.B"
+  },
+  "register": {
+    "title": "Creer votre compte",
+    "subtitle": "Renseigner les differents champs"
   }
 }

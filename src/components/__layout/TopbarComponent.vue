@@ -1,75 +1,3 @@
-<script setup lang="ts">
-import { ref } from 'vue'
-
-import MegaMenu from 'primevue/megamenu'
-import Button from 'primevue/button'
-import LanguageSplitButton from '@/components/__layout/LanguageSplitButton.vue'
-import SearchInput from '@/components/__layout/SearchInput.vue'
-import { useConnexionStore } from '@/stores/connexion'
-import ConnexionDialog from '@/components/__dialog/ConnexionDialog.vue'
-const { toggleConnexionDialog } = useConnexionStore()
-const items = ref([
-  {
-    label: 'Tir Sportif',
-    root: true,
-    items: [
-      [
-        {
-          items: [
-            { label: 'Features', icon: 'pi pi-list', subtext: 'Subtext of item' },
-            { label: 'Customers', icon: 'pi pi-users', subtext: 'Subtext of item' },
-            { label: 'Case Studies', icon: 'pi pi-file', subtext: 'Subtext of item' }
-          ]
-        }
-      ],
-      [
-        {
-          items: [
-            { label: 'Solutions', icon: 'pi pi-shield', subtext: 'Subtext of item' },
-            { label: 'Faq', icon: 'pi pi-question', subtext: 'Subtext of item' },
-            { label: 'Library', icon: 'pi pi-search', subtext: 'Subtext of item' }
-          ]
-        }
-      ],
-      [
-        {
-          items: [
-            { label: 'Community', icon: 'pi pi-comments', subtext: 'Subtext of item' },
-            { label: 'Rewards', icon: 'pi pi-star', subtext: 'Subtext of item' },
-            { label: 'Investors', icon: 'pi pi-globe', subtext: 'Subtext of item' }
-          ]
-        }
-      ]
-    ]
-  },
-  {
-    label: 'Resources',
-    root: true
-  },
-  {
-    label: 'Mon compte',
-    root: true,
-    items: [
-      [
-        {
-          items: [
-            {
-              label: 'Connexion',
-              icon: 'pi pi-list',
-              subtext: 'Subtext of item',
-              command: () => {
-                toggleConnexionDialog()
-              }
-            },
-            { label: 'S enregister', icon: 'pi pi-users', subtext: 'Subtext of item' }
-          ]
-        }
-      ]
-    ]
-  }
-])
-</script>
-
 <template>
   <header>
     <div class="card">
@@ -99,7 +27,7 @@ const items = ref([
             class="flex items-center cursor-pointer px-4 py-2 overflow-hidden relative font-semibold text-lg uppercase"
             style="border-radius: 2rem"
           >
-            <span>{{ item.label }}</span>
+            <span>{{ t('topbar.' + item.label) }}</span>
           </a>
           <a v-else-if="!item.image" class="flex items-center p-4 cursor-pointer mb-2 gap-3">
             <span
@@ -108,7 +36,7 @@ const items = ref([
               <i :class="[item.icon, 'text-lg']"></i>
             </span>
             <span class="inline-flex flex-col gap-1">
-              <span class="font-bold text-lg">{{ item.label }}</span>
+              <span class="font-bold text-lg">{{ t('topbar.' + item.label) }}</span>
               <span class="whitespace-nowrap">{{ item.subtext }}</span>
             </span>
           </a>
@@ -128,6 +56,91 @@ const items = ref([
     </div>
   </header>
   <ConnexionDialog />
+  <RegisterDialog />
 </template>
+<script setup lang="ts">
+import { ref } from 'vue'
+
+import MegaMenu from 'primevue/megamenu'
+import Button from 'primevue/button'
+import LanguageSplitButton from '@/components/__layout/LanguageSplitButton.vue'
+import SearchInput from '@/components/__layout/SearchInput.vue'
+import { useConnexionStore } from '@/stores/connexion'
+import ConnexionDialog from '@/components/__dialog/ConnexionDialog.vue'
+import { useI18n } from 'vue-i18n'
+import { useRegisterStore } from '@/stores/register'
+import RegisterDialog from '@/components/__dialog/RegisterDialog.vue'
+const { toggleConnexionDialog } = useConnexionStore()
+const { toggleRegisterDialog } = useRegisterStore()
+const { t } = useI18n()
+const items = ref([
+  {
+    label: 'sportShooting',
+    root: true,
+    items: [
+      [
+        {
+          items: [
+            { label: 'categoryC', icon: 'pi pi-list', subtext: 'Subtext of item' },
+            { label: 'ammoC', icon: 'pi pi-users', subtext: 'Subtext of item' },
+            { label: 'Case Studies', icon: 'pi pi-file', subtext: 'Subtext of item' }
+          ]
+        }
+      ],
+      [
+        {
+          items: [
+            { label: 'categoryBRiffle', icon: 'pi pi-shield', subtext: 'Subtext of item' },
+            { label: 'categoryBHandgun', icon: 'pi pi-question', subtext: 'Subtext of item' },
+            { label: 'ammoB', icon: 'pi pi-search', subtext: 'Subtext of item' },
+            { label: 'ammoB', icon: 'pi pi-search', subtext: 'Subtext of item' }
+          ]
+        }
+      ],
+      [
+        {
+          items: [
+            { label: 'Community', icon: 'pi pi-comments', subtext: 'Subtext of item' },
+            { label: 'Rewards', icon: 'pi pi-star', subtext: 'Subtext of item' },
+            { label: 'Investors', icon: 'pi pi-globe', subtext: 'Subtext of item' }
+          ]
+        }
+      ]
+    ]
+  },
+  {
+    label: 'recreationalShooting',
+    root: true
+  },
+  {
+    label: 'account',
+    root: true,
+    items: [
+      [
+        {
+          items: [
+            {
+              label: 'connexion',
+              icon: 'pi pi-list',
+              subtext: 'Subtext of item',
+              command: () => {
+                toggleConnexionDialog()
+              }
+            },
+            {
+              label: 'register',
+              icon: 'pi pi-users',
+              subtext: 'Subtext of item',
+              command: () => {
+                toggleRegisterDialog()
+              }
+            }
+          ]
+        }
+      ]
+    ]
+  }
+])
+</script>
 
 <style scoped></style>
