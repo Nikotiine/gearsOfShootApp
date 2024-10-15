@@ -15,5 +15,19 @@
   "register": {
     "title": "Creer votre compte",
     "subtitle": "Renseigner les differents champs"
+  },
+  "connexion": {
+    "title": "Connexion à votre compte",
+    "subtitle": "Renseigner vos identifiants",
+    "send": "Connexion"
+  },
+  "global": {
+    "password": "Mot de passe",
+    "yes": "Oui",
+    "no": "Non",
+    "cancel": "Annuler"
+  },
+  "error": {
+    "0002": "Indentifiants invalides"
   }
 }
