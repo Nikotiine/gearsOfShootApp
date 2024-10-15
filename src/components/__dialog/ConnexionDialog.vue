@@ -1,24 +1,23 @@
 <script setup lang="ts">
 import { useConnexionStore } from '@/stores/connexion'
 import InputText from 'primevue/inputtext'
-
 import Dialog from 'primevue/dialog'
-
 import Button from 'primevue/button'
 import { useI18n } from 'vue-i18n'
 import { useMutation } from '@tanstack/vue-query'
-import { ApiError, AuthenticationService, type UserCredentialDto } from '@/api'
+import { AuthenticationService, type UserCredentialDto } from '@/api'
 import { ref } from 'vue'
+import { useUserStore } from '@/stores/user'
 
 const { isVisible, toggleConnexionDialog } = useConnexionStore()
+const { setToken } = useUserStore()
 const { t } = useI18n()
-const { isPending, isError, error, isSuccess, mutate } = useMutation({
+const { isError, error, mutate } = useMutation({
   mutationFn: (credential: UserCredentialDto) =>
     AuthenticationService.authControllerLogin(credential),
-  onError(error: ApiError, variables, context) {
-    console.log(JSON.stringify(error))
-    console.log(error.body.message)
-    console.log(context)
+  onSuccess(data) {
+    setToken(data.accessToken)
+    toggleConnexionDialog()
   }
 })
 const form = ref({

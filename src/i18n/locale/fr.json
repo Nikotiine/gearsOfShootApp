@@ -14,7 +14,13 @@
   },
   "register": {
     "title": "Creer votre compte",
-    "subtitle": "Renseigner les differents champs"
+    "subtitle": "Renseigner les differents champs",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "phone": "Telephone",
+    "city": "ville",
+    "state": "Pays",
+    "address": "adresse postale"
   },
   "connexion": {
     "title": "Connexion à votre compte",
@@ -28,6 +34,7 @@
     "cancel": "Annuler"
   },
   "error": {
+    "0001": "Email deja utilisé",
     "0002": "Indentifiants invalides"
   }
 }
