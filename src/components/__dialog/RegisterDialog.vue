@@ -30,6 +30,10 @@
           <InputText id="city" class="flex-auto" autocomplete="off" v-model="form.city" />
         </div>
         <div class="flex items-center gap-4 mb-4">
+          <label for="zipCode" class="font-semibold w-24">{{ t('register.zipCode') }}</label>
+          <InputText id="zipCode" class="flex-auto" autocomplete="off" v-model="form.zipCode" />
+        </div>
+        <div class="flex items-center gap-4 mb-4">
           <label for="state" class="font-semibold w-24">{{ t('register.state') }}</label>
           <InputText
             id="state"
@@ -92,7 +96,8 @@ const form = ref({
   state: 'France',
   phone: '',
   email: '',
-  password: ''
+  password: '',
+  zipCode: ''
 })
 
 const submit = () => {

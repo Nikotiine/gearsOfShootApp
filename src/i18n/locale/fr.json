@@ -10,7 +10,9 @@
     "register": "S'enregistrer",
     "categoryC": "Arme longue cat.C",
     "categoryBRiffle": "Arme longue cat.B",
-    "categoryBHandgun": "Arme de poing cat.B"
+    "categoryBHandgun": "Arme de poing cat.B",
+    "ammoC": "Munition cat.C",
+    "accessC": "Accessoire cat.C"
   },
   "register": {
     "title": "Creer votre compte",
@@ -20,7 +22,8 @@
     "phone": "Telephone",
     "city": "ville",
     "state": "Pays",
-    "address": "adresse postale"
+    "address": "adresse postale",
+    "zipCode": "Code postal"
   },
   "connexion": {
     "title": "Connexion à votre compte",

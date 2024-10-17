@@ -5,19 +5,31 @@ import Dialog from 'primevue/dialog'
 import Button from 'primevue/button'
 import { useI18n } from 'vue-i18n'
 import { useMutation } from '@tanstack/vue-query'
-import { AuthenticationService, type UserCredentialDto } from '@/api'
+import { ApiError, AuthenticationService, type UserCredentialDto } from '@/api'
 import { ref } from 'vue'
+import { useSecurityStore } from '@/stores/security'
+import { useToastStore } from '@/stores/toast'
 import { useUserStore } from '@/stores/user'
 
 const { isVisible, toggleConnexionDialog } = useConnexionStore()
-const { setToken } = useUserStore()
+const { setToken } = useSecurityStore()
+const { getUserProfile } = useUserStore()
+const { successMessage } = useToastStore()
 const { t } = useI18n()
+const errorMessage = ref('')
 const { isError, error, mutate } = useMutation({
-  mutationFn: (credential: UserCredentialDto) =>
-    AuthenticationService.authControllerLogin(credential),
+  mutationFn: (credential: UserCredentialDto) => {
+    return AuthenticationService.authControllerLogin(credential)
+  },
   onSuccess(data) {
     setToken(data.accessToken)
+    successMessage('Connexion', `Connexion reussie`)
+    getUserProfile()
     toggleConnexionDialog()
+  },
+  onError(error: ApiError, variables, context) {
+    console.log(error)
+    errorMessage.value = error.body.message
   }
 })
 const form = ref({
@@ -49,9 +61,7 @@ const submit = () => {
           <label for="password" class="font-semibold w-24">{{ t('global.password') }}</label>
           <InputText id="password" class="flex-auto" autocomplete="off" v-model="form.password" />
         </div>
-        <div class="flex items-center gap-4 mb-8 text-red-500" v-if="isError">
-          {{ t('error.' + error?.body.message) }}
-        </div>
+        <div class="flex items-center gap-4 mb-8 text-red-500" v-if="isError">error:</div>
 
         <div class="flex justify-end gap-2">
           <Button

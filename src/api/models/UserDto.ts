@@ -4,5 +4,13 @@
 /* eslint-disable */
 export type UserDto = {
     id: number;
+    email: string;
+    firstName: string;
+    lastName: string;
+    address: string;
+    phone: string;
+    city: string;
+    state: string;
+    zipCode: string;
 };
 

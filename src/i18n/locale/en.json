@@ -1,12 +1,43 @@
 {
   "language": {
-    "label": "Language"
+    "label": "Langage"
   },
   "topbar": {
-    "sportShooting": "Sport shooting",
-    "recreationalShooting": "Recreational shooting",
-    "account": "Account",
-    "connexion": "Connexion",
-    "register": "Register"
+    "sportShooting": "Tir sportif",
+    "recreationalShooting": "Tir de loisir",
+    "account": "Mon compte",
+    "connexion": "connexion",
+    "register": "register",
+    "categoryC": "Arme longue cat.C",
+    "categoryBRiffle": "Arme longue cat.B",
+    "categoryBHandgun": "Arme de poing cat.B",
+    "ammoC": "Munition cat.C",
+    "accessC": "Accessoire cat.C"
+  },
+  "register": {
+    "title": "Creer votre compte",
+    "subtitle": "Renseigner les differents champs",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "phone": "Telephone",
+    "city": "ville",
+    "state": "Pays",
+    "address": "adresse postale",
+    "zipCode": "Code postal"
+  },
+  "connexion": {
+    "title": "Connexion à votre compte",
+    "subtitle": "Renseigner vos identifiants",
+    "send": "Connexion"
+  },
+  "global": {
+    "password": "Mot de passe",
+    "yes": "Oui",
+    "no": "Non",
+    "cancel": "Annuler"
+  },
+  "error": {
+    "0001": "Email deja utilisé",
+    "0002": "Indentifiants invalides"
   }
 }

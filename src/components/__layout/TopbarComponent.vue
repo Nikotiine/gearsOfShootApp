@@ -49,7 +49,10 @@
         <template #end>
           <div class="flex items-center gap-2">
             <SearchInput />
-            <LanguageSplitButton />
+            <!--            <LanguageSplitButton />-->
+            <div v-if="!isLogged">
+              <ConnexionComponent />
+            </div>
           </div>
         </template>
       </MegaMenu>
@@ -70,9 +73,15 @@ import ConnexionDialog from '@/components/__dialog/ConnexionDialog.vue'
 import { useI18n } from 'vue-i18n'
 import { useRegisterStore } from '@/stores/register'
 import RegisterDialog from '@/components/__dialog/RegisterDialog.vue'
+
+import { useSecurityStore } from '@/stores/security'
+import ConnexionComponent from '@/components/__layout/ConnexionComponent.vue'
+
 const { toggleConnexionDialog } = useConnexionStore()
 const { toggleRegisterDialog } = useRegisterStore()
 const { t } = useI18n()
+const { isLogged } = useSecurityStore()
+
 const items = ref([
   {
     label: 'sportShooting',
@@ -83,7 +92,7 @@ const items = ref([
           items: [
             { label: 'categoryC', icon: 'pi pi-list', subtext: 'Subtext of item' },
             { label: 'ammoC', icon: 'pi pi-users', subtext: 'Subtext of item' },
-            { label: 'Case Studies', icon: 'pi pi-file', subtext: 'Subtext of item' }
+            { label: 'accessC', icon: 'pi pi-file', subtext: 'Subtext of item' }
           ]
         }
       ],
@@ -111,8 +120,8 @@ const items = ref([
   {
     label: 'recreationalShooting',
     root: true
-  },
-  {
+  }
+  /* {
     label: 'account',
     root: true,
     items: [
@@ -139,7 +148,7 @@ const items = ref([
         }
       ]
     ]
-  }
+  }*/
 ])
 </script>
 

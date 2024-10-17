@@ -11,5 +11,6 @@ export type CreateUserDto = {
     phone: string;
     city: string;
     state: string;
+    zipCode: string;
 };
 
