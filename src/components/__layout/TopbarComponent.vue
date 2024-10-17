@@ -53,6 +53,14 @@
             <div v-if="!isLogged">
               <ConnexionComponent />
             </div>
+            <div class="" v-else>
+              <Button
+                type="button"
+                :label="t('topbar.logout')"
+                severity="secondary"
+                @click="logout"
+              ></Button>
+            </div>
           </div>
         </template>
       </MegaMenu>
@@ -80,7 +88,7 @@ import ConnexionComponent from '@/components/__layout/ConnexionComponent.vue'
 const { toggleConnexionDialog } = useConnexionStore()
 const { toggleRegisterDialog } = useRegisterStore()
 const { t } = useI18n()
-const { isLogged } = useSecurityStore()
+const { isLogged, logout } = useSecurityStore()
 
 const items = ref([
   {

@@ -5,31 +5,33 @@ import Dialog from 'primevue/dialog'
 import Button from 'primevue/button'
 import { useI18n } from 'vue-i18n'
 import { useMutation } from '@tanstack/vue-query'
-import { ApiError, AuthenticationService, type UserCredentialDto } from '@/api'
 import { ref } from 'vue'
 import { useSecurityStore } from '@/stores/security'
 import { useToastStore } from '@/stores/toast'
 import { useUserStore } from '@/stores/user'
+import type { UserCredentialDto } from '@/api/Api'
+import { useApiStore } from '@/stores/api'
 
 const { isVisible, toggleConnexionDialog } = useConnexionStore()
 const { setToken } = useSecurityStore()
-const { getUserProfile } = useUserStore()
 const { successMessage } = useToastStore()
+const { getUserProfile } = useUserStore()
+const { api } = useApiStore()
 const { t } = useI18n()
 const errorMessage = ref('')
 const { isError, error, mutate } = useMutation({
-  mutationFn: (credential: UserCredentialDto) => {
-    return AuthenticationService.authControllerLogin(credential)
+  mutationFn: async (credential: UserCredentialDto) => {
+    return await api.api.authControllerLogin(credential)
   },
-  onSuccess(data) {
-    setToken(data.accessToken)
+  onSuccess(res) {
+    setToken(res.data.accessToken)
     successMessage('Connexion', `Connexion reussie`)
-    getUserProfile()
+    api.api.authControllerMe()
     toggleConnexionDialog()
   },
-  onError(error: ApiError, variables, context) {
+  onError(error: any) {
     console.log(error)
-    errorMessage.value = error.body.message
+    errorMessage.value = error.response.data.message
   }
 })
 const form = ref({
@@ -61,7 +63,9 @@ const submit = () => {
           <label for="password" class="font-semibold w-24">{{ t('global.password') }}</label>
           <InputText id="password" class="flex-auto" autocomplete="off" v-model="form.password" />
         </div>
-        <div class="flex items-center gap-4 mb-8 text-red-500" v-if="isError">error:</div>
+        <div class="flex items-center gap-4 mb-8 text-red-500" v-if="isError">
+          {{ t('error.' + errorMessage) }}
+        </div>
 
         <div class="flex justify-end gap-2">
           <Button

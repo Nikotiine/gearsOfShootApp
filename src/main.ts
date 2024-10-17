@@ -10,7 +10,7 @@ import ToastService from 'primevue/toastservice'
 import Aura from '@primevue/themes/aura'
 import i18n from '@/i18n'
 const app = createApp(App)
-
+import axiosInstance from '../axios.interceptor'
 app.use(createPinia())
 app.use(router)
 app.use(i18n)
@@ -21,5 +21,5 @@ app.use(PrimeVue, {
     preset: Aura
   }
 })
-
+app.config.globalProperties.$axios = axiosInstance
 app.mount('#app')

@@ -78,15 +78,14 @@ import { useRegisterStore } from '@/stores/register'
 import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
 import { useMutation } from '@tanstack/vue-query'
-import { type CreateUserDto, UsersService } from '@/api'
 
 const { isVisible, toggleRegisterDialog } = useRegisterStore()
-const { isPending, isError, error, isSuccess, mutate } = useMutation({
+/*const { isPending, isError, error, isSuccess, mutate } = useMutation({
   mutationFn: (user: CreateUserDto) => UsersService.userControllerRegister(user),
   onSuccess(data) {
     console.log(data)
   }
-})
+})*/
 const { t } = useI18n()
 const form = ref({
   firstName: '',
