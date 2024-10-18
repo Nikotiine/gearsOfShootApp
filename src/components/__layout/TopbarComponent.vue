@@ -51,15 +51,10 @@
             <SearchInput />
             <!--            <LanguageSplitButton />-->
             <div v-if="!isLogged">
-              <ConnexionComponent />
+              <ConnexionSplitButton />
             </div>
             <div class="" v-else>
-              <Button
-                type="button"
-                :label="t('topbar.logout')"
-                severity="secondary"
-                @click="logout"
-              ></Button>
+              <ConnectedSplitButton />
             </div>
           </div>
         </template>
@@ -74,19 +69,18 @@ import { ref } from 'vue'
 
 import MegaMenu from 'primevue/megamenu'
 import Button from 'primevue/button'
-import LanguageSplitButton from '@/components/__layout/LanguageSplitButton.vue'
+
 import SearchInput from '@/components/__layout/SearchInput.vue'
-import { useConnexionStore } from '@/stores/connexion'
+
 import ConnexionDialog from '@/components/__dialog/ConnexionDialog.vue'
 import { useI18n } from 'vue-i18n'
-import { useRegisterStore } from '@/stores/register'
+
 import RegisterDialog from '@/components/__dialog/RegisterDialog.vue'
 
 import { useSecurityStore } from '@/stores/security'
-import ConnexionComponent from '@/components/__layout/ConnexionComponent.vue'
+import ConnexionSplitButton from '@/components/__layout/ConnexionSplitButton.vue'
+import ConnectedSplitButton from '@/components/__layout/ConnectedSplitButton.vue'
 
-const { toggleConnexionDialog } = useConnexionStore()
-const { toggleRegisterDialog } = useRegisterStore()
 const { t } = useI18n()
 const { isLogged, logout } = useSecurityStore()
 

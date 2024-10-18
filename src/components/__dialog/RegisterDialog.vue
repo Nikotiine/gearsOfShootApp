@@ -63,7 +63,7 @@
             severity="secondary"
             @click="toggleRegisterDialog"
           ></Button>
-          <Button type="submit" label="Save" :disabled="!isValidForm"></Button>
+          <Button type="submit" label="Save" :disabled="!isFormValid"></Button>
         </div>
       </form>
     </Dialog>
@@ -94,13 +94,14 @@ const form = ref({
   zipCode: ''
 })
 const { test } = useEmailValidator()
-const isValidForm = computed(() => {
+const isFormValid = computed(() => {
   const email = form.value.email
   let isValidEmail = false
+  let isValid = false
   if (email.length > 4) {
     isValidEmail = test(form.value.email)
   }
-  let isvalid = false
+
   if (
     form.value.email &&
     isValidEmail &&
@@ -112,9 +113,9 @@ const isValidForm = computed(() => {
     form.value.zipCode &&
     form.value.phone
   ) {
-    isvalid = true
+    isValid = true
   }
-  return isvalid
+  return isValid
 })
 
 const submit = () => {

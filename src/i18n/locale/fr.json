@@ -34,13 +34,18 @@
     "summary": "Compte utlisateur",
     "login": {
       "success": "Connexion validé"
-    }
+    },
+    "logout": "Deconnexion",
+    "myAccount": "Mon compte",
+    "myInvoices": "Mes achats"
   },
   "global": {
     "password": "Mot de passe",
     "yes": "Oui",
     "no": "Non",
-    "cancel": "Annuler"
+    "cancel": "Annuler",
+    "french": "Francais",
+    "english": "Anglais"
   },
   "error": {
     "0001": "Email deja utilisé",

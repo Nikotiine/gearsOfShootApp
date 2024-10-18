@@ -1,32 +1,3 @@
-<script setup lang="ts">
-import { useConnexionStore } from '@/stores/connexion'
-import InputText from 'primevue/inputtext'
-import Dialog from 'primevue/dialog'
-import Button from 'primevue/button'
-import { useI18n } from 'vue-i18n'
-import { useMutation } from '@tanstack/vue-query'
-import { ref } from 'vue'
-import { useSecurityStore } from '@/stores/security'
-import { useToastStore } from '@/stores/toast'
-import { useUserStore } from '@/stores/user'
-import type { UserCredentialDto } from '@/api/Api'
-import { useApiStore } from '@/stores/api'
-
-const { isVisible, toggleConnexionDialog, login, user } = useConnexionStore()
-//const { user } = useUserStore()
-console.log(user)
-const { t } = useI18n()
-const errorMessage = ref('')
-
-const form = ref({
-  email: '',
-  password: ''
-})
-const submit = () => {
-  login(form.value)
-}
-</script>
-
 <template>
   <div class="card flex justify-center">
     <Dialog
@@ -47,9 +18,9 @@ const submit = () => {
           <label for="password" class="font-semibold w-24">{{ t('global.password') }}</label>
           <InputText id="password" class="flex-auto" autocomplete="off" v-model="form.password" />
         </div>
-        <!--        <div class="flex items-center gap-4 mb-8 text-red-500" v-if="isError">
+        <div class="flex items-center gap-4 mb-8 text-red-500" v-if="isError">
           {{ t('error.' + errorMessage) }}
-        </div>-->
+        </div>
 
         <div class="flex justify-end gap-2">
           <Button
@@ -58,11 +29,47 @@ const submit = () => {
             severity="secondary"
             @click="toggleConnexionDialog"
           ></Button>
-          <Button type="submit" :label="t('connexion.send')"></Button>
+          <Button type="submit" :label="t('connexion.send')" :disabled="!isFormValid"></Button>
         </div>
       </form>
     </Dialog>
   </div>
 </template>
+<script setup lang="ts">
+import { useConnexionStore } from '@/stores/connexion'
+import InputText from 'primevue/inputtext'
+import Dialog from 'primevue/dialog'
+import Button from 'primevue/button'
+import { useI18n } from 'vue-i18n'
+import { computed, ref, watch } from 'vue'
+import { useEmailValidator } from '@/stores/email.validator'
+const { isVisible, toggleConnexionDialog, login, isError, errorMessage } = useConnexionStore()
+const { t } = useI18n()
+const { test } = useEmailValidator()
+const form = ref({
+  email: '',
+  password: ''
+})
+const submit = () => {
+  login(form.value)
+}
+const isFormValid = computed(() => {
+  let isValid: boolean = false
+  let isValidEmail = false
+  const email = form.value.email
+  if (email.length > 4) {
+    isValidEmail = test(form.value.email)
+  }
+  if (form.value.password && isValidEmail && email) {
+    isValid = true
+  }
+  return isValid
+})
+watch(isError, (value) => {
+  if (value) {
+    form.value.password = ''
+  }
+})
+</script>
 
 <style scoped></style>

@@ -1,7 +1,7 @@
 <template>
-  <SplitButton :model="choices" severity="secondary">
+  <SplitButton :model="items" severity="secondary">
     <span class="flex items-center font-bold">
-      <span class="pi pi-user"></span>
+      <span class="pi pi-lock"></span>
     </span>
   </SplitButton>
 </template>
@@ -14,11 +14,11 @@ import { useRegisterStore } from '@/stores/register'
 const { toggleConnexionDialog } = useConnexionStore()
 const { toggleRegisterDialog } = useRegisterStore()
 import { useI18n } from 'vue-i18n'
-const { t } = useI18n()
-const choices: MenuItem = ref([
+const { t, locale } = useI18n()
+const items: MenuItem = ref([
   {
     label: t('topbar.connexion'),
-    icon: 'pi pi-list',
+    icon: 'pi pi-sign-in',
     subtext: 'Subtext of item',
     command: () => {
       toggleConnexionDialog()
@@ -26,10 +26,29 @@ const choices: MenuItem = ref([
   },
   {
     label: t('topbar.register'),
-    icon: 'pi pi-users',
+    icon: 'pi pi-user-plus',
     subtext: 'Subtext of item',
     command: () => {
       toggleRegisterDialog()
+    }
+  },
+  {
+    separator: true
+  },
+  {
+    label: t('global.french'),
+    key: 'fr',
+    icon: 'pi pi-flag-fill',
+    command: () => {
+      locale.value = 'fr'
+    }
+  },
+  {
+    label: t('global.english'),
+    key: 'en',
+    icon: 'pi pi-flag',
+    command: () => {
+      locale.value = 'en'
     }
   }
 ])
