@@ -109,17 +109,17 @@ const items = ref([
           items: [
             { label: 'categoryBRiffle', icon: 'pi pi-shield', subtext: 'Subtext of item' },
             { label: 'categoryBHandgun', icon: 'pi pi-question', subtext: 'Subtext of item' },
-            { label: 'ammoB', icon: 'pi pi-search', subtext: 'Subtext of item' },
-            { label: 'ammoB', icon: 'pi pi-search', subtext: 'Subtext of item' }
+            { label: 'categoryC', icon: 'pi pi-search', subtext: 'Subtext of item' },
+            { label: 'categoryC', icon: 'pi pi-search', subtext: 'Subtext of item' }
           ]
         }
       ],
       [
         {
           items: [
-            { label: 'Community', icon: 'pi pi-comments', subtext: 'Subtext of item' },
-            { label: 'Rewards', icon: 'pi pi-star', subtext: 'Subtext of item' },
-            { label: 'Investors', icon: 'pi pi-globe', subtext: 'Subtext of item' }
+            { label: 'categoryC', icon: 'pi pi-comments', subtext: 'Subtext of item' },
+            { label: 'categoryC', icon: 'pi pi-star', subtext: 'Subtext of item' },
+            { label: 'categoryC', icon: 'pi pi-globe', subtext: 'Subtext of item' }
           ]
         }
       ]

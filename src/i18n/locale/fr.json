@@ -23,12 +23,18 @@
     "city": "ville",
     "state": "Pays",
     "address": "adresse postale",
-    "zipCode": "Code postal"
+    "zipCode": "Code postal",
+    "success": "Merci de d'activer vote compte",
+    "summary": "Creation de compte"
   },
   "connexion": {
     "title": "Connexion à votre compte",
     "subtitle": "Renseigner vos identifiants",
-    "send": "Connexion"
+    "send": "Connexion",
+    "summary": "Compte utlisateur",
+    "login": {
+      "success": "Connexion validé"
+    }
   },
   "global": {
     "password": "Mot de passe",

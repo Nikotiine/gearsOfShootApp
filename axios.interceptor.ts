@@ -26,17 +26,17 @@ axiosInstance.interceptors.request.use(
 )
 
 // Interceptor de réponse pour gérer les erreurs globales (optionnel)
-axiosInstance.interceptors.response.use(
+/*axiosInstance.interceptors.response.use(
   (response) => {
     return response
   },
   (error) => {
     if (error.response && error.response.status === 401) {
       // Gérer les erreurs 401 (par exemple, rediriger vers la page de login)
-      window.location.href = '/login'
+      window.location.href = '/'
     }
     return Promise.reject(error)
   }
-)
+)*/
 
 export default axiosInstance

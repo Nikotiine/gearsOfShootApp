@@ -7,13 +7,13 @@ import type { UserDto } from '@/api/Api'
 import { useApiStore } from '@/stores/api'
 
 export const useUserStore = defineStore('user', () => {
-  const _user = ref({})
+  const _user = ref()
   const user = computed(() => _user)
-  const { api } = useApiStore()
+  //const { api } = useApiStore()
   function setUser(user: UserDto) {
     _user.value = user
   }
-  const getUserProfile = useQuery({
+  /*  const getUserProfile = useQuery({
     queryKey: ['user'],
     queryFn: async () => {
       console.log('ici')
@@ -25,7 +25,7 @@ export const useUserStore = defineStore('user', () => {
       return data
     },
     retry: 1
-  })
+  })*/
 
-  return { user, setUser, getUserProfile }
+  return { user, setUser }
 })

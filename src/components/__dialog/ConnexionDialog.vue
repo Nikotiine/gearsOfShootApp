@@ -12,34 +12,18 @@ import { useUserStore } from '@/stores/user'
 import type { UserCredentialDto } from '@/api/Api'
 import { useApiStore } from '@/stores/api'
 
-const { isVisible, toggleConnexionDialog } = useConnexionStore()
-const { setToken } = useSecurityStore()
-const { successMessage } = useToastStore()
-const { getUserProfile } = useUserStore()
-const { api } = useApiStore()
+const { isVisible, toggleConnexionDialog, login, user } = useConnexionStore()
+//const { user } = useUserStore()
+console.log(user)
 const { t } = useI18n()
 const errorMessage = ref('')
-const { isError, error, mutate } = useMutation({
-  mutationFn: async (credential: UserCredentialDto) => {
-    return await api.api.authControllerLogin(credential)
-  },
-  onSuccess(res) {
-    setToken(res.data.accessToken)
-    successMessage('Connexion', `Connexion reussie`)
-    api.api.authControllerMe()
-    toggleConnexionDialog()
-  },
-  onError(error: any) {
-    console.log(error)
-    errorMessage.value = error.response.data.message
-  }
-})
+
 const form = ref({
   email: '',
   password: ''
 })
 const submit = () => {
-  mutate(form.value)
+  login(form.value)
 }
 </script>
 
@@ -63,9 +47,9 @@ const submit = () => {
           <label for="password" class="font-semibold w-24">{{ t('global.password') }}</label>
           <InputText id="password" class="flex-auto" autocomplete="off" v-model="form.password" />
         </div>
-        <div class="flex items-center gap-4 mb-8 text-red-500" v-if="isError">
+        <!--        <div class="flex items-center gap-4 mb-8 text-red-500" v-if="isError">
           {{ t('error.' + errorMessage) }}
-        </div>
+        </div>-->
 
         <div class="flex justify-end gap-2">
           <Button

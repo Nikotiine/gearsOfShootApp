@@ -10,7 +10,7 @@
         t('register.subtitle')
       }}</span>
       <div class="flex items-center gap-4 mb-8 text-red-500" v-if="isError">
-        {{ t('error.' + error?.body.message) }}
+        {{ t('error.' + errorMessage) }}
       </div>
       <form @submit.prevent="submit">
         <div class="flex items-center gap-4 mb-4">
@@ -63,7 +63,7 @@
             severity="secondary"
             @click="toggleRegisterDialog"
           ></Button>
-          <Button type="submit" label="Save"></Button>
+          <Button type="submit" label="Save" :disabled="!isValidForm"></Button>
         </div>
       </form>
     </Dialog>
@@ -76,16 +76,11 @@ import Button from 'primevue/button'
 import Dialog from 'primevue/dialog'
 import { useRegisterStore } from '@/stores/register'
 import { useI18n } from 'vue-i18n'
-import { ref } from 'vue'
-import { useMutation } from '@tanstack/vue-query'
+import { computed, ref } from 'vue'
+import { useEmailValidator } from '@/stores/email.validator'
 
-const { isVisible, toggleRegisterDialog } = useRegisterStore()
-/*const { isPending, isError, error, isSuccess, mutate } = useMutation({
-  mutationFn: (user: CreateUserDto) => UsersService.userControllerRegister(user),
-  onSuccess(data) {
-    console.log(data)
-  }
-})*/
+const { isVisible, toggleRegisterDialog, register, isError, errorMessage } = useRegisterStore()
+
 const { t } = useI18n()
 const form = ref({
   firstName: '',
@@ -98,9 +93,32 @@ const form = ref({
   password: '',
   zipCode: ''
 })
+const { test } = useEmailValidator()
+const isValidForm = computed(() => {
+  const email = form.value.email
+  let isValidEmail = false
+  if (email.length > 4) {
+    isValidEmail = test(form.value.email)
+  }
+  let isvalid = false
+  if (
+    form.value.email &&
+    isValidEmail &&
+    form.value.password &&
+    form.value.firstName &&
+    form.value.lastName &&
+    form.value.address &&
+    form.value.city &&
+    form.value.zipCode &&
+    form.value.phone
+  ) {
+    isvalid = true
+  }
+  return isvalid
+})
 
 const submit = () => {
-  mutate(form.value)
+  register(form.value)
 }
 </script>
 
