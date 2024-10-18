@@ -51,7 +51,10 @@
             <SearchInput />
             <!--            <LanguageSplitButton />-->
             <div v-if="!isLogged">
-              <ConnexionComponent />
+              <ConnexionSplitButton />
+            </div>
+            <div class="" v-else>
+              <ConnectedSplitButton />
             </div>
           </div>
         </template>
@@ -66,21 +69,20 @@ import { ref } from 'vue'
 
 import MegaMenu from 'primevue/megamenu'
 import Button from 'primevue/button'
-import LanguageSplitButton from '@/components/__layout/LanguageSplitButton.vue'
+
 import SearchInput from '@/components/__layout/SearchInput.vue'
-import { useConnexionStore } from '@/stores/connexion'
+
 import ConnexionDialog from '@/components/__dialog/ConnexionDialog.vue'
 import { useI18n } from 'vue-i18n'
-import { useRegisterStore } from '@/stores/register'
+
 import RegisterDialog from '@/components/__dialog/RegisterDialog.vue'
 
 import { useSecurityStore } from '@/stores/security'
-import ConnexionComponent from '@/components/__layout/ConnexionComponent.vue'
+import ConnexionSplitButton from '@/components/__layout/ConnexionSplitButton.vue'
+import ConnectedSplitButton from '@/components/__layout/ConnectedSplitButton.vue'
 
-const { toggleConnexionDialog } = useConnexionStore()
-const { toggleRegisterDialog } = useRegisterStore()
 const { t } = useI18n()
-const { isLogged } = useSecurityStore()
+const { isLogged, logout } = useSecurityStore()
 
 const items = ref([
   {
@@ -101,17 +103,17 @@ const items = ref([
           items: [
             { label: 'categoryBRiffle', icon: 'pi pi-shield', subtext: 'Subtext of item' },
             { label: 'categoryBHandgun', icon: 'pi pi-question', subtext: 'Subtext of item' },
-            { label: 'ammoB', icon: 'pi pi-search', subtext: 'Subtext of item' },
-            { label: 'ammoB', icon: 'pi pi-search', subtext: 'Subtext of item' }
+            { label: 'categoryC', icon: 'pi pi-search', subtext: 'Subtext of item' },
+            { label: 'categoryC', icon: 'pi pi-search', subtext: 'Subtext of item' }
           ]
         }
       ],
       [
         {
           items: [
-            { label: 'Community', icon: 'pi pi-comments', subtext: 'Subtext of item' },
-            { label: 'Rewards', icon: 'pi pi-star', subtext: 'Subtext of item' },
-            { label: 'Investors', icon: 'pi pi-globe', subtext: 'Subtext of item' }
+            { label: 'categoryC', icon: 'pi pi-comments', subtext: 'Subtext of item' },
+            { label: 'categoryC', icon: 'pi pi-star', subtext: 'Subtext of item' },
+            { label: 'categoryC', icon: 'pi pi-globe', subtext: 'Subtext of item' }
           ]
         }
       ]

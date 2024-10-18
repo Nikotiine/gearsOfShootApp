@@ -3,7 +3,7 @@
     "label": "Langage"
   },
   "topbar": {
-    "sportShooting": "Tir sportif",
+    "sportShooting": "sportShootingf",
     "recreationalShooting": "Tir de loisir",
     "account": "Mon compte",
     "connexion": "connexion",
@@ -28,7 +28,15 @@
   "connexion": {
     "title": "Connexion à votre compte",
     "subtitle": "Renseigner vos identifiants",
-    "send": "Connexion"
+
+    "send": "Connexion",
+    "summary": "Compte utlisateur",
+    "login": {
+      "success": "Connexion validé"
+    },
+    "logout": "Logout",
+    "myAccount": "Mon compte",
+    "myInvoices": "Mes achats"
   },
   "global": {
     "password": "Mot de passe",
