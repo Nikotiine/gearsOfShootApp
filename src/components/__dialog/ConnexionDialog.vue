@@ -12,11 +12,17 @@
       <form @submit.prevent="submit">
         <div class="flex items-center gap-4 mb-4">
           <label for="email" class="font-semibold w-24">Email</label>
-          <InputText id="email" class="flex-auto" autocomplete="off" v-model="form.email" />
+          <InputText id="email" class="flex-auto mr-4" autocomplete="off" v-model="form.email" />
         </div>
         <div class="flex items-center gap-4 mb-8">
           <label for="password" class="font-semibold w-24">{{ t('global.password') }}</label>
-          <InputText id="password" class="flex-auto" autocomplete="off" v-model="form.password" />
+          <Password
+            id="password"
+            autocomplete="off"
+            v-model="form.password"
+            toggleMask
+            :feedback="false"
+          />
         </div>
         <div class="flex items-center gap-4 mb-8 text-red-500" v-if="isError">
           {{ t('error.' + errorMessage) }}
@@ -38,12 +44,14 @@
 <script setup lang="ts">
 import { useConnexionStore } from '@/stores/connexion'
 import InputText from 'primevue/inputtext'
+import Password from 'primevue/password'
 import Dialog from 'primevue/dialog'
 import Button from 'primevue/button'
 import { useI18n } from 'vue-i18n'
 import { computed, ref, watch } from 'vue'
 import { useEmailValidator } from '@/stores/email.validator'
-const { isVisible, toggleConnexionDialog, login, isError, errorMessage } = useConnexionStore()
+const { isVisible, toggleConnexionDialog, login, isError, errorMessage, isSuccess } =
+  useConnexionStore()
 const { t } = useI18n()
 const { test } = useEmailValidator()
 const form = ref({
@@ -68,6 +76,12 @@ const isFormValid = computed(() => {
 watch(isError, (value) => {
   if (value) {
     form.value.password = ''
+  }
+})
+watch(isSuccess, (value) => {
+  if (value) {
+    form.value.password = ''
+    form.value.email = ''
   }
 })
 </script>

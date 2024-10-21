@@ -14,8 +14,7 @@
     "type-check": "vue-tsc --build --force",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write src/",
-    "swagger:generate": "openapi --input http://localhost:3000/api-json --output src/api",
-    "swagger:generate2": "npx swagger-typescript-api --output ./src/api --path http://localhost:3000/api-json --axios --api-class-name ApiService --extract-enums --api-class-name"
+    "swagger:generate": "npx swagger-typescript-api --output ./src/api --path http://localhost:3000/api-json --axios --api-class-name ApiService --extract-enums --api-class-name"
 
   },
   "dependencies": {

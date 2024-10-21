@@ -5,7 +5,6 @@ import type { UserCredentialDto } from '@/api/Api'
 import { useApiStore } from '@/stores/api'
 import { useSecurityStore } from '@/stores/security'
 import { useToastStore } from '@/stores/toast'
-import { useUserStore } from '@/stores/user'
 
 export const useConnexionStore = defineStore('connexion', () => {
   const { setToken } = useSecurityStore()
@@ -16,10 +15,9 @@ export const useConnexionStore = defineStore('connexion', () => {
   const _isSuccess = ref(false)
   const isError = computed(() => _isError)
   const errorMessage = computed(() => _errorMessage)
-
+  const isSuccess = computed(() => _isSuccess)
   const { api } = useApiStore()
   const { successMessage } = useToastStore()
-  const { getUserProfile } = useUserStore()
   function toggleConnexionDialog() {
     _isVisible.value = !_isVisible.value
     _isError.value = false
@@ -31,11 +29,10 @@ export const useConnexionStore = defineStore('connexion', () => {
       return await api.api.authControllerLogin(credential)
     },
     onSuccess: async (res) => {
-      setToken(res.data.accessToken)
+      await setToken(res.data.accessToken)
       successMessage('connexion.summary', `connexion.login.success`)
       _isError.value = false
       _isSuccess.value = true
-      await getUserProfile()
       toggleConnexionDialog()
     },
     onError(error: any) {
@@ -44,5 +41,5 @@ export const useConnexionStore = defineStore('connexion', () => {
     }
   })
 
-  return { isVisible, toggleConnexionDialog, login: mutate, isError, errorMessage }
+  return { isVisible, toggleConnexionDialog, login: mutate, isError, errorMessage, isSuccess }
 })

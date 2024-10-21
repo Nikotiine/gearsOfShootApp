@@ -11,6 +11,9 @@ import Aura from '@primevue/themes/aura'
 import i18n from '@/i18n'
 const app = createApp(App)
 import axiosInstance from '../axios.interceptor'
+import Tooltip from 'primevue/tooltip'
+
+app.directive('tooltip', Tooltip)
 app.use(createPinia())
 app.use(router)
 app.use(i18n)

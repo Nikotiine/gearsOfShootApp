@@ -12,7 +12,7 @@
       <div class="flex items-center gap-4 mb-8 text-red-500" v-if="isError">
         {{ t('error.' + errorMessage) }}
       </div>
-      <form @submit.prevent="submit">
+      <form @submit.prevent="submit" class="pr-4">
         <div class="flex items-center gap-4 mb-4">
           <label for="firstName" class="font-semibold w-24">{{ t('register.firstName') }}</label>
           <InputText id="firstName" class="flex-auto" autocomplete="off" v-model="form.firstName" />
@@ -54,7 +54,16 @@
         </div>
         <div class="flex items-center gap-4 mb-8">
           <label for="password" class="font-semibold w-24">{{ t('global.password') }}</label>
-          <InputText id="password" class="flex-auto" autocomplete="off" v-model="form.password" />
+          <Password
+            id="password"
+            autocomplete="off"
+            class="width-78"
+            prompt-label="Entrez votre mot de passe"
+            weak-label="trop faible"
+            v-model="form.password"
+            toggleMask
+            :fluid="true"
+          />
         </div>
         <div class="flex justify-end gap-2">
           <Button
@@ -78,6 +87,7 @@ import { useRegisterStore } from '@/stores/register'
 import { useI18n } from 'vue-i18n'
 import { computed, ref } from 'vue'
 import { useEmailValidator } from '@/stores/email.validator'
+import Password from 'primevue/password'
 
 const { isVisible, toggleRegisterDialog, register, isError, errorMessage } = useRegisterStore()
 
@@ -123,4 +133,8 @@ const submit = () => {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.width-78 {
+  width: 78%;
+}
+</style>

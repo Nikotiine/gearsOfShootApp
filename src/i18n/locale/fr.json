@@ -37,7 +37,8 @@
     },
     "logout": "Deconnexion",
     "myAccount": "Mon compte",
-    "myInvoices": "Mes achats"
+    "myInvoices": "Mes achats",
+    "admin": "Administration"
   },
   "global": {
     "password": "Mot de passe",

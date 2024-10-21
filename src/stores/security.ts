@@ -7,13 +7,28 @@ export const useSecurityStore = defineStore('security', () => {
   const _isLogged = ref(false)
   const getToken = computed(() => sessionStorage.getItem(_key))
   const isLogged = computed(() => _isLogged)
-  const { setUser } = useUserStore()
-  function setToken(token: string) {
+  const { setUser, getUser, getUserProfile } = useUserStore()
+  async function setToken(token: string) {
     sessionStorage.setItem(_key, token)
-    setIsLogged()
+    const user = await getUserProfile()
+    if (user.data) {
+      setIsLogged()
+    } else {
+      logout()
+    }
   }
-  if (getToken.value) {
+  if (getUser.value !== null && getToken.value) {
     setIsLogged()
+  } else if (getUser.value === null && getToken.value) {
+    getUserProfile()
+      .then((res) => {
+        if (res.data) {
+          setIsLogged()
+        }
+      })
+      .catch(() => {
+        logout()
+      })
   }
   function setIsLogged(): void {
     _isLogged.value = true

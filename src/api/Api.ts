@@ -197,6 +197,7 @@ export interface UserDto {
   city: string
   state: string
   zipCode: string
+  role: UserDtoRoleEnum
 }
 
 export interface UserCredentialDto {
@@ -280,6 +281,11 @@ export enum AmmunitionDtoCategoryEnum {
 export enum AmmunitionDtoPercussionTypeEnum {
   Centrale = 'Centrale',
   Annulaire = 'Annulaire'
+}
+
+export enum UserDtoRoleEnum {
+  USER = 'USER',
+  ADMIN = 'ADMIN'
 }
 
 import type {
