@@ -100,6 +100,14 @@ export interface WeaponDto {
   barrelType: WeaponDtoBarrelTypeEnum
   threadedSize: ThreadedSizeDto
   id: number
+  reference: string
+}
+
+export interface ListOfPrerequisitesWeaponDto {
+  calibers: CaliberDto[]
+  factories: FactoryDto[]
+  types: WeaponTypeDto[]
+  threadedSizes: ThreadedSizeDto[]
 }
 
 export interface CreateWeaponTypeDto {
@@ -156,6 +164,7 @@ export interface AmmunitionDto {
   factory: FactoryDto
   caliber: CaliberDto
   id: number
+  reference: string
 }
 
 export interface ListOfPrerequisitesAmmunitionDto {
@@ -185,6 +194,7 @@ export interface CreateUserDto {
   city: string
   state: string
   zipCode: string
+  role: CreateUserDtoRoleEnum
 }
 
 export interface UserDto {
@@ -281,6 +291,11 @@ export enum AmmunitionDtoCategoryEnum {
 export enum AmmunitionDtoPercussionTypeEnum {
   Centrale = 'Centrale',
   Annulaire = 'Annulaire'
+}
+
+export enum CreateUserDtoRoleEnum {
+  USER = 'USER',
+  ADMIN = 'ADMIN'
 }
 
 export enum UserDtoRoleEnum {
@@ -536,6 +551,22 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
+     * @description Retourne la liste des pre-requis necesssaire a la creation d une arme
+     *
+     * @tags Weapon
+     * @name WeaponControllerFindPrerequisitesWeaponList
+     * @summary Liste des pre-requis
+     * @request GET:/api/weapon/prerequisites
+     */
+    weaponControllerFindPrerequisitesWeaponList: (params: RequestParams = {}) =>
+      this.request<ListOfPrerequisitesWeaponDto, any>({
+        path: `/api/weapon/prerequisites`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
      * @description Ajout d un nouveau type d arme en bdd
      *
      * @tags Weapon type
@@ -591,11 +622,11 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @description Retourne la liste des pre-requis necesssaire a la creation d une nouvelle munition
      *
      * @tags Ammunition
-     * @name AmmunitionControllerFindPrerequisitesList
+     * @name AmmunitionControllerFindPrerequisitesAmmunitionList
      * @summary Liste des pre-requis
      * @request GET:/api/ammunition/prerequisites
      */
-    ammunitionControllerFindPrerequisitesList: (params: RequestParams = {}) =>
+    ammunitionControllerFindPrerequisitesAmmunitionList: (params: RequestParams = {}) =>
       this.request<ListOfPrerequisitesAmmunitionDto, any>({
         path: `/api/ammunition/prerequisites`,
         method: 'GET',

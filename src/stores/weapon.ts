@@ -4,8 +4,13 @@ import { useQuery } from '@tanstack/vue-query'
 
 export const useWeaponStore = defineStore('weapon', () => {
   const { api } = useApiStore()
-  const {} = useQuery(() => ({
-    queryKey: 'list',
-    queryFn: async () => {}
-  }))
+
+  const query = useQuery({
+    queryKey: ['list'],
+    queryFn: () => {
+      return api.api.weaponControllerFindPrerequisitesWeaponList()
+    }
+  })
+
+  return { query }
 })
