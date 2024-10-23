@@ -12,7 +12,7 @@ const router = createRouter({
     {
       path: '/tir/sportif/categorie/c',
       name: 'categoryCRiffle',
-      component: () => import('../views/CategoryCRiffleView.vue')
+      component: () => import('../views/AccountView.vue')
     },
     {
       path: '/account',
@@ -21,25 +21,37 @@ const router = createRouter({
     },
     {
       path: '/admin',
-      component: () => import('../views/AdminDashboardView.vue'),
+      component: () => import('../views/admin/AdminDashboardView.vue'),
       children: [
         {
           path: 'gestion/add/weapon/:category',
           name: 'weaponForm',
           props: true,
-          component: () => import('../views/AdminWeaponFormView.vue')
+          component: () => import('../views/admin/AdminWeaponFormView.vue')
         },
         {
           path: 'gestion/list/weapon/:category',
           props: true,
           name: 'weaponList',
-          component: () => import('../views/AdminWeaponListView.vue')
+          component: () => import('../views/admin/AdminWeaponListView.vue')
         },
         {
-          path: 'gestion/add/ammuntion/:category',
+          path: 'gestion/add/ammunition/:category',
           name: 'ammunitionForm',
           props: true,
-          component: () => import('../views/AdminAmmunitionFormView.vue')
+          component: () => import('../views/admin/AdminAmmunitionFormView.vue')
+        },
+        {
+          path: 'gestion/list/ammunition/:category',
+          props: true,
+          name: 'ammunitionList',
+          component: () => import('../views/admin/AdminAmmunitionListView.vue')
+        },
+        {
+          path: 'gestion/add/factory/:type',
+          name: 'factoryForm',
+          props: true,
+          component: () => import('../views/factory/FactoryFormView.vue')
         }
       ]
     }

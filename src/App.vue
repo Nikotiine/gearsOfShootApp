@@ -10,7 +10,7 @@ import FooterComponent from '@/components/__layout/FooterComponent.vue'
   <TopbarComponent />
   <div class="h-screen"><RouterView /></div>
 
-  <FooterComponent />
+  <!--  <FooterComponent class="" />-->
 </template>
 
 <style scoped></style>

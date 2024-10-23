@@ -100,11 +100,11 @@
           placeholder="Description"
         />
       </div>
-      <!--      <div class="text-red-500 p-4" v-if="createWeaponIsOnError">
+      <div class="text-red-500 p-4" v-if="createAmmunitionIsOnError">
         <p class="text-xl font-bold">
-          {{ createWeaponIsOnErrorMessage }}
+          {{ createAmmunitionIsOnErrorMessage }}
         </p>
-      </div>-->
+      </div>
 
       <div class="text-center">
         <Button type="submit" label="submit" :disabled="!isFormValid"></Button>
@@ -130,7 +130,12 @@ import InputText from 'primevue/inputtext'
 import InputGroup from 'primevue/inputgroup'
 
 import IftaLabel from 'primevue/iftalabel'
-const { prerequisitesAmmoList, createAmmunition } = useAmmunitionStore()
+const {
+  prerequisitesAmmoList,
+  createAmmunition,
+  createAmmunitionIsOnError,
+  createAmmunitionIsOnErrorMessage
+} = useAmmunitionStore()
 const { category } = defineProps<{
   category: CreateAmmunitionDtoCategoryEnum
 }>()

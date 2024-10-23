@@ -28,72 +28,98 @@
           <InputGroupAddon>
             <i class="pi pi-warehouse"></i>
           </InputGroupAddon>
-          <Select
-            v-model="form.factoryId"
-            :options="prerequisitesWeaponList.data.data.factories"
-            filter
-            optionLabel="name"
-            optionValue="id"
-            placeholder="Marque"
-          />
+          <IftaLabel>
+            <Select
+              id="factoryId"
+              v-model="form.factoryId"
+              :options="prerequisitesWeaponList.data.data.factories"
+              filter
+              optionLabel="name"
+              optionValue="id"
+              placeholder="Marque"
+            />
+            <label for="factoryId">Marque</label>
+          </IftaLabel>
         </InputGroup>
 
         <InputGroup>
           <InputGroupAddon>
             <i class="pi pi-id-card"></i>
           </InputGroupAddon>
-          <InputText v-model="form.name" placeholder="Nom" />
+          <IftaLabel>
+            <InputText id="name" v-model="form.name" placeholder="Nom" />
+            <label for="name">Model</label>
+          </IftaLabel>
         </InputGroup>
         <InputGroup>
           <InputGroupAddon>
             <i class="pi pi-receipt"></i>
           </InputGroupAddon>
-          <InputText v-model="form.variation" placeholder="Variante" />
+          <IftaLabel>
+            <InputText id="variation" v-model="form.variation" placeholder="Variante" />
+            <label for="variation">Variante</label>
+          </IftaLabel>
         </InputGroup>
         <InputGroup>
           <InputGroupAddon>
             <i class="pi pi-sort"></i>
           </InputGroupAddon>
-          <Select
-            v-model="form.typeId"
-            :options="prerequisitesWeaponList.data.data.types"
-            optionLabel="name"
-            placeholder="Type d'arme"
-            optionValue="id"
-          />
+          <IftaLabel>
+            <Select
+              v-model="form.typeId"
+              :options="prerequisitesWeaponList.data.data.types"
+              optionLabel="name"
+              placeholder="Type d'arme"
+              optionValue="id"
+              id="typeId"
+            />
+            <label for="typeId">Type d'arme</label>
+          </IftaLabel>
         </InputGroup>
         <InputGroup>
           <InputGroupAddon>
             <i class="pi pi-sort"></i>
           </InputGroupAddon>
-          <Select
-            v-model="form.barrelType"
-            :options="barrelTypes"
-            optionLabel="name"
-            placeholder="Type de canon"
-            optionValue="id"
-          />
-          <InputNumber
-            v-model="form.barrelLength"
-            placeholder="Longueur du canon"
-            :minFractionDigits="2"
-          />
+          <IftaLabel>
+            <Select
+              v-model="form.barrelType"
+              :options="barrelTypes"
+              optionLabel="name"
+              placeholder="Type de canon"
+              optionValue="id"
+              id="barrelType"
+            />
+            <label for="barrelType">Type de canon</label>
+          </IftaLabel>
+          <IftaLabel>
+            <InputNumber
+              v-model="form.barrelLength"
+              placeholder="Longueur du canon"
+              :minFractionDigits="2"
+              id="barrelLength"
+            />
+            <label for="barrelLength">Longueur de canon</label>
+          </IftaLabel>
+
           <InputGroupAddon>cm</InputGroupAddon>
         </InputGroup>
         <InputGroup>
           <InputGroupAddon>
             <Checkbox id="isThreadedBarrel" v-model="form.isThreadedBarrel" :binary="true" />
-            <label for="isThreadedBarrel" class="ml-2"> Canon filete </label>
+            <label for="isThreadedBarrel" class="ml-2"> Filetage </label>
           </InputGroupAddon>
-
-          <Select
-            v-model="form.threadedSizeId"
-            :options="prerequisitesWeaponList.data.data.threadedSizes"
-            optionLabel="size"
-            placeholder="type de filetage"
-            optionValue="id"
-            :disabled="!form.isThreadedBarrel"
-          />
+          <IftaLabel>
+            <Select
+              v-model="form.threadedSizeId"
+              :options="prerequisitesWeaponList.data.data.threadedSizes"
+              optionLabel="size"
+              placeholder="type de filetage"
+              optionValue="id"
+              :disabled="!form.isThreadedBarrel"
+              id="threadedSizeId"
+            />
+            <label for="threadedSizeId">type de filetage</label>
+          </IftaLabel>
         </InputGroup>
         <InputGroup>
           <InputGroupAddon>

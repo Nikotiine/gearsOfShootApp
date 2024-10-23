@@ -148,6 +148,7 @@ export interface CreateAmmunitionDto {
 export interface AmmunitionHeadTypeDto {
   /** @example "Full metal jacket" */
   name: string
+  ref: string
   id: number
 }
 
@@ -188,6 +189,7 @@ export interface ListOfPrerequisitesAmmunitionDto {
 export interface CreateAmmunitionHeadTypeDto {
   /** @example "Full metal jacket" */
   name: string
+  ref: string
 }
 
 export interface CreateAmmunitionBodyTypeDto {
@@ -649,9 +651,25 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @summary Filtre par calibre
      * @request GET:/api/ammunition/by/caliber/{id}
      */
-    ammunitionControllerFindByCaliber: (id: number, params: RequestParams = {}) =>
+    ammunitionControllerFindByCaliber: (caliberId: number, id: any, params: RequestParams = {}) =>
       this.request<AmmunitionDto[], any>({
         path: `/api/ammunition/by/caliber/${id}`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne la liste des munitions filtre par calibre
+     *
+     * @tags Ammunition
+     * @name AmmunitionControllerFindByCategory
+     * @summary Filtre par calibre
+     * @request GET:/api/ammunition/by/category/{category}
+     */
+    ammunitionControllerFindByCategory: (category: string, params: RequestParams = {}) =>
+      this.request<AmmunitionDto[], any>({
+        path: `/api/ammunition/by/category/${category}`,
         method: 'GET',
         format: 'json',
         ...params
