@@ -88,6 +88,7 @@ import { useI18n } from 'vue-i18n'
 import { computed, ref } from 'vue'
 import { useEmailValidator } from '@/stores/email.validator'
 import Password from 'primevue/password'
+import { CreateUserDtoRoleEnum, UserDtoRoleEnum } from '@/api/Api'
 
 const { isVisible, toggleRegisterDialog, register, isError, errorMessage } = useRegisterStore()
 
@@ -101,7 +102,8 @@ const form = ref({
   phone: '',
   email: '',
   password: '',
-  zipCode: ''
+  zipCode: '',
+  role: CreateUserDtoRoleEnum.USER
 })
 const { test } = useEmailValidator()
 const isFormValid = computed(() => {

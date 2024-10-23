@@ -12,8 +12,10 @@ import i18n from '@/i18n'
 const app = createApp(App)
 import axiosInstance from '../axios.interceptor'
 import Tooltip from 'primevue/tooltip'
+import KeyFilter from 'primevue/keyfilter'
 
 app.directive('tooltip', Tooltip)
+app.directive('keyfilter', KeyFilter)
 app.use(createPinia())
 app.use(router)
 app.use(i18n)

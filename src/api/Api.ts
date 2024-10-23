@@ -16,6 +16,7 @@ export interface FactoryDto {
   type: FactoryDtoTypeEnum
   /** @example "Une description de la marque et ses produits" */
   description: string
+  ref: string
   id: number
 }
 
@@ -26,28 +27,19 @@ export interface CreateFactoryDto {
   type: CreateFactoryDtoTypeEnum
   /** @example "Une description de la marque et ses produits" */
   description: string
+  ref: string
 }
 
 export interface CreateCaliberDto {
   /** @example "17 HMR" */
   name: string
+  ref: string
 }
 
 export interface CaliberDto {
   /** @example "17 HMR" */
   name: string
-  id: number
-}
-
-export interface WeaponTypeDto {
-  /** @example "Fusil a verrou" */
-  name: string
-  id: number
-}
-
-export interface ThreadedSizeDto {
-  /** @example "1/2 x 28" */
-  size: string
+  ref: string
   id: number
 }
 
@@ -55,14 +47,14 @@ export interface CreateWeaponDto {
   /** @example "CZ 457" */
   name: string
   /** @example "Une description de l arme son histoire ..." */
-  description: string
+  description: string | null
   /** @example "Varmint ou Luxe" */
-  variation: string
+  variation: string | null
   /** @example "C" */
   category: CreateWeaponDtoCategoryEnum
-  caliber: CaliberDto
-  factory: FactoryDto
-  type: WeaponTypeDto
+  caliberId: number
+  factoryId: number
+  typeId: number
   /** @example 51 */
   barrelLength: number
   /** @example true */
@@ -73,16 +65,34 @@ export interface CreateWeaponDto {
   isThreadedBarrel: boolean
   /** @example "Lourd" */
   barrelType: CreateWeaponDtoBarrelTypeEnum
-  threadedSize: ThreadedSizeDto
+  threadedSizeId: number | null
+  adjustableTriggerValue: string | null
+}
+
+export interface WeaponTypeDto {
+  /** @example "Fusil a verrou" */
+  name: string
+  mode: WeaponTypeDtoModeEnum
+  ref: string
+  id: number
+}
+
+export interface ThreadedSizeDto {
+  /** @example "1/2 x 28" */
+  size: string
+  id: number
 }
 
 export interface WeaponDto {
+  id: number
+  /** @example "CZ-457-VAR-22LR" */
+  reference: string
   /** @example "CZ 457" */
   name: string
   /** @example "Une description de l arme son histoire ..." */
   description: string
   /** @example "Varmint ou Luxe" */
-  variation: string
+  variation: string | null
   /** @example "C" */
   category: WeaponDtoCategoryEnum
   caliber: CaliberDto
@@ -99,8 +109,7 @@ export interface WeaponDto {
   /** @example "Lourd" */
   barrelType: WeaponDtoBarrelTypeEnum
   threadedSize: ThreadedSizeDto
-  id: number
-  reference: string
+  adjustableTriggerValue: string
 }
 
 export interface ListOfPrerequisitesWeaponDto {
@@ -113,6 +122,27 @@ export interface ListOfPrerequisitesWeaponDto {
 export interface CreateWeaponTypeDto {
   /** @example "Fusil a verrou" */
   name: string
+  mode: CreateWeaponTypeDtoModeEnum
+  ref: string
+}
+
+export interface CreateAmmunitionDto {
+  /** @example "Sk Standard" */
+  name: string
+  /** @example "Une description de la munition, qualite / origine / conseil d utilisation" */
+  description: string | null
+  /** @example "C" */
+  category: CreateAmmunitionDtoCategoryEnum
+  /** @example 320 */
+  initialSpeed: number
+  /** @example "Centrale" */
+  percussionType: CreateAmmunitionDtoPercussionTypeEnum
+  /** @example 50 */
+  packaging: number
+  headTypeId: number
+  bodyTypeId: number
+  factoryId: number
+  caliberId: number
 }
 
 export interface AmmunitionHeadTypeDto {
@@ -127,30 +157,13 @@ export interface AmmunitionBodyTypeDto {
   id: number
 }
 
-export interface CreateAmmunitionDto {
-  /** @example "Sk Standard" */
-  name: string
-  /** @example "Une description de la munition, qualite / origine / conseil d utilisation" */
-  description: string
-  /** @example "C" */
-  category: CreateAmmunitionDtoCategoryEnum
-  /** @example 320 */
-  initialSpeed: number
-  /** @example "Centrale" */
-  percussionType: CreateAmmunitionDtoPercussionTypeEnum
-  /** @example 50 */
-  packaging: number
-  headType: AmmunitionHeadTypeDto
-  bodyType: AmmunitionBodyTypeDto
-  factory: FactoryDto
-  caliber: CaliberDto
-}
-
 export interface AmmunitionDto {
+  id: number
+  reference: string
   /** @example "Sk Standard" */
   name: string
   /** @example "Une description de la munition, qualite / origine / conseil d utilisation" */
-  description: string
+  description: string | null
   /** @example "C" */
   category: AmmunitionDtoCategoryEnum
   /** @example 320 */
@@ -163,8 +176,6 @@ export interface AmmunitionDto {
   bodyType: AmmunitionBodyTypeDto
   factory: FactoryDto
   caliber: CaliberDto
-  id: number
-  reference: string
 }
 
 export interface ListOfPrerequisitesAmmunitionDto {
@@ -250,6 +261,12 @@ export enum CreateWeaponDtoBarrelTypeEnum {
   Lourd = 'Lourd'
 }
 
+export enum WeaponTypeDtoModeEnum {
+  CoupParCoup = 'Coup par coup',
+  SemiAuto = 'Semi-Auto',
+  Automatique = 'Automatique'
+}
+
 /** @example "C" */
 export enum WeaponDtoCategoryEnum {
   A = 'A',
@@ -263,6 +280,12 @@ export enum WeaponDtoBarrelTypeEnum {
   Normal = 'Normal',
   SemiLourd = 'Semi lourd',
   Lourd = 'Lourd'
+}
+
+export enum CreateWeaponTypeDtoModeEnum {
+  CoupParCoup = 'Coup par coup',
+  SemiAuto = 'Semi-Auto',
+  Automatique = 'Automatique'
 }
 
 /** @example "C" */
@@ -561,6 +584,22 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
     weaponControllerFindPrerequisitesWeaponList: (params: RequestParams = {}) =>
       this.request<ListOfPrerequisitesWeaponDto, any>({
         path: `/api/weapon/prerequisites`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne la liste des references d arme enregister en bdd
+     *
+     * @tags Weapon
+     * @name WeaponControllerFindAllByCategory
+     * @summary Armes par categorie
+     * @request GET:/api/weapon/by/{category}
+     */
+    weaponControllerFindAllByCategory: (category: string, params: RequestParams = {}) =>
+      this.request<WeaponDto[], any>({
+        path: `/api/weapon/by/${category}`,
         method: 'GET',
         format: 'json',
         ...params

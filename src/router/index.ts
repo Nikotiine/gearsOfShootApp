@@ -24,9 +24,22 @@ const router = createRouter({
       component: () => import('../views/AdminDashboardView.vue'),
       children: [
         {
-          path: 'gestion/categprie-c',
-          name: 'gestionCatC',
-          component: () => import('../views/AddWeaponView.vue')
+          path: 'gestion/add/weapon/:category',
+          name: 'weaponForm',
+          props: true,
+          component: () => import('../views/AdminWeaponFormView.vue')
+        },
+        {
+          path: 'gestion/list/weapon/:category',
+          props: true,
+          name: 'weaponList',
+          component: () => import('../views/AdminWeaponListView.vue')
+        },
+        {
+          path: 'gestion/add/ammuntion/:category',
+          name: 'ammunitionForm',
+          props: true,
+          component: () => import('../views/AdminAmmunitionFormView.vue')
         }
       ]
     }
