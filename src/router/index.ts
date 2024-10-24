@@ -24,9 +24,8 @@ const router = createRouter({
       component: () => import('../views/admin/AdminDashboardView.vue'),
       children: [
         {
-          path: 'gestion/add/weapon/:category',
+          path: 'gestion/add/weapon',
           name: 'weaponForm',
-          props: true,
           component: () => import('../views/admin/AdminWeaponFormView.vue')
         },
         {
@@ -36,9 +35,9 @@ const router = createRouter({
           component: () => import('../views/admin/AdminWeaponListView.vue')
         },
         {
-          path: 'gestion/add/ammunition/:category',
+          path: 'gestion/add/ammunition',
           name: 'ammunitionForm',
-          props: true,
+
           component: () => import('../views/admin/AdminAmmunitionFormView.vue')
         },
         {
@@ -48,10 +47,24 @@ const router = createRouter({
           component: () => import('../views/admin/AdminAmmunitionListView.vue')
         },
         {
-          path: 'gestion/add/factory/:type',
+          path: 'gestion/add/factory',
           name: 'factoryForm',
-          props: true,
           component: () => import('../views/factory/FactoryFormView.vue')
+        },
+        {
+          path: 'gestion/add/headType',
+          name: 'headTypeForm',
+          component: () => import('../views/admin/AdminAmmunitionHeadTypeFormView.vue')
+        },
+        {
+          path: 'gestion/add/bodyType',
+          name: 'bodyTypeForm',
+          component: () => import('../views/admin/AdminAmmunitionBodyTypeFormView.vue')
+        },
+        {
+          path: 'gestion/add/weaponType',
+          name: 'weaponTypeForm',
+          component: () => import('../views/admin/AdminWeaponTypeFormView.vue')
         }
       ]
     }

@@ -24,7 +24,8 @@ export const useWeaponStore = defineStore('weapon', () => {
       queryKey: ['weaponsByCategory', category],
       queryFn: () => {
         return api.api.weaponControllerFindAllByCategory(category)
-      }
+      },
+      staleTime: 10000
     })
   }
 

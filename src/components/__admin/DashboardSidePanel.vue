@@ -5,147 +5,153 @@
 import MegaMenu from 'primevue/megamenu'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
-import type { LegislationCategories } from '@/stores/weapon'
-import { FactoryDtoTypeEnum, WeaponDtoCategoryEnum } from '@/api/Api'
+import { WeaponDtoCategoryEnum } from '@/api/Api'
 const { push } = useRouter()
 const items = ref([
   {
-    label: 'Categorie C',
-    icon: 'pi pi-box',
+    label: 'Reference',
+    icon: 'pi pi-clock',
     items: [
       [
         {
-          label: 'Arme',
+          label: 'Ajout',
           items: [
             {
-              label: 'Liste complete',
+              label: 'Arme',
               command: () => {
-                push('/admin/gestion/list/weapon/' + WeaponDtoCategoryEnum.C)
+                push('/admin/gestion/add/weapon')
               }
             },
             {
-              label: 'Nouvelle reference',
+              label: 'Munition',
               command: () => {
-                push('/admin/gestion/add/weapon/' + WeaponDtoCategoryEnum.C)
+                push('/admin/gestion/add/ammunition')
               }
             },
-            {
-              label: 'Marque',
-              command: () => {
-                push('/admin/gestion/add/factory/' + FactoryDtoTypeEnum.Arme)
-              }
-            }
-          ]
-        },
-        {
-          label: 'Munition',
-          items: [
-            {
-              label: 'Liste complete',
-              command: () => {
-                push('/admin/gestion/list/ammunition/' + WeaponDtoCategoryEnum.C)
-              }
-            },
-            {
-              label: 'Nouvelle reference',
-              command: () => {
-                push('/admin/gestion/add/ammunition/' + WeaponDtoCategoryEnum.C)
-              }
-            },
-            { label: 'Marque' }
+            { label: 'Optique' },
+            { label: 'RDS' },
+            { label: 'Accessories' }
           ]
         }
       ],
       [
         {
-          label: 'RDS',
-          items: [{ label: 'Liste complete' }, { label: 'Nouvelle reference' }, { label: 'Marque' }]
-        },
-        {
-          label: 'Accessoire',
-          items: [{ label: 'Liste complete' }, { label: 'Nouvelle reference' }, { label: 'Marque' }]
+          label: 'Type',
+          items: [
+            {
+              label: 'Douille',
+              command: () => {
+                push('/admin/gestion/add/bodyType')
+              }
+            },
+            {
+              label: 'Ovige',
+              command: () => {
+                push('/admin/gestion/add/headType')
+              }
+            },
+            {
+              label: 'Type d arme',
+              command: () => {
+                push('/admin/gestion/add/weaponType')
+              }
+            },
+            { label: 'Filletage' },
+            { label: 'Accessoire' }
+          ]
         }
       ],
       [
         {
-          label: 'Stock',
+          label: 'Autre',
           items: [
-            { label: 'Bed' },
-            { label: 'Chaise lounge' },
-            { label: 'Cupboard' },
-            { label: 'Dresser' },
-            { label: 'Wardrobe' }
+            {
+              label: 'Marques',
+              command: () => {
+                push('/admin/gestion/add/factory')
+              }
+            },
+            { label: 'Calibre' },
+            { label: 'Swimsuits' },
+            { label: 'Paddles' }
+          ]
+        }
+      ],
+      [
+        {
+          label: 'Tennis',
+          items: [
+            { label: 'Balls' },
+            { label: 'Rackets' },
+            { label: 'Shoes' },
+            { label: 'Training' }
           ]
         }
       ]
     ]
   },
   {
-    label: 'Categorie B',
-    icon: 'pi pi-box',
+    label: 'Liste',
+    icon: 'pi pi-clock',
     items: [
       [
         {
-          label: 'Arme',
+          label: 'Categorie B',
           items: [
+            { label: 'Arme de poing' },
             {
-              label: 'Liste complete',
+              label: 'Arme longue',
               command: () => {
                 push('/admin/gestion/list/weapon/' + WeaponDtoCategoryEnum.B)
               }
             },
-            {
-              label: 'Nouvelle reference',
-              command: () => {
-                push('/admin/gestion/add/weapon/' + WeaponDtoCategoryEnum.B)
-              }
-            },
-            { label: 'Marque' }
-          ]
-        },
-        {
-          label: 'Munition',
-          items: [
-            {
-              label: 'Liste complete',
-              command: () => {
-                push('/admin/gestion/list/ammunition/' + WeaponDtoCategoryEnum.B)
-              }
-            },
-            {
-              label: 'Nouvelle reference',
-              command: () => {
-                push('/admin/gestion/add/ammunition/' + WeaponDtoCategoryEnum.B)
-              }
-            },
-            { label: 'Marque' }
+            { label: 'rds' },
+            { label: 'Munition' },
+            { label: 'Accessoire' }
           ]
         }
       ],
       [
         {
-          label: 'RDS',
-          items: [{ label: 'Liste complete' }, { label: 'Nouvelle reference' }, { label: 'Marque' }]
-        },
-        {
-          label: 'Accessoire',
-          items: [{ label: 'Liste complete' }, { label: 'Nouvelle reference' }, { label: 'Marque' }]
+          label: 'Categorie C',
+          items: [
+            {
+              label: 'Arme longue',
+              command: () => {
+                push('/admin/gestion/list/weapon/' + WeaponDtoCategoryEnum.C)
+              }
+            },
+            { label: 'rds' },
+            { label: 'Munition' },
+            { label: 'Accessoire' }
+          ]
         }
       ],
       [
         {
-          label: 'Stock',
+          label: 'Categorie D',
           items: [
-            { label: 'Bed' },
-            { label: 'Chaise lounge' },
-            { label: 'Cupboard' },
-            { label: 'Dresser' },
-            { label: 'Wardrobe' }
+            { label: 'Arme de poing' },
+            { label: 'Arme longue' },
+            { label: 'Munition' },
+            { label: 'Accessoire' }
+          ]
+        }
+      ],
+      [
+        {
+          label: 'Autre',
+          items: [
+            { label: 'Douille et oviges' },
+            { label: 'Type d arme' },
+            { label: 'Shoes' },
+            { label: 'Training' }
           ]
         }
       ]
     ]
   },
+
   {
     label: 'Loisir',
     icon: 'pi pi-clock',

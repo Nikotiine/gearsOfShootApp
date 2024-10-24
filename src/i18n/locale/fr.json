@@ -69,6 +69,7 @@
     "0001": "Email deja utilisé",
     "0002": "Indentifiants invalides",
     "0102": "Munition deja existante",
-    "0201": "Arme deja existante"
+    "0201": "Arme deja existante",
+    "0600": "Marque deja existante"
   }
 }

@@ -1,9 +1,21 @@
 <template>
-  <div class="">
-    <h2 class="text-center mt-2 text-2xl">Ajouter une arme de Categorie {{ category }}</h2>
+  <div class="card">
+    <h2 class="text-center mt-2 text-2xl">Ajouter une arme de Categorie {{ form.category }}</h2>
     <form @submit.prevent="submit">
+      <div class="px-4 mt-6 mr-2">
+        <IftaLabel>
+          <Select
+            v-model="form.category"
+            :options="categories"
+            placeholder="type de filetage"
+            id="category"
+            class="w-3/12 mx-auto"
+          />
+          <label for="category">Categorie</label>
+        </IftaLabel>
+      </div>
       <div
-        class="card grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 p-4"
+        class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4"
         v-if="prerequisitesWeaponList.isSuccess"
       >
         <InputGroup>
@@ -187,9 +199,7 @@ const {
   createWeaponIsOnError,
   createWeaponIsOnErrorMessage
 } = useWeaponStore()
-const { category } = defineProps<{
-  category: CreateWeaponDtoCategoryEnum
-}>()
+
 const adjustableTriggerMinWeight = ref(0)
 const adjustableTriggerMaxWeight = ref(0)
 const barrelTypes = ref([
@@ -197,6 +207,11 @@ const barrelTypes = ref([
   { name: CreateWeaponDtoBarrelTypeEnum.SemiLourd },
   { name: CreateWeaponDtoBarrelTypeEnum.Lourd }
 ])
+const categories: CreateWeaponDtoCategoryEnum[] = [
+  CreateWeaponDtoCategoryEnum.D,
+  CreateWeaponDtoCategoryEnum.C,
+  CreateWeaponDtoCategoryEnum.B
+]
 const initialCreateWeaponFormObject = {
   typeId: 0,
   caliberId: 0,
@@ -210,7 +225,7 @@ const initialCreateWeaponFormObject = {
   isAdjustableTrigger: false,
   adjustableTriggerValue: triggerValue(),
   description: '',
-  category: category,
+  category: CreateWeaponDtoCategoryEnum.D,
   isOpticReady: false
 }
 const form = ref<CreateWeaponDto>({

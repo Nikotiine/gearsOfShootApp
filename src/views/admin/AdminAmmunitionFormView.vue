@@ -1,9 +1,21 @@
 <template>
   <div class="card">
-    <h2 class="text-center mt-2 text-2xl">Ajouter une munition de Categorie {{ category }}</h2>
+    <h2 class="text-center mt-2 text-2xl">Ajouter une munition de Categorie {{ form.category }}</h2>
     <form @submit.prevent="submit">
+      <div class="px-4 mt-6 mr-2">
+        <IftaLabel>
+          <Select
+            v-model="form.category"
+            :options="categories"
+            placeholder="Categorie"
+            id="category"
+            class="w-3/12 mx-auto"
+          />
+          <label for="category">Categorie</label>
+        </IftaLabel>
+      </div>
       <div
-        class="card grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 p-4"
+        class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 p-4"
         v-if="prerequisitesAmmoList.isSuccess"
       >
         <InputGroup>
@@ -136,15 +148,18 @@ const {
   createAmmunitionIsOnError,
   createAmmunitionIsOnErrorMessage
 } = useAmmunitionStore()
-const { category } = defineProps<{
-  category: CreateAmmunitionDtoCategoryEnum
-}>()
+
+const categories: CreateAmmunitionDtoCategoryEnum[] = [
+  CreateAmmunitionDtoCategoryEnum.D,
+  CreateAmmunitionDtoCategoryEnum.C,
+  CreateAmmunitionDtoCategoryEnum.B
+]
 const initialCreateAmmunitionFormObject: CreateAmmunitionDto = {
   bodyTypeId: 0,
   caliberId: 0,
   factoryId: 0,
   name: '',
-  category: category,
+  category: CreateAmmunitionDtoCategoryEnum.D,
   initialSpeed: 0,
   description: '',
   packaging: 50,

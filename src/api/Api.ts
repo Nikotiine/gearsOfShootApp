@@ -43,6 +43,13 @@ export interface CaliberDto {
   id: number
 }
 
+export interface ThreadedSizeDto {
+  /** @example "1/2 x 28" */
+  size: string
+  ref: string
+  id: number
+}
+
 export interface CreateWeaponDto {
   /** @example "CZ 457" */
   name: string
@@ -74,12 +81,6 @@ export interface WeaponTypeDto {
   name: string
   mode: WeaponTypeDtoModeEnum
   ref: string
-  id: number
-}
-
-export interface ThreadedSizeDto {
-  /** @example "1/2 x 28" */
-  size: string
   id: number
 }
 
@@ -155,6 +156,7 @@ export interface AmmunitionHeadTypeDto {
 export interface AmmunitionBodyTypeDto {
   /** @example "Laiton" */
   name: string
+  ref: string
   id: number
 }
 
@@ -195,6 +197,7 @@ export interface CreateAmmunitionHeadTypeDto {
 export interface CreateAmmunitionBodyTypeDto {
   /** @example "Laiton" */
   name: string
+  ref: string
 }
 
 export interface CreateUserDto {
@@ -558,6 +561,38 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
+     * @description Retourne la liste de tous les calibres disponible
+     *
+     * @tags Caliber
+     * @name CaliberControllerFindAllCalibers
+     * @summary Liste des calibres
+     * @request GET:/api/caliber
+     */
+    caliberControllerFindAllCalibers: (params: RequestParams = {}) =>
+      this.request<CaliberDto[], any>({
+        path: `/api/caliber`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne la liste des filletage disponible
+     *
+     * @tags Threaded-size
+     * @name ThreadedSizeControllerFindAllThreadedSize
+     * @summary Listes des filletages
+     * @request GET:/api/threaded-size
+     */
+    threadedSizeControllerFindAllThreadedSize: (params: RequestParams = {}) =>
+      this.request<ThreadedSizeDto[], any>({
+        path: `/api/threaded-size`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
      * @description Ajoute une nouvelle arme en base de donnee
      *
      * @tags Weapon
@@ -713,6 +748,22 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
+     * @description Retourne la liste de toutes les oviges disponible
+     *
+     * @tags AmmunitionHeadType
+     * @name AmmunitionHeadTypeControllerFindAllHeadTypes
+     * @summary Toutes les oviges
+     * @request GET:/api/ammunition-head-type
+     */
+    ammunitionHeadTypeControllerFindAllHeadTypes: (params: RequestParams = {}) =>
+      this.request<AmmunitionHeadTypeDto[], any>({
+        path: `/api/ammunition-head-type`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
      * @description Creattion d un nouveau type de douille pour les munitions
      *
      * @tags AmmunitionBodyType
@@ -729,6 +780,22 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
         method: 'POST',
         body: data,
         type: ContentType.Json,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne la liste de toutes les douilles disponible
+     *
+     * @tags AmmunitionBodyType
+     * @name AmmunitionBodyTypeControllerFindAllBodyTypes
+     * @summary Toutes les douilles
+     * @request GET:/api/ammunition-body-type
+     */
+    ammunitionBodyTypeControllerFindAllBodyTypes: (params: RequestParams = {}) =>
+      this.request<AmmunitionBodyTypeDto[], any>({
+        path: `/api/ammunition-body-type`,
+        method: 'GET',
         format: 'json',
         ...params
       }),
