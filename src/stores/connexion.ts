@@ -10,7 +10,7 @@ export const useConnexionStore = defineStore('connexion', () => {
   const { setToken } = useSecurityStore()
   const _isVisible = ref(false)
   const _isError = ref(false)
-  const _errorMessage = ref(false)
+  const _errorMessage = ref('')
   const isVisible = computed(() => _isVisible)
   const _isSuccess = ref(false)
   const isError = computed(() => _isError)
