@@ -9,25 +9,33 @@
  * ---------------------------------------------------------------
  */
 
-export interface FactoryDto {
-  /** @example "Colt" */
-  name: string
+export interface FactoryTypeDto {
   /** @example "Arme" */
-  type: FactoryDtoTypeEnum
+  name: string
+  id: number
+}
+
+export interface FactoryDto {
+  id: number
   /** @example "Une description de la marque et ses produits" */
   description: string
   ref: string
-  id: number
+  type: FactoryTypeDto
+  /** @example "Colt" */
+  name: string
 }
 
 export interface CreateFactoryDto {
   /** @example "Colt" */
   name: string
-  /** @example "Arme" */
-  type: CreateFactoryDtoTypeEnum
+  typeId: number
   /** @example "Une description de la marque et ses produits" */
   description: string
   ref: string
+}
+
+export interface ListOfPrerequisitesFactoryDto {
+  types: FactoryTypeDto[]
 }
 
 export interface CreateCaliberDto {
@@ -233,22 +241,6 @@ export interface UserCredentialDto {
 
 export interface TokenDto {
   accessToken: string
-}
-
-/** @example "Arme" */
-export enum FactoryDtoTypeEnum {
-  Arme = 'Arme',
-  Munition = 'Munition',
-  Optique = 'Optique',
-  ReducteurDeSon = 'Reducteur de son '
-}
-
-/** @example "Arme" */
-export enum CreateFactoryDtoTypeEnum {
-  Arme = 'Arme',
-  Munition = 'Munition',
-  Optique = 'Optique',
-  ReducteurDeSon = 'Reducteur de son '
 }
 
 /** @example "C" */
@@ -543,6 +535,22 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
+     * @description Retourne la liste des pre-requis necesssaire a la creation d une marque
+     *
+     * @tags Factory
+     * @name FactoryControllerFindPrerequisitesFactoryList
+     * @summary Liste des pre-requis
+     * @request GET:/api/factory/prerequisites
+     */
+    factoryControllerFindPrerequisitesFactoryList: (params: RequestParams = {}) =>
+      this.request<ListOfPrerequisitesFactoryDto, any>({
+        path: `/api/factory/prerequisites`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
      * @description Ajout d un nouveau calibre en base de donnee
      *
      * @tags Caliber
@@ -656,6 +664,22 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
         method: 'POST',
         body: data,
         type: ContentType.Json,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne la liste des diffents type d arme possible
+     *
+     * @tags Weapon type
+     * @name WeaponTypeControllerFindAllWeaponTypes
+     * @summary Liste des types d arme
+     * @request GET:/api/weapon-type
+     */
+    weaponTypeControllerFindAllWeaponTypes: (params: RequestParams = {}) =>
+      this.request<WeaponTypeDto[], any>({
+        path: `/api/weapon-type`,
+        method: 'GET',
         format: 'json',
         ...params
       }),

@@ -1,28 +1,32 @@
 import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
 import { useToastStore } from '@/stores/toast'
-import { computed, ref } from 'vue'
-import { useMutation } from '@tanstack/vue-query'
-import type { CreateWeaponTypeDto } from '@/api/Api'
+import { ref } from 'vue'
+import { useMutation, useQuery } from '@tanstack/vue-query'
+import type { CreateWeaponTypeDto, WeaponTypeDto } from '@/api/Api'
 
 export const useWeaponTypeStore = defineStore('weaponType', () => {
   const { api } = useApiStore()
   const { successMessage } = useToastStore()
-  const _isError = ref(false)
-  const _errorMessage = ref('')
-  const isError = computed(() => _isError)
-  const errorMessage = computed(() => _errorMessage)
-  const { mutate } = useMutation({
+  const getAllData = ref<WeaponTypeDto[]>([])
+
+  const createWeaponTypeMutate = useMutation({
     mutationFn: (weaponType: CreateWeaponTypeDto) => {
       return api.api.weaponTypeControllerCreate(weaponType)
     },
-    onSuccess(data, variables, context) {
-      successMessage('weaponType.summary', 'weaponType.create.success')
-    },
-    onError(error: any) {
-      _isError.value = true
-      _errorMessage.value = error.response.data.message
+    onSuccess(data) {
+      successMessage('weaponType.summary', 'weaponType.form.success')
+      getAllData.value.push(data.data)
     }
   })
-  return { createWeaponType: mutate, isError, errorMessage }
+
+  const getAllQuery = useQuery({
+    queryKey: ['weaponTypesQuery'],
+    queryFn: async () => {
+      getAllData.value = (await api.api.weaponTypeControllerFindAllWeaponTypes()).data
+      return api.api.weaponTypeControllerFindAllWeaponTypes()
+    }
+  })
+
+  return { create: createWeaponTypeMutate, getAll: getAllQuery, getAllData$: getAllData }
 })

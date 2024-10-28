@@ -71,7 +71,12 @@ const items = ref([
                 push('/admin/gestion/add/factory')
               }
             },
-            { label: 'Calibre' },
+            {
+              label: 'Calibre',
+              command: () => {
+                push('/admin/gestion/add/caliber')
+              }
+            },
             { label: 'Swimsuits' },
             { label: 'Paddles' }
           ]
@@ -144,7 +149,12 @@ const items = ref([
           items: [
             { label: 'Douille et oviges' },
             { label: 'Type d arme' },
-            { label: 'Shoes' },
+            {
+              label: 'Marques',
+              command: () => {
+                push('/admin/gestion/list/factories')
+              }
+            },
             { label: 'Training' }
           ]
         }

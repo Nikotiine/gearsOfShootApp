@@ -65,6 +65,17 @@ const router = createRouter({
           path: 'gestion/add/weaponType',
           name: 'weaponTypeForm',
           component: () => import('../views/admin/AdminWeaponTypeFormView.vue')
+        },
+        {
+          path: 'gestion/list/factories',
+          props: true,
+          name: 'factoriesList',
+          component: () => import('../views/factory/FactoriesListView.vue')
+        },
+        {
+          path: 'gestion/add/caliber',
+          name: 'caliberTypeForm',
+          component: () => import('../views/caliber/CaliberFormView.vue')
         }
       ]
     }

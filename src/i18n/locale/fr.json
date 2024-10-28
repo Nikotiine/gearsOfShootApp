@@ -25,7 +25,8 @@
     "address": "adresse postale",
     "zipCode": "Code postal",
     "success": "Merci de d'activer vote compte",
-    "summary": "Creation de compte"
+    "summary": "Creation de compte",
+    "create": "Creation"
   },
   "connexion": {
     "title": "Connexion à votre compte",
@@ -49,7 +50,12 @@
     "english": "Anglais",
     "name": "Nom",
     "ref": "Reference",
-    "save": "Sauvegarder"
+    "save": "Sauvegarder",
+    "weapon": "Arme",
+    "ammunition": "Munition",
+    "optic": "Optique",
+    "rds": "Moderateur de son"
+
   },
   "weapon": {
     "summary": "Gestion des armes",
@@ -82,15 +88,44 @@
       "addTitle": "Ajouter un nouveau type d'ogive",
       "success": "Ajout d'un nouveau type confirme"
     },
-    "existingList": "Liste de ogive existants",
+    "existingList": "Liste de ogives existantes",
     "type": "Type d'oviges",
     "summary": "Gestion des oviges"
+  },
+  "weaponType": {
+    "form": {
+      "addTitle": "Ajouter un nouveau type d'arme",
+      "success": "Ajout d'un nouveau type confirme"
+    },
+    "existingList": "Liste des type d'arme existants",
+    "type": "Type d'armes",
+    "summary": "Gestion des type d'arme",
+    "mode": "Fonctionnement"
+  },
+  "factory": {
+    "form": {
+      "addTitle": "Ajouter un nouveau type d'arme",
+      "success": "Ajout d'un nouveau type confirme"
+    },
+    "existingList": "Liste des marques existantes",
+    "type": "Type d'armes",
+    "summary": "Gestion des type d'arme"
+  },
+  "caliber": {
+    "form": {
+      "addTitle": "Ajouter un nouveau calibre",
+      "success": "Ajout d'un nouveau type confirme"
+    },
+    "existingList": "Liste des calibres existantes",
+    "type": "Type d'armes",
+    "summary": "Gestion des type d'arme"
   },
   "error": {
     "0001": "Email deja utilisé",
     "0002": "Indentifiants invalides",
     "0100": "Type de douille deja existante",
     "0102": "Munition deja existante",
+    "0200": "Type d arme deja existante",
     "0201": "Arme deja existante",
     "0600": "Marque deja existante"
   }

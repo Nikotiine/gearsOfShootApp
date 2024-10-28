@@ -59,6 +59,7 @@ const items: MenuItem = ref([
     icon: 'pi pi-unlock',
     command: () => {
       logout()
+      push('/')
     }
   }
 ])

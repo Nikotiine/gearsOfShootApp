@@ -99,25 +99,6 @@
           />
         </template>
       </Column>
-      <!--        <Column field="verified" header="Verified" dataType="boolean" style="min-width: 6rem">
-          <template #body="{ data }">
-            <i
-              class="pi"
-              :class="{
-                'pi-check-circle text-green-500': data.verified,
-                'pi-times-circle text-red-400': !data.verified
-              }"
-            ></i>
-          </template>
-          <template #filter="{ filterModel, filterCallback }">
-            <Checkbox
-              v-model="filterModel.value"
-              :indeterminate="filterModel.value === null"
-              binary
-              @change="filterCallback()"
-            />
-          </template>
-        </Column>-->
     </DataTable>
   </div>
 </template>
@@ -131,7 +112,7 @@ import IconField from 'primevue/iconfield'
 import InputIcon from 'primevue/inputicon'
 
 import { FilterMatchMode } from '@primevue/core/api'
-import { ref } from 'vue' // optional
+import { ref } from 'vue'
 
 const { category } = defineProps<{
   category: LegislationCategories

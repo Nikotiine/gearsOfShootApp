@@ -1,32 +1,46 @@
 <template>
-  <div class="card">
-    <h2 class="text-center mt-2 text-2xl">Ajouter un type d'arme {{ form.mode }}</h2>
-    <form @submit.prevent="submit">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 p-4">
-        <InputGroup>
-          <InputGroupAddon>
-            <i class="pi pi-id-card"></i>
-          </InputGroupAddon>
-          <InputText v-model="form.name" placeholder="Nom" />
-        </InputGroup>
-        <InputGroup>
-          <IftaLabel>
-            <Select v-model="form.mode" :options="options" placeholder="Categorie" id="type" />
-            <label for="type">Type</label>
-          </IftaLabel>
-        </InputGroup>
-      </div>
-      <div class="text-red-500 p-4" v-if="isError">
-        <p class="text-xl font-bold">
-          {{ errorMessage }}
-        </p>
-      </div>
-
-      <div class="text-center mt-2">
-        <Button type="submit" label="submit" :disabled="!isFormValid"></Button>
-      </div>
-    </form>
+  <h2 class="text-center text-2xl">
+    {{ t('weaponType.form.addTitle') }}
+    <span class="text-blue-500 font-bold"> {{ form.mode }} </span>
+  </h2>
+  <div class="text-center mt-2">
+    <Button label="Voir les type d'arme disponible" @click="isVisibleDrawer = true" text />
   </div>
+  <form @submit.prevent="submit">
+    <div class="card grid grid-cols-2 px-4 mt-3 gap-2">
+      <InputGroup>
+        <InputGroupAddon>
+          <i class="pi pi-id-card"></i>
+        </InputGroupAddon>
+        <InputText v-model="form.name" :placeholder="t('global.name')" />
+      </InputGroup>
+      <InputGroup>
+        <InputGroupAddon>
+          <i class="pi pi-id-card"></i>
+        </InputGroupAddon>
+        <InputText v-model="form.ref" :placeholder="t('global.ref')" />
+      </InputGroup>
+      <InputGroup>
+        <IftaLabel>
+          <Select v-model="form.mode" :options="options" placeholder="Categorie" id="type" />
+          <label for="type">{{ t('weaponType.mode') }}</label>
+        </IftaLabel>
+      </InputGroup>
+    </div>
+    <div class="text-red-500 p-4" v-if="store.create.isError">
+      <p class="text-xl font-bold">
+        {{ t('error.' + store.create.error.response.data.message) }}
+      </p>
+    </div>
+
+    <div class="text-center mt-2">
+      <Button type="submit" label="submit" :disabled="!isFormValid"></Button>
+    </div>
+  </form>
+
+  <Drawer v-model:visible="isVisibleDrawer" position="bottom" style="height: auto">
+    <weapon-types-table />
+  </Drawer>
 </template>
 <script setup lang="ts">
 import InputText from 'primevue/inputtext'
@@ -38,22 +52,29 @@ import { type CreateWeaponTypeDto, CreateWeaponTypeDtoModeEnum } from '@/api/Api
 import { computed, ref } from 'vue'
 import Select from 'primevue/select'
 import IftaLabel from 'primevue/iftalabel'
+
+import { useI18n } from 'vue-i18n'
+import WeaponTypesTable from '@/components/__weapon/WeaponTypesTable.vue'
+import Drawer from 'primevue/drawer'
 const options: CreateWeaponTypeDtoModeEnum[] = [
   CreateWeaponTypeDtoModeEnum.Automatique,
   CreateWeaponTypeDtoModeEnum.SemiAuto,
   CreateWeaponTypeDtoModeEnum.CoupParCoup
 ]
-const { createWeaponType, isError, errorMessage } = useWeaponTypeStore()
+const { t } = useI18n()
+const store = useWeaponTypeStore()
+const isVisibleDrawer = ref(false)
 const initialFormObject: CreateWeaponTypeDto = {
   name: '',
-  ref: ''
+  ref: '',
+  mode: CreateWeaponTypeDtoModeEnum.CoupParCoup
 }
 const form = ref<CreateWeaponTypeDto>({ ...initialFormObject })
 const isFormValid = computed(() => {
   return !!form.value.name
 })
 const submit = () => {
-  createWeaponType(form.value)
+  store.create.mutate(form.value)
   form.value = { ...initialFormObject }
 }
 </script>
