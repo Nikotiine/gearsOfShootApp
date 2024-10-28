@@ -24,8 +24,8 @@
             :feedback="false"
           />
         </div>
-        <div class="flex items-center gap-4 mb-8 text-red-500" v-if="isError">
-          {{ t('error.' + errorMessage) }}
+        <div class="flex items-center gap-4 mb-8 text-red-500" v-if="store.isError.value">
+          {{ t('error.' + store.errorMessage.value) }}
         </div>
 
         <div class="flex justify-end gap-2">
@@ -33,7 +33,7 @@
             type="button"
             :label="t('global.cancel')"
             severity="secondary"
-            @click="toggleConnexionDialog"
+            @click="store.toggleConnexionDialog"
           ></Button>
           <Button type="submit" :label="t('connexion.send')" :disabled="!isFormValid"></Button>
         </div>
@@ -50,8 +50,9 @@ import Button from 'primevue/button'
 import { useI18n } from 'vue-i18n'
 import { computed, ref, watch } from 'vue'
 import { useEmailValidator } from '@/stores/email.validator'
-const { isVisible, toggleConnexionDialog, login, isError, errorMessage, isSuccess } =
-  useConnexionStore()
+import { storeToRefs } from 'pinia'
+const store = useConnexionStore()
+const { isVisible } = storeToRefs(store)
 const { t } = useI18n()
 const { test } = useEmailValidator()
 const form = ref({
@@ -59,7 +60,7 @@ const form = ref({
   password: ''
 })
 const submit = () => {
-  login(form.value)
+  store.login(form.value)
 }
 const isFormValid = computed(() => {
   let isValid: boolean = false
@@ -73,12 +74,12 @@ const isFormValid = computed(() => {
   }
   return isValid
 })
-watch(isError, (value) => {
+watch(store.isError, (value) => {
   if (value) {
     form.value.password = ''
   }
 })
-watch(isSuccess, (value) => {
+watch(store.isSuccess, (value) => {
   if (value) {
     form.value.password = ''
     form.value.email = ''

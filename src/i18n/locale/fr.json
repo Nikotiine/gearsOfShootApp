@@ -46,7 +46,10 @@
     "no": "Non",
     "cancel": "Annuler",
     "french": "Francais",
-    "english": "Anglais"
+    "english": "Anglais",
+    "name": "Nom",
+    "ref": "Reference",
+    "save": "Sauvegarder"
   },
   "weapon": {
     "summary": "Gestion des armes",
@@ -65,9 +68,28 @@
       "title": "Dashboard Admin"
     }
   },
+  "bodyType": {
+    "form": {
+      "addTitle": "Ajouter un nouveau type de douille",
+      "success": "Ajout d'un nouveau type confirme"
+    },
+    "existingList": "Liste de types existants",
+    "type": "Type de douille",
+    "summary": "Gestion des douilles"
+  },
+  "headType": {
+    "form": {
+      "addTitle": "Ajouter un nouveau type d'ogive",
+      "success": "Ajout d'un nouveau type confirme"
+    },
+    "existingList": "Liste de ogive existants",
+    "type": "Type d'oviges",
+    "summary": "Gestion des oviges"
+  },
   "error": {
     "0001": "Email deja utilisé",
     "0002": "Indentifiants invalides",
+    "0100": "Type de douille deja existante",
     "0102": "Munition deja existante",
     "0201": "Arme deja existante",
     "0600": "Marque deja existante"

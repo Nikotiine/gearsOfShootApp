@@ -8,10 +8,10 @@ import { useToastStore } from '@/stores/toast'
 
 export const useConnexionStore = defineStore('connexion', () => {
   const { setToken } = useSecurityStore()
-  const _isVisible = ref(false)
+  const isVisible = ref(false)
   const _isError = ref(false)
   const _errorMessage = ref('')
-  const isVisible = computed(() => _isVisible)
+  // const isVisible = computed(() => _isVisible)
   const _isSuccess = ref(false)
   const isError = computed(() => _isError)
   const errorMessage = computed(() => _errorMessage)
@@ -19,7 +19,7 @@ export const useConnexionStore = defineStore('connexion', () => {
   const { api } = useApiStore()
   const { successMessage } = useToastStore()
   function toggleConnexionDialog() {
-    _isVisible.value = !_isVisible.value
+    isVisible.value = !isVisible.value
     _isError.value = false
   }
 

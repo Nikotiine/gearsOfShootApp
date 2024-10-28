@@ -1,31 +1,44 @@
 <template>
-  <div class="card">
-    <h2 class="text-center mt-2 text-2xl">Ajouter un type d'ovige</h2>
+  <div class="card grid grid-cols-2 px-4">
     <form @submit.prevent="submit">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 p-4">
-        <InputGroup>
+      <div class="mt-2">
+        <h2 class="text-center text-2xl">{{ t('headType.form.addTitle') }}</h2>
+
+        <InputGroup class="mt-4 p-2">
           <InputGroupAddon>
             <i class="pi pi-id-card"></i>
           </InputGroupAddon>
-          <InputText v-model="form.name" placeholder="Nom" />
+          <InputText v-model="form.name" :placeholder="t('global.name')" />
         </InputGroup>
-        <InputGroup>
+        <InputGroup class="mt-2 p-2">
           <InputGroupAddon>
             <i class="pi pi-id-card"></i>
           </InputGroupAddon>
-          <InputText v-model="form.ref" placeholder="Reference" />
+          <InputText v-model="form.ref" :placeholder="t('global.ref')" />
         </InputGroup>
       </div>
-      <div class="text-red-500 p-4" v-if="isError">
+      <div class="text-red-500 p-4" v-if="store.create.isError">
         <p class="text-xl font-bold">
-          {{ errorMessage }}
+          {{ store.create.error.response.data.message }}
         </p>
       </div>
 
       <div class="text-center mt-2">
-        <Button type="submit" label="submit" :disabled="!isFormValid"></Button>
+        <Button type="submit" :label="t('global.save')" :disabled="!isFormValid"></Button>
       </div>
     </form>
+
+    <div class="border border-blue-500 mt-2" v-if="store.getAll.isSuccess">
+      <DataTable :value="getAllData$" :loading="store.getAll.isLoading">
+        <template #header>
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <span class="text-xl font-bold">{{ t('headType.existingList') }}</span>
+          </div>
+        </template>
+        <Column field="name" :header="t('headType.type')"></Column>
+        <Column field="ref" :header="t('global.ref')"></Column>
+      </DataTable>
+    </div>
   </div>
 </template>
 <script setup lang="ts">
@@ -39,7 +52,13 @@ import InputGroupAddon from 'primevue/inputgroupaddon'
 import Button from 'primevue/button'
 
 import InputGroup from 'primevue/inputgroup'
-const { createHeadType, isError, errorMessage } = useHeadTypeStore()
+import { storeToRefs } from 'pinia'
+import DataTable from 'primevue/datatable'
+import Column from 'primevue/column'
+import { useI18n } from 'vue-i18n'
+const store = useHeadTypeStore()
+const { t } = useI18n()
+const { getAllData$ } = storeToRefs(store)
 const initialFormObject: CreateAmmunitionHeadTypeDto = {
   name: '',
   ref: ''
@@ -49,7 +68,7 @@ const isFormValid = computed(() => {
   return !!form.value.name
 })
 const submit = () => {
-  createHeadType(form.value)
+  store.create.mutate(form.value)
   form.value = { ...initialFormObject }
 }
 </script>

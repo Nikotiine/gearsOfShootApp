@@ -1,51 +1,37 @@
 import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
 import { useToastStore } from '@/stores/toast'
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import type { AmmunitionBodyTypeDto, CreateAmmunitionBodyTypeDto } from '@/api/Api'
 
 export const useBodyTypeStore = defineStore('bodyType', () => {
   const { api } = useApiStore()
   const { successMessage } = useToastStore()
-  const _isError = ref(false)
-  const _errorMessage = ref('')
-  const datas = ref<AmmunitionBodyTypeDto[] | any>([])
-  const isError = computed(() => _isError)
-  const toto = computed(() => datas)
-  const errorMessage = computed(() => _errorMessage)
 
-  const { mutate, isSuccess } = useMutation({
-    mutationFn: (bodyType: CreateAmmunitionBodyTypeDto) => {
-      return api.api.ammunitionBodyTypeControllerCreate(bodyType)
+  const getAllData = ref<AmmunitionBodyTypeDto[]>([])
+
+  const createAmmunitionBodyTypeMutation = useMutation({
+    mutationFn: async (bodyType: CreateAmmunitionBodyTypeDto) => {
+      return await api.api.ammunitionBodyTypeControllerCreate(bodyType)
     },
-    onSuccess: async (data, variables, context) => {
-      successMessage('bodyType.summary', 'bodyType.create.success')
-      const res = data.data
-      datas.value.push(res)
-      console.log('res', res)
-    },
-    onError(error: any) {
-      _isError.value = true
-      _errorMessage.value = error.response.data.message
+    onSuccess: (data) => {
+      successMessage('bodyType.summary', 'bodyType.form.success')
+      getAllData.value.push(data.data)
     }
   })
 
-  const { data, isLoading } = useQuery({
+  const getAllQuery = useQuery({
     queryKey: ['bodyTypeList'],
     queryFn: async () => {
-      datas.value = await api.api.ammunitionBodyTypeControllerFindAllBodyTypes()
-      console.log(datas.value)
+      getAllData.value = (await api.api.ammunitionBodyTypeControllerFindAllBodyTypes()).data
       return api.api.ammunitionBodyTypeControllerFindAllBodyTypes()
     }
   })
 
   return {
-    createBodyType: mutate,
-    isError,
-    errorMessage,
-    bodyTypeListQueryData: data,
-    bodyTypeListQueryLoading: isLoading,
-    test: toto
+    create: createAmmunitionBodyTypeMutation,
+    getALl: getAllQuery,
+    getAllData$: getAllData
   }
 })
