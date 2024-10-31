@@ -58,6 +58,12 @@ export interface ThreadedSizeDto {
   id: number
 }
 
+export interface CreateThreadedSizeDto {
+  /** @example "1/2 x 28" */
+  size: string
+  ref: string
+}
+
 export interface CreateWeaponDto {
   /** @example "CZ 457" */
   name: string
@@ -596,6 +602,24 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       this.request<ThreadedSizeDto[], any>({
         path: `/api/threaded-size`,
         method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Ajouter un nouveux type de filetage arme ou rds
+     *
+     * @tags Threaded-size
+     * @name ThreadedSizeControllerCreate
+     * @summary Ajout d un filetage
+     * @request POST:/api/threaded-size
+     */
+    threadedSizeControllerCreate: (data: CreateThreadedSizeDto, params: RequestParams = {}) =>
+      this.request<ThreadedSizeDto, any>({
+        path: `/api/threaded-size`,
+        method: 'POST',
+        body: data,
+        type: ContentType.Json,
         format: 'json',
         ...params
       }),

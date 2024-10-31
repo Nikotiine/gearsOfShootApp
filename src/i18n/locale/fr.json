@@ -120,6 +120,16 @@
     "type": "Type d'armes",
     "summary": "Gestion des type d'arme"
   },
+  "threadedSize": {
+    "form": {
+      "addTitle": "Ajouter un nouveau filletage",
+      "success": "Ajout d'un nouveau filletage confirme"
+    },
+    "existingList": "Liste des filletage existants",
+    "type": "Type d'armes",
+    "summary": "Gestion des type d'arme",
+    "size": "Taille du pas de vis"
+  },
   "error": {
     "0001": "Email deja utilisé",
     "0002": "Indentifiants invalides",

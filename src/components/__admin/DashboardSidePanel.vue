@@ -56,7 +56,12 @@ const items = ref([
                 push('/admin/gestion/add/weaponType')
               }
             },
-            { label: 'Filletage' },
+            {
+              label: 'Filletage',
+              command: () => {
+                push('/admin/gestion/add/threaded-size')
+              }
+            },
             { label: 'Accessoire' }
           ]
         }
@@ -161,9 +166,53 @@ const items = ref([
       ]
     ]
   },
-
   {
-    label: 'Loisir',
+    label: 'Stock',
+    icon: 'pi pi-clock',
+    items: [
+      [
+        {
+          label: 'Football',
+          items: [{ label: 'Kits' }, { label: 'Shoes' }, { label: 'Shorts' }, { label: 'Training' }]
+        }
+      ],
+      [
+        {
+          label: 'Running',
+          items: [
+            { label: 'Accessories' },
+            { label: 'Shoes' },
+            { label: 'T-Shirts' },
+            { label: 'Shorts' }
+          ]
+        }
+      ],
+      [
+        {
+          label: 'Swimming',
+          items: [
+            { label: 'Kickboard' },
+            { label: 'Nose Clip' },
+            { label: 'Swimsuits' },
+            { label: 'Paddles' }
+          ]
+        }
+      ],
+      [
+        {
+          label: 'Tennis',
+          items: [
+            { label: 'Balls' },
+            { label: 'Rackets' },
+            { label: 'Shoes' },
+            { label: 'Training' }
+          ]
+        }
+      ]
+    ]
+  },
+  {
+    label: 'Utilisateurs',
     icon: 'pi pi-clock',
     items: [
       [

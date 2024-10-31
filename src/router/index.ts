@@ -26,25 +26,25 @@ const router = createRouter({
         {
           path: 'gestion/add/weapon',
           name: 'weaponForm',
-          component: () => import('../views/admin/AdminWeaponFormView.vue')
+          component: () => import('../views/weapon/AdminWeaponFormView.vue')
         },
         {
           path: 'gestion/list/weapon/:category',
           props: true,
           name: 'weaponList',
-          component: () => import('../views/admin/AdminWeaponListView.vue')
+          component: () => import('../views/weapon/AdminWeaponListView.vue')
         },
         {
           path: 'gestion/add/ammunition',
           name: 'ammunitionForm',
 
-          component: () => import('../views/admin/AdminAmmunitionFormView.vue')
+          component: () => import('../views/ammunition/AdminAmmunitionFormView.vue')
         },
         {
           path: 'gestion/list/ammunition/:category',
           props: true,
           name: 'ammunitionList',
-          component: () => import('../views/admin/AdminAmmunitionListView.vue')
+          component: () => import('../views/ammunition/AdminAmmunitionListView.vue')
         },
         {
           path: 'gestion/add/factory',
@@ -54,17 +54,17 @@ const router = createRouter({
         {
           path: 'gestion/add/headType',
           name: 'headTypeForm',
-          component: () => import('../views/admin/AdminAmmunitionHeadTypeFormView.vue')
+          component: () => import('../views/ammunition/AdminAmmunitionHeadTypeFormView.vue')
         },
         {
           path: 'gestion/add/bodyType',
           name: 'bodyTypeForm',
-          component: () => import('../views/admin/AdminAmmunitionBodyTypeFormView.vue')
+          component: () => import('../views/ammunition/AdminAmmunitionBodyTypeFormView.vue')
         },
         {
           path: 'gestion/add/weaponType',
           name: 'weaponTypeForm',
-          component: () => import('../views/admin/AdminWeaponTypeFormView.vue')
+          component: () => import('../views/weapon/AdminWeaponTypeFormView.vue')
         },
         {
           path: 'gestion/list/factories',
@@ -76,6 +76,11 @@ const router = createRouter({
           path: 'gestion/add/caliber',
           name: 'caliberTypeForm',
           component: () => import('../views/caliber/CaliberFormView.vue')
+        },
+        {
+          path: 'gestion/add/threaded-size',
+          name: 'weaponTypeForm',
+          component: () => import('../views/threaded-size/ThreadedSizeFormView.vue')
         }
       ]
     }

@@ -2,10 +2,12 @@ import { defineStore } from 'pinia'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import { useApiStore } from '@/stores/api'
 import { ref } from 'vue'
-import type { CaliberDto } from '@/api/Api'
+import type { CaliberDto, CreateCaliberDto } from '@/api/Api'
+import { useToastStore } from '@/stores/toast'
 
 export const useCaliberStore = defineStore('caliber', () => {
   const { api } = useApiStore()
+  const { successMessage } = useToastStore()
   const calibers = ref<CaliberDto[]>([])
 
   const getAllCalibersQuery = useQuery({
@@ -16,7 +18,15 @@ export const useCaliberStore = defineStore('caliber', () => {
     }
   })
 
-  const createCaliberMutation = useMutation({})
+  const createCaliberMutation = useMutation({
+    mutationFn: async (caliber: CreateCaliberDto) => {
+      return api.api.caliberControllerCreate(caliber)
+    },
+    onSuccess(data, variables, context) {
+      calibers.value.push(data.data)
+      successMessage('caliber.summary', 'bodyType.form.success')
+    }
+  })
 
-  return { getAll: getAllCalibersQuery, calibers$: calibers }
+  return { getAll: getAllCalibersQuery, calibers$: calibers, create: createCaliberMutation }
 })
