@@ -1,54 +1,53 @@
 import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
 import { useMutation, useQuery } from '@tanstack/vue-query'
-import type { CreateWeaponDto } from '@/api/Api'
+import type { CreateWeaponDto, LegislationCategoryDto } from '@/api/Api'
 import { useToastStore } from '@/stores/toast'
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 
 export const useWeaponStore = defineStore('weapon', () => {
   const { api } = useApiStore()
   const { successMessage } = useToastStore()
-  const _createWeaponIsOnError = ref(false)
-  const _createWeaponIsOnErrorMessage = ref('')
+  const categoryId = ref<number>(0)
+  const categories = ref<LegislationCategoryDto[]>([])
 
-  const createWeaponIsOnError = computed(() => _createWeaponIsOnError)
-  const createWeaponIsOnErrorMessage = computed(() => _createWeaponIsOnErrorMessage)
   const queryPrerequisitesWeaponList = useQuery({
-    queryKey: ['prerequis-weapon'],
-    queryFn: () => {
-      return api.api.weaponControllerFindPrerequisitesWeaponList()
+    queryKey: ['prerequisite-weapon'],
+    queryFn: async () => {
+      const res = await api.api.weaponControllerFindPrerequisitesWeaponList()
+      categories.value = res.data.categories
+      return res
     }
   })
-  function queryFindAllWeaponByCategory(category: LegislationCategories) {
-    return useQuery({
-      queryKey: ['weaponsByCategory', category],
-      queryFn: () => {
-        return api.api.weaponControllerFindAllByCategory(category)
-      },
-      staleTime: 10000
-    })
-  }
+  const queryFindAllWeaponByCategory = useQuery({
+    queryKey: ['weaponsByCategory', categoryId],
+    queryFn: async () => {
+      const res = await api.api.weaponControllerFindAllByCategory(categoryId.value)
 
-  const { mutate } = useMutation({
+      return res
+    },
+    staleTime: 10000
+  })
+
+  const createWeaponMutation = useMutation({
     mutationFn: async (weapon: CreateWeaponDto) => {
       return await api.api.weaponControllerCreate(weapon)
-    },
-    onError(error: any) {
-      _createWeaponIsOnError.value = true
-      _createWeaponIsOnErrorMessage.value = error.response.data.message
     },
     onSuccess(data) {
       successMessage('weapon.summary', 'weapon.add.success')
     }
   })
 
+  function setId(label: string): void {
+    const category = categories.value.find((c) => c.label === label)
+    categoryId.value = category?.id || 0
+  }
+
   return {
     prerequisitesWeaponList: queryPrerequisitesWeaponList,
-    createWeapon: mutate,
-    createWeaponIsOnError,
-    createWeaponIsOnErrorMessage,
-    getWeaponsByCategoryQuery: queryFindAllWeaponByCategory
+    create: createWeaponMutation,
+    getWeaponsByCategoryQuery: queryFindAllWeaponByCategory,
+    setCategory: setId,
+    categories$: categories
   }
 })
-
-export type LegislationCategories = 'D' | 'C' | 'B' | 'A'

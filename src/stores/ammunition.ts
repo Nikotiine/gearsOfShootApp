@@ -2,49 +2,53 @@ import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
 import { useToastStore } from '@/stores/toast'
 import { useMutation, useQuery } from '@tanstack/vue-query'
-import type { CreateAmmunitionDto } from '@/api/Api'
-import { computed, ref } from 'vue'
-import type { LegislationCategories } from '@/stores/weapon'
+import type { AmmunitionDto, CreateAmmunitionDto, LegislationCategoryDto } from '@/api/Api'
+import { ref } from 'vue'
 
 export const useAmmunitionStore = defineStore('ammunition', () => {
   const { api } = useApiStore()
   const { successMessage } = useToastStore()
-  const _createAmmunitionIsOnError = ref(false)
-  const _createAmmunitionIsOnErrorMessage = ref('')
-  const createAmmunitionIsOnError = computed(() => _createAmmunitionIsOnError)
-  const createAmmunitionIsOnErrorMessage = computed(() => _createAmmunitionIsOnErrorMessage)
+  const ammunitions = ref<AmmunitionDto[]>([])
+  const categories = ref<LegislationCategoryDto[]>([])
+  const categoryId = ref<number>(0)
   const queryPrerequisitesAmmunitionList = useQuery({
     queryKey: ['prerequis-ammunition'],
-    queryFn: () => api.api.ammunitionControllerFindPrerequisitesAmmunitionList()
+    queryFn: async () => {
+      const res = await api.api.ammunitionControllerFindPrerequisitesAmmunitionList()
+      categories.value = res.data.categories
+      return res
+    }
   })
 
-  const { mutate } = useMutation({
+  const createAmmunitionMutation = useMutation({
     mutationFn: async (ammunition: CreateAmmunitionDto) => {
       return await api.api.ammunitionControllerCreate(ammunition)
     },
-    onError(error: any) {
-      _createAmmunitionIsOnError.value = true
-      _createAmmunitionIsOnErrorMessage.value = error.response.data.message
-    },
     onSuccess(data) {
+      ammunitions.value.push(data.data)
       successMessage('ammunition.summary', 'ammunition.add.success')
     }
   })
 
-  function queryFindAllAmmunitionByCategory(category: LegislationCategories) {
-    return useQuery({
-      queryKey: ['ammunitionByCategory', category],
-      queryFn: () => {
-        return api.api.ammunitionControllerFindByCategory(category)
-      }
-    })
+  const queryFindAllAmmunitionByCategory = useQuery({
+    queryKey: ['ammunitionByCategory', categoryId],
+    queryFn: async () => {
+      const res = await api.api.ammunitionControllerFindByCategory(categoryId.value)
+      ammunitions.value = res.data
+      return res
+    }
+  })
+
+  function setCategoryId(label: string): void {
+    const category = categories.value.find((cat) => (cat.label = label))
+    categoryId.value = category?.id || 0
   }
 
   return {
     prerequisitesAmmoList: queryPrerequisitesAmmunitionList,
-    createAmmunition: mutate,
-    createAmmunitionIsOnError,
-    createAmmunitionIsOnErrorMessage,
-    getAmmunitionByCategoryQuery: queryFindAllAmmunitionByCategory
+    create: createAmmunitionMutation,
+    getByCategory: queryFindAllAmmunitionByCategory,
+    setCategory: setCategoryId,
+    categories$: categories
   }
 })

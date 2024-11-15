@@ -3,12 +3,13 @@ import { useApiStore } from '@/stores/api'
 import { useToastStore } from '@/stores/toast'
 import { ref } from 'vue'
 import { useMutation, useQuery } from '@tanstack/vue-query'
-import type { CreateWeaponTypeDto, WeaponTypeDto } from '@/api/Api'
+import type { CreateWeaponTypeDto, WeaponReloadModeDto, WeaponTypeDto } from '@/api/Api'
 
 export const useWeaponTypeStore = defineStore('weaponType', () => {
   const { api } = useApiStore()
   const { successMessage } = useToastStore()
   const getAllData = ref<WeaponTypeDto[]>([])
+  const modes = ref<WeaponReloadModeDto[]>([])
 
   const createWeaponTypeMutate = useMutation({
     mutationFn: (weaponType: CreateWeaponTypeDto) => {
@@ -23,10 +24,26 @@ export const useWeaponTypeStore = defineStore('weaponType', () => {
   const getAllQuery = useQuery({
     queryKey: ['weaponTypesQuery'],
     queryFn: async () => {
-      getAllData.value = (await api.api.weaponTypeControllerFindAllWeaponTypes()).data
-      return api.api.weaponTypeControllerFindAllWeaponTypes()
+      const res = await api.api.weaponTypeControllerFindAllWeaponTypes()
+      getAllData.value = res.data
+      return res
     }
   })
 
-  return { create: createWeaponTypeMutate, getAll: getAllQuery, getAllData$: getAllData }
+  const queryPrerequisitesWeaponTypeQuery = useQuery({
+    queryKey: ['prerequis-weapon-type'],
+    queryFn: async () => {
+      const res = await api.api.weaponTypeControllerFindPrerequisitesWeaponTypeList()
+      modes.value = res.data.modes
+      return res
+    }
+  })
+
+  return {
+    create: createWeaponTypeMutate,
+    getAll: getAllQuery,
+    getAllData$: getAllData,
+    prerequisiteList: queryPrerequisitesWeaponTypeQuery,
+    modes$: modes
+  }
 })

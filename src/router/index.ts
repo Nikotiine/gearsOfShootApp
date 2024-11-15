@@ -52,6 +52,11 @@ const router = createRouter({
           component: () => import('../views/factory/FactoryFormView.vue')
         },
         {
+          path: 'gestion/add/optic',
+          name: 'opticForm',
+          component: () => import('../views/optic/AdminOpticFormView.vue')
+        },
+        {
           path: 'gestion/add/headType',
           name: 'headTypeForm',
           component: () => import('../views/ammunition/AdminAmmunitionHeadTypeFormView.vue')
@@ -79,7 +84,7 @@ const router = createRouter({
         },
         {
           path: 'gestion/add/threaded-size',
-          name: 'weaponTypeForm',
+          name: 'threadedSizeForm',
           component: () => import('../views/threaded-size/ThreadedSizeFormView.vue')
         }
       ]

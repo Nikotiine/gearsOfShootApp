@@ -94,7 +94,7 @@ import Select from 'primevue/select'
 import InputIcon from 'primevue/inputicon'
 import { FilterMatchMode } from '@primevue/core/api'
 import { ref } from 'vue'
-//TODO: Trouver pour mettre a jour le tableau apres mutation
+
 const props = defineProps<{
   type?: string
 }>()

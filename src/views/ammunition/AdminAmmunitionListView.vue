@@ -1,15 +1,15 @@
 <template>
   <div class="card p-4">
     <h2 class="text-center mt-2 text-2xl">Liste des Munitions de Categorie {{ category }}</h2>
-    <div class="text-red-500 text-center" v-if="isError">Error</div>
+    <div class="text-red-500 text-center" v-if="store.getByCategory.isError">Error</div>
     <DataTable
       v-model:filters="filters"
-      :value="data?.data"
+      :value="store.getByCategory.data?.data"
       paginator
       :rows="10"
       dataKey="id"
       filterDisplay="row"
-      :loading="isLoading"
+      :loading="store.getByCategory.isLoading"
       :globalFilterFields="['name', 'factory.name', 'caliber.name', 'reference']"
     >
       <template #header>
@@ -52,7 +52,7 @@
           <Select
             v-model="filterModel.value"
             @change="filterCallback()"
-            :options="prerequisitesAmmoList.data?.data.factories"
+            :options="store.prerequisitesAmmoList.data?.data.factories"
             optionLabel="name"
             optionValue="name"
             placeholder="Marque"
@@ -75,7 +75,7 @@
           <Select
             v-model="filterModel.value"
             @change="filterCallback()"
-            :options="prerequisitesAmmoList.data?.data.calibers"
+            :options="store.prerequisitesAmmoList.data?.data.calibers"
             placeholder="Calibre"
             optionLabel="name"
             optionValue="name"
@@ -122,9 +122,8 @@
   </div>
 </template>
 <script setup lang="ts">
-import type { LegislationCategories } from '@/stores/weapon'
 import { useAmmunitionStore } from '@/stores/ammunition'
-import { ref } from 'vue'
+import { ref, watchEffect } from 'vue'
 import { FilterMatchMode } from '@primevue/core/api'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
@@ -132,11 +131,15 @@ import InputText from 'primevue/inputtext'
 import InputIcon from 'primevue/inputicon'
 import Select from 'primevue/select'
 import IconField from 'primevue/iconfield'
+
 const { category } = defineProps<{
-  category: LegislationCategories
+  category: string
 }>()
-const { getAmmunitionByCategoryQuery, prerequisitesAmmoList } = useAmmunitionStore()
-const { data, isError, isLoading } = getAmmunitionByCategoryQuery(category)
+const store = useAmmunitionStore()
+
+watchEffect(() => {
+  store.setCategory(category)
+})
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },

@@ -28,16 +28,18 @@ export const useFactoryStore = defineStore('factory', () => {
   const getAllQuery = useQuery({
     queryKey: ['getAllFactories'],
     queryFn: async () => {
-      factories.value = (await api.api.factoryControllerFindAll()).data
-      return await api.api.factoryControllerFindAll()
+      const res = await api.api.factoryControllerFindAll()
+      factories.value = res.data
+      return res
     }
   })
 
   const getAllByTypeQuery = useQuery({
     queryKey: ['getAllByType', factoryType],
     queryFn: async () => {
-      factories.value = (await api.api.factoryControllerFindByType(factoryType.value)).data
-      return api.api.factoryControllerFindByType(factoryType.value)
+      const res = await api.api.factoryControllerFindByType(factoryType.value)
+      factories.value = res.data
+      return res
     },
     enabled: isEnabledQueryByType.value
   })

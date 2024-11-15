@@ -5,7 +5,7 @@
 import MegaMenu from 'primevue/megamenu'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
-import { WeaponDtoCategoryEnum } from '@/api/Api'
+
 const { push } = useRouter()
 const items = ref([
   {
@@ -28,7 +28,12 @@ const items = ref([
                 push('/admin/gestion/add/ammunition')
               }
             },
-            { label: 'Optique' },
+            {
+              label: 'Optique',
+              command: () => {
+                push('/admin/gestion/add/optic')
+              }
+            },
             { label: 'RDS' },
             { label: 'Accessories' }
           ]
@@ -112,11 +117,16 @@ const items = ref([
             {
               label: 'Arme longue',
               command: () => {
-                push('/admin/gestion/list/weapon/' + WeaponDtoCategoryEnum.B)
+                push('/admin/gestion/list/weapon/B')
               }
             },
             { label: 'rds' },
-            { label: 'Munition' },
+            {
+              label: 'Munition',
+              command: () => {
+                push('/admin/gestion/list/ammunition/B')
+              }
+            },
             { label: 'Accessoire' }
           ]
         }
@@ -128,11 +138,16 @@ const items = ref([
             {
               label: 'Arme longue',
               command: () => {
-                push('/admin/gestion/list/weapon/' + WeaponDtoCategoryEnum.C)
+                push('/admin/gestion/list/weapon/C')
               }
             },
             { label: 'rds' },
-            { label: 'Munition' },
+            {
+              label: 'Munition',
+              command: () => {
+                push('/admin/gestion/list/ammunition/C')
+              }
+            },
             { label: 'Accessoire' }
           ]
         }

@@ -1,15 +1,15 @@
 <template>
   <div class="card p-4">
     <h2 class="text-center mt-2 text-2xl">Liste des armes de Categorie {{ category }}</h2>
-    <div class="text-red-500 text-center" v-if="isError">Error</div>
+    <div class="text-red-500 text-center" v-if="store.getWeaponsByCategoryQuery.isError">Error</div>
     <DataTable
       v-model:filters="filters"
-      :value="data?.data"
+      :value="store.getWeaponsByCategoryQuery.data?.data"
       paginator
       :rows="10"
       dataKey="id"
       filterDisplay="row"
-      :loading="isLoading"
+      :loading="store.getWeaponsByCategoryQuery.isLoading"
       :globalFilterFields="['name', 'factory.name', 'caliber.name', 'reference']"
     >
       <template #header>
@@ -52,7 +52,7 @@
           <Select
             v-model="filterModel.value"
             @change="filterCallback()"
-            :options="prerequisitesWeaponList.data?.data.factories"
+            :options="store.prerequisitesWeaponList.data?.data.factories"
             optionLabel="name"
             optionValue="name"
             placeholder="Marque"
@@ -75,7 +75,7 @@
           <Select
             v-model="filterModel.value"
             @change="filterCallback()"
-            :options="prerequisitesWeaponList.data?.data.calibers"
+            :options="store.prerequisitesWeaponList.data?.data.calibers"
             placeholder="Calibre"
             optionLabel="name"
             optionValue="name"
@@ -103,28 +103,30 @@
   </div>
 </template>
 <script setup lang="ts">
-import { type LegislationCategories, useWeaponStore } from '@/stores/weapon'
+import { useWeaponStore } from '@/stores/weapon'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import InputText from 'primevue/inputtext'
 import Select from 'primevue/select'
 import IconField from 'primevue/iconfield'
 import InputIcon from 'primevue/inputicon'
-
 import { FilterMatchMode } from '@primevue/core/api'
-import { ref } from 'vue'
+import { ref, watchEffect } from 'vue'
 
 const { category } = defineProps<{
-  category: LegislationCategories
+  category: string
 }>()
-const { getWeaponsByCategoryQuery, prerequisitesWeaponList } = useWeaponStore()
-const { data, isLoading, isError } = getWeaponsByCategoryQuery(category)
+const store = useWeaponStore()
+
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
   'factory.name': { value: null, matchMode: FilterMatchMode.EQUALS },
   'caliber.name': { value: null, matchMode: FilterMatchMode.EQUALS },
   reference: { value: null, matchMode: FilterMatchMode.STARTS_WITH }
+})
+watchEffect(() => {
+  store.setCategory(category)
 })
 </script>
 
