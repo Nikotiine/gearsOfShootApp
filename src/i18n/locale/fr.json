@@ -51,22 +51,54 @@
     "name": "Nom",
     "ref": "Reference",
     "save": "Sauvegarder",
+    "select": "Selectionner",
     "weapon": "Arme",
     "ammunition": "Munition",
     "optic": "Optique",
-    "rds": "Moderateur de son"
+    "rds": "Moderateur de son",
+    "category": "categorie",
+    "caliber": "calibre",
+    "factory": "marque",
+    "model": "modele",
+    "weaponType": "type d'arme",
+    "threadedSize": "taille de filetage",
+    "from": "de",
+    "to": "à",
+    "magazine": "chargeur",
+   "packaging": "packaging"
 
   },
   "weapon": {
     "summary": "Gestion des armes",
     "add": {
       "success": "ajouter a la base de donnee"
+    },
+    "form": {
+      "add": "Ajouter une arme de categorie",
+      "name": "Nom du modele",
+      "variation": "Variante",
+      "percussionType": "Type de percussion",
+      "barrelType": "Type de canon",
+      "barrelLength": "Longueur de canon",
+      "length": "Longueur",
+      "isThreadedBarrel": "Filetage",
+      "isAdjustableTrigger": "Detente reglable",
+      "isProvidedMagazine": "Chargeur fournis",
+      "description": "Description"
     }
   },
   "ammunition": {
     "summary": "Gestion des munition",
     "add": {
       "success": "ajouter a la base de donnee"
+    },
+    "form": {
+      "add": "Ajouter une munition de categorie",
+      "name": "Nom ",
+      "initialSpeed": "vitesse initiale",
+      "headType": "Type d'ovige",
+      "bodyType": "Type de douille"
+
     }
   },
   "admin": {

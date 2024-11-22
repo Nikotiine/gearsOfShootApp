@@ -11,7 +11,7 @@
         <InputGroupAddon>
           <i class="pi pi-id-card"></i>
         </InputGroupAddon>
-        <InputText v-model="form.ref" placeholder="Ref" />
+        <InputText v-model="form.reference" placeholder="Ref" />
       </InputGroup>
       <InputGroup>
         <IftaLabel>
@@ -74,13 +74,13 @@ const initialFactoryFormObject: CreateFactoryDto = {
   name: '',
   description: '',
   typeId: 1,
-  ref: ''
+  reference: ''
 }
 const form = ref<CreateFactoryDto>({ ...initialFactoryFormObject })
 const submit = () => {
   store.create.mutate(form.value)
   form.value.name = ''
-  form.value.ref = ''
+  form.value.reference = ''
   form.value.description = ''
 }
 

@@ -99,6 +99,32 @@
           />
         </template>
       </Column>
+      <Column header="Actions" :showFilterMenu="false" style="min-width: 12rem">
+        <template #body="{ data }">
+          <div class="flex justify-between">
+            <Button
+              icon="pi pi-eye"
+              rounded
+              aria-label="Filter"
+              as="router-link"
+              :to="'/detail/arme/' + data.id"
+            />
+            <Button
+              icon="pi pi-pencil"
+              rounded
+              aria-label="Filter"
+              severity="warn"
+              as="router-link"
+            />
+            <Button
+              icon="pi pi-trash"
+              rounded
+              aria-label="Filter"
+              severity="danger"
+              as="router-link"
+            /></div
+        ></template>
+      </Column>
     </DataTable>
   </div>
 </template>
@@ -112,7 +138,7 @@ import IconField from 'primevue/iconfield'
 import InputIcon from 'primevue/inputicon'
 import { FilterMatchMode } from '@primevue/core/api'
 import { ref, watchEffect } from 'vue'
-
+import Button from 'primevue/button'
 const { category } = defineProps<{
   category: string
 }>()

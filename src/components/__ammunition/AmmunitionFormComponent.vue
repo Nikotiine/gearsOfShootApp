@@ -1,109 +1,150 @@
 <template>
   <div class="card">
     <h2 class="text-center mt-2 text-2xl">
-      Ajouter une munition de Categorie {{ selectedCategory?.label }}
+      {{ t('ammunition.form.add') }} {{ selectedCategory?.name }}
     </h2>
     <form @submit.prevent="submit">
       <div
         class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 p-4"
         v-if="store.prerequisitesAmmoList.isSuccess"
       >
-        <div class="px-4 mt-6 mr-2">
-          <IftaLabel>
-            <Select
-              v-model="form.categoryId"
-              :options="store.prerequisitesAmmoList.data.data.categories"
-              placeholder="Categorie"
-              id="category"
-              class="w-3/12 mx-auto"
-            />
-            <label for="category">Categorie</label>
-          </IftaLabel>
-        </div>
         <InputGroup>
           <InputGroupAddon>
             <i class="pi pi-circle"></i>
           </InputGroupAddon>
-          <Select
-            v-model="form.caliberId"
-            :options="store.prerequisitesAmmoList.data.data.calibers"
-            optionLabel="name"
-            optionValue="id"
-            placeholder="Calibre"
-          />
+          <IftaLabel>
+            <Select
+              v-model="form.categoryId"
+              :options="store.prerequisitesAmmoList.data?.data.categories"
+              :placeholder="t('global.select')"
+              id="categoryId"
+              optionValue="id"
+              optionLabel="name"
+            />
+            <label for="categoryId" v-capitalize="t('global.category')"></label>
+          </IftaLabel>
+        </InputGroup>
+        <InputGroup>
+          <InputGroupAddon>
+            <i class="pi pi-circle"></i>
+          </InputGroupAddon>
+
+          <IftaLabel>
+            <Select
+              id="caliberId"
+              v-model="form.caliberId"
+              :options="store.prerequisitesAmmoList.data.data.calibers"
+              optionLabel="name"
+              optionValue="id"
+              :placeholder="t('global.select')"
+            />
+            <label for="caliberId" v-capitalize="t('global.caliber')"></label>
+          </IftaLabel>
         </InputGroup>
 
         <InputGroup>
           <InputGroupAddon>
             <i class="pi pi-warehouse"></i>
           </InputGroupAddon>
-          <Select
-            v-model="form.factoryId"
-            :options="store.prerequisitesAmmoList.data.data.factories"
-            filter
-            optionLabel="name"
-            optionValue="id"
-            placeholder="Marque"
-          />
+          <IftaLabel>
+            <Select
+              id="factoryId"
+              v-model="form.factoryId"
+              :options="store.prerequisitesAmmoList.data.data.factories"
+              filter
+              optionLabel="name"
+              optionValue="id"
+              :placeholder="t('global.select')"
+            />
+            <label for="factoryId" v-capitalize="t('global.factory')"></label>
+          </IftaLabel>
+        </InputGroup>
+
+        <InputGroup>
+          <InputGroupAddon>
+            <i class="pi pi-warehouse"></i>
+          </InputGroupAddon>
+          <IftaLabel>
+            <InputGroup>
+              <Select
+                v-model="form.percussionTypeId"
+                :options="store.prerequisitesAmmoList.data.data.percussionTypes"
+                optionLabel="name"
+                :placeholder="t('global.select')"
+                id="percussionType"
+                optionValue="id"
+              />
+              <label for="percussionType">Percussion</label>
+            </InputGroup>
+          </IftaLabel>
         </InputGroup>
 
         <InputGroup>
           <InputGroupAddon>
             <i class="pi pi-id-card"></i>
           </InputGroupAddon>
-          <InputText v-model="form.name" placeholder="Nom" />
+          <IftaLabel>
+            <InputText id="name" v-model="form.name" :placeholder="t('ammunition.form.name')" />
+            <label for="name" v-capitalize="t('global.model')"></label>
+          </IftaLabel>
         </InputGroup>
 
         <InputGroup>
           <InputGroupAddon>
             <i class="pi pi-bolt"></i>
           </InputGroupAddon>
-          <InputNumber v-model="form.initialSpeed" placeholder="Vitesse initiale" />
+          <IftaLabel>
+            <InputNumber
+              v-model="form.initialSpeed"
+              placeholder="Vitesse initiale"
+              id="initialSpeed"
+            />
+            <label for="initialSpeed" v-capitalize="t('ammunition.form.initialSpeed')"></label>
+          </IftaLabel>
           <InputGroupAddon> m/s </InputGroupAddon>
         </InputGroup>
         <InputGroup>
           <InputGroupAddon>
             <i class="pi pi-sort"></i>
           </InputGroupAddon>
-          <Select
-            v-model="form.headTypeId"
-            :options="store.prerequisitesAmmoList.data.data.headTypes"
-            optionLabel="name"
-            placeholder="Type d'ovige"
-            optionValue="id"
-          />
+          <IftaLabel>
+            <Select
+              v-model="form.headTypeId"
+              :options="store.prerequisitesAmmoList.data.data.headTypes"
+              optionLabel="name"
+              :placeholder="t('global.select')"
+              optionValue="id"
+              id="headTypeIdId"
+            />
+            <label for="headTypeId" v-capitalize="t('ammunition.form.headType')"></label>
+          </IftaLabel>
         </InputGroup>
         <InputGroup>
           <InputGroupAddon>
             <i class="pi pi-sort"></i>
           </InputGroupAddon>
-          <Select
-            v-model="form.bodyTypeId"
-            :options="store.prerequisitesAmmoList.data.data.bodyTypes"
-            optionLabel="name"
-            placeholder="Type de douille"
-            optionValue="id"
-          />
-        </InputGroup>
-        <IftaLabel>
-          <InputGroup>
+          <IftaLabel>
             <Select
-              v-model="form.percussionTypeId"
-              :options="store.prerequisitesAmmoList.data.data.percussionTypes"
-              optionLabel="label"
-              placeholder="type de percussion"
-              id="percussionType"
+              v-model="form.bodyTypeId"
+              :options="store.prerequisitesAmmoList.data.data.bodyTypes"
+              optionLabel="name"
+              :placeholder="t('global.select')"
               optionValue="id"
+              id="bodyTypeId"
             />
-            <label for="percussionType">Percussion</label>
-          </InputGroup>
-        </IftaLabel>
-        <IftaLabel>
-          <InputGroup>
+            <label for="bodyTypeId" v-capitalize="t('ammunition.form.bodyType')"></label>
+          </IftaLabel>
+        </InputGroup>
+
+        <InputGroup>
+          <InputGroupAddon>
+            <i class="pi pi-sort"></i>
+          </InputGroupAddon>
+          <IftaLabel>
             <InputNumber v-model="form.packaging" placeholder="Packaging" id="packaging" />
-          </InputGroup>
-          <label for="packaging">Packaging</label>
-        </IftaLabel>
+            <label for="packaging" v-capitalize="t('global.packaging')"></label>
+          </IftaLabel>
+        </InputGroup>
       </div>
 
       <div class="p-4">
@@ -123,7 +164,7 @@
       </div>
 
       <div class="text-center">
-        <Button type="submit" label="submit" :disabled="!isFormValid"></Button>
+        <Button type="submit" :label="t('global.save')" :disabled="!isFormValid"></Button>
       </div>
     </form>
   </div>
@@ -151,7 +192,7 @@ const initialCreateAmmunitionFormObject: CreateAmmunitionDto = {
   caliberId: 0,
   factoryId: 0,
   name: '',
-  categoryId: 0,
+  categoryId: 3,
   initialSpeed: 0,
   description: '',
   packaging: 50,

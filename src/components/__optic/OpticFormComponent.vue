@@ -49,7 +49,7 @@
               id="caliberId"
               v-model="form.focalPlaneId"
               :options="store.prerequisiteOpticQuery.data.data.focalPlanes"
-              optionLabel="label"
+              optionLabel="name"
               optionValue="id"
               placeholder="Selectionnez"
             />
@@ -74,7 +74,7 @@
             <Select
               v-model="form.opticUnitId"
               :options="store.prerequisiteOpticQuery.data.data.units"
-              optionLabel="label"
+              optionLabel="name"
               placeholder="Type d'arme"
               optionValue="id"
               id="typeId"
@@ -90,6 +90,8 @@
             <Select
               v-model="form.factoryId"
               :options="clickValueOption"
+              optionLabel="name"
+              optionValue="id"
               placeholder="Marque"
               id="category"
               :disabled="form.opticUnitId === 0"
@@ -281,7 +283,7 @@ const clickValueOption = computed(() => {
   const moaOptions = ['1/8', '1/4', '1/2']
   const mradOptions = ['1/10']
   const opticUnit = units$.value.find((u) => u.id === form.value.opticUnitId)
-  if (opticUnit && opticUnit.label === 'MOA') {
+  if (opticUnit && opticUnit.name === 'MOA') {
     return moaOptions
   } else {
     return mradOptions

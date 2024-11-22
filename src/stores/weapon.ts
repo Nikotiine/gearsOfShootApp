@@ -1,15 +1,18 @@
 import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
 import { useMutation, useQuery } from '@tanstack/vue-query'
-import type { CreateWeaponDto, LegislationCategoryDto } from '@/api/Api'
+import type { CreateWeaponDto, LegislationCategoryDto, WeaponDto } from '@/api/Api'
 import { useToastStore } from '@/stores/toast'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 export const useWeaponStore = defineStore('weapon', () => {
   const { api } = useApiStore()
   const { successMessage } = useToastStore()
   const categoryId = ref<number>(0)
+  const weaponId = ref<number>(0)
+  const selectedWeaponDetail = ref<WeaponDto>()
   const categories = ref<LegislationCategoryDto[]>([])
+  const findByIdRequestIsEnabled = computed(() => weaponId.value > 0)
 
   const queryPrerequisitesWeaponList = useQuery({
     queryKey: ['prerequisite-weapon'],
@@ -38,16 +41,34 @@ export const useWeaponStore = defineStore('weapon', () => {
     }
   })
 
-  function setId(label: string): void {
-    const category = categories.value.find((c) => c.label === label)
+  function setCategoryId(name: string): void {
+    const category = categories.value.find((c) => c.name === name)
     categoryId.value = category?.id || 0
   }
+
+  function setWeaponId(id: number): void {
+    console.log('id')
+    weaponId.value = id
+    console.log(weaponId.value)
+  }
+
+  const findByIdQuery = useQuery({
+    queryKey: ['get-weapon-by-id', weaponId.value],
+    queryFn: async () => {
+      const res = await api.api.weaponControllerFindById(weaponId.value)
+      selectedWeaponDetail.value = res.data
+      return res
+    },
+    enabled: findByIdRequestIsEnabled
+  })
 
   return {
     prerequisitesWeaponList: queryPrerequisitesWeaponList,
     create: createWeaponMutation,
     getWeaponsByCategoryQuery: queryFindAllWeaponByCategory,
-    setCategory: setId,
-    categories$: categories
+    setCategory: setCategoryId,
+    categories$: categories,
+    findById: findByIdQuery,
+    setWeaponId: setWeaponId
   }
 })

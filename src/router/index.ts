@@ -20,6 +20,11 @@ const router = createRouter({
       component: () => import('../views/AccountView.vue')
     },
     {
+      path: '/detail/arme/:id',
+      props: true,
+      component: () => import('../views/weapon/WeaponView.vue')
+    },
+    {
       path: '/admin',
       component: () => import('../views/admin/AdminDashboardView.vue'),
       children: [
@@ -70,6 +75,11 @@ const router = createRouter({
           path: 'gestion/add/weaponType',
           name: 'weaponTypeForm',
           component: () => import('../views/weapon/AdminWeaponTypeFormView.vue')
+        },
+        {
+          path: 'gestion/add/weaponMagazine',
+          name: 'weaponMagazineForm',
+          component: () => import('../views/weapon/AdminWeaponMagazineFormView.vue')
         },
         {
           path: 'gestion/list/factories',

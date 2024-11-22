@@ -19,7 +19,7 @@ export interface FactoryDto {
   id: number
   /** @example "Une description de la marque et ses produits" */
   description: string
-  ref: string
+  reference: string
   type: FactoryTypeDto
   /** @example "Colt" */
   name: string
@@ -35,7 +35,7 @@ export interface CreateFactoryDto {
   typeId: number
   /** @example "Une description de la marque et ses produits" */
   description: string
-  ref: string
+  reference: string
 }
 
 export interface EditFactoryDto {
@@ -44,7 +44,7 @@ export interface EditFactoryDto {
   typeId: number
   /** @example "Une description de la marque et ses produits" */
   description: string
-  ref: string
+  reference: string
   id: number
 }
 
@@ -57,37 +57,37 @@ export interface ApiDeleteResponseDto {
 export interface CaliberDto {
   /** @example "17 HMR" */
   name: string
-  ref: string
+  reference: string
   id: number
 }
 
 export interface CreateCaliberDto {
   /** @example "17 HMR" */
   name: string
-  ref: string
+  reference: string
 }
 
 export interface ThreadedSizeDto {
   /** @example "1/2 x 28" */
   size: string
-  ref: string
+  reference: string
   id: number
 }
 
 export interface CreateThreadedSizeDto {
   /** @example "1/2 x 28" */
   size: string
-  ref: string
+  reference: string
 }
 
 export interface LegislationCategoryDto {
   id: number
-  label: string
+  name: string
 }
 
 export interface WeaponReloadModeDto {
   id: number
-  label: string
+  name: string
 }
 
 export interface WeaponTypeDto {
@@ -95,17 +95,34 @@ export interface WeaponTypeDto {
   /** @example "Fusil a verrou" */
   name: string
   mode: WeaponReloadModeDto
-  ref: string
+  reference: string
 }
 
 export interface WeaponBarrelTypeDto {
   id: number
-  label: string
+  name: string
 }
 
 export interface PercussionTypeDto {
   id: number
-  label: string
+  name: string
+}
+
+export interface WeaponMagazineBodyDto {
+  id: number
+  name: string
+}
+
+export interface WeaponMagazineDto {
+  id: number
+  capacity: number
+  length: number
+  height: number
+  width: number
+  reference: string
+  body: WeaponMagazineBodyDto
+  factory: FactoryDto
+  caliber: CaliberDto
 }
 
 export interface WeaponDto {
@@ -136,6 +153,8 @@ export interface WeaponDto {
   threadedSize: ThreadedSizeDto
   adjustableTriggerValue: string
   percussionType: PercussionTypeDto
+  providedMagazineQuantity: number
+  providedMagazine: WeaponMagazineDto
 }
 
 export interface ListOfPrerequisitesWeaponDto {
@@ -171,6 +190,8 @@ export interface CreateWeaponDto {
   threadedSizeId: number | null
   adjustableTriggerValue: string | null
   percussionTypeId: number
+  providedMagazineQuantity: number
+  providedMagazineId: number | null
 }
 
 export interface UpdateWeaponDto {
@@ -196,6 +217,8 @@ export interface UpdateWeaponDto {
   threadedSizeId: number | null
   adjustableTriggerValue: string | null
   percussionTypeId: number
+  providedMagazineQuantity: number
+  providedMagazineId: number | null
   id: number
 }
 
@@ -207,32 +230,15 @@ export interface CreateWeaponTypeDto {
   /** @example "Fusil a verrou" */
   name: string
   modeId: number
-  ref: string
+  reference: string
 }
 
 export interface UpdateWeaponTypeDto {
   /** @example "Fusil a verrou" */
   name: string
   modeId: number
-  ref: string
-  id: number
-}
-
-export interface WeaponMagazineBodyDto {
-  id: number
-  name: string
-}
-
-export interface WeaponMagazineDto {
-  id: number
-  capacity: number
-  length: number
-  height: number
-  width: number
   reference: string
-  body: WeaponMagazineBodyDto
-  factory: FactoryDto
-  caliber: CaliberDto
+  id: number
 }
 
 export interface ListOfPrerequisitesWeaponMagazineDto {
@@ -250,6 +256,7 @@ export interface CreateWeaponMagazineDto {
   bodyId: number
   factoryId: number
   caliberId: number
+  description: string | null
 }
 
 export interface UpdateWeaponMagazineDto {
@@ -261,6 +268,7 @@ export interface UpdateWeaponMagazineDto {
   bodyId: number
   factoryId: number
   caliberId: number
+  description: string | null
   id: number
 }
 
@@ -311,14 +319,14 @@ export interface UpdateSoundNoiseReducerDto {
 export interface AmmunitionHeadTypeDto {
   /** @example "Full metal jacket" */
   name: string
-  ref: string
+  reference: string
   id: number
 }
 
 export interface AmmunitionBodyTypeDto {
   /** @example "Laiton" */
   name: string
-  ref: string
+  reference: string
   id: number
 }
 
@@ -389,13 +397,13 @@ export interface UpdateAmmunitionDto {
 export interface CreateAmmunitionHeadTypeDto {
   /** @example "Full metal jacket" */
   name: string
-  ref: string
+  reference: string
 }
 
 export interface CreateAmmunitionBodyTypeDto {
   /** @example "Laiton" */
   name: string
-  ref: string
+  reference: string
 }
 
 export interface CreateUserDto {
@@ -435,17 +443,17 @@ export interface TokenDto {
 
 export interface OpticUnitDto {
   id: number
-  label: string
+  name: string
 }
 
 export interface FocalPlaneDto {
   id: number
-  label: string
+  name: string
 }
 
 export interface OpticTypeDto {
   name: string
-  ref: string
+  reference: string
   id: number
 }
 
@@ -520,7 +528,7 @@ export interface UpdateOpticDto {
 
 export interface CreateOpticTypeDto {
   name: string
-  ref: string
+  reference: string
 }
 
 export enum CreateUserDtoRoleEnum {
@@ -952,11 +960,11 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @tags Weapon
      * @name WeaponControllerFindAllByCategory
      * @summary Armes par categorie
-     * @request GET:/api/weapon/by/{categoryId}
+     * @request GET:/api/weapon/by/category/{categoryId}
      */
     weaponControllerFindAllByCategory: (categoryId: number, params: RequestParams = {}) =>
       this.request<WeaponDto[], any>({
-        path: `/api/weapon/by/${categoryId}`,
+        path: `/api/weapon/by/category/${categoryId}`,
         method: 'GET',
         format: 'json',
         ...params
@@ -968,11 +976,11 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @tags Weapon
      * @name WeaponControllerFindById
      * @summary Par id
-     * @request GET:/api/weapon/by/{id}
+     * @request GET:/api/weapon/by/id/{id}
      */
     weaponControllerFindById: (id: number, params: RequestParams = {}) =>
       this.request<WeaponDto, any>({
-        path: `/api/weapon/by/${id}`,
+        path: `/api/weapon/by/id/${id}`,
         method: 'GET',
         format: 'json',
         ...params

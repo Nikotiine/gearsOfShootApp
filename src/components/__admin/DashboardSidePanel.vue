@@ -34,6 +34,12 @@ const items = ref([
                 push('/admin/gestion/add/optic')
               }
             },
+            {
+              label: 'Chargeur',
+              command: () => {
+                push('/admin/gestion/add/weaponMagazine')
+              }
+            },
             { label: 'RDS' },
             { label: 'Accessories' }
           ]

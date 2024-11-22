@@ -13,9 +13,11 @@ const app = createApp(App)
 import axiosInstance from '../axios.interceptor'
 import Tooltip from 'primevue/tooltip'
 import KeyFilter from 'primevue/keyfilter'
+import { capitalizeDirective } from '@/directive/capitalize.directive'
 
 app.directive('tooltip', Tooltip)
 app.directive('keyfilter', KeyFilter)
+app.directive('capitalize', capitalizeDirective)
 app.use(createPinia())
 app.use(router)
 app.use(i18n)

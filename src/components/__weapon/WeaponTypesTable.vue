@@ -7,7 +7,7 @@
         </div>
       </template>
       <Column field="name" :header="t('weaponType.type')"></Column>
-      <Column field="ref" :header="t('global.ref')"></Column>
+      <Column field="reference" :header="t('global.ref')"></Column>
       <Column field="mode" :header="t('weaponType.mode')"></Column>
     </DataTable>
   </div>

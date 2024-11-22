@@ -11,7 +11,7 @@
         <InputGroupAddon>
           <i class="pi pi-id-card"></i>
         </InputGroupAddon>
-        <InputText v-model="form.ref" :placeholder="t('global.ref')" />
+        <InputText v-model="form.reference" :placeholder="t('global.ref')" />
       </InputGroup>
 
       <div class="text-red-500 p-4" v-if="store.create.isError">
@@ -38,7 +38,7 @@ const { t } = useI18n()
 const store = useThreadedSizeStore()
 const initialFormObject: CreateThreadedSizeDto = {
   size: '',
-  ref: ''
+  reference: ''
 }
 const form = ref<CreateThreadedSizeDto>({ ...initialFormObject })
 const isFormValid = computed(() => {

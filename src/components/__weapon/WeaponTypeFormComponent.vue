@@ -16,14 +16,14 @@
         <InputGroupAddon>
           <i class="pi pi-id-card"></i>
         </InputGroupAddon>
-        <InputText v-model="form.ref" :placeholder="t('global.ref')" />-
+        <InputText v-model="form.reference" :placeholder="t('global.ref')" />-
       </InputGroup>
       <InputGroup>
         <IftaLabel>
           <Select
             v-model="form.modeId"
             :options="store.prerequisiteList.data?.data.modes"
-            optionLabel="label"
+            optionLabel="name"
             optionValue="id"
             placeholder="Selectionnez"
             id="type"
@@ -62,7 +62,7 @@ const { modes$ } = storeToRefs(store)
 
 const initialFormObject: CreateWeaponTypeDto = {
   name: '',
-  ref: '',
+  reference: '',
   modeId: 0
 }
 const form = ref<CreateWeaponTypeDto>({ ...initialFormObject })

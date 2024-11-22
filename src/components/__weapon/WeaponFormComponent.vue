@@ -1,8 +1,9 @@
 <template>
   <div class="card">
     <h2 class="text-center mt-2 text-2xl">
-      Ajouter une arme de Categorie {{ selectedCategory?.label }}
+      {{ t('weapon.form.add') }} {{ selectedCategory?.name }}
     </h2>
+
     <form @submit.prevent="submit">
       <div
         class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4"
@@ -16,12 +17,12 @@
             <Select
               v-model="form.categoryId"
               :options="store.prerequisitesWeaponList.data?.data.categories"
-              placeholder="type de filetage"
-              id="category"
+              :placeholder="t('global.select')"
+              id="categoryId"
               optionValue="id"
-              optionLabel="label"
+              optionLabel="name"
             />
-            <label for="category">Categorie</label>
+            <label for="categoryId" v-capitalize="t('global.category')"></label>
           </IftaLabel>
         </InputGroup>
         <InputGroup>
@@ -36,9 +37,9 @@
               :options="store.prerequisitesWeaponList.data.data.calibers"
               optionLabel="name"
               optionValue="id"
-              placeholder="Selectionnez"
+              :placeholder="t('global.select')"
             />
-            <label for="caliberId">Calibre</label>
+            <label for="caliberId" v-capitalize="t('global.caliber')"></label>
           </IftaLabel>
         </InputGroup>
 
@@ -54,30 +55,12 @@
               filter
               optionLabel="name"
               optionValue="id"
-              placeholder="Marque"
+              :placeholder="t('global.select')"
             />
-            <label for="factoryId">Marque</label>
+            <label for="factoryId" v-capitalize="t('global.factory')"></label>
           </IftaLabel>
         </InputGroup>
 
-        <InputGroup>
-          <InputGroupAddon>
-            <i class="pi pi-id-card"></i>
-          </InputGroupAddon>
-          <IftaLabel>
-            <InputText id="name" v-model="form.name" placeholder="Nom" />
-            <label for="name">Model</label>
-          </IftaLabel>
-        </InputGroup>
-        <InputGroup>
-          <InputGroupAddon>
-            <i class="pi pi-receipt"></i>
-          </InputGroupAddon>
-          <IftaLabel>
-            <InputText id="variation" v-model="form.variation" placeholder="Variante" />
-            <label for="variation">Variante</label>
-          </IftaLabel>
-        </InputGroup>
         <InputGroup>
           <InputGroupAddon>
             <i class="pi pi-sort"></i>
@@ -87,13 +70,38 @@
               v-model="form.typeId"
               :options="store.prerequisitesWeaponList.data.data.types"
               optionLabel="name"
-              placeholder="Type d'arme"
+              :placeholder="t('global.select')"
               optionValue="id"
               id="typeId"
             />
-            <label for="typeId">Type d'arme</label>
+            <label for="typeId" v-capitalize="t('global.weaponType')"></label>
           </IftaLabel>
         </InputGroup>
+
+        <InputGroup>
+          <InputGroupAddon>
+            <i class="pi pi-id-card"></i>
+          </InputGroupAddon>
+          <IftaLabel>
+            <InputText id="name" v-model="form.name" :placeholder="t('weapon.form.name')" />
+            <label for="name" v-capitalize="t('global.model')"></label>
+          </IftaLabel>
+        </InputGroup>
+
+        <InputGroup>
+          <InputGroupAddon>
+            <i class="pi pi-receipt"></i>
+          </InputGroupAddon>
+          <IftaLabel>
+            <InputText
+              id="variation"
+              v-model="form.variation"
+              :placeholder="t('weapon.form.variation')"
+            />
+            <label for="variation">{{ t('weapon.form.variation') }}</label>
+          </IftaLabel>
+        </InputGroup>
+
         <InputGroup>
           <InputGroupAddon>
             <i class="pi pi-sort"></i>
@@ -102,14 +110,15 @@
             <Select
               v-model="form.percussionTypeId"
               :options="store.prerequisitesWeaponList.data.data.percussionTypes"
-              optionLabel="label"
-              placeholder="Type de percussion"
+              optionLabel="name"
+              :placeholder="t('global.select')"
               optionValue="id"
               id="typeId"
             />
-            <label for="typeId">Type de percussion</label>
+            <label for="typeId">{{ t('weapon.form.percussionType') }}</label>
           </IftaLabel>
         </InputGroup>
+
         <InputGroup>
           <InputGroupAddon>
             <i class="pi pi-sort"></i>
@@ -118,61 +127,93 @@
             <Select
               v-model="form.barrelTypeId"
               :options="store.prerequisitesWeaponList.data.data.barreTypes"
-              optionLabel="label"
-              placeholder="Type de canon"
+              optionLabel="name"
+              :placeholder="t('global.select')"
               optionValue="id"
-              id="barrelType"
+              id="barrelTypeId"
             />
-            <label for="barrelType">Type de canon</label>
+            <label for="barrelTypeId">{{ t('weapon.form.barrelType') }}</label>
           </IftaLabel>
           <IftaLabel>
             <InputNumber
               v-model="form.barrelLength"
-              placeholder="Longueur du canon"
+              :placeholder="t('weapon.form.length')"
               :minFractionDigits="2"
               id="barrelLength"
             />
-            <label for="barrelLength">Longueur de canon</label>
+            <label for="barrelLength">{{ t('weapon.form.barrelLength') }}</label>
           </IftaLabel>
-
           <InputGroupAddon>cm</InputGroupAddon>
         </InputGroup>
+
         <InputGroup>
           <InputGroupAddon>
             <Checkbox id="isThreadedBarrel" v-model="form.isThreadedBarrel" :binary="true" />
-            <label for="isThreadedBarrel" class="ml-2"> Filetage </label>
+            <label for="isThreadedBarrel" class="ml-2">
+              {{ t('weapon.form.isThreadedBarrel') }}
+            </label>
           </InputGroupAddon>
           <IftaLabel>
             <Select
               v-model="form.threadedSizeId"
               :options="store.prerequisitesWeaponList.data.data.threadedSizes"
               optionLabel="size"
-              placeholder="type de filetage"
+              :placeholder="t('global.select')"
               optionValue="id"
               :disabled="!form.isThreadedBarrel"
               id="threadedSizeId"
             />
-            <label for="threadedSizeId">type de filetage</label>
+            <label for="threadedSizeId" v-capitalize="t('global.threadedSize')"></label>
           </IftaLabel>
         </InputGroup>
+
         <InputGroup>
           <InputGroupAddon>
             <Checkbox id="isAdjustableTrigger" v-model="form.isAdjustableTrigger" :binary="true" />
-            <label for="isAdjustableTrigger" class="ml-2"> Detente reglable </label>
+            <label for="isAdjustableTrigger" class="ml-2">{{
+              t('weapon.form.isAdjustableTrigger')
+            }}</label>
           </InputGroupAddon>
-          <InputGroupAddon>de</InputGroupAddon>
+          <InputGroupAddon>{{ t('global.from') }}</InputGroupAddon>
           <InputNumber
             :minFractionDigits="2"
             v-model="adjustableTriggerMinWeight"
             :disabled="!form.isAdjustableTrigger"
           />
-          <InputGroupAddon>a</InputGroupAddon>
+          <InputGroupAddon>{{ t('global.to') }}</InputGroupAddon>
           <InputNumber
             :minFractionDigits="2"
             v-model="adjustableTriggerMaxWeight"
             :disabled="!form.isAdjustableTrigger"
           />
           <InputGroupAddon>kg</InputGroupAddon>
+        </InputGroup>
+
+        <InputGroup>
+          <InputGroupAddon>
+            <Checkbox id="isThreadedBarrel" v-model="isProvidedMagazine" :binary="true" />
+            <label for="isThreadedBarrel" class="ml-2">
+              {{ t('weapon.form.isProvidedMagazine') }}
+            </label>
+          </InputGroupAddon>
+          <IftaLabel>
+            <Select
+              v-model="form.providedMagazineId"
+              :options="store.prerequisitesWeaponList.data.data.threadedSizes"
+              optionLabel="size"
+              :placeholder="t('global.select')"
+              optionValue="id"
+              :disabled="!isProvidedMagazine"
+              id="providedMagazineId"
+            />
+            <InputGroupAddon>quantite</InputGroupAddon>
+            <InputNumber
+              :minFractionDigits="0"
+              v-model="form.providedMagazineQuantity"
+              :disabled="!isProvidedMagazine"
+            />
+            <label for="providedMagazineId" v-capitalize="t('global.magazine')"></label>
+          </IftaLabel>
         </InputGroup>
       </div>
 
@@ -183,7 +224,7 @@
           rows="5"
           cols="30"
           class="w-full"
-          placeholder="Description"
+          :placeholder="t('weapon.form.description')"
         />
       </div>
       <div class="text-red-500 p-4" v-if="store.create.isError">
@@ -193,7 +234,7 @@
       </div>
 
       <div class="text-center">
-        <Button type="submit" label="submit" :disabled="!isFormValid"></Button>
+        <Button type="submit" :label="t('global.save')" :disabled="!isFormValid"></Button>
       </div>
     </form>
   </div>
@@ -218,6 +259,7 @@ const store = useWeaponStore()
 const { categories$ } = storeToRefs(store)
 const adjustableTriggerMinWeight = ref(0)
 const adjustableTriggerMaxWeight = ref(0)
+const isProvidedMagazine = ref(false)
 const initialCreateWeaponFormObject: CreateWeaponDto = {
   typeId: 0,
   caliberId: 0,
@@ -233,7 +275,9 @@ const initialCreateWeaponFormObject: CreateWeaponDto = {
   description: '',
   categoryId: 3,
   isOpticReady: false,
-  percussionTypeId: 0
+  percussionTypeId: 0,
+  providedMagazineId: null,
+  providedMagazineQuantity: 0
 }
 const form = ref<CreateWeaponDto>({
   ...initialCreateWeaponFormObject
