@@ -125,6 +125,17 @@ export interface WeaponMagazineDto {
   caliber: CaliberDto
 }
 
+export interface WeaponButtTypeDto {
+  id: number
+  name: string
+}
+
+export interface RailSizeDto {
+  id: number
+  name: string
+  reference: string
+}
+
 export interface WeaponDto {
   id: number
   /** @example "CZ-457-VAR-22LR" */
@@ -155,6 +166,27 @@ export interface WeaponDto {
   percussionType: PercussionTypeDto
   providedMagazineQuantity: number
   providedMagazine: WeaponMagazineDto
+  barrelSize: number
+  /** Crosse ajustable en profondeur */
+  isAdjustableButt: boolean
+  /** Busc adjutable */
+  isAdjustableBusk: boolean
+  butt: WeaponButtTypeDto
+  railSize: RailSizeDto
+  /** Grenadiere */
+  grenadierSlot: number
+  /** Port QC */
+  qcSlot: number
+  /** Rail Mlock */
+  isMlockCompatibility: boolean
+  /** Rail picatiny */
+  isPicatinyRailSlop: boolean
+  /** Visee ouverte ? */
+  isOpenAim: boolean
+  /** Guidon reglable */
+  isAdjustableFrontSight: boolean
+  /** Hausse reglable */
+  isAdjustableBackSight: boolean
 }
 
 export interface ListOfPrerequisitesWeaponDto {
@@ -165,6 +197,8 @@ export interface ListOfPrerequisitesWeaponDto {
   percussionTypes: PercussionTypeDto[]
   categories: LegislationCategoryDto[]
   barreTypes: WeaponBarrelTypeDto[]
+  buttTypes: WeaponButtTypeDto[]
+  railSizes: RailSizeDto[]
 }
 
 export interface CreateWeaponDto {
@@ -192,6 +226,27 @@ export interface CreateWeaponDto {
   percussionTypeId: number
   providedMagazineQuantity: number
   providedMagazineId: number | null
+  barrelSize: number
+  /** Crosse ajustable en profondeur */
+  isAdjustableButt: boolean
+  /** Busc adjutable */
+  isAdjustableBusk: boolean
+  buttId: number
+  railSizeId: number
+  /** Grenadiere */
+  grenadierSlot: number
+  /** Port QC */
+  qcSlot: number
+  /** Rail Mlock */
+  isMlockCompatibility: boolean
+  /** Rail picatiny */
+  isPicatinyRailSlop: boolean
+  /** Visee ouverte ? */
+  isOpenAim: boolean
+  /** Guidon reglable */
+  isAdjustableFrontSight: boolean
+  /** Hausse reglable */
+  isAdjustableBackSight: boolean
 }
 
 export interface UpdateWeaponDto {
@@ -219,6 +274,27 @@ export interface UpdateWeaponDto {
   percussionTypeId: number
   providedMagazineQuantity: number
   providedMagazineId: number | null
+  barrelSize: number
+  /** Crosse ajustable en profondeur */
+  isAdjustableButt: boolean
+  /** Busc adjutable */
+  isAdjustableBusk: boolean
+  buttId: number
+  railSizeId: number
+  /** Grenadiere */
+  grenadierSlot: number
+  /** Port QC */
+  qcSlot: number
+  /** Rail Mlock */
+  isMlockCompatibility: boolean
+  /** Rail picatiny */
+  isPicatinyRailSlop: boolean
+  /** Visee ouverte ? */
+  isOpenAim: boolean
+  /** Guidon reglable */
+  isAdjustableFrontSight: boolean
+  /** Hausse reglable */
+  isAdjustableBackSight: boolean
   id: number
 }
 

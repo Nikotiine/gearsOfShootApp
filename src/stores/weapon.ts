@@ -1,7 +1,14 @@
 import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
 import { useMutation, useQuery } from '@tanstack/vue-query'
-import type { CreateWeaponDto, LegislationCategoryDto, WeaponDto } from '@/api/Api'
+import type {
+  CreateWeaponDto,
+  LegislationCategoryDto,
+  RailSizeDto,
+  WeaponButtTypeDto,
+  WeaponDto,
+  WeaponTypeDto
+} from '@/api/Api'
 import { useToastStore } from '@/stores/toast'
 import { computed, ref } from 'vue'
 
@@ -12,6 +19,9 @@ export const useWeaponStore = defineStore('weapon', () => {
   const weaponId = ref<number>(0)
   const selectedWeaponDetail = ref<WeaponDto>()
   const categories = ref<LegislationCategoryDto[]>([])
+  const weaponTypes = ref<WeaponTypeDto[]>([])
+  const railSizes = ref<RailSizeDto[]>([])
+  const buttTypes = ref<WeaponButtTypeDto[]>([])
   const findByIdRequestIsEnabled = computed(() => weaponId.value > 0)
 
   const queryPrerequisitesWeaponList = useQuery({
@@ -19,6 +29,9 @@ export const useWeaponStore = defineStore('weapon', () => {
     queryFn: async () => {
       const res = await api.api.weaponControllerFindPrerequisitesWeaponList()
       categories.value = res.data.categories
+      weaponTypes.value = res.data.types
+      railSizes.value = res.data.railSizes
+      buttTypes.value = res.data.buttTypes
       return res
     }
   })
@@ -47,9 +60,7 @@ export const useWeaponStore = defineStore('weapon', () => {
   }
 
   function setWeaponId(id: number): void {
-    console.log('id')
     weaponId.value = id
-    console.log(weaponId.value)
   }
 
   const findByIdQuery = useQuery({
@@ -69,6 +80,9 @@ export const useWeaponStore = defineStore('weapon', () => {
     setCategory: setCategoryId,
     categories$: categories,
     findById: findByIdQuery,
-    setWeaponId: setWeaponId
+    setWeaponId: setWeaponId,
+    weaponTypes$: weaponTypes,
+    railSizes$: railSizes,
+    buttTypes$: buttTypes
   }
 })

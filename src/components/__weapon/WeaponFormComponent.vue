@@ -144,10 +144,19 @@
             <label for="barrelLength">{{ t('weapon.form.barrelLength') }}</label>
           </IftaLabel>
           <InputGroupAddon>cm</InputGroupAddon>
+          <IftaLabel>
+            <InputNumber
+              v-model="form.barrelSize"
+              :placeholder="t('weapon.form.barrelSize')"
+              id="barrelSize"
+            />
+            <label for="barrelSize">{{ t('weapon.form.barrelSize') }}</label>
+          </IftaLabel>
+          <InputGroupAddon>mm</InputGroupAddon>
         </InputGroup>
 
         <InputGroup>
-          <InputGroupAddon>
+          <InputGroupAddon class="min-width-6rem">
             <Checkbox id="isThreadedBarrel" v-model="form.isThreadedBarrel" :binary="true" />
             <label for="isThreadedBarrel" class="ml-2">
               {{ t('weapon.form.isThreadedBarrel') }}
@@ -216,6 +225,17 @@
           </IftaLabel>
         </InputGroup>
       </div>
+      <riffle-form-component
+        :partial-form="form"
+        v-if="form.typeId > 0 && isRiffleWeapon.value"
+        :rail-sizes="railSizes$"
+        :butt-types="buttTypes$"
+      />
+      <hand-gun-form-composant
+        v-if="form.typeId > 0 && !isRiffleWeapon.value"
+        :butt-types="buttTypes$"
+        :partial-form="form"
+      />
 
       <div class="p-4">
         <Textarea
@@ -251,17 +271,19 @@ import InputGroup from 'primevue/inputgroup'
 import InputNumber from 'primevue/inputnumber'
 import { useWeaponStore } from '@/stores/weapon'
 import { computed, ref } from 'vue'
-import type { CreateWeaponDto } from '@/api/Api'
+import type { CreateWeaponDto, WeaponTypeDto } from '@/api/Api'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
+import RiffleFormComponent from '@/components/__weapon/RiffleFormComponent.vue'
+import HandGunFormComposant from '@/components/__weapon/HandGunFormComposant.vue'
 const { t } = useI18n()
 const store = useWeaponStore()
-const { categories$ } = storeToRefs(store)
+const { categories$, weaponTypes$, railSizes$, buttTypes$ } = storeToRefs(store)
 const adjustableTriggerMinWeight = ref(0)
 const adjustableTriggerMaxWeight = ref(0)
 const isProvidedMagazine = ref(false)
 const initialCreateWeaponFormObject: CreateWeaponDto = {
-  typeId: 0,
+  typeId: 1,
   caliberId: 0,
   factoryId: 0,
   name: '',
@@ -277,7 +299,19 @@ const initialCreateWeaponFormObject: CreateWeaponDto = {
   isOpticReady: false,
   percussionTypeId: 0,
   providedMagazineId: null,
-  providedMagazineQuantity: 0
+  providedMagazineQuantity: 0,
+  barrelSize: 0,
+  buttId: 0,
+  grenadierSlot: 0,
+  isAdjustableBackSight: false,
+  isAdjustableBusk: false,
+  isAdjustableButt: false,
+  isAdjustableFrontSight: false,
+  isMlockCompatibility: false,
+  isOpenAim: true,
+  isPicatinyRailSlop: false,
+  qcSlot: 0,
+  railSizeId: 0
 }
 const form = ref<CreateWeaponDto>({
   ...initialCreateWeaponFormObject
@@ -305,6 +339,22 @@ const submit = () => {
 const selectedCategory = computed(() => {
   return categories$.value.find((category) => category.id === form.value.categoryId)
 })
+
+const isRiffleWeapon = computed(() => {
+  const isRiffleWeapon = ref<boolean>(true)
+  const weaponType: WeaponTypeDto | undefined = weaponTypes$.value.find(
+    (type) => type.id === form.value.typeId
+  )
+
+  if (weaponType && (weaponType.name === 'Pistolet' || weaponType.name === 'Revolver')) {
+    isRiffleWeapon.value = false
+  }
+  return isRiffleWeapon
+})
 </script>
 
-<style scoped></style>
+<style scoped>
+.min-width-6rem {
+  min-width: 6rem !important;
+}
+</style>

@@ -65,7 +65,7 @@
     "from": "de",
     "to": "à",
     "magazine": "chargeur",
-   "packaging": "packaging"
+    "packaging": "packaging"
 
   },
   "weapon": {
@@ -84,7 +84,24 @@
       "isThreadedBarrel": "Filetage",
       "isAdjustableTrigger": "Detente reglable",
       "isProvidedMagazine": "Chargeur fournis",
-      "description": "Description"
+      "description": "Description",
+      "barrelSize": "Epaisseur",
+      "isAdjustableBusk": "Busc ajustable",
+      "isAdjustableButt": "Crosse reglable",
+      "isMlockCompatibility": "Compatible M-lock",
+      "railSize": "Taille du rail d'optique",
+      "qcSlot": "Connextion QC",
+      "grenadierSlot": "Grenadieres",
+      "isOpenAim": "Visee ouverte",
+      "isAdjustableBackSight": "Hausse reglable",
+      "isAdjustableFrontSight": "Guidon reglable",
+      "buttType": "Matiere de la crosse",
+      "mLockOptions": "Position MLOCK",
+      "riffleFormTitle": "Specifique arme longue",
+      "handgunFormTitle": "Specifique arme de poing",
+      "handGunButtType": "Matiere de la carcasse",
+      "isOpticReady": "OR ?",
+      "breech": "culasse"
     }
   },
   "ammunition": {
