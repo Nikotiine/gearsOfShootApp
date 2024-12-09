@@ -108,7 +108,7 @@ export interface PercussionTypeDto {
   name: string
 }
 
-export interface WeaponMagazineBodyDto {
+export interface MaterialDto {
   id: number
   name: string
 }
@@ -120,19 +120,33 @@ export interface WeaponMagazineDto {
   height: number
   width: number
   reference: string
-  body: WeaponMagazineBodyDto
+  body: MaterialDto
   factory: FactoryDto
   caliber: CaliberDto
-}
-
-export interface WeaponButtTypeDto {
-  id: number
-  name: string
 }
 
 export interface RailSizeDto {
   id: number
   name: string
+  reference: string
+}
+
+export interface WeaponTriggerTypeDto {
+  id: number
+  name: string
+  reference: string
+}
+
+export interface ColorDto {
+  id: number
+  name: string
+  reference: string
+}
+
+export interface OpticReadyPlateDto {
+  id: number
+  name: string
+  description: string
   reference: string
 }
 
@@ -171,7 +185,7 @@ export interface WeaponDto {
   isAdjustableButt: boolean
   /** Busc adjutable */
   isAdjustableBusk: boolean
-  butt: WeaponButtTypeDto
+  buttMaterial: MaterialDto
   railSize: RailSizeDto
   /** Grenadiere */
   grenadierSlot: number
@@ -187,6 +201,15 @@ export interface WeaponDto {
   isAdjustableFrontSight: boolean
   /** Hausse reglable */
   isAdjustableBackSight: boolean
+  mLockOptions: string | null
+  decocking: boolean
+  triggerType: WeaponTriggerTypeDto
+  buttColor: ColorDto
+  slideColor: ColorDto
+  slideMaterial: MaterialDto
+  barrelColor: ColorDto
+  isExternalHammer: boolean
+  opticReadyPlates: OpticReadyPlateDto[]
 }
 
 export interface ListOfPrerequisitesWeaponDto {
@@ -197,8 +220,11 @@ export interface ListOfPrerequisitesWeaponDto {
   percussionTypes: PercussionTypeDto[]
   categories: LegislationCategoryDto[]
   barreTypes: WeaponBarrelTypeDto[]
-  buttTypes: WeaponButtTypeDto[]
+  buttTypes: MaterialDto[]
   railSizes: RailSizeDto[]
+  triggerTypes: WeaponTriggerTypeDto[]
+  colors: ColorDto[]
+  opticReadyPlates: OpticReadyPlateDto[]
 }
 
 export interface CreateWeaponDto {
@@ -231,8 +257,8 @@ export interface CreateWeaponDto {
   isAdjustableButt: boolean
   /** Busc adjutable */
   isAdjustableBusk: boolean
-  buttId: number
-  railSizeId: number
+  buttMaterialId: number
+  railSizeId: number | null
   /** Grenadiere */
   grenadierSlot: number
   /** Port QC */
@@ -247,6 +273,15 @@ export interface CreateWeaponDto {
   isAdjustableFrontSight: boolean
   /** Hausse reglable */
   isAdjustableBackSight: boolean
+  mLockOptions: string | null
+  decocking: boolean
+  triggerTypeId: number
+  buttColorId: number
+  slideColorId: number
+  barrelColorId: number
+  slideMaterialId: number
+  isExternalHammer: boolean
+  providedOpticReadyPlates: OpticReadyPlateDto[] | null
 }
 
 export interface UpdateWeaponDto {
@@ -279,8 +314,8 @@ export interface UpdateWeaponDto {
   isAdjustableButt: boolean
   /** Busc adjutable */
   isAdjustableBusk: boolean
-  buttId: number
-  railSizeId: number
+  buttMaterialId: number
+  railSizeId: number | null
   /** Grenadiere */
   grenadierSlot: number
   /** Port QC */
@@ -295,6 +330,15 @@ export interface UpdateWeaponDto {
   isAdjustableFrontSight: boolean
   /** Hausse reglable */
   isAdjustableBackSight: boolean
+  mLockOptions: string | null
+  decocking: boolean
+  triggerTypeId: number
+  buttColorId: number
+  slideColorId: number
+  barrelColorId: number
+  slideMaterialId: number
+  isExternalHammer: boolean
+  providedOpticReadyPlates: OpticReadyPlateDto[] | null
   id: number
 }
 
@@ -320,7 +364,7 @@ export interface UpdateWeaponTypeDto {
 export interface ListOfPrerequisitesWeaponMagazineDto {
   calibers: CaliberDto[]
   factories: FactoryDto[]
-  bodies: WeaponMagazineBodyDto[]
+  bodies: MaterialDto[]
 }
 
 export interface CreateWeaponMagazineDto {

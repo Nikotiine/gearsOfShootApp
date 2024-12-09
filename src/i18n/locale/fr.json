@@ -101,7 +101,12 @@
       "handgunFormTitle": "Specifique arme de poing",
       "handGunButtType": "Matiere de la carcasse",
       "isOpticReady": "OR ?",
-      "breech": "culasse"
+      "slideMaterial": "Matiere de la culasse",
+      "buttColor": "Couleur de la crosse",
+      "barrelColor": "Couleur du canon",
+      "slideColor": "Couleur de la culasse",
+      "opticReadyPlate": "Type de plaque OR",
+      "triggerType": "Type de detente"
     }
   },
   "ammunition": {

@@ -175,7 +175,23 @@
             <label for="threadedSizeId" v-capitalize="t('global.threadedSize')"></label>
           </IftaLabel>
         </InputGroup>
-
+        <InputGroup>
+          <InputGroupAddon>
+            <i class="pi pi-warehouse"></i>
+          </InputGroupAddon>
+          <IftaLabel>
+            <Select
+              id="barrelColorId"
+              v-model="form.barrelColorId"
+              :options="colors$"
+              filter
+              optionLabel="name"
+              optionValue="id"
+              :placeholder="t('global.select')"
+            />
+            <label for="barrelColorId" v-capitalize="t('weapon.form.barrelColor')"></label>
+          </IftaLabel>
+        </InputGroup>
         <InputGroup>
           <InputGroupAddon>
             <Checkbox id="isAdjustableTrigger" v-model="form.isAdjustableTrigger" :binary="true" />
@@ -229,12 +245,16 @@
         :partial-form="form"
         v-if="form.typeId > 0 && isRiffleWeapon.value"
         :rail-sizes="railSizes$"
-        :butt-types="buttTypes$"
+        :materials="materials$"
+        :colors="colors$"
       />
-      <hand-gun-form-composant
+      <hand-gun-form-component
         v-if="form.typeId > 0 && !isRiffleWeapon.value"
-        :butt-types="buttTypes$"
+        :materials="materials$"
         :partial-form="form"
+        :colors="colors$"
+        :trigger-type="triggerTypes$"
+        :plates="opticReadyPlates$"
       />
 
       <div class="p-4">
@@ -275,10 +295,18 @@ import type { CreateWeaponDto, WeaponTypeDto } from '@/api/Api'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import RiffleFormComponent from '@/components/__weapon/RiffleFormComponent.vue'
-import HandGunFormComposant from '@/components/__weapon/HandGunFormComposant.vue'
+import HandGunFormComponent from '@/components/__weapon/HandGunFormComponent.vue'
 const { t } = useI18n()
 const store = useWeaponStore()
-const { categories$, weaponTypes$, railSizes$, buttTypes$ } = storeToRefs(store)
+const {
+  categories$,
+  weaponTypes$,
+  railSizes$,
+  materials$,
+  colors$,
+  triggerTypes$,
+  opticReadyPlates$
+} = storeToRefs(store)
 const adjustableTriggerMinWeight = ref(0)
 const adjustableTriggerMaxWeight = ref(0)
 const isProvidedMagazine = ref(false)
@@ -293,7 +321,7 @@ const initialCreateWeaponFormObject: CreateWeaponDto = {
   barrelLength: 0,
   threadedSizeId: null,
   isAdjustableTrigger: false,
-  adjustableTriggerValue: triggerValue(),
+  adjustableTriggerValue: '',
   description: '',
   categoryId: 3,
   isOpticReady: false,
@@ -301,7 +329,7 @@ const initialCreateWeaponFormObject: CreateWeaponDto = {
   providedMagazineId: null,
   providedMagazineQuantity: 0,
   barrelSize: 0,
-  buttId: 0,
+  buttMaterialId: 0,
   grenadierSlot: 0,
   isAdjustableBackSight: false,
   isAdjustableBusk: false,
@@ -311,11 +339,24 @@ const initialCreateWeaponFormObject: CreateWeaponDto = {
   isOpenAim: true,
   isPicatinyRailSlop: false,
   qcSlot: 0,
-  railSizeId: 0
+  railSizeId: 0,
+  mLockOptions: '',
+  barrelColorId: 0,
+  buttColorId: 0,
+  decocking: false,
+  slideColorId: 0,
+  slideMaterialId: 0,
+  triggerTypeId: 0,
+  isExternalHammer: true,
+  providedOpticReadyPlates: []
 }
 const form = ref<CreateWeaponDto>({
   ...initialCreateWeaponFormObject
 })
+
+function getTriggerValue(): string {
+  return `${adjustableTriggerMinWeight.value}-${adjustableTriggerMaxWeight.value} kg`
+}
 const isFormValid = computed(() => {
   let isValid: boolean = false
   if (
@@ -329,10 +370,9 @@ const isFormValid = computed(() => {
   }
   return isValid
 })
-function triggerValue(): string {
-  return `${adjustableTriggerMinWeight.value}-${adjustableTriggerMaxWeight.value} kg`
-}
+
 const submit = () => {
+  form.value.adjustableTriggerValue = getTriggerValue()
   store.create.mutate(form.value)
   form.value = { ...initialCreateWeaponFormObject }
 }

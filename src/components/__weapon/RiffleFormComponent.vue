@@ -4,8 +4,8 @@
     <InputGroup>
       <IftaLabel>
         <Select
-          v-model="form.buttId"
-          :options="buttTypes"
+          v-model="form.buttMaterialId"
+          :options="materials"
           optionLabel="name"
           :placeholder="t('global.select')"
           optionValue="id"
@@ -26,7 +26,23 @@
         </label>
       </InputGroupAddon>
     </InputGroup>
-
+    <InputGroup>
+      <InputGroupAddon>
+        <i class="pi pi-warehouse"></i>
+      </InputGroupAddon>
+      <IftaLabel>
+        <Select
+          id="buttColorId"
+          v-model="form.buttColorId"
+          :options="colors"
+          filter
+          optionLabel="name"
+          optionValue="id"
+          :placeholder="t('global.select')"
+        />
+        <label for="buttColorId" v-capitalize="t('weapon.form.buttColor')"></label>
+      </IftaLabel>
+    </InputGroup>
     <InputGroup>
       <IftaLabel>
         <Select
@@ -101,7 +117,7 @@
 </template>
 `
 <script setup lang="ts">
-import type { CreateWeaponDto, RailSizeDto, WeaponButtTypeDto } from '@/api/Api'
+import type { CreateWeaponDto, RailSizeDto, MaterialDto, ColorDto } from '@/api/Api'
 import InputGroupAddon from 'primevue/inputgroupaddon'
 import Checkbox from 'primevue/checkbox'
 
@@ -118,7 +134,8 @@ const { t } = useI18n()
 const { partialForm, railSizes } = defineProps<{
   partialForm: Partial<CreateWeaponDto>
   railSizes: RailSizeDto[]
-  buttTypes: WeaponButtTypeDto[]
+  materials: MaterialDto[]
+  colors: ColorDto[]
 }>()
 const form = ref<Partial<CreateWeaponDto>>({ ...partialForm })
 const mLockOptions = ref([

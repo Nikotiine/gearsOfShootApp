@@ -2,11 +2,14 @@ import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import type {
+  ColorDto,
   CreateWeaponDto,
   LegislationCategoryDto,
+  MaterialDto,
+  OpticReadyPlateDto,
   RailSizeDto,
-  WeaponButtTypeDto,
   WeaponDto,
+  WeaponTriggerTypeDto,
   WeaponTypeDto
 } from '@/api/Api'
 import { useToastStore } from '@/stores/toast'
@@ -21,7 +24,10 @@ export const useWeaponStore = defineStore('weapon', () => {
   const categories = ref<LegislationCategoryDto[]>([])
   const weaponTypes = ref<WeaponTypeDto[]>([])
   const railSizes = ref<RailSizeDto[]>([])
-  const buttTypes = ref<WeaponButtTypeDto[]>([])
+  const materials = ref<MaterialDto[]>([])
+  const colors = ref<ColorDto[]>([])
+  const triggerTypes = ref<WeaponTriggerTypeDto[]>([])
+  const opticReadyPlates = ref<OpticReadyPlateDto[]>([])
   const findByIdRequestIsEnabled = computed(() => weaponId.value > 0)
 
   const queryPrerequisitesWeaponList = useQuery({
@@ -31,7 +37,10 @@ export const useWeaponStore = defineStore('weapon', () => {
       categories.value = res.data.categories
       weaponTypes.value = res.data.types
       railSizes.value = res.data.railSizes
-      buttTypes.value = res.data.buttTypes
+      materials.value = res.data.buttTypes
+      colors.value = res.data.colors
+      triggerTypes.value = res.data.triggerTypes
+      opticReadyPlates.value = res.data.opticReadyPlates
       return res
     }
   })
@@ -83,6 +92,9 @@ export const useWeaponStore = defineStore('weapon', () => {
     setWeaponId: setWeaponId,
     weaponTypes$: weaponTypes,
     railSizes$: railSizes,
-    buttTypes$: buttTypes
+    materials$: materials,
+    colors$: colors,
+    triggerTypes$: triggerTypes,
+    opticReadyPlates$: opticReadyPlates
   }
 })
