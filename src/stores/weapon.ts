@@ -1,26 +1,24 @@
 import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
-import { useMutation, useQuery } from '@tanstack/vue-query'
+import { useQuery } from '@tanstack/vue-query'
 import type {
   ColorDto,
-  CreateWeaponDto,
   LegislationCategoryDto,
   MaterialDto,
   OpticReadyPlateDto,
   RailSizeDto,
-  WeaponDto,
   WeaponTriggerTypeDto,
   WeaponTypeDto
 } from '@/api/Api'
-import { useToastStore } from '@/stores/toast'
-import { computed, ref } from 'vue'
+
+import { ref } from 'vue'
 
 export const useWeaponStore = defineStore('weapon', () => {
   const { api } = useApiStore()
-  const { successMessage } = useToastStore()
+
   const categoryId = ref<number>(0)
   const weaponId = ref<number>(0)
-  const selectedWeaponDetail = ref<WeaponDto>()
+
   const categories = ref<LegislationCategoryDto[]>([])
   const weaponTypes = ref<WeaponTypeDto[]>([])
   const railSizes = ref<RailSizeDto[]>([])
@@ -28,7 +26,6 @@ export const useWeaponStore = defineStore('weapon', () => {
   const colors = ref<ColorDto[]>([])
   const triggerTypes = ref<WeaponTriggerTypeDto[]>([])
   const opticReadyPlates = ref<OpticReadyPlateDto[]>([])
-  const findByIdRequestIsEnabled = computed(() => weaponId.value > 0)
 
   const queryPrerequisitesWeaponList = useQuery({
     queryKey: ['prerequisite-weapon'],
@@ -44,7 +41,7 @@ export const useWeaponStore = defineStore('weapon', () => {
       return res
     }
   })
-  const queryFindAllWeaponByCategory = useQuery({
+  /*  const queryFindAllWeaponByCategory = useQuery({
     queryKey: ['weaponsByCategory', categoryId],
     queryFn: async () => {
       const res = await api.api.weaponControllerFindAllByCategory(categoryId.value)
@@ -52,16 +49,16 @@ export const useWeaponStore = defineStore('weapon', () => {
       return res
     },
     staleTime: 10000
-  })
+  })*/
 
-  const createWeaponMutation = useMutation({
+  /* const createWeaponMutation = useMutation({
     mutationFn: async (weapon: CreateWeaponDto) => {
       return await api.api.weaponControllerCreate(weapon)
     },
     onSuccess(data) {
       successMessage('weapon.summary', 'weapon.add.success')
     }
-  })
+  })*/
 
   function setCategoryId(name: string): void {
     const category = categories.value.find((c) => c.name === name)
@@ -72,7 +69,7 @@ export const useWeaponStore = defineStore('weapon', () => {
     weaponId.value = id
   }
 
-  const findByIdQuery = useQuery({
+  /*  const findByIdQuery = useQuery({
     queryKey: ['get-weapon-by-id', weaponId.value],
     queryFn: async () => {
       const res = await api.api.weaponControllerFindById(weaponId.value)
@@ -80,15 +77,15 @@ export const useWeaponStore = defineStore('weapon', () => {
       return res
     },
     enabled: findByIdRequestIsEnabled
-  })
+  })*/
 
   return {
     prerequisitesWeaponList: queryPrerequisitesWeaponList,
-    create: createWeaponMutation,
-    getWeaponsByCategoryQuery: queryFindAllWeaponByCategory,
+    // create: createWeaponMutation,
+    //  getWeaponsByCategoryQuery: queryFindAllWeaponByCategory,
     setCategory: setCategoryId,
     categories$: categories,
-    findById: findByIdQuery,
+    //  findById: findByIdQuery,
     setWeaponId: setWeaponId,
     weaponTypes$: weaponTypes,
     railSizes$: railSizes,
@@ -98,3 +95,7 @@ export const useWeaponStore = defineStore('weapon', () => {
     opticReadyPlates$: opticReadyPlates
   }
 })
+export interface NewWeapon {
+  type: number
+  category: number
+}

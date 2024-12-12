@@ -98,12 +98,12 @@ export interface WeaponTypeDto {
   reference: string
 }
 
-export interface WeaponBarrelTypeDto {
+export interface PercussionTypeDto {
   id: number
   name: string
 }
 
-export interface PercussionTypeDto {
+export interface WeaponBarrelTypeDto {
   id: number
   name: string
 }
@@ -111,18 +111,6 @@ export interface PercussionTypeDto {
 export interface MaterialDto {
   id: number
   name: string
-}
-
-export interface WeaponMagazineDto {
-  id: number
-  capacity: number
-  length: number
-  height: number
-  width: number
-  reference: string
-  body: MaterialDto
-  factory: FactoryDto
-  caliber: CaliberDto
 }
 
 export interface RailSizeDto {
@@ -150,68 +138,6 @@ export interface OpticReadyPlateDto {
   reference: string
 }
 
-export interface WeaponDto {
-  id: number
-  /** @example "CZ-457-VAR-22LR" */
-  reference: string
-  /** @example "CZ 457" */
-  name: string
-  /** @example "Une description de l arme son histoire ..." */
-  description: string
-  /** @example "Varmint ou Luxe" */
-  variation: string | null
-  /** @example "C" */
-  category: LegislationCategoryDto
-  caliber: CaliberDto
-  factory: FactoryDto
-  type: WeaponTypeDto
-  /** @example 51 */
-  barrelLength: number
-  /** @example true */
-  isOpticReady: boolean
-  /** @example false */
-  isAdjustableTrigger: boolean
-  /** @example false */
-  isThreadedBarrel: boolean
-  /** @example "Lourd" */
-  barrelType: WeaponBarrelTypeDto
-  threadedSize: ThreadedSizeDto
-  adjustableTriggerValue: string
-  percussionType: PercussionTypeDto
-  providedMagazineQuantity: number
-  providedMagazine: WeaponMagazineDto
-  barrelSize: number
-  /** Crosse ajustable en profondeur */
-  isAdjustableButt: boolean
-  /** Busc adjutable */
-  isAdjustableBusk: boolean
-  buttMaterial: MaterialDto
-  railSize: RailSizeDto
-  /** Grenadiere */
-  grenadierSlot: number
-  /** Port QC */
-  qcSlot: number
-  /** Rail Mlock */
-  isMlockCompatibility: boolean
-  /** Rail picatiny */
-  isPicatinyRailSlop: boolean
-  /** Visee ouverte ? */
-  isOpenAim: boolean
-  /** Guidon reglable */
-  isAdjustableFrontSight: boolean
-  /** Hausse reglable */
-  isAdjustableBackSight: boolean
-  mLockOptions: string | null
-  decocking: boolean
-  triggerType: WeaponTriggerTypeDto
-  buttColor: ColorDto
-  slideColor: ColorDto
-  slideMaterial: MaterialDto
-  barrelColor: ColorDto
-  isExternalHammer: boolean
-  opticReadyPlates: OpticReadyPlateDto[]
-}
-
 export interface ListOfPrerequisitesWeaponDto {
   calibers: CaliberDto[]
   factories: FactoryDto[]
@@ -225,121 +151,6 @@ export interface ListOfPrerequisitesWeaponDto {
   triggerTypes: WeaponTriggerTypeDto[]
   colors: ColorDto[]
   opticReadyPlates: OpticReadyPlateDto[]
-}
-
-export interface CreateWeaponDto {
-  /** @example "CZ 457" */
-  name: string
-  /** @example "Une description de l arme son histoire ..." */
-  description: string | null
-  /** @example "Varmint ou Luxe" */
-  variation: string | null
-  categoryId: number
-  caliberId: number
-  factoryId: number
-  typeId: number
-  /** @example 51 */
-  barrelLength: number
-  /** @example true */
-  isOpticReady: boolean
-  /** @example false */
-  isAdjustableTrigger: boolean
-  /** @example false */
-  isThreadedBarrel: boolean
-  barrelTypeId: number
-  threadedSizeId: number | null
-  adjustableTriggerValue: string | null
-  percussionTypeId: number
-  providedMagazineQuantity: number
-  providedMagazineId: number | null
-  barrelSize: number
-  /** Crosse ajustable en profondeur */
-  isAdjustableButt: boolean
-  /** Busc adjutable */
-  isAdjustableBusk: boolean
-  buttMaterialId: number
-  railSizeId: number | null
-  /** Grenadiere */
-  grenadierSlot: number
-  /** Port QC */
-  qcSlot: number
-  /** Rail Mlock */
-  isMlockCompatibility: boolean
-  /** Rail picatiny */
-  isPicatinyRailSlop: boolean
-  /** Visee ouverte ? */
-  isOpenAim: boolean
-  /** Guidon reglable */
-  isAdjustableFrontSight: boolean
-  /** Hausse reglable */
-  isAdjustableBackSight: boolean
-  mLockOptions: string | null
-  decocking: boolean
-  triggerTypeId: number
-  buttColorId: number
-  slideColorId: number
-  barrelColorId: number
-  slideMaterialId: number
-  isExternalHammer: boolean
-  providedOpticReadyPlates: OpticReadyPlateDto[] | null
-}
-
-export interface UpdateWeaponDto {
-  /** @example "CZ 457" */
-  name: string
-  /** @example "Une description de l arme son histoire ..." */
-  description: string | null
-  /** @example "Varmint ou Luxe" */
-  variation: string | null
-  categoryId: number
-  caliberId: number
-  factoryId: number
-  typeId: number
-  /** @example 51 */
-  barrelLength: number
-  /** @example true */
-  isOpticReady: boolean
-  /** @example false */
-  isAdjustableTrigger: boolean
-  /** @example false */
-  isThreadedBarrel: boolean
-  barrelTypeId: number
-  threadedSizeId: number | null
-  adjustableTriggerValue: string | null
-  percussionTypeId: number
-  providedMagazineQuantity: number
-  providedMagazineId: number | null
-  barrelSize: number
-  /** Crosse ajustable en profondeur */
-  isAdjustableButt: boolean
-  /** Busc adjutable */
-  isAdjustableBusk: boolean
-  buttMaterialId: number
-  railSizeId: number | null
-  /** Grenadiere */
-  grenadierSlot: number
-  /** Port QC */
-  qcSlot: number
-  /** Rail Mlock */
-  isMlockCompatibility: boolean
-  /** Rail picatiny */
-  isPicatinyRailSlop: boolean
-  /** Visee ouverte ? */
-  isOpenAim: boolean
-  /** Guidon reglable */
-  isAdjustableFrontSight: boolean
-  /** Hausse reglable */
-  isAdjustableBackSight: boolean
-  mLockOptions: string | null
-  decocking: boolean
-  triggerTypeId: number
-  buttColorId: number
-  slideColorId: number
-  barrelColorId: number
-  slideMaterialId: number
-  isExternalHammer: boolean
-  providedOpticReadyPlates: OpticReadyPlateDto[] | null
-  id: number
 }
 
 export interface ListOfPrerequisitesWeaponTypeDto {
@@ -359,6 +170,18 @@ export interface UpdateWeaponTypeDto {
   modeId: number
   reference: string
   id: number
+}
+
+export interface WeaponMagazineDto {
+  id: number
+  capacity: number
+  length: number
+  height: number
+  width: number
+  reference: string
+  body: MaterialDto
+  factory: FactoryDto
+  caliber: CaliberDto
 }
 
 export interface ListOfPrerequisitesWeaponMagazineDto {
@@ -433,6 +256,452 @@ export interface UpdateSoundNoiseReducerDto {
   description: string
   reference: string
   isCleanable: boolean
+  id: number
+}
+
+export interface HandGunDto {
+  id: number
+  /** @example "CZ-457-VAR-22LR" */
+  reference: string
+  /** @example "CZ 457" */
+  name: string
+  /** @example "Une description de l arme son histoire ..." */
+  description: string
+  /** @example "Varmint ou Luxe" */
+  variation: string | null
+  /** @example "C" */
+  category: LegislationCategoryDto
+  caliber: CaliberDto
+  factory: FactoryDto
+  type: WeaponTypeDto
+  /** @example 51 */
+  barrelLength: number
+  /** @example false */
+  isAdjustableTrigger: boolean
+  /** @example false */
+  isThreadedBarrel: boolean
+  /** @example "Lourd" */
+  barrelType: WeaponBarrelTypeDto
+  threadedSize: ThreadedSizeDto
+  adjustableTriggerValue: string
+  percussionType: PercussionTypeDto
+  providedMagazineQuantity: number
+  providedMagazine: WeaponMagazineDto
+  barrelSize: number
+  buttMaterial: MaterialDto
+  /** Guidon reglable */
+  isAdjustableFrontSight: boolean
+  /** Hausse reglable */
+  isAdjustableBackSight: boolean
+  buttColor: ColorDto
+  barrelColor: ColorDto
+  /** @example true */
+  isOpticReady: boolean
+  decocking: boolean
+  triggerType: WeaponTriggerTypeDto
+  slideColor: ColorDto
+  slideMaterial: MaterialDto
+  isExternalHammer: boolean
+  opticReadyPlates: OpticReadyPlateDto[]
+  /** Rail picatiny */
+  isPicatinyRailSlop: boolean
+}
+
+export interface CreateHandGunDto {
+  /**
+   * Nom du model de l arme
+   * @example "CZ 457"
+   */
+  name: string
+  /** @example "Une description de l arme son histoire ..." */
+  description: string | null
+  /**
+   * Variante du modele
+   * @example "Varmint ou Luxe"
+   */
+  variation: string | null
+  /** La categorie de l arme en france */
+  categoryId: number
+  /** Le calibre de l arme */
+  caliberId: number
+  /** la marque */
+  factoryId: number
+  /**
+   * Type d arme
+   * @example "Fusil a verrou"
+   */
+  typeId: number
+  /**
+   * La longueur du canon en cm
+   * @example 51
+   */
+  barrelLength: number
+  /**
+   * Si le poid de depart de la detente est reglable
+   * @example false
+   */
+  isAdjustableTrigger: boolean
+  /**
+   * Si le canon est fillete
+   * @example false
+   */
+  isThreadedBarrel: boolean
+  /** Le type de canon (lourd/leger...) */
+  barrelTypeId: number
+  /** Les dimmension du filletage */
+  threadedSizeId: number | null
+  /**
+   * les valeurs de poids depart de la detente
+   * @example "Entre 1 et 2kg"
+   */
+  adjustableTriggerValue: string | null
+  /** Le type de percussion ( annulaire ou centrale ) */
+  percussionTypeId: number
+  /**
+   * Le nombre de chargeur fournis
+   * @example 1
+   */
+  providedMagazineQuantity: number
+  /** Le modele de chargeur fournis */
+  providedMagazineId: number | null
+  /**
+   * L'epaisseur exterieur du canon
+   * @example 18
+   */
+  barrelSize: number
+  /** La matiere de la crosse ou caracasse */
+  buttMaterialId: number
+  /** Guidon reglable */
+  isAdjustableFrontSight: boolean
+  /** Hausse reglable */
+  isAdjustableBackSight: boolean
+  /** la couleur de la crosse */
+  buttColorId: number
+  /** la couleur du canon  */
+  barrelColorId: number
+  /** @example true */
+  isOpticReady: boolean
+  decocking: boolean
+  triggerTypeId: number
+  slideColorId: number
+  slideMaterialId: number
+  isExternalHammer: boolean
+  providedOpticReadyPlates: OpticReadyPlateDto[] | null
+  /** Rail picatiny */
+  isPicatinyRailSlop: boolean
+}
+
+export interface UpdateHandGunDto {
+  /**
+   * Nom du model de l arme
+   * @example "CZ 457"
+   */
+  name: string
+  /** @example "Une description de l arme son histoire ..." */
+  description: string | null
+  /**
+   * Variante du modele
+   * @example "Varmint ou Luxe"
+   */
+  variation: string | null
+  /** La categorie de l arme en france */
+  categoryId: number
+  /** Le calibre de l arme */
+  caliberId: number
+  /** la marque */
+  factoryId: number
+  /**
+   * Type d arme
+   * @example "Fusil a verrou"
+   */
+  typeId: number
+  /**
+   * La longueur du canon en cm
+   * @example 51
+   */
+  barrelLength: number
+  /**
+   * Si le poid de depart de la detente est reglable
+   * @example false
+   */
+  isAdjustableTrigger: boolean
+  /**
+   * Si le canon est fillete
+   * @example false
+   */
+  isThreadedBarrel: boolean
+  /** Le type de canon (lourd/leger...) */
+  barrelTypeId: number
+  /** Les dimmension du filletage */
+  threadedSizeId: number | null
+  /**
+   * les valeurs de poids depart de la detente
+   * @example "Entre 1 et 2kg"
+   */
+  adjustableTriggerValue: string | null
+  /** Le type de percussion ( annulaire ou centrale ) */
+  percussionTypeId: number
+  /**
+   * Le nombre de chargeur fournis
+   * @example 1
+   */
+  providedMagazineQuantity: number
+  /** Le modele de chargeur fournis */
+  providedMagazineId: number | null
+  /**
+   * L'epaisseur exterieur du canon
+   * @example 18
+   */
+  barrelSize: number
+  /** La matiere de la crosse ou caracasse */
+  buttMaterialId: number
+  /** Guidon reglable */
+  isAdjustableFrontSight: boolean
+  /** Hausse reglable */
+  isAdjustableBackSight: boolean
+  /** la couleur de la crosse */
+  buttColorId: number
+  /** la couleur du canon  */
+  barrelColorId: number
+  /** @example true */
+  isOpticReady: boolean
+  decocking: boolean
+  triggerTypeId: number
+  slideColorId: number
+  slideMaterialId: number
+  isExternalHammer: boolean
+  providedOpticReadyPlates: OpticReadyPlateDto[] | null
+  /** Rail picatiny */
+  isPicatinyRailSlop: boolean
+  id: number
+}
+
+export interface RiffleDto {
+  id: number
+  /** @example "CZ-457-VAR-22LR" */
+  reference: string
+  /** @example "CZ 457" */
+  name: string
+  /** @example "Une description de l arme son histoire ..." */
+  description: string
+  /** @example "Varmint ou Luxe" */
+  variation: string | null
+  /** @example "C" */
+  category: LegislationCategoryDto
+  caliber: CaliberDto
+  factory: FactoryDto
+  type: WeaponTypeDto
+  /** @example 51 */
+  barrelLength: number
+  /** @example false */
+  isAdjustableTrigger: boolean
+  /** @example false */
+  isThreadedBarrel: boolean
+  /** @example "Lourd" */
+  barrelType: WeaponBarrelTypeDto
+  threadedSize: ThreadedSizeDto
+  adjustableTriggerValue: string
+  percussionType: PercussionTypeDto
+  providedMagazineQuantity: number
+  providedMagazine: WeaponMagazineDto
+  barrelSize: number
+  buttMaterial: MaterialDto
+  /** Guidon reglable */
+  isAdjustableFrontSight: boolean
+  /** Hausse reglable */
+  isAdjustableBackSight: boolean
+  buttColor: ColorDto
+  barrelColor: ColorDto
+  /** Crosse ajustable en profondeur */
+  isAdjustableButt: boolean
+  /** Busc adjutable */
+  isAdjustableBusk: boolean
+  railSize: RailSizeDto
+  /** Grenadiere */
+  grenadierSlot: number
+  /** Port QC */
+  qcSlot: number
+  /** Rail Mlock */
+  isMlockCompatibility: boolean
+  /** Visee ouverte ? */
+  isOpenAim: boolean
+  mLockOptions: string | null
+}
+
+export interface CreateRiffleDto {
+  /**
+   * Nom du model de l arme
+   * @example "CZ 457"
+   */
+  name: string
+  /** @example "Une description de l arme son histoire ..." */
+  description: string | null
+  /**
+   * Variante du modele
+   * @example "Varmint ou Luxe"
+   */
+  variation: string | null
+  /** La categorie de l arme en france */
+  categoryId: number
+  /** Le calibre de l arme */
+  caliberId: number
+  /** la marque */
+  factoryId: number
+  /**
+   * Type d arme
+   * @example "Fusil a verrou"
+   */
+  typeId: number
+  /**
+   * La longueur du canon en cm
+   * @example 51
+   */
+  barrelLength: number
+  /**
+   * Si le poid de depart de la detente est reglable
+   * @example false
+   */
+  isAdjustableTrigger: boolean
+  /**
+   * Si le canon est fillete
+   * @example false
+   */
+  isThreadedBarrel: boolean
+  /** Le type de canon (lourd/leger...) */
+  barrelTypeId: number
+  /** Les dimmension du filletage */
+  threadedSizeId: number | null
+  /**
+   * les valeurs de poids depart de la detente
+   * @example "Entre 1 et 2kg"
+   */
+  adjustableTriggerValue: string | null
+  /** Le type de percussion ( annulaire ou centrale ) */
+  percussionTypeId: number
+  /**
+   * Le nombre de chargeur fournis
+   * @example 1
+   */
+  providedMagazineQuantity: number
+  /** Le modele de chargeur fournis */
+  providedMagazineId: number | null
+  /**
+   * L'epaisseur exterieur du canon
+   * @example 18
+   */
+  barrelSize: number
+  /** La matiere de la crosse ou caracasse */
+  buttMaterialId: number
+  /** Guidon reglable */
+  isAdjustableFrontSight: boolean
+  /** Hausse reglable */
+  isAdjustableBackSight: boolean
+  /** la couleur de la crosse */
+  buttColorId: number
+  /** la couleur du canon  */
+  barrelColorId: number
+  /** Crosse ajustable en profondeur */
+  isAdjustableButt: boolean
+  /** Busc adjutable */
+  isAdjustableBusk: boolean
+  railSizeId: number | null
+  /** Grenadiere */
+  grenadierSlot: number
+  /** Port QC */
+  qcSlot: number
+  /** Rail Mlock */
+  isMlockCompatibility: boolean
+  /** Visee ouverte ? */
+  isOpenAim: boolean
+  mLockOptions: string | null
+}
+
+export interface UpdateRiffleDto {
+  /**
+   * Nom du model de l arme
+   * @example "CZ 457"
+   */
+  name: string
+  /** @example "Une description de l arme son histoire ..." */
+  description: string | null
+  /**
+   * Variante du modele
+   * @example "Varmint ou Luxe"
+   */
+  variation: string | null
+  /** La categorie de l arme en france */
+  categoryId: number
+  /** Le calibre de l arme */
+  caliberId: number
+  /** la marque */
+  factoryId: number
+  /**
+   * Type d arme
+   * @example "Fusil a verrou"
+   */
+  typeId: number
+  /**
+   * La longueur du canon en cm
+   * @example 51
+   */
+  barrelLength: number
+  /**
+   * Si le poid de depart de la detente est reglable
+   * @example false
+   */
+  isAdjustableTrigger: boolean
+  /**
+   * Si le canon est fillete
+   * @example false
+   */
+  isThreadedBarrel: boolean
+  /** Le type de canon (lourd/leger...) */
+  barrelTypeId: number
+  /** Les dimmension du filletage */
+  threadedSizeId: number | null
+  /**
+   * les valeurs de poids depart de la detente
+   * @example "Entre 1 et 2kg"
+   */
+  adjustableTriggerValue: string | null
+  /** Le type de percussion ( annulaire ou centrale ) */
+  percussionTypeId: number
+  /**
+   * Le nombre de chargeur fournis
+   * @example 1
+   */
+  providedMagazineQuantity: number
+  /** Le modele de chargeur fournis */
+  providedMagazineId: number | null
+  /**
+   * L'epaisseur exterieur du canon
+   * @example 18
+   */
+  barrelSize: number
+  /** La matiere de la crosse ou caracasse */
+  buttMaterialId: number
+  /** Guidon reglable */
+  isAdjustableFrontSight: boolean
+  /** Hausse reglable */
+  isAdjustableBackSight: boolean
+  /** la couleur de la crosse */
+  buttColorId: number
+  /** la couleur du canon  */
+  barrelColorId: number
+  /** Crosse ajustable en profondeur */
+  isAdjustableButt: boolean
+  /** Busc adjutable */
+  isAdjustableBusk: boolean
+  railSizeId: number | null
+  /** Grenadiere */
+  grenadierSlot: number
+  /** Port QC */
+  qcSlot: number
+  /** Rail Mlock */
+  isMlockCompatibility: boolean
+  /** Visee ouverte ? */
+  isOpenAim: boolean
+  mLockOptions: string | null
   id: number
 }
 
@@ -1059,48 +1328,16 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
-     * @description Retourne la liste des references d arme enregister en bdd
+     * @description Retourne la liste complete des categories d arme
      *
-     * @tags Weapon
-     * @name WeaponControllerFindAll
-     * @summary Liste complete
-     * @request GET:/api/weapon/all
+     * @tags LegislationCategory
+     * @name LegislationCategoryControllerFindAll
+     * @summary Liste complète
+     * @request GET:/api/legislation-category/all
      */
-    weaponControllerFindAll: (params: RequestParams = {}) =>
-      this.request<WeaponDto[], any>({
-        path: `/api/weapon/all`,
-        method: 'GET',
-        format: 'json',
-        ...params
-      }),
-
-    /**
-     * @description Retourne la liste des references d arme enregister en bdd
-     *
-     * @tags Weapon
-     * @name WeaponControllerFindAllByCategory
-     * @summary Armes par categorie
-     * @request GET:/api/weapon/by/category/{categoryId}
-     */
-    weaponControllerFindAllByCategory: (categoryId: number, params: RequestParams = {}) =>
-      this.request<WeaponDto[], any>({
-        path: `/api/weapon/by/category/${categoryId}`,
-        method: 'GET',
-        format: 'json',
-        ...params
-      }),
-
-    /**
-     * @description Retourne le detail d une arme
-     *
-     * @tags Weapon
-     * @name WeaponControllerFindById
-     * @summary Par id
-     * @request GET:/api/weapon/by/id/{id}
-     */
-    weaponControllerFindById: (id: number, params: RequestParams = {}) =>
-      this.request<WeaponDto, any>({
-        path: `/api/weapon/by/id/${id}`,
+    legislationCategoryControllerFindAll: (params: RequestParams = {}) =>
+      this.request<LegislationCategoryDto[], any>({
+        path: `/api/legislation-category/all`,
         method: 'GET',
         format: 'json',
         ...params
@@ -1118,58 +1355,6 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       this.request<ListOfPrerequisitesWeaponDto, any>({
         path: `/api/weapon/prerequisites`,
         method: 'GET',
-        format: 'json',
-        ...params
-      }),
-
-    /**
-     * @description Ajoute une nouvelle arme en base de donnee
-     *
-     * @tags Weapon
-     * @name WeaponControllerCreate
-     * @summary Ajour d une arme
-     * @request POST:/api/weapon
-     */
-    weaponControllerCreate: (data: CreateWeaponDto, params: RequestParams = {}) =>
-      this.request<WeaponDto, any>({
-        path: `/api/weapon`,
-        method: 'POST',
-        body: data,
-        type: ContentType.Json,
-        format: 'json',
-        ...params
-      }),
-
-    /**
-     * @description Edition d une arme
-     *
-     * @tags Weapon
-     * @name WeaponControllerEdit
-     * @summary Edition
-     * @request PUT:/api/weapon/{id}
-     */
-    weaponControllerEdit: (id: number, data: UpdateWeaponDto, params: RequestParams = {}) =>
-      this.request<WeaponDto, any>({
-        path: `/api/weapon/${id}`,
-        method: 'PUT',
-        body: data,
-        type: ContentType.Json,
-        format: 'json',
-        ...params
-      }),
-
-    /**
-     * @description Suppression logique d une arme
-     *
-     * @tags Weapon
-     * @name WeaponControllerDelete
-     * @summary Suppression logique
-     * @request DELETE:/api/weapon/{id}
-     */
-    weaponControllerDelete: (id: number, params: RequestParams = {}) =>
-      this.request<ApiDeleteResponseDto, any>({
-        path: `/api/weapon/${id}`,
-        method: 'DELETE',
         format: 'json',
         ...params
       }),
@@ -1461,6 +1646,206 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
     soundReducerControllerDelete: (id: number, params: RequestParams = {}) =>
       this.request<ApiDeleteResponseDto, any>({
         path: `/api/sound-reducer/${id}`,
+        method: 'DELETE',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne la liste des arme de poings
+     *
+     * @tags Hand-Gun
+     * @name HandGunControllerFindAll
+     * @summary Liste complète
+     * @request GET:/api/hand-gun/all
+     */
+    handGunControllerFindAll: (params: RequestParams = {}) =>
+      this.request<HandGunDto[], any>({
+        path: `/api/hand-gun/all`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne l arme de poing trouver par son id
+     *
+     * @tags Hand-Gun
+     * @name HandGunControllerFindById
+     * @summary Filtré par id
+     * @request GET:/api/hand-gun/by/id/{id}
+     */
+    handGunControllerFindById: (id: number, params: RequestParams = {}) =>
+      this.request<HandGunDto, any>({
+        path: `/api/hand-gun/by/id/${id}`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne la liste des arme de poings filtree par categories
+     *
+     * @tags Hand-Gun
+     * @name HandGunControllerFindAllByCategory
+     * @summary Filtré par categorie
+     * @request GET:/api/hand-gun/by/category/{categoryId}
+     */
+    handGunControllerFindAllByCategory: (categoryId: number, params: RequestParams = {}) =>
+      this.request<HandGunDto[], any>({
+        path: `/api/hand-gun/by/category/${categoryId}`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Ajout d une nouvelle arme de poing
+     *
+     * @tags Hand-Gun
+     * @name HandGunControllerCreate
+     * @summary Creation
+     * @request POST:/api/hand-gun
+     */
+    handGunControllerCreate: (data: CreateHandGunDto, params: RequestParams = {}) =>
+      this.request<HandGunDto, any>({
+        path: `/api/hand-gun`,
+        method: 'POST',
+        body: data,
+        type: ContentType.Json,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Edition d une arme de poing
+     *
+     * @tags Hand-Gun
+     * @name HandGunControllerUpdate
+     * @summary Edition
+     * @request PUT:/api/hand-gun/{id}
+     */
+    handGunControllerUpdate: (id: number, data: UpdateHandGunDto, params: RequestParams = {}) =>
+      this.request<HandGunDto, any>({
+        path: `/api/hand-gun/${id}`,
+        method: 'PUT',
+        body: data,
+        type: ContentType.Json,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Suppresion logique de l arme de poing
+     *
+     * @tags Hand-Gun
+     * @name HandGunControllerDelete
+     * @summary Suppresion logique
+     * @request DELETE:/api/hand-gun/{id}
+     */
+    handGunControllerDelete: (id: number, params: RequestParams = {}) =>
+      this.request<ApiDeleteResponseDto, any>({
+        path: `/api/hand-gun/${id}`,
+        method: 'DELETE',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne la liste des armes longues
+     *
+     * @tags Riffle
+     * @name RiffleControllerFindAll
+     * @summary Liste complète
+     * @request GET:/api/riffle/all
+     */
+    riffleControllerFindAll: (params: RequestParams = {}) =>
+      this.request<RiffleDto[], any>({
+        path: `/api/riffle/all`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne l arme longue trouver par son id
+     *
+     * @tags Riffle
+     * @name RiffleControllerFindById
+     * @summary Filtré par id
+     * @request GET:/api/riffle/by/id/{id}
+     */
+    riffleControllerFindById: (id: number, params: RequestParams = {}) =>
+      this.request<RiffleDto, any>({
+        path: `/api/riffle/by/id/${id}`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne la liste des arme de poings filtree par categories
+     *
+     * @tags Riffle
+     * @name RiffleControllerFindAllByCategory
+     * @summary Filtré par categorie
+     * @request GET:/api/riffle/by/category/{categoryId}
+     */
+    riffleControllerFindAllByCategory: (categoryId: number, params: RequestParams = {}) =>
+      this.request<RiffleDto[], any>({
+        path: `/api/riffle/by/category/${categoryId}`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Ajout d une nouvelle arme longue
+     *
+     * @tags Riffle
+     * @name RiffleControllerCreate
+     * @summary Creation
+     * @request POST:/api/riffle
+     */
+    riffleControllerCreate: (data: CreateRiffleDto, params: RequestParams = {}) =>
+      this.request<RiffleDto, any>({
+        path: `/api/riffle`,
+        method: 'POST',
+        body: data,
+        type: ContentType.Json,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Edition d une arme longue
+     *
+     * @tags Riffle
+     * @name RiffleControllerUpdate
+     * @summary Edition
+     * @request PUT:/api/riffle/{id}
+     */
+    riffleControllerUpdate: (id: number, data: UpdateRiffleDto, params: RequestParams = {}) =>
+      this.request<RiffleDto, any>({
+        path: `/api/riffle/${id}`,
+        method: 'PUT',
+        body: data,
+        type: ContentType.Json,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Suppresion logique de l arme longue
+     *
+     * @tags Riffle
+     * @name RiffleControllerDelete
+     * @summary Suppresion logique
+     * @request DELETE:/api/riffle/{id}
+     */
+    riffleControllerDelete: (id: number, params: RequestParams = {}) =>
+      this.request<ApiDeleteResponseDto, any>({
+        path: `/api/riffle/${id}`,
         method: 'DELETE',
         format: 'json',
         ...params

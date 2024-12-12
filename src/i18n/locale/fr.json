@@ -65,7 +65,9 @@
     "from": "de",
     "to": "à",
     "magazine": "chargeur",
-    "packaging": "packaging"
+    "packaging": "packaging",
+    "continue": "Continuer",
+    "quantity": "quantité"
 
   },
   "weapon": {

@@ -34,7 +34,7 @@ const router = createRouter({
           component: () => import('../views/weapon/AdminWeaponFormView.vue')
         },
         {
-          path: 'gestion/list/weapon/:category',
+          path: 'gestion/list/weapon/:type/:category',
           props: true,
           name: 'weaponList',
           component: () => import('../views/weapon/AdminWeaponListView.vue')

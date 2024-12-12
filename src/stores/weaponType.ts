@@ -8,7 +8,7 @@ import type { CreateWeaponTypeDto, WeaponReloadModeDto, WeaponTypeDto } from '@/
 export const useWeaponTypeStore = defineStore('weaponType', () => {
   const { api } = useApiStore()
   const { successMessage } = useToastStore()
-  const getAllData = ref<WeaponTypeDto[]>([])
+  const getAllWeaponType = ref<WeaponTypeDto[]>([])
   const modes = ref<WeaponReloadModeDto[]>([])
 
   const createWeaponTypeMutate = useMutation({
@@ -17,7 +17,7 @@ export const useWeaponTypeStore = defineStore('weaponType', () => {
     },
     onSuccess(data) {
       successMessage('weaponType.summary', 'weaponType.form.success')
-      getAllData.value.push(data.data)
+      getAllWeaponType.value.push(data.data)
     }
   })
 
@@ -25,7 +25,7 @@ export const useWeaponTypeStore = defineStore('weaponType', () => {
     queryKey: ['weaponTypesQuery'],
     queryFn: async () => {
       const res = await api.api.weaponTypeControllerFindAllWeaponTypes()
-      getAllData.value = res.data
+      getAllWeaponType.value = res.data
       return res
     }
   })
@@ -42,7 +42,7 @@ export const useWeaponTypeStore = defineStore('weaponType', () => {
   return {
     create: createWeaponTypeMutate,
     getAll: getAllQuery,
-    getAllData$: getAllData,
+    getAllData$: getAllWeaponType,
     prerequisiteList: queryPrerequisitesWeaponTypeQuery,
     modes$: modes
   }
