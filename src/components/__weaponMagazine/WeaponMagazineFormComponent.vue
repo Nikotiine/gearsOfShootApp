@@ -155,7 +155,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useWeaponMagazineStore } from '@/stores/weaponMagazine'
+import { useWeaponMagazineStore } from '@/stores/weapon-magazine'
 import type { CreateWeaponMagazineDto } from '@/api/Api'
 import { computed, ref } from 'vue'
 import Textarea from 'primevue/textarea'

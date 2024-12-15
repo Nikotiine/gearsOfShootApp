@@ -370,15 +370,15 @@ export interface CreateHandGunDto {
    */
   barrelSize: number
   /** La matiere de la crosse ou caracasse */
-  buttMaterialId: number
+  buttMaterialId: number | null
   /** Guidon reglable */
   isAdjustableFrontSight: boolean
   /** Hausse reglable */
   isAdjustableBackSight: boolean
   /** la couleur de la crosse */
-  buttColorId: number
+  buttColorId: number | null
   /** la couleur du canon  */
-  barrelColorId: number
+  barrelColorId: number | null
   /** @example true */
   isOpticReady: boolean
   decocking: boolean
@@ -454,15 +454,15 @@ export interface UpdateHandGunDto {
    */
   barrelSize: number
   /** La matiere de la crosse ou caracasse */
-  buttMaterialId: number
+  buttMaterialId: number | null
   /** Guidon reglable */
   isAdjustableFrontSight: boolean
   /** Hausse reglable */
   isAdjustableBackSight: boolean
   /** la couleur de la crosse */
-  buttColorId: number
+  buttColorId: number | null
   /** la couleur du canon  */
-  barrelColorId: number
+  barrelColorId: number | null
   /** @example true */
   isOpticReady: boolean
   decocking: boolean
@@ -591,15 +591,15 @@ export interface CreateRiffleDto {
    */
   barrelSize: number
   /** La matiere de la crosse ou caracasse */
-  buttMaterialId: number
+  buttMaterialId: number | null
   /** Guidon reglable */
   isAdjustableFrontSight: boolean
   /** Hausse reglable */
   isAdjustableBackSight: boolean
   /** la couleur de la crosse */
-  buttColorId: number
+  buttColorId: number | null
   /** la couleur du canon  */
-  barrelColorId: number
+  barrelColorId: number | null
   /** Crosse ajustable en profondeur */
   isAdjustableButt: boolean
   /** Busc adjutable */
@@ -679,15 +679,15 @@ export interface UpdateRiffleDto {
    */
   barrelSize: number
   /** La matiere de la crosse ou caracasse */
-  buttMaterialId: number
+  buttMaterialId: number | null
   /** Guidon reglable */
   isAdjustableFrontSight: boolean
   /** Hausse reglable */
   isAdjustableBackSight: boolean
   /** la couleur de la crosse */
-  buttColorId: number
+  buttColorId: number | null
   /** la couleur du canon  */
-  barrelColorId: number
+  barrelColorId: number | null
   /** Crosse ajustable en profondeur */
   isAdjustableButt: boolean
   /** Busc adjutable */
@@ -1448,7 +1448,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags Magazine
      * @name MagazineControllerFindAll
-     * @summary Liste des chargeurs
+     * @summary Liste complète
      * @request GET:/api/magazine/all
      */
     magazineControllerFindAll: (params: RequestParams = {}) =>
@@ -1464,12 +1464,28 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags Magazine
      * @name MagazineControllerFindById
-     * @summary Par id
-     * @request GET:/api/magazine/by/{id}
+     * @summary Filtré par id
+     * @request GET:/api/magazine/by/id/{id}
      */
     magazineControllerFindById: (id: number, params: RequestParams = {}) =>
       this.request<WeaponMagazineDto, any>({
-        path: `/api/magazine/by/${id}`,
+        path: `/api/magazine/by/id/${id}`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne les chargeurs filtres par marque
+     *
+     * @tags Magazine
+     * @name MagazineControllerFindByFactory
+     * @summary Filtré par maruqe
+     * @request GET:/api/magazine/by/factory/{factoryId}
+     */
+    magazineControllerFindByFactory: (factoryId: number, params: RequestParams = {}) =>
+      this.request<WeaponMagazineDto[], any>({
+        path: `/api/magazine/by/factory/${factoryId}`,
         method: 'GET',
         format: 'json',
         ...params
