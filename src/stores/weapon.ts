@@ -64,10 +64,3 @@ export type FocusField =
   | 'opticRail'
   | 'threadSize'
   | 'name'
-export type DrawerWeaponForm =
-  | 'caliber'
-  | 'factory'
-  | 'buttMaterial'
-  | 'buttColor'
-  | 'opticRail'
-  | 'threadSize'

@@ -5,38 +5,30 @@
       v-if="store.prerequisitesWeaponList.isSuccess"
     >
       <InputGroup>
-        <InputGroupAddon>
-          <i :class="isOnContinue ? 'pi pi-check text-green-400' : 'pi pi-sort'"></i>
-        </InputGroupAddon>
-        <IftaLabel>
-          <Select
-            v-model="typeId"
-            :options="store.prerequisitesWeaponList.data?.data.types"
-            optionLabel="name"
-            :placeholder="t('global.select')"
-            optionValue="id"
-            id="typeId"
-            :disabled="isOnContinue"
-          />
-          <label for="typeId" v-capitalize="t('global.weaponType')"></label>
-        </IftaLabel>
+        <input-group-required-icon :is-validate="isOnContinue" />
+        <input-group-select
+          :options="store.prerequisitesWeaponList.data?.data.types"
+          type="weaponType"
+          @option-id="(event) => (typeId = event)"
+          required
+          :disabled="isOnContinue"
+          filter
+        />
+        <input-group-addon-open-drawer-button
+          type="weaponType"
+          :open-drawer="openDrawer"
+          v-if="!isOnContinue"
+        />
       </InputGroup>
       <InputGroup>
-        <InputGroupAddon>
-          <i :class="isOnContinue ? 'pi pi-check text-green-400' : 'pi pi-sort'"></i>
-        </InputGroupAddon>
-        <IftaLabel>
-          <Select
-            v-model="categoryId"
-            :options="store.prerequisitesWeaponList.data?.data.categories"
-            :placeholder="t('global.select')"
-            id="categoryId"
-            optionValue="id"
-            optionLabel="name"
-            :disabled="isOnContinue"
-          />
-          <label for="categoryId" v-capitalize="t('global.category')"></label>
-        </IftaLabel>
+        <input-group-required-icon :is-validate="isOnContinue" />
+        <input-group-select
+          :options="store.prerequisitesWeaponList.data?.data.categories"
+          type="legalisationCategory"
+          @option-id="(event) => (categoryId = event)"
+          required
+          :disabled="isOnContinue"
+        />
       </InputGroup>
     </div>
     <div class="flex justify-center mt-6" v-if="!isOnContinue">
@@ -52,15 +44,18 @@
 
 <script setup lang="ts">
 import InputGroup from 'primevue/inputgroup'
-import IftaLabel from 'primevue/iftalabel'
-import Select from 'primevue/select'
-import InputGroupAddon from 'primevue/inputgroupaddon'
 import { computed, ref } from 'vue'
 import Button from 'primevue/button'
 import { useI18n } from 'vue-i18n'
 import { useWeaponStore } from '@/stores/weapon'
+import InputGroupAddonOpenDrawerButton from '@/components/__form/InputGroupAddonOpenDrawerButton.vue'
+import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
+import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 const store = useWeaponStore()
 const { t } = useI18n()
+const { openDrawer } = defineProps<{
+  openDrawer: Function
+}>()
 const nextStep = defineEmits(['nextStep'])
 const typeId = ref<number>(0)
 const categoryId = ref<number>(0)

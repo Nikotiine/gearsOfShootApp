@@ -2,214 +2,128 @@
   <form @submit.prevent="submit">
     <div
       class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4"
-      id="riffleForm"
       v-if="store.prerequisitesWeaponList.isSuccess"
     >
       <InputGroup>
-        <InputGroupAddon>
-          <i
-            :class="optionalFilledIcon"
-            v-tooltip="'Enter your username'"
-            @click="selectDrawerFormType('caliber')"
-            class="cursor-pointer"
-          ></i>
-        </InputGroupAddon>
-
-        <IftaLabel>
-          <Select
-            id="caliberId"
-            v-model="form.caliberId"
-            :options="store.prerequisitesWeaponList.data.data.calibers"
-            optionLabel="name"
-            optionValue="id"
-            :placeholder="t('global.select')"
-            @focus="onFocus('caliber')"
-            :invalid="isInvalidCaliber"
-            checkmark
-            :highlightOnSelect="true"
-          />
-          <label for="caliberId" v-capitalize="t('global.caliber') + requiredLabel"></label>
-        </IftaLabel>
+        <input-group-required-icon :is-validate="form.caliberId > 0" />
+        <input-group-select
+          :options="store.prerequisitesWeaponList.data.data.calibers"
+          type="caliber"
+          @option-id="(event) => (form.caliberId = event)"
+          required
+          filter
+        />
+        <input-group-addon-open-drawer-button type="caliber" :open-drawer="openDrawer" />
       </InputGroup>
 
       <InputGroup>
-        <InputGroupAddon>
-          <i :class="form.factoryId > 0 ? validIcon : requiredIcon"></i>
-        </InputGroupAddon>
-        <IftaLabel>
-          <Select
-            id="factoryId"
-            v-model="form.factoryId"
-            :options="store.prerequisitesWeaponList.data.data.factories"
-            filter
-            optionLabel="name"
-            optionValue="id"
-            :placeholder="t('global.select')"
-            checkmark
-            :highlightOnSelect="true"
-            @focus="onFocus('factory')"
-            :invalid="isInvalidFactory"
-          />
-          <label for="factoryId" v-capitalize="t('global.factory') + requiredLabel"></label>
-        </IftaLabel>
+        <input-group-required-icon :is-validate="form.factoryId > 0" />
+        <input-group-select
+          :options="store.prerequisitesWeaponList.data.data.factories"
+          type="factory"
+          @option-id="(event) => (form.factoryId = event)"
+          required
+          filter
+        />
+        <input-group-addon-open-drawer-button type="factory" :open-drawer="openDrawer" />
       </InputGroup>
 
       <InputGroup>
-        <InputGroupAddon>
-          <i :class="form.name.length < 3 ? requiredIcon : validIcon"></i>
-        </InputGroupAddon>
-        <IftaLabel>
-          <InputText
-            id="name"
-            v-model="form.name"
-            :placeholder="t('weapon.form.name')"
-            @focus="onFocus('name')"
-            :invalid="isInvalidName"
-          />
-          <label for="name" v-capitalize="t('global.model') + requiredLabel"></label>
-        </IftaLabel>
+        <input-group-required-icon :is-validate="form.name.length >= 3" />
+        <input-group-text
+          @value="(value) => (form.name = value)"
+          :min-length="3"
+          placeholder="weaponModel"
+          label="weaponModel"
+          required
+        />
       </InputGroup>
 
       <InputGroup>
-        <InputGroupAddon>
-          <i
-            :class="form.variation && form.variation.length > 0 ? optionalFilledIcon : optionalIcon"
-          ></i>
-        </InputGroupAddon>
-        <IftaLabel>
-          <InputText
-            id="variation"
-            v-model="form.variation"
-            :placeholder="t('weapon.form.variation')"
-          />
-          <label for="variation">{{ t('weapon.form.variation') }}</label>
-        </IftaLabel>
+        <input-group-optional-icon :is-completed="form.variation.length > 0" />
+        <input-group-text
+          @value="(value) => (form.variation = value)"
+          placeholder="weaponVariation"
+          label="weaponVariation"
+        />
       </InputGroup>
 
       <InputGroup>
-        <InputGroupAddon>
-          <i :class="form.percussionTypeId > 0 ? validIcon : requiredIcon"></i>
-        </InputGroupAddon>
-        <IftaLabel>
-          <Select
-            v-model="form.percussionTypeId"
-            :options="store.prerequisitesWeaponList.data.data.percussionTypes"
-            optionLabel="name"
-            :placeholder="t('global.select')"
-            optionValue="id"
-            id="typeId"
-            checkmark
-            :highlightOnSelect="true"
-            @focus="onFocus('percussion')"
-            :invalid="isInvalidPercussion"
-          />
-          <label for="typeId">{{ t('weapon.form.percussionType') + requiredLabel }}</label>
-        </IftaLabel>
+        <input-group-required-icon :is-validate="form.percussionTypeId > 0" />
+        <input-group-select
+          :options="store.prerequisitesWeaponList.data.data.percussionTypes"
+          type="percussion"
+          @option-id="(event) => (form.percussionTypeId = event)"
+          required
+        />
       </InputGroup>
 
       <InputGroup>
-        <InputGroupAddon>
-          <i :class="form.barrelTypeId > 0 ? validIcon : requiredIcon"></i>
-        </InputGroupAddon>
-        <IftaLabel>
-          <Select
-            v-model="form.barrelTypeId"
-            :options="store.prerequisitesWeaponList.data.data.barreTypes"
-            optionLabel="name"
-            :placeholder="t('global.select')"
-            optionValue="id"
-            id="barrelTypeId"
-            checkmark
-            :highlightOnSelect="true"
-            @focus="onFocus('barrel')"
-            :invalid="isInvalidBarrelType"
-          />
-          <label for="barrelTypeId">{{ t('weapon.form.barrelType') + requiredLabel }}</label>
-        </IftaLabel>
+        <input-group-required-icon :is-validate="form.barrelTypeId > 0" />
+        <input-group-select
+          :options="store.prerequisitesWeaponList.data.data.barreTypes"
+          type="barrelType"
+          @option-id="(event) => (form.barrelTypeId = event)"
+          required
+        />
       </InputGroup>
 
       <InputGroup>
-        <InputGroupAddon>
-          <i :class="form.barrelLength > 0 && form.barrelSize > 0 ? validIcon : requiredIcon"></i>
-        </InputGroupAddon>
-        <IftaLabel>
-          <InputNumber
-            v-model="form.barrelLength"
-            :placeholder="t('weapon.form.length')"
-            :minFractionDigits="2"
-            id="barrelLength"
-            @focus="onFocus('barrelLength')"
-            :invalid="isInvalidBarrelLength"
-          />
-          <label for="barrelLength">{{ t('weapon.form.barrelLength') + requiredLabel }}</label>
-        </IftaLabel>
-        <InputGroupAddon><span class="text-black">cm</span></InputGroupAddon>
+        <input-group-required-icon :is-validate="form.barrelLength >= 3" />
+        <input-group-number
+          :min="3"
+          :min-fraction-digits="2"
+          placeholder="barrelLength"
+          label="barrelLength"
+          required
+          @value="(value) => (form.barrelLength = value)"
+        />
+        <InputGroupAddon><span>cm</span></InputGroupAddon>
       </InputGroup>
 
       <InputGroup>
-        <InputGroupAddon>
-          <i :class="form.barrelSize > 0 ? optionalFilledIcon : optionalIcon"></i>
-        </InputGroupAddon>
-        <IftaLabel>
-          <InputNumber
-            v-model="form.barrelSize"
-            :placeholder="t('weapon.form.barrelSize')"
-            id="barrelSize"
-          />
-          <label for="barrelSize">{{ t('weapon.form.barrelSize') }}</label>
-        </IftaLabel>
-        <InputGroupAddon><span class="text-black">mm</span></InputGroupAddon>
+        <input-group-optional-icon :is-completed="form.barrelSize > 0" />
+        <input-group-number
+          placeholder="barrelSize"
+          label="barrelSize"
+          @value="(value) => (form.barrelSize = value)"
+        />
+        <InputGroupAddon><span>mm</span></InputGroupAddon>
       </InputGroup>
 
       <InputGroup>
-        <InputGroupAddon>
-          <i :class="form.barrelColorId ? optionalFilledIcon : optionalIcon"></i>
-        </InputGroupAddon>
-        <IftaLabel>
-          <Select
-            id="barrelColorId"
-            v-model="form.barrelColorId"
-            :options="colors$"
-            filter
-            checkmark
-            :highlightOnSelect="true"
-            optionLabel="name"
-            optionValue="id"
-            :placeholder="t('global.select')"
-          />
-          <label for="barrelColorId" v-capitalize="t('weapon.form.barrelColor')"></label>
-        </IftaLabel>
+        <input-group-optional-icon :is-completed="form.barrelColorId > 0" />
+        <input-group-select
+          :options="colors$"
+          type="barrelColor"
+          @option-id="(event) => (form.barrelColorId = event)"
+          filter
+        />
+        <input-group-addon-open-drawer-button type="color" :open-drawer="openDrawer" />
       </InputGroup>
 
       <InputGroup>
-        <InputGroupAddon>
-          <i :class="form.threadedSizeId ? optionalFilledIcon : optionalIcon"></i>
-        </InputGroupAddon>
+        <input-group-optional-icon :is-completed="form.threadedSizeId > 0" />
         <InputGroupAddon class="min-width-6rem">
           <Checkbox id="isThreadedBarrel" v-model="form.isThreadedBarrel" :binary="true" />
           <label for="isThreadedBarrel" :class="form.isThreadedBarrel ? checkedTextColor : ''">
             {{ t('weapon.form.isThreadedBarrel') }}
           </label>
         </InputGroupAddon>
-        <IftaLabel>
-          <Select
-            v-model="form.threadedSizeId"
-            :options="store.prerequisitesWeaponList.data.data.threadedSizes"
-            optionLabel="size"
-            :placeholder="t('global.select')"
-            optionValue="id"
-            :disabled="!form.isThreadedBarrel"
-            id="threadedSizeId"
-            :invalid="isInvalidThreadSize"
-          />
-          <label for="threadedSizeId" v-capitalize="t('global.threadedSize')"></label>
-        </IftaLabel>
+        <input-group-select
+          :options="store.prerequisitesWeaponList.data.data.threadedSizes"
+          type="threadSize"
+          optionLabel="size"
+          :disabled="!form.isThreadedBarrel"
+          @option-id="(event) => (form.threadedSizeId = event)"
+        />
+        <input-group-addon-open-drawer-button type="threadSize" :open-drawer="openDrawer" />
       </InputGroup>
 
       <InputGroup>
-        <InputGroupAddon>
-          <i :class="optionalIcon"></i>
-        </InputGroupAddon>
+        <input-group-optional-icon
+          :is-completed="form.isAdjustableTrigger && !isInvalidMaxTriggerValue"
+        />
         <InputGroupAddon>
           <Checkbox id="isAdjustableTrigger" v-model="form.isAdjustableTrigger" :binary="true" />
           <label
@@ -236,28 +150,19 @@
       </InputGroup>
 
       <InputGroup>
-        <InputGroupAddon>
-          <i :class="optionalIcon"></i>
-        </InputGroupAddon>
+        <input-group-optional-icon />
         <InputGroupAddon>
           <Checkbox id="isProvidedMagazine" v-model="isProvidedMagazine" :binary="true" />
           <label for="isProvidedMagazine" :class="isProvidedMagazine ? checkedTextColor : ''">
             {{ t('weapon.form.isProvidedMagazine') }}
           </label>
         </InputGroupAddon>
-        <IftaLabel class="width-14rem">
-          <Select
-            v-model="form.providedMagazineId"
-            :options="[]"
-            optionLabel="size"
-            :placeholder="t('global.select')"
-            optionValue="id"
-            :disabled="!isProvidedMagazine"
-            emptyMessage="Aucun chargeur trouvé"
-            id="providedMagazineId"
-          />
-          <label for="providedMagazineId" v-capitalize="t('global.magazine')"></label>
-        </IftaLabel>
+        <input-group-select
+          :options="[]"
+          type="magazine"
+          :disabled="!isProvidedMagazine"
+          @option-id="(event) => (form.providedMagazineId = event)"
+        />
         <InputGroupAddon
           ><span :class="isProvidedMagazine ? checkedTextColor : ''">
             {{ t('global.quantity') }}</span
@@ -271,26 +176,17 @@
       </InputGroup>
 
       <InputGroup>
-        <InputGroupAddon>
-          <i :class="form.buttMaterialId ? optionalFilledIcon : optionalIcon"></i>
-        </InputGroupAddon>
-        <IftaLabel>
-          <Select
-            v-model="form.buttMaterialId"
-            :options="materials$"
-            optionLabel="name"
-            :placeholder="t('global.select')"
-            optionValue="id"
-            id="buttId"
-          />
-          <label for="buttId" v-capitalize="t('weapon.form.buttType')"></label>
-        </IftaLabel>
+        <input-group-optional-icon :is-completed="form.buttMaterialId > 0" />
+        <input-group-select
+          :options="materials$"
+          type="buttType"
+          @option-id="(event) => (form.buttMaterialId = event)"
+        />
+        <input-group-addon-open-drawer-button type="material" :open-drawer="openDrawer" />
       </InputGroup>
 
       <InputGroup class="w-full">
-        <InputGroupAddon>
-          <i :class="optionalFilledIcon"></i>
-        </InputGroupAddon>
+        <input-group-optional-icon />
         <InputGroupAddon class="min-width-6rem w-6/12">
           <Checkbox id="isAdjustableButt" v-model="form.isAdjustableButt" :binary="true" />
           <label for="isAdjustableButt" :class="form.isAdjustableButt ? checkedTextColor : ''">
@@ -306,47 +202,28 @@
       </InputGroup>
 
       <InputGroup>
-        <InputGroupAddon>
-          <i :class="form.buttColorId ? optionalFilledIcon : optionalIcon"></i>
-        </InputGroupAddon>
-        <IftaLabel>
-          <Select
-            id="buttColorId"
-            v-model="form.buttColorId"
-            :options="colors$"
-            filter
-            optionLabel="name"
-            optionValue="id"
-            :placeholder="t('global.select')"
-          />
-          <label for="buttColorId" v-capitalize="t('weapon.form.buttColor')"></label>
-        </IftaLabel>
-      </InputGroup>
-      <InputGroup>
-        <InputGroupAddon>
-          <i :class="form.railSizeId ? optionalFilledIcon : optionalIcon"></i>
-        </InputGroupAddon>
-        <IftaLabel>
-          <Select
-            v-model="form.railSizeId"
-            :options="railSizes$"
-            :placeholder="t('global.select')"
-            id="railSizeId"
-            optionValue="id"
-            optionLabel="name"
-            checkmark
-            :highlightOnSelect="true"
-            @focus="onFocus('opticRail')"
-            :invalid="isInvalidOpticRail"
-          />
-          <label for="railSizeId" v-capitalize="t('weapon.form.railSize')"></label>
-        </IftaLabel>
+        <input-group-optional-icon :is-completed="form.buttColorId > 0" />
+        <input-group-select
+          :options="colors$"
+          type="buttColor"
+          @option-id="(event) => (form.buttColorId = event)"
+          filter
+        />
+        <input-group-addon-open-drawer-button type="color" :open-drawer="openDrawer" />
       </InputGroup>
 
       <InputGroup>
-        <InputGroupAddon>
-          <i :class="optionalFilledIcon"></i>
-        </InputGroupAddon>
+        <input-group-optional-icon :is-completed="form.railSizeId > 0" />
+        <input-group-select
+          :options="railSizes$"
+          type="opticRail"
+          @option-id="(event) => (form.railSizeId = event)"
+          filter
+        />
+      </InputGroup>
+
+      <InputGroup>
+        <input-group-optional-icon />
         <InputGroupAddon class="min-width-6rem w-1/3">
           <Checkbox id="isOpenAim" v-model="form.isOpenAim" :binary="true" />
           <label for="isOpenAim" :class="form.isOpenAim ? checkedTextColor : ''">
@@ -382,9 +259,7 @@
       </InputGroup>
 
       <InputGroup>
-        <InputGroupAddon>
-          <i :class="optionalFilledIcon"></i>
-        </InputGroupAddon>
+        <input-group-optional-icon />
         <IftaLabel>
           <InputNumber :minFractionDigits="0" v-model="form.qcSlot" id="qcSlot" />
           <label for="qcSlot" v-capitalize="t('weapon.form.qcSlot')"></label>
@@ -397,9 +272,7 @@
       </InputGroup>
 
       <InputGroup>
-        <InputGroupAddon>
-          <i :class="selectedMLockOptions.length > 0 ? optionalFilledIcon : optionalIcon"></i>
-        </InputGroupAddon>
+        <input-group-optional-icon :is-completed="selectedMLockOptions.length > 0" />
         <InputGroupAddon class="min-width-6rem">
           <Checkbox id="isMlockCompatibility" v-model="form.isMlockCompatibility" :binary="true" />
           <label
@@ -451,39 +324,36 @@ import InputGroupAddon from 'primevue/inputgroupaddon'
 import Checkbox from 'primevue/checkbox'
 import Button from 'primevue/button'
 import { computed, ref } from 'vue'
-import Select from 'primevue/select'
 import IftaLabel from 'primevue/iftalabel'
 import InputGroup from 'primevue/inputgroup'
 import { useI18n } from 'vue-i18n'
 import InputNumber from 'primevue/inputnumber'
 import MultiSelect from 'primevue/multiselect'
-import InputText from 'primevue/inputtext'
-import {
-  type DrawerWeaponForm,
-  type FocusField,
-  type NewWeapon,
-  useWeaponStore
-} from '@/stores/weapon'
+
+import { type FocusField, type NewWeapon, useWeaponStore } from '@/stores/weapon'
 import Textarea from 'primevue/textarea'
 import { storeToRefs } from 'pinia'
 import { useRiffleStore } from '@/stores/riffle'
+import InputGroupAddonOpenDrawerButton from '@/components/__form/InputGroupAddonOpenDrawerButton.vue'
+import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
+import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.vue'
+import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
+import InputGroupText from '@/components/__form/InputGroupText.vue'
+import InputGroupNumber from '@/components/__form/InputGroupNumber.vue'
 
 interface MlockOptions {
   name: string
 }
 
-const optionalIcon: string = 'pi pi-info-circle'
-const optionalFilledIcon: string = 'pi pi-plus text-blue-700'
-const requiredIcon: string = 'pi pi-circle-fill'
 const requiredLabel: string = '(*)'
-const validIcon: string = 'pi pi-check text-green-400'
 const checkedTextColor: string = 'text-slate-500'
 const store = useWeaponStore()
 const riffleStore = useRiffleStore()
 const { railSizes$, materials$, colors$ } = storeToRefs(store)
 const { t } = useI18n()
-const { selectedOptions } = defineProps<{
+const { selectedOptions, openDrawer } = defineProps<{
   selectedOptions: NewWeapon
+  openDrawer: Function
 }>()
 const adjustableTriggerMinWeight = ref(0)
 const adjustableTriggerMaxWeight = ref(0)
@@ -520,7 +390,6 @@ const initialForm: CreateRiffleDto = {
   barrelColorId: null,
   buttColorId: null
 }
-const openDrawer = defineEmits(['openDrawer'])
 
 const form = ref<CreateRiffleDto>({ ...initialForm })
 const mLockOptions = ref<MlockOptions[]>([
@@ -595,24 +464,7 @@ const onFocus = (origin: FocusField) => {
       isFocusOpticRail.value = true
   }
 }
-const isInvalidCaliber = computed(() => {
-  return isFocusCaliber.value && form.value.caliberId === 0
-})
-const isInvalidFactory = computed(() => {
-  return isFocusFactory.value && form.value.factoryId === 0
-})
-const isInvalidName = computed(() => {
-  return isFocusName.value && form.value.name.length < 3
-})
-const isInvalidPercussion = computed(() => {
-  return isFocusPercussion.value && form.value.percussionTypeId === 0
-})
-const isInvalidBarrelType = computed(() => {
-  return isFocusBarrelType.value && form.value.barrelTypeId === 0
-})
-const isInvalidOpticRail = computed(() => {
-  return isFocusOpticRail.value && form.value.railSizeId === 0
-})
+
 const isInvalidBarrelLength = computed(() => {
   return isFocusBarrelLength.value && form.value.barrelLength === 0
 })
@@ -630,10 +482,8 @@ const isInvalidMaxTriggerValue = computed(() => {
 })
 const submit = () => {
   form.value.mLockOptions = formatMLockOptions()
-  riffleStore.create.mutate(form.value)
-}
-const selectDrawerFormType = (drawerType: DrawerWeaponForm) => {
-  openDrawer('openDrawer', drawerType)
+  console.log(form.value.caliberId)
+  // riffleStore.create.mutate(form.value)
 }
 </script>
 

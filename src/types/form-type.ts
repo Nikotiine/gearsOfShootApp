@@ -1,0 +1,22 @@
+export type DrawerType =
+  | 'caliber'
+  | 'factory'
+  | 'material'
+  | 'color'
+  | 'opticRail'
+  | 'threadSize'
+  | 'weaponType'
+
+export type InputGroupSelectType =
+  | 'caliber'
+  | 'factory'
+  | 'percussion'
+  | 'weaponType'
+  | 'barrelColor'
+  | 'barrelType'
+  | 'legalisationCategory'
+  | 'threadSize'
+  | 'magazine'
+  | 'buttType'
+  | 'buttColor'
+  | 'opticRail'

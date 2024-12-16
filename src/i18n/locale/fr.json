@@ -194,5 +194,44 @@
     "0200": "Type d arme deja existante",
     "0201": "Arme deja existante",
     "0600": "Marque deja existante"
+  },
+  "tooltip": {
+    "caliber": "Ajouter un nouveau calibre",
+    "factory": "Ajouter une nouvelle marque",
+    "weaponType": "Ajouter un nouveau type d arme",
+    "color": "Ajouter une nouvelle couleur"
+  },
+  "inputSelect": {
+    "caliber": "calibre",
+    "factory": "Ajouter une nouvelle marque",
+    "weaponType": "type d'arme",
+    "barrelType": "type de canon",
+    "barrelColor": "couleur du canon",
+    "legalisationCategory": "categorie d'arme",
+    "percussion": "type de percussion",
+    "threadSize": "taille du filletage",
+    "magazine": "type de chargeur",
+    "notFoundItem": "Aucun element trouvé",
+    "buttType": "matiere de la crosse",
+    "buttColor": "couleur de la crosse",
+    "opticRail": "rail d'optique"
+  },
+  "inputText": {
+    "placeholder": {
+      "weaponModel": "Modele d'arme",
+      "weaponVariation": "Variante"
+    },
+    "weaponModel": "modele",
+    "weaponVariation": "variante",
+    "default": "Saisir un texte"
+  },
+  "inputNumber": {
+    "placeholder": {
+      "barrelLength": "Longueur de canon",
+      "barrelSize": "Epaisseur de canon"
+    },
+    "barrelLength": "longueur",
+    "barrelSize": "epaisseur",
+    "default": "Saisir un texte"
   }
 }
