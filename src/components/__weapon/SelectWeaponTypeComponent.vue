@@ -13,6 +13,7 @@
           required
           :disabled="isOnContinue"
           filter
+          input-id="typeId"
         />
         <input-group-addon-open-drawer-button
           type="weaponType"
@@ -28,6 +29,7 @@
           @option-id="(event) => (categoryId = event)"
           required
           :disabled="isOnContinue"
+          input-id="categoryId"
         />
       </InputGroup>
     </div>

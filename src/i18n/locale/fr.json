@@ -107,8 +107,10 @@
       "buttColor": "Couleur de la crosse",
       "barrelColor": "Couleur du canon",
       "slideColor": "Couleur de la culasse",
-      "opticReadyPlate": "Type de plaque OR",
-      "triggerType": "Type de detente"
+      "opticReadyPlates": "Type de plaque Optic ready",
+      "triggerType": "Type de detente",
+      "isExternalHammer": "Chien exterieur",
+      "isPicatinyRailSlop": "Rail picatiry"
     }
   },
   "ammunition": {
@@ -214,7 +216,11 @@
     "notFoundItem": "Aucun element trouvé",
     "buttType": "matiere de la crosse",
     "buttColor": "couleur de la crosse",
-    "opticRail": "rail d'optique"
+    "opticRail": "rail d'optique",
+    "slideType": "type de glissiere",
+    "slideColor": "couleur de la glissiere",
+    "triggerType": "type de dentente",
+    "defaultPlaceHolder": "Selectionner"
   },
   "inputText": {
     "placeholder": {
@@ -228,10 +234,24 @@
   "inputNumber": {
     "placeholder": {
       "barrelLength": "Longueur de canon",
-      "barrelSize": "Epaisseur de canon"
+      "barrelSize": "Epaisseur de canon",
+      "adjustableTriggerMaxWeight": "Poids max",
+      "adjustableTriggerMinWeight": "Poids mini",
+      "providedMagazineQuantity": "Quantite",
+      "qcSlot": "Nombre de slot QC",
+      "grenadierSlot": "Nombre de grenadieres"
     },
     "barrelLength": "longueur",
     "barrelSize": "epaisseur",
-    "default": "Saisir un texte"
+    "default": "Saisir un texte",
+    "adjustableTriggerMaxWeight": "poids max",
+    "adjustableTriggerMinWeight": "poids mini",
+    "providedMagazineQuantity": "quantite fournie",
+    "qcSlot": "Connection QC",
+    "grenadierSlot": "Grenadieres"
+  },
+  "inputMultiSelect": {
+    "emptyDefaultMessage": "Aucune donnée trouvée",
+    "defaultPlaceHolder": "Selectionner"
   }
 }

@@ -9,6 +9,17 @@ export const useRiffleStore = defineStore('riffle', () => {
   const { api } = useApiStore()
   const { successMessage } = useToastStore()
   const categoryId = ref<number>(0)
+  const mLockOptions = ref<MlockOptions[]>([
+    {
+      name: '3 Heures'
+    },
+    {
+      name: '6 Heures'
+    },
+    {
+      name: '9 Heures'
+    }
+  ])
   const riffles = ref<RiffleDto[]>([])
   const createWeaponMutation = useMutation({
     mutationFn: async (riffle: CreateRiffleDto) => {
@@ -40,10 +51,15 @@ export const useRiffleStore = defineStore('riffle', () => {
   function setCategoryId(id: number): void {
     categoryId.value = id
   }
+
   return {
     create: createWeaponMutation,
     setCategoryId: setCategoryId,
     getRiffleByCategory: getAllRiffleByCategoryQuery,
-    getAll: getAllRiffleQuery
+    getAll: getAllRiffleQuery,
+    mLockOptions$: mLockOptions
   }
 })
+export interface MlockOptions {
+  name: string
+}

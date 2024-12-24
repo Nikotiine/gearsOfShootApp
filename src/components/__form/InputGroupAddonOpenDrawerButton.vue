@@ -23,4 +23,8 @@ const { type, openDrawer } = defineProps<{
 }>()
 </script>
 
-<style scoped></style>
+<style scoped>
+.p-inputgroupaddon {
+  min-width: 11%;
+}
+</style>

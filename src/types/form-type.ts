@@ -6,6 +6,7 @@ export type DrawerType =
   | 'opticRail'
   | 'threadSize'
   | 'weaponType'
+  | 'magazine'
 
 export type InputGroupSelectType =
   | 'caliber'
@@ -20,3 +21,6 @@ export type InputGroupSelectType =
   | 'buttType'
   | 'buttColor'
   | 'opticRail'
+  | 'slideType'
+  | 'slideColor'
+  | 'triggerType'

@@ -53,14 +53,3 @@ export interface NewWeapon {
   type: number
   category: number
 }
-export type FocusField =
-  | 'caliber'
-  | 'factory'
-  | 'percussion'
-  | 'barrel'
-  | 'barrelLength'
-  | 'buttMaterial'
-  | 'buttColor'
-  | 'opticRail'
-  | 'threadSize'
-  | 'name'

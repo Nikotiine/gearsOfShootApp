@@ -7,7 +7,11 @@
       :selected-options="options"
       :open-drawer="openDrawerForm"
     />
-    <hand-gun-form-component :selected-options="options" v-if="!isRiffleWeapon.value" />
+    <hand-gun-form-component
+      :selected-options="options"
+      v-if="!isRiffleWeapon.value"
+      :open-drawer="openDrawerForm"
+    />
   </div>
 </template>
 <script setup lang="ts">

@@ -1,13 +1,13 @@
 <template>
   <IftaLabel>
     <Select
-      id="select"
+      :id="inputId"
       @change="onChange"
       v-model="value"
       :options="options"
       :optionLabel="optionLabel"
       :optionValue="optionValue"
-      :placeholder="t('global.select')"
+      :placeholder="t('inputSelect.' + placeholder)"
       @focus="onFocus()"
       checkmark
       :highlightOnSelect="true"
@@ -16,13 +16,13 @@
       :filter="filter"
       :emptyMessage="t('inputSelect.notFoundItem')"
     />
-    <label for="select" v-capitalize="t('inputSelect.' + type) + isRequiredSelect"></label>
+    <label :for="inputId" v-capitalize="t('inputSelect.' + type) + isRequiredSelect"></label>
   </IftaLabel>
 </template>
 <script setup lang="ts">
 import IftaLabel from 'primevue/iftalabel'
 import Select from 'primevue/select'
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { InputGroupSelectType } from '@/types/form-type'
 
@@ -35,7 +35,10 @@ const {
   disabled = false,
   filter = false,
   optionLabel = 'name',
-  optionValue = 'id'
+  optionValue = 'id',
+  maxWidth = 100,
+  placeholder = 'defaultPlaceHolder',
+  initialValue = 0
 } = defineProps<{
   options: any
   type: InputGroupSelectType
@@ -43,13 +46,17 @@ const {
   optionLabel?: string
   optionValue?: string
   disabled?: boolean
-  filter: boolean
+  filter?: boolean
+  inputId: string
+  maxWidth?: number
+  placeholder?: string
+  initialValue?: number
 }>()
 
 const onFocus = () => {
   hasFocused.value = true
 }
-const value = ref<number>(0)
+const value = ref<number>(initialValue)
 const emit = defineEmits(['option-id'])
 const onChange = () => {
   emit('option-id', value.value)
@@ -61,6 +68,20 @@ const isInvalid = computed(() => {
 const isRequiredSelect = computed(() => {
   return required ? requiredLabel : ''
 })
+
+watch(
+  () => initialValue,
+  (newValue) => {
+    value.value = newValue
+    hasFocused.value = false
+  }
+)
 </script>
 
-<style scoped></style>
+<style scoped>
+.p-inputgroup,
+.p-inputgroup .p-floatlabel,
+.p-inputgroup .p-iftalabel {
+  width: v-bind(maxWidth + '%');
+}
+</style>
