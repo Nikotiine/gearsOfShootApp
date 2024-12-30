@@ -304,6 +304,14 @@
           :checked="form.isPicatinyRailSlop"
           is-width-half-size
         />
+        <input-group-check-box
+          input-id="decocking"
+          label="decocking"
+          @checked="(event) => (form.decocking = event)"
+          :checked="isRevolver ? false : form.decocking"
+          is-width-half-size
+          :disabled="isRevolver"
+        />
       </InputGroup>
     </div>
     <div class="p-4">
@@ -313,7 +321,7 @@
         rows="5"
         cols="30"
         class="w-full"
-        :placeholder="t('weapon.form.description')"
+        :placeholder="t('global.description')"
       />
     </div>
     <div class="text-red-500 p-4" v-if="handGunStore.create.isError">
@@ -377,9 +385,9 @@ const initialForm: CreateHandGunDto = {
   providedMagazineId: null,
   providedMagazineQuantity: 0,
   barrelSize: 0,
-  buttMaterialId: 0,
-  barrelColorId: 0,
-  buttColorId: 0,
+  buttMaterialId: null,
+  barrelColorId: null,
+  buttColorId: null,
   decocking: true,
   isPicatinyRailSlop: false,
   isAdjustableBackSight: true,
@@ -387,17 +395,22 @@ const initialForm: CreateHandGunDto = {
   providedOpticReadyPlates: [],
   isOpticReady: false,
   isExternalHammer: false,
-  slideMaterialId: 0,
-  slideColorId: 0,
-  triggerTypeId: 0
+  slideMaterialId: null,
+  slideColorId: null,
+  triggerTypeId: null
 }
 const form = ref<CreateHandGunDto>({ ...initialForm })
 const resetMultiselect = ref(false)
 const submit = () => {
+  form.value.providedOpticReadyPlates = form.value.isOpticReady ? selectedPlates.value : null
+  form.value.adjustableTriggerValue = form.value.isAdjustableTrigger
+    ? adjustableTriggerValue()
+    : null
   handGunStore.create.mutate(form.value)
-  form.value = { ...initialForm }
-  selectedPlates.value = []
-  resetMultiselect.value = !resetMultiselect.value
+  resetForm()
+}
+const adjustableTriggerValue = () => {
+  return `de ${adjustableTriggerMinWeight.value} kg à ${adjustableTriggerMaxWeight.value} kg`
 }
 const isInvalidMaxTriggerValue = computed(() => {
   return (
@@ -407,12 +420,20 @@ const isInvalidMaxTriggerValue = computed(() => {
 })
 const isRevolver = computed(() => {
   let isRevolver: boolean = false
-  const type = weaponTypes$.value.find((i) => i.id === selectedOptions.type)
+  const type = weaponTypes$.value.find((type) => type.id === selectedOptions.type)
   if (type && type.name === 'Revolver') {
     isRevolver = true
   }
   return isRevolver
 })
+
+function resetForm(): void {
+  form.value = { ...initialForm }
+  selectedPlates.value = []
+  resetMultiselect.value = !resetMultiselect.value
+  adjustableTriggerMinWeight.value = 0
+  adjustableTriggerMaxWeight.value = 0
+}
 </script>
 
 <style scoped></style>

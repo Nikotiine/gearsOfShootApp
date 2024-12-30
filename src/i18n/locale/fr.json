@@ -67,7 +67,8 @@
     "magazine": "chargeur",
     "packaging": "packaging",
     "continue": "Continuer",
-    "quantity": "quantité"
+    "quantity": "quantité",
+    "description": "description"
 
   },
   "weapon": {
@@ -110,7 +111,12 @@
       "opticReadyPlates": "Type de plaque Optic ready",
       "triggerType": "Type de detente",
       "isExternalHammer": "Chien exterieur",
-      "isPicatinyRailSlop": "Rail picatiry"
+      "isPicatinyRailSlop": "Rail picatiry",
+      "decocking": "decocking",
+      "yourChoose": "Votre choix : ",
+      "selectType": "Quel type d'arme ?",
+      "isParallax": "parallax regalble",
+      "isCollarsProvided": "collier fournis ?"
     }
   },
   "ammunition": {
@@ -159,6 +165,12 @@
     "type": "Type d'armes",
     "summary": "Gestion des type d'arme",
     "mode": "Fonctionnement"
+  },
+  "optic": {
+    "form": {
+      "addTitle": "Ajouter une nouvelle optique",
+      "success": "Ajout d'une nouvelle optique"
+    }
   },
   "factory": {
     "form": {
@@ -220,16 +232,27 @@
     "slideType": "type de glissiere",
     "slideColor": "couleur de la glissiere",
     "triggerType": "type de dentente",
-    "defaultPlaceHolder": "Selectionner"
+    "defaultPlaceHolder": "Selectionner",
+    "headType": "Type d'ogive",
+    "bodyType": "Type de douille",
+    "opticType": "Type d optique",
+    "focalPlane": "Plan focal",
+    "opticUnit": "Unité de graduation",
+    "clickValue": "Valeur d un click",
+    "collar": "colliers"
   },
   "inputText": {
     "placeholder": {
       "weaponModel": "Modele d'arme",
-      "weaponVariation": "Variante"
+      "weaponVariation": "Variante",
+      "ammunitionModel": "Model de munition",
+      "opticModel": "Modele d'optique"
     },
     "weaponModel": "modele",
     "weaponVariation": "variante",
-    "default": "Saisir un texte"
+    "default": "Saisir un texte",
+    "ammunitionModel": "Model de munition",
+    "opticModel": "Modele d'optique"
   },
   "inputNumber": {
     "placeholder": {
@@ -239,7 +262,15 @@
       "adjustableTriggerMinWeight": "Poids mini",
       "providedMagazineQuantity": "Quantite",
       "qcSlot": "Nombre de slot QC",
-      "grenadierSlot": "Nombre de grenadieres"
+      "grenadierSlot": "Nombre de grenadieres",
+      "initialSpeed": "Vitesse",
+      "packaging": "packaging",
+      "min": "minimum",
+      "max": "maximum",
+      "diameter": "diametre",
+      "length": "longueur",
+      "eyeRelief": "degagement"
+
     },
     "barrelLength": "longueur",
     "barrelSize": "epaisseur",
@@ -248,7 +279,19 @@
     "adjustableTriggerMinWeight": "poids mini",
     "providedMagazineQuantity": "quantite fournie",
     "qcSlot": "Connection QC",
-    "grenadierSlot": "Grenadieres"
+    "grenadierSlot": "Grenadieres",
+    "initialSpeed": "Vitesse initiale",
+    "packaging": "packaging",
+    "minZoom": "zoom minimum",
+    "maxZoom": "zoom maximum",
+    "maxDrift": "Derive max",
+    "maxElevation": "Elevation max",
+    "lensDiameter": "lentille",
+    "bodyDiameter": "corps",
+    "minParallax": "parallaxe mini",
+    "maxParallax": "parallaxe max",
+    "length": "longueur de l'optique",
+    "eyeRelief": "degagement occulaire"
   },
   "inputMultiSelect": {
     "emptyDefaultMessage": "Aucune donnée trouvée",

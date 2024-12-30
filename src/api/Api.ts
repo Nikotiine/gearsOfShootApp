@@ -382,9 +382,9 @@ export interface CreateHandGunDto {
   /** @example true */
   isOpticReady: boolean
   decocking: boolean
-  triggerTypeId: number
-  slideColorId: number
-  slideMaterialId: number
+  triggerTypeId: number | null
+  slideColorId: number | null
+  slideMaterialId: number | null
   isExternalHammer: boolean
   providedOpticReadyPlates: OpticReadyPlateDto[] | null
   /** Rail picatiny */
@@ -466,9 +466,9 @@ export interface UpdateHandGunDto {
   /** @example true */
   isOpticReady: boolean
   decocking: boolean
-  triggerTypeId: number
-  slideColorId: number
-  slideMaterialId: number
+  triggerTypeId: number | null
+  slideColorId: number | null
+  slideMaterialId: number | null
   isExternalHammer: boolean
   providedOpticReadyPlates: OpticReadyPlateDto[] | null
   /** Rail picatiny */
@@ -867,11 +867,20 @@ export interface OpticDto {
   type: OpticTypeDto
 }
 
+export interface OpticCollarDto {
+  id: number
+  diameter: number
+  height: number
+  railSize: RailSizeDto
+  factory: FactoryDto
+}
+
 export interface ListOfPrerequisitesOpticDto {
   types: OpticTypeDto[]
   factories: FactoryDto[]
   units: OpticUnitDto[]
   focalPlanes: FocalPlaneDto[]
+  opticCollars: OpticCollarDto[]
 }
 
 export interface CreateOpticDto {
@@ -892,6 +901,10 @@ export interface CreateOpticDto {
   opticUnitId: number
   focalPlaneId: number
   opticTypeId: number
+  length: number
+  eyeRelief: number
+  isCollarsProvided: boolean
+  providedCollarId: number | null
 }
 
 export interface UpdateOpticDto {
@@ -912,6 +925,10 @@ export interface UpdateOpticDto {
   opticUnitId: number
   focalPlaneId: number
   opticTypeId: number
+  length: number
+  eyeRelief: number
+  isCollarsProvided: boolean
+  providedCollarId: number | null
   id: number
 }
 

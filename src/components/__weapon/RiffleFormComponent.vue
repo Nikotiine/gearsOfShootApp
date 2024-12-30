@@ -332,7 +332,7 @@
         rows="5"
         cols="30"
         class="w-full"
-        :placeholder="t('weapon.form.description')"
+        :placeholder="t('global.description')"
       />
     </div>
     <div class="text-red-500 p-4" v-if="riffleStore.create.isError">
@@ -371,6 +371,7 @@ const riffleStore = useRiffleStore()
 const { railSizes$, materials$, colors$ } = storeToRefs(store)
 const { mLockOptions$ } = storeToRefs(riffleStore)
 const { t } = useI18n()
+
 const { selectedOptions, openDrawer } = defineProps<{
   selectedOptions: NewWeapon
   openDrawer: Function
@@ -454,12 +455,20 @@ const isInvalidMaxTriggerValue = computed(() => {
     adjustableTriggerMaxWeight.value <= adjustableTriggerMinWeight.value
   )
 })
+const adjustableTriggerValue = () => {
+  return `de ${adjustableTriggerMinWeight.value} kg à ${adjustableTriggerMaxWeight.value} kg`
+}
 const submit = () => {
   form.value.mLockOptions = formatMLockOptions()
+  form.value.adjustableTriggerValue = form.value.isAdjustableTrigger
+    ? adjustableTriggerValue()
+    : null
   riffleStore.create.mutate(form.value)
-  // Reset des chalps du formulaire
+  // Reset des champs du formulaire
   form.value = { ...initialForm }
   resetMultiselect.value = !resetMultiselect.value
+  adjustableTriggerMinWeight.value = 0
+  adjustableTriggerMaxWeight.value = 0
   selectedMLockOptions.value = []
 }
 </script>

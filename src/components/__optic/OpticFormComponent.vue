@@ -1,201 +1,237 @@
 <template>
   <div class="card">
-    <h2 class="text-center mt-2 text-2xl">Ajouter une optique</h2>
+    <h2 class="text-center mt-2 text-2xl">{{ t('optic.form.addTitle') }}</h2>
     <form @submit.prevent="submit">
       <div
         class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4"
         v-if="store.prerequisiteOpticQuery.isSuccess"
       >
         <InputGroup>
-          <InputGroupAddon>
-            <i class="pi pi-circle"></i>
-          </InputGroupAddon>
-          <IftaLabel>
-            <Select
-              v-model="form.factoryId"
-              :options="store.prerequisiteOpticQuery.data?.data.factories"
-              placeholder="Marque"
-              id="category"
-              optionValue="id"
-              optionLabel="name"
-            />
-            <label for="category">Marque</label>
-          </IftaLabel>
+          <input-group-required-icon :is-validate="form.factoryId > 0" />
+          <input-group-select
+            :options="store.prerequisiteOpticQuery.data.data.factories"
+            type="factory"
+            @option-id="(event) => (form.factoryId = event)"
+            required
+            filter
+            input-id="factoryId"
+            :initial-value="form.factoryId"
+          />
+          <!--          <input-group-addon-open-drawer-button type="factory" :open-drawer="openDrawer" />-->
         </InputGroup>
 
         <InputGroup>
-          <InputGroupAddon>
-            <i class="pi pi-warehouse"></i>
-          </InputGroupAddon>
-          <IftaLabel>
-            <Select
-              id="factoryId"
-              v-model="form.opticTypeId"
-              :options="store.prerequisiteOpticQuery.data.data.types"
-              optionLabel="name"
-              optionValue="id"
-              placeholder="Type"
-            />
-            <label for="factoryId">Type</label>
-          </IftaLabel>
+          <input-group-required-icon :is-validate="form.opticTypeId > 0" />
+          <input-group-select
+            :options="store.prerequisiteOpticQuery.data.data.types"
+            type="opticType"
+            @option-id="(event) => (form.opticTypeId = event)"
+            required
+            filter
+            input-id="opticTypeId"
+            :initial-value="form.opticTypeId"
+          />
+          <!--          <input-group-addon-open-drawer-button type="factory" :open-drawer="openDrawer" />-->
         </InputGroup>
         <InputGroup>
-          <InputGroupAddon>
-            <i class="pi pi-circle"></i>
-          </InputGroupAddon>
-
-          <IftaLabel>
-            <Select
-              id="caliberId"
-              v-model="form.focalPlaneId"
-              :options="store.prerequisiteOpticQuery.data.data.focalPlanes"
-              optionLabel="name"
-              optionValue="id"
-              placeholder="Selectionnez"
-            />
-            <label for="caliberId">Plan Focal</label>
-          </IftaLabel>
+          <input-group-required-icon :is-validate="form.focalPlaneId > 0" />
+          <input-group-select
+            :options="store.prerequisiteOpticQuery.data.data.focalPlanes"
+            type="focalPlane"
+            @option-id="(event) => (form.focalPlaneId = event)"
+            required
+            input-id="focalPlaneId"
+            :initial-value="form.focalPlaneId"
+          />
+          <!--          <input-group-addon-open-drawer-button type="factory" :open-drawer="openDrawer" />-->
         </InputGroup>
 
         <InputGroup>
-          <InputGroupAddon>
-            <i class="pi pi-id-card"></i>
-          </InputGroupAddon>
-          <IftaLabel>
-            <InputText id="name" v-model="form.name" placeholder="Nom" />
-            <label for="name">Model</label>
-          </IftaLabel>
+          <input-group-required-icon :is-validate="form.name.length >= 3" />
+          <input-group-text
+            @value="(value) => (form.name = value)"
+            :min-length="3"
+            placeholder="opticModel"
+            label="opticModel"
+            required
+            input-id="name"
+            :initial-value="form.name"
+          />
+        </InputGroup>
+
+        <InputGroup>
+          <input-group-required-icon :is-validate="form.opticUnitId > 0" />
+          <input-group-select
+            :options="store.prerequisiteOpticQuery.data.data.units"
+            type="opticUnit"
+            @option-id="(event) => (form.opticUnitId = event)"
+            required
+            input-id="opticUnitId"
+            :initial-value="form.opticUnitId"
+          />
+        </InputGroup>
+
+        <InputGroup>
+          <input-group-required-icon :is-validate="form.valueOfOneClick > 0" />
+          <input-group-select
+            :options="clickValueOption"
+            type="clickValue"
+            @option-id="(event) => (form.valueOfOneClick = event)"
+            required
+            input-id="valueOfOneClick"
+            :initial-value="form.valueOfOneClick"
+            :disabled="form.opticUnitId === 0"
+          />
         </InputGroup>
         <InputGroup>
-          <InputGroupAddon>
-            <i class="pi pi-sort"></i>
-          </InputGroupAddon>
-          <IftaLabel>
-            <Select
-              v-model="form.opticUnitId"
-              :options="store.prerequisiteOpticQuery.data.data.units"
-              optionLabel="name"
-              placeholder="Type d'arme"
-              optionValue="id"
-              id="typeId"
-            />
-            <label for="typeId">Graduation</label>
-          </IftaLabel>
+          <input-group-required-icon
+            :is-validate="form.minZoom > 0 && form.maxZoom > form.minZoom"
+          />
+          <input-group-number
+            :min="0"
+            placeholder="minZoom"
+            label="minZoom"
+            required
+            @value="(value) => (form.minZoom = value)"
+            input-id="minZoom"
+            :initial-value="form.minZoom"
+          />
+
+          <input-group-number
+            :min="form.minZoom + 1"
+            placeholder="maxZoom"
+            label="maxZoom"
+            required
+            @value="(value) => (form.maxZoom = value)"
+            input-id="maxZoom"
+            :initial-value="form.maxZoom"
+          />
         </InputGroup>
+
         <InputGroup>
-          <InputGroupAddon>
-            <i class="pi pi-circle"></i>
-          </InputGroupAddon>
-          <IftaLabel>
-            <Select
-              v-model="form.factoryId"
-              :options="clickValueOption"
-              optionLabel="name"
-              optionValue="id"
-              placeholder="Marque"
-              id="category"
-              :disabled="form.opticUnitId === 0"
-            />
-            <label for="category">Valeur d 'un clic</label>
-          </IftaLabel>
+          <input-group-required-icon :is-validate="form.maxDrift > 0 && form.maxElevation > 0" />
+          <input-group-number
+            :min="0"
+            placeholder="max"
+            label="maxDrift"
+            required
+            @value="(value) => (form.maxDrift = value)"
+            input-id="maxDrift"
+            :initial-value="form.maxDrift"
+          />
+
+          <input-group-number
+            :min="0"
+            placeholder="max"
+            label="maxElevation"
+            required
+            @value="(value) => (form.maxElevation = value)"
+            input-id="maxElevation"
+            :initial-value="form.maxElevation"
+          />
+          <InputGroupAddon>moa</InputGroupAddon>
         </InputGroup>
+
         <InputGroup>
-          <InputGroupAddon>
-            <i class="pi pi-sort"></i>
-          </InputGroupAddon>
-
-          <IftaLabel>
-            <InputNumber
-              v-model="form.minZoom"
-              placeholder="Longueur du canon"
-              :minFractionDigits="2"
-              id="barrelLength"
-            />
-            <label for="barrelLength">Zoom mini</label>
-          </IftaLabel>
-          <IftaLabel>
-            <InputNumber
-              v-model="form.maxZoom"
-              placeholder="Longueur du canon"
-              :minFractionDigits="2"
-              id="barrelLength"
-            />
-            <label for="barrelLength">Zoom maxi</label>
-          </IftaLabel>
-
-          <InputGroupAddon>cm</InputGroupAddon>
-        </InputGroup>
-        <InputGroup>
-          <InputGroupAddon>
-            <i class="pi pi-sort"></i>
-          </InputGroupAddon>
-
-          <IftaLabel>
-            <InputNumber
-              v-model="form.maxDrift"
-              placeholder="Longueur du canon"
-              :minFractionDigits="2"
-              id="barrelLength"
-            />
-            <label for="barrelLength">Elevation </label>
-          </IftaLabel>
-          <IftaLabel>
-            <InputNumber
-              v-model="form.maxElevation"
-              placeholder="Longueur du canon"
-              :minFractionDigits="2"
-              id="barrelLength"
-            />
-            <label for="barrelLength">Derive</label>
-          </IftaLabel>
-
-          <InputGroupAddon>cm</InputGroupAddon>
-        </InputGroup>
-        <InputGroup>
-          <InputGroupAddon>
-            <i class="pi pi-sort"></i>
-          </InputGroupAddon>
-
-          <IftaLabel>
-            <InputNumber
-              v-model="form.lensDiameter"
-              placeholder="Longueur du canon"
-              :minFractionDigits="2"
-              id="barrelLength"
-            />
-            <label for="barrelLength">Dimension Lentille </label>
-          </IftaLabel>
-          <IftaLabel>
-            <InputNumber
-              v-model="form.bodyDiameter"
-              placeholder="Longueur du canon"
-              :minFractionDigits="2"
-              id="barrelLength"
-            />
-            <label for="barrelLength">Dimension du corps</label>
-          </IftaLabel>
-
+          <input-group-required-icon
+            :is-validate="form.lensDiameter > 0 && form.bodyDiameter > 0"
+          />
+          <input-group-number
+            :min="0"
+            placeholder="diameter"
+            label="lensDiameter"
+            required
+            @value="(value) => (form.lensDiameter = value)"
+            input-id="lensDiameter"
+            :initial-value="form.lensDiameter"
+          />
+          <InputGroupAddon>mm</InputGroupAddon>
+          <input-group-number
+            :min="0"
+            placeholder="diameter"
+            label="bodyDiameter"
+            required
+            @value="(value) => (form.bodyDiameter = value)"
+            input-id="bodyDiameter"
+            :initial-value="form.bodyDiameter"
+          />
           <InputGroupAddon>mm</InputGroupAddon>
         </InputGroup>
 
         <InputGroup>
-          <InputGroupAddon>
-            <Checkbox id="isAdjustableTrigger" v-model="form.isParallax" :binary="true" />
-            <label for="isAdjustableTrigger" class="ml-2"> Parallaxe reglable </label>
-          </InputGroupAddon>
+          <input-group-required-icon :is-validate="form.length > 0" />
+          <input-group-number
+            placeholder="length"
+            label="length"
+            @value="(value) => (form.length = value)"
+            input-id="length"
+            :initial-value="form.length"
+          />
+          <InputGroupAddon><span>cm</span></InputGroupAddon>
+        </InputGroup>
+
+        <InputGroup>
+          <input-group-required-icon :is-validate="form.eyeRelief > 0" />
+          <input-group-number
+            placeholder="eyeRelief"
+            label="eyeRelief"
+            @value="(value) => (form.eyeRelief = value)"
+            input-id="eyeRelief"
+            :initial-value="form.eyeRelief"
+          />
+          <InputGroupAddon><span>cm</span></InputGroupAddon>
+        </InputGroup>
+
+        <InputGroup>
+          <input-group-optional-icon />
+          <input-group-check-box
+            input-id="isParallax"
+            label="isParallax"
+            @checked="(event) => (form.isParallax = event)"
+            :checked="form.isParallax"
+            is-width-half-size
+          />
           <InputGroupAddon>de</InputGroupAddon>
-          <InputNumber
-            :minFractionDigits="2"
-            v-model="form.minParallax"
+          <input-group-number
+            :min="0"
+            placeholder="min"
+            label="minParallax"
+            required
+            @value="(value) => (form.minParallax = value)"
+            input-id="minParallax"
+            :initial-value="form.minParallax"
             :disabled="!form.isParallax"
           />
           <InputGroupAddon>a</InputGroupAddon>
-          <InputNumber
-            :minFractionDigits="2"
-            v-model="form.maxParallax"
+          <input-group-number
+            :min="0"
+            placeholder="max"
+            label="maxParallax"
+            required
+            @value="(value) => (form.maxParallax = value)"
+            input-id="maxParallax"
             :disabled="!form.isParallax"
+            :initial-value="form.maxParallax"
           />
           <InputGroupAddon>yard</InputGroupAddon>
+        </InputGroup>
+
+        <InputGroup>
+          <input-group-optional-icon />
+          <input-group-check-box
+            input-id="isCollarsProvided"
+            label="isCollarsProvided"
+            @checked="(event) => (form.isCollarsProvided = event)"
+            :checked="form.isCollarsProvided"
+          />
+          <input-group-select
+            :options="store.prerequisiteOpticQuery.data.data.opticCollars"
+            type="collar"
+            @option-id="(event) => (form.providedCollarId = event)"
+            input-id="providedCollarId"
+            :initial-value="form.providedCollarId ?? 0"
+            :disabled="!form.isCollarsProvided"
+          />
         </InputGroup>
       </div>
 
@@ -206,7 +242,7 @@
           rows="5"
           cols="30"
           class="w-full"
-          placeholder="Description"
+          :placeholder="t('global.description')"
         />
       </div>
       <div class="text-red-500 p-4" v-if="store.create.isError">
@@ -216,7 +252,7 @@
       </div>
 
       <div class="text-center">
-        <Button type="submit" label="submit" :disabled="!isFormValid"></Button>
+        <Button type="submit" :label="t('global.save')" :disabled="!isFormValid"></Button>
       </div>
     </form>
   </div>
@@ -226,16 +262,19 @@ import { type CreateOpticDto } from '@/api/Api'
 import { computed, ref } from 'vue'
 import { useOpticStore } from '@/stores/optic'
 import InputGroup from 'primevue/inputgroup'
-import Checkbox from 'primevue/checkbox'
 import Textarea from 'primevue/textarea'
-import InputNumber from 'primevue/inputnumber'
-import IftaLabel from 'primevue/iftalabel'
-import InputText from 'primevue/inputtext'
 import Button from 'primevue/button'
 import InputGroupAddon from 'primevue/inputgroupaddon'
-import Select from 'primevue/select'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
+import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
+import InputGroupAddonOpenDrawerButton from '@/components/__form/InputGroupAddonOpenDrawerButton.vue'
+import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
+import InputGroupText from '@/components/__form/InputGroupText.vue'
+import InputGroupNumber from '@/components/__form/InputGroupNumber.vue'
+import InputGroupCheckBox from '@/components/__form/InputGroupCheckBox.vue'
+import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.vue'
+import InputGroupMultiSelect from '@/components/__form/InputGroupMultiSelect.vue'
 const store = useOpticStore()
 const { units$ } = storeToRefs(store)
 const { t } = useI18n()
@@ -255,7 +294,11 @@ const initialCreateOpticFormObject: CreateOpticDto = {
   valueOfOneClick: 0,
   focalPlaneId: 0,
   opticUnitId: 0,
-  opticTypeId: 0
+  opticTypeId: 0,
+  eyeRelief: 0,
+  isCollarsProvided: false,
+  length: 0,
+  providedCollarId: null
 }
 const form = ref<CreateOpticDto>({
   ...initialCreateOpticFormObject
@@ -265,10 +308,10 @@ const isFormValid = computed(() => {
   if (
     form.value.name &&
     form.value.factoryId > 0 &&
+    form.value.opticTypeId > 0 &&
+    form.value.focalPlaneId > 0 &&
     form.value.bodyDiameter > 0 &&
     form.value.lensDiameter > 0 &&
-    form.value.minZoom > 0 &&
-    form.value.maxZoom > 0 &&
     form.value.valueOfOneClick > 0
   ) {
     isValid = true
@@ -280,8 +323,12 @@ const submit = () => {
   form.value = { ...initialCreateOpticFormObject }
 }
 const clickValueOption = computed(() => {
-  const moaOptions = ['1/8', '1/4', '1/2']
-  const mradOptions = ['1/10']
+  const moaOptions = [
+    { id: 1, name: '1/8' },
+    { id: 2, name: '1/4' },
+    { id: 3, name: '1/2' }
+  ]
+  const mradOptions = [{ id: 1, name: '1/10' }]
   const opticUnit = units$.value.find((u) => u.id === form.value.opticUnitId)
   if (opticUnit && opticUnit.name === 'MOA') {
     return moaOptions

@@ -191,7 +191,7 @@ const items = ref([
         {
           label: 'Autre',
           items: [
-            { label: 'Douille et oviges' },
+            { label: 'Optiques' },
             { label: 'Type d arme' },
             {
               label: 'Marques',
