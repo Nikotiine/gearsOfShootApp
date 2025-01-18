@@ -107,22 +107,24 @@
               rounded
               aria-label="Filter"
               as="router-link"
-              :to="'/detail/arme/' + data.id"
+              :to="'/detail/riffle/' + data.id"
             />
-            <!--            <Button
+            <Button
               icon="pi pi-pencil"
               rounded
               aria-label="Filter"
               severity="warn"
               as="router-link"
+              :to="'/admin/gestion/edit/weapon/riffle/' + data.id"
             />
-            <Button
-              icon="pi pi-trash"
-              rounded
-              aria-label="Filter"
-              severity="danger"
-              as="router-link"
-            />-->
+            <!--
+           <Button
+             icon="pi pi-trash"
+             rounded
+             aria-label="Filter"
+             severity="danger"
+             as="router-link"
+           />-->
           </div></template
         >
       </Column>

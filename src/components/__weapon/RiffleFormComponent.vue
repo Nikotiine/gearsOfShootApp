@@ -8,7 +8,7 @@
         <input-group-required-icon :is-validate="form.caliberId > 0" />
         <input-group-select
           :options="store.prerequisitesWeaponList.data.data.calibers"
-          type="caliber"
+          label="global.caliber"
           @option-id="(event) => (form.caliberId = event)"
           required
           filter
@@ -22,7 +22,7 @@
         <input-group-required-icon :is-validate="form.factoryId > 0" />
         <input-group-select
           :options="store.prerequisitesWeaponList.data.data.factories"
-          type="factory"
+          label="global.factory"
           @option-id="(event) => (form.factoryId = event)"
           required
           filter
@@ -37,8 +37,8 @@
         <input-group-text
           @value="(value) => (form.name = value)"
           :min-length="3"
-          placeholder="weaponModel"
-          label="weaponModel"
+          placeholder="global.model"
+          label="weapon.form.weaponModel"
           required
           input-id="name"
           :initial-value="form.name"
@@ -49,8 +49,8 @@
         <input-group-optional-icon :is-completed="form.variation.length > 0" />
         <input-group-text
           @value="(value) => (form.variation = value)"
-          placeholder="weaponVariation"
-          label="weaponVariation"
+          placeholder="global.variation"
+          label="weapon.form.weaponVariation"
           input-id="variation"
           :initial-value="form.variation ?? undefined"
         />
@@ -60,7 +60,7 @@
         <input-group-required-icon :is-validate="form.percussionTypeId > 0" />
         <input-group-select
           :options="store.prerequisitesWeaponList.data.data.percussionTypes"
-          type="percussion"
+          label="global.percussionType"
           @option-id="(event) => (form.percussionTypeId = event)"
           required
           input-id="percussionTypeId"
@@ -72,7 +72,7 @@
         <input-group-required-icon :is-validate="form.barrelTypeId > 0" />
         <input-group-select
           :options="store.prerequisitesWeaponList.data.data.barreTypes"
-          type="barrelType"
+          label="weapon.common.barrelType"
           @option-id="(event) => (form.barrelTypeId = event)"
           required
           input-id="barrelTypeId"
@@ -111,7 +111,7 @@
         <input-group-optional-icon :is-completed="form.barrelColorId > 0" />
         <input-group-select
           :options="colors$"
-          type="barrelColor"
+          label="weapon.common.barrelColor"
           @option-id="(event) => (form.barrelColorId = event)"
           filter
           input-id="barrelColorId"
@@ -124,13 +124,13 @@
         <input-group-optional-icon :is-completed="form.threadedSizeId > 0" />
         <input-group-check-box
           input-id="isThreadedBarrel"
-          label="isThreadedBarrel"
+          label="weapon.form.isThreadedBarrel"
           @checked="(event) => (form.isThreadedBarrel = event)"
           :checked="form.isThreadedBarrel"
         />
         <input-group-select
           :options="store.prerequisitesWeaponList.data.data.threadedSizes"
-          type="threadSize"
+          label="global.threadedSize"
           optionLabel="size"
           :disabled="!form.isThreadedBarrel"
           @option-id="(event) => (form.threadedSizeId = event)"
@@ -144,13 +144,13 @@
         <input-group-optional-icon />
         <input-group-check-box
           input-id="isProvidedMagazine"
-          label="isProvidedMagazine"
+          label="weapon.form.isProvidedMagazine"
           @checked="(event) => (isProvidedMagazine = event)"
           :checked="isProvidedMagazine"
         />
         <input-group-select
           :options="[]"
-          type="magazine"
+          label="weapon.form.magazine"
           :disabled="!isProvidedMagazine"
           @option-id="(event) => (form.providedMagazineId = event)"
           input-id="providedMagazineId"
@@ -164,8 +164,7 @@
           ><span v-capitalize="t('global.quantity')" class="mx-4"></span
         ></InputGroupAddon>
         <input-group-number
-          placeholder="providedMagazineQuantity"
-          label="providedMagazineQuantity"
+          label="weapon.common.providedMagazineQuantity"
           @value="(value) => (form.providedMagazineQuantity = value)"
           input-id="providedMagazineQuantity"
           :disabled="!isProvidedMagazine"
@@ -180,15 +179,15 @@
         />
         <input-group-check-box
           input-id="isAdjustableTrigger"
-          label="isAdjustableTrigger"
+          label="weapon.common.isAdjustableTrigger"
           @checked="(event) => (form.isAdjustableTrigger = event)"
           :checked="form.isAdjustableTrigger"
         />
         <input-group-number
           :min="0.1"
           :min-fraction-digits="2"
-          placeholder="adjustableTriggerMinWeight"
-          label="adjustableTriggerMinWeight"
+          placeholder="weapon.common.adjustableTriggerMinWeight"
+          label="weapon.common.adjustableTriggerMinWeight"
           :disabled="!form.isAdjustableTrigger"
           @value="(value) => (adjustableTriggerMinWeight = value)"
           input-id="adjustableTriggerMinWeight"
@@ -198,8 +197,8 @@
         <input-group-number
           :min="adjustableTriggerMaxWeight + 0.1"
           :min-fraction-digits="2"
-          placeholder="adjustableTriggerMaxWeight"
-          label="adjustableTriggerMaxWeight"
+          placeholder="weapon.common.adjustableTriggerMaxWeight"
+          label="weapon.common.adjustableTriggerMaxWeight"
           :disabled="!form.isAdjustableTrigger"
           @value="(value) => (adjustableTriggerMaxWeight = value)"
           input-id="adjustableTriggerMaxWeight"
@@ -212,7 +211,7 @@
         <input-group-optional-icon :is-completed="form.buttMaterialId > 0" />
         <input-group-select
           :options="materials$"
-          type="buttType"
+          label="weapon.common.buttMaterial"
           @option-id="(event) => (form.buttMaterialId = event)"
           input-id="buttMaterialId"
           :initial-value="form.buttMaterialId ?? 0"
@@ -224,14 +223,14 @@
         <input-group-optional-icon />
         <input-group-check-box
           input-id="isAdjustableButt"
-          label="isAdjustableButt"
+          label="weapon.common.isAdjustableButt"
           @checked="(event) => (form.isAdjustableButt = event)"
           :checked="form.isAdjustableButt"
           is-width-half-size
         />
         <input-group-check-box
           input-id="isAdjustableBusk"
-          label="isAdjustableBusk"
+          label="weapon.common.isAdjustableBusk"
           @checked="(event) => (form.isAdjustableBusk = event)"
           :checked="form.isAdjustableBusk"
           is-width-half-size
@@ -242,7 +241,7 @@
         <input-group-optional-icon :is-completed="form.buttColorId > 0" />
         <input-group-select
           :options="colors$"
-          type="buttColor"
+          label="weapon.common.buttColor"
           @option-id="(event) => (form.buttColorId = event)"
           filter
           input-id="buttColorId"
@@ -255,7 +254,7 @@
         <input-group-optional-icon :is-completed="form.railSizeId > 0" />
         <input-group-select
           :options="railSizes$"
-          type="opticRail"
+          label="weapon.common.opticRail"
           @option-id="(event) => (form.railSizeId = event)"
           filter
           input-id="railSizeId"
@@ -268,21 +267,21 @@
 
         <input-group-check-box
           input-id="isOpenAim"
-          label="isOpenAim"
+          label="weapon.common.isOpenAim"
           @checked="(event) => (form.isOpenAim = event)"
           :checked="form.isOpenAim"
           is-width-half-size
         />
         <input-group-check-box
           input-id="isAdjustableBackSight"
-          label="isAdjustableBackSight"
+          label="weapon.common.isAdjustableBackSight"
           @checked="(event) => (form.isAdjustableBackSight = event)"
           :checked="form.isAdjustableBackSight"
           is-width-half-size
         />
         <input-group-check-box
           input-id="isAdjustableFrontSight"
-          label="isAdjustableFrontSight"
+          label="weapon.common.isAdjustableFrontSight"
           @checked="(event) => (form.isAdjustableFrontSight = event)"
           :checked="form.isAdjustableFrontSight"
           is-width-half-size
@@ -292,15 +291,13 @@
       <InputGroup>
         <input-group-optional-icon />
         <input-group-number
-          placeholder="qcSlot"
-          label="qcSlot"
+          label="weapon.common.qcSlot"
           @value="(value) => (form.qcSlot = value)"
           input-id="qcSlot"
           :initial-value="form.qcSlot"
         />
         <input-group-number
-          placeholder="grenadierSlot"
-          label="grenadierSlot"
+          label="weapon.common.grenadierSlot"
           @value="(value) => (form.grenadierSlot = value)"
           input-id="grenadierSlot"
           :initial-value="form.grenadierSlot"
@@ -311,17 +308,19 @@
         <input-group-optional-icon :is-completed="selectedMLockOptions.length > 0" />
         <input-group-check-box
           input-id="isMlockCompatibility"
-          label="isMlockCompatibility"
+          label="weapon.common.isMlockCompatibility"
           @checked="(event) => (form.isMlockCompatibility = event)"
           :checked="form.isMlockCompatibility"
         />
         <input-group-multi-select
           input-id="mLockOptions"
-          :options="mLockOptions$"
+          label="weapon.common.mLockOptions"
+          :options="store.prerequisitesWeaponList.data.data.mLockOptions"
           :disabled="!form.isMlockCompatibility"
           :invalid="isInvalidMLockOption"
           @selected-options="(event) => (selectedMLockOptions = event)"
           :clear="resetMultiselect"
+          :initial-value="selectedMLockOptions"
         />
       </InputGroup>
     </div>
@@ -341,16 +340,16 @@
       </p>
     </div>
     <div class="text-center">
-      <Button type="submit" :label="t('global.save')" :disabled="!isFormValid"></Button>
+      <Button type="submit" :label="t(buttonLabel)" :disabled="!isFormValid"></Button>
     </div>
   </form>
 </template>
 `
 <script setup lang="ts">
-import type { CreateRiffleDto } from '@/api/Api'
+import type { CreateRiffleDto, MLockOptionDto, RiffleDto } from '@/api/Api'
 import InputGroupAddon from 'primevue/inputgroupaddon'
 import Button from 'primevue/button'
-import { computed, ref } from 'vue'
+import { computed, ref, watchEffect } from 'vue'
 import InputGroup from 'primevue/inputgroup'
 import { useI18n } from 'vue-i18n'
 import { type NewWeapon, useWeaponStore } from '@/stores/weapon'
@@ -369,12 +368,17 @@ import InputGroupMultiSelect from '@/components/__form/InputGroupMultiSelect.vue
 const store = useWeaponStore()
 const riffleStore = useRiffleStore()
 const { railSizes$, materials$, colors$ } = storeToRefs(store)
-const { mLockOptions$ } = storeToRefs(riffleStore)
 const { t } = useI18n()
-
-const { selectedOptions, openDrawer } = defineProps<{
+const buttonLabel = ref('global.save')
+const isEditForm = ref<boolean>(false)
+const {
+  selectedOptions,
+  openDrawer,
+  riffle = null
+} = defineProps<{
   selectedOptions: NewWeapon
   openDrawer: Function
+  riffle?: RiffleDto
 }>()
 const adjustableTriggerMinWeight = ref(0)
 const adjustableTriggerMaxWeight = ref(0)
@@ -407,26 +411,14 @@ const initialForm: CreateRiffleDto = {
   isOpenAim: true,
   qcSlot: 0,
   railSizeId: null,
-  mLockOptions: '',
+  mLockOptions: [],
   barrelColorId: null,
   buttColorId: null
 }
 
 const form = ref<CreateRiffleDto>({ ...initialForm })
-const selectedMLockOptions = ref<MlockOptions[]>([])
+const selectedMLockOptions = ref<MLockOptionDto[]>([])
 const resetMultiselect = ref(false)
-
-/**
- * Creation du champs des options Mlock
- * Concatener les positions depuis le tableau du multiselect
- */
-const formatMLockOptions = () => {
-  let concat = ''
-  for (const selectedMLockOption of selectedMLockOptions.value) {
-    concat += selectedMLockOption.name + ' '
-  }
-  return concat
-}
 
 /**
  * Validators du formulaire
@@ -456,20 +448,50 @@ const isInvalidMaxTriggerValue = computed(() => {
   )
 })
 const adjustableTriggerValue = () => {
-  return `de ${adjustableTriggerMinWeight.value} kg à ${adjustableTriggerMaxWeight.value} kg`
+  return `${adjustableTriggerMinWeight.value} kg à ${adjustableTriggerMaxWeight.value} kg`
 }
 const submit = () => {
-  form.value.mLockOptions = formatMLockOptions()
+  form.value.mLockOptions = selectedMLockOptions.value
   form.value.adjustableTriggerValue = form.value.isAdjustableTrigger
     ? adjustableTriggerValue()
     : null
-  riffleStore.create.mutate(form.value)
+  isEditForm.value
+    ? riffleStore.edit.mutate({ ...form.value, id: riffle.id })
+    : riffleStore.create.mutate(form.value)
   // Reset des champs du formulaire
+  // resetForm()
+}
+function resetForm(): void {
   form.value = { ...initialForm }
   resetMultiselect.value = !resetMultiselect.value
   adjustableTriggerMinWeight.value = 0
   adjustableTriggerMaxWeight.value = 0
   selectedMLockOptions.value = []
+}
+watchEffect(() => {
+  if (riffle) {
+    setEditForm(riffle)
+  }
+})
+function setEditForm(riffle: RiffleDto) {
+  form.value = {
+    ...riffle,
+    threadedSizeId: riffle.threadedSize ? riffle.threadedSize.id : null,
+    barrelColorId: riffle.barrelColor ? riffle.barrelColor.id : null,
+    buttMaterialId: riffle.buttMaterial ? riffle.buttMaterial.id : null,
+    buttColorId: riffle.buttColor ? riffle.buttColor.id : null,
+    percussionTypeId: riffle.percussionType.id ?? 0,
+    caliberId: riffle.caliber.id,
+    factoryId: riffle.factory.id ?? 0,
+    barrelTypeId: riffle.barrelType.id ?? 0,
+    providedMagazineId: riffle.providedMagazine ? riffle.providedMagazine.id : null,
+    typeId: riffle.type.id,
+    categoryId: riffle.category.id,
+    railSizeId: riffle.railSize ? riffle.railSize.id : null
+  }
+  selectedMLockOptions.value = riffle.mLockOptions ?? []
+  buttonLabel.value = 'global.edit'
+  isEditForm.value = true
 }
 </script>
 

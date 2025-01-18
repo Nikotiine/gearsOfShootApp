@@ -3,12 +3,12 @@
     <InputText
       :id="inputId"
       v-model="value"
-      :placeholder="t('inputText.placeholder.' + placeholder)"
+      :placeholder="t(placeholder)"
       @focus="onFocus"
       :invalid="isInvalid"
       @change="onChange"
     />
-    <label :for="inputId" v-capitalize="t('inputText.' + label) + isRequiredText"></label>
+    <label :for="inputId">{{ t(label) + isRequiredText }}</label>
   </IftaLabel>
 </template>
 
@@ -20,7 +20,7 @@ import { computed, ref, watch } from 'vue'
 const requiredLabel: string = '(*)'
 const {
   minLength = 0,
-  label = 'default',
+  label = 'label',
   required = false,
   initialValue = ''
 } = defineProps<{

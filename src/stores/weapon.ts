@@ -2,11 +2,18 @@ import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
 import { useQuery } from '@tanstack/vue-query'
 import type {
+  CaliberDto,
   ColorDto,
+  FactoryDto,
   LegislationCategoryDto,
   MaterialDto,
+  MLockOptionDto,
   OpticReadyPlateDto,
+  PercussionTypeDto,
   RailSizeDto,
+  ThreadedSizeDto,
+  WeaponBarrelTypeDto,
+  WeaponMagazineDto,
   WeaponTriggerTypeDto,
   WeaponTypeDto
 } from '@/api/Api'
@@ -52,4 +59,46 @@ export const useWeaponStore = defineStore('weapon', () => {
 export interface NewWeapon {
   type: number
   category: number
+}
+export interface WeaponViewModel {
+  id: number
+  reference: string
+  name: string
+  description: string
+  variation: string | null
+  category: LegislationCategoryDto
+  caliber: CaliberDto
+  factory: FactoryDto
+  type: WeaponTypeDto
+  barrelLength: number
+  isAdjustableTrigger: boolean
+  isThreadedBarrel: boolean
+  barrelType: WeaponBarrelTypeDto
+  threadedSize: ThreadedSizeDto
+  adjustableTriggerValue: string
+  percussionType: PercussionTypeDto
+  providedMagazineQuantity: number
+  providedMagazine: WeaponMagazineDto
+  barrelSize: number
+  buttMaterial: MaterialDto
+  isAdjustableFrontSight: boolean
+  isAdjustableBackSight: boolean
+  buttColor: ColorDto
+  barrelColor: ColorDto
+  isAdjustableButt?: boolean
+  isAdjustableBusk?: boolean
+  railSize?: RailSizeDto
+  grenadierSlot?: number
+  qcSlot?: number
+  isMlockCompatibility?: boolean
+  isOpenAim?: boolean
+  mLockOptions?: MLockOptionDto[] | null
+  isOpticReady?: boolean
+  decocking?: boolean
+  triggerType?: WeaponTriggerTypeDto
+  slideColor?: ColorDto
+  slideMaterial?: MaterialDto
+  isExternalHammer?: boolean
+  opticReadyPlates?: OpticReadyPlateDto[]
+  isPicatinyRailSlop?: boolean
 }

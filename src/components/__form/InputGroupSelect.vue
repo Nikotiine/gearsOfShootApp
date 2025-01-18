@@ -7,16 +7,16 @@
       :options="options"
       :optionLabel="optionLabel"
       :optionValue="optionValue"
-      :placeholder="t('inputSelect.' + placeholder)"
+      :placeholder="t(placeholder)"
       @focus="onFocus()"
       checkmark
       :highlightOnSelect="true"
       :invalid="isInvalid"
       :disabled="disabled"
       :filter="filter"
-      :emptyMessage="t('inputSelect.notFoundItem')"
+      :emptyMessage="t('global.notFoundItem')"
     />
-    <label :for="inputId" v-capitalize="t('inputSelect.' + type) + isRequiredSelect"></label>
+    <label :for="inputId">{{ t(label) + isRequiredSelect }}</label>
   </IftaLabel>
 </template>
 <script setup lang="ts">
@@ -24,7 +24,6 @@ import IftaLabel from 'primevue/iftalabel'
 import Select from 'primevue/select'
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import type { InputGroupSelectType } from '@/types/form-type'
 
 const { t } = useI18n()
 const requiredLabel: string = '(*)'
@@ -37,11 +36,11 @@ const {
   optionLabel = 'name',
   optionValue = 'id',
   maxWidth = 100,
-  placeholder = 'defaultPlaceHolder',
+  placeholder = 'global.defaultPlaceHolder',
   initialValue = 0
 } = defineProps<{
   options: any
-  type: InputGroupSelectType
+  label: string
   required?: boolean
   optionLabel?: string
   optionValue?: string

@@ -8,12 +8,13 @@
         <input-group-required-icon :is-validate="isOnContinue" />
         <input-group-select
           :options="store.prerequisitesWeaponList.data?.data.types"
-          type="weaponType"
+          label="global.weaponType"
           @option-id="(event) => (typeId = event)"
           required
           :disabled="isOnContinue"
           filter
           input-id="typeId"
+          :initial-value="typeId"
         />
         <input-group-addon-open-drawer-button
           type="weaponType"
@@ -25,11 +26,12 @@
         <input-group-required-icon :is-validate="isOnContinue" />
         <input-group-select
           :options="store.prerequisitesWeaponList.data?.data.categories"
-          type="legalisationCategory"
+          label="global.legalisationCategory"
           @option-id="(event) => (categoryId = event)"
           required
           :disabled="isOnContinue"
           input-id="categoryId"
+          :initial-value="categoryId"
         />
       </InputGroup>
     </div>
@@ -46,7 +48,7 @@
 
 <script setup lang="ts">
 import InputGroup from 'primevue/inputgroup'
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import Button from 'primevue/button'
 import { useI18n } from 'vue-i18n'
 import { useWeaponStore } from '@/stores/weapon'
@@ -55,15 +57,16 @@ import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 const store = useWeaponStore()
 const { t } = useI18n()
-const { openDrawer } = defineProps<{
+const { openDrawer, reset } = defineProps<{
   openDrawer: Function
+  reset: boolean
 }>()
-const nextStep = defineEmits(['nextStep'])
+const emit = defineEmits(['nextStep'])
 const typeId = ref<number>(0)
 const categoryId = ref<number>(0)
 const isOnContinue = ref<boolean>(false)
 const onContinue = () => {
-  nextStep('nextStep', {
+  emit('nextStep', {
     type: typeId.value,
     category: categoryId.value
   })
@@ -76,6 +79,16 @@ const canContinue = computed(() => {
   }
   return isContinue
 })
+watch(
+  () => reset,
+  (value) => {
+    if (value) {
+      isOnContinue.value = false
+      typeId.value = 0
+      categoryId.value = 0
+    }
+  }
+)
 </script>
 
 <style scoped></style>

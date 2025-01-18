@@ -12,7 +12,7 @@
           <input-group-required-icon :is-validate="form.categoryId > 0" />
           <input-group-select
             :options="store.prerequisitesAmmoList.data.data.categories"
-            type="legalisationCategory"
+            label="global.legalisationCategory"
             @option-id="(event) => (form.categoryId = event)"
             required
             input-id="categoryId"
@@ -24,7 +24,7 @@
           <input-group-required-icon :is-validate="form.caliberId > 0" />
           <input-group-select
             :options="store.prerequisitesAmmoList.data.data.calibers"
-            type="caliber"
+            label="global.caliber"
             @option-id="(event) => (form.caliberId = event)"
             required
             filter
@@ -38,7 +38,7 @@
           <input-group-required-icon :is-validate="form.factoryId > 0" />
           <input-group-select
             :options="store.prerequisitesAmmoList.data.data.factories"
-            type="factory"
+            label="global.factory"
             @option-id="(event) => (form.factoryId = event)"
             required
             filter
@@ -52,7 +52,7 @@
           <input-group-required-icon :is-validate="form.percussionTypeId > 0" />
           <input-group-select
             :options="store.prerequisitesAmmoList.data.data.percussionTypes"
-            type="percussion"
+            label="global.percussionType"
             @option-id="(event) => (form.percussionTypeId = event)"
             required
             input-id="percussionTypeId"
@@ -65,8 +65,8 @@
           <input-group-text
             @value="(value) => (form.name = value)"
             :min-length="2"
-            placeholder="ammunitionModel"
-            label="ammunitionModel"
+            placeholder="global.model"
+            label="ammunition.form.ammunitionModel"
             required
             input-id="name"
             :initial-value="form.name"
@@ -76,8 +76,7 @@
         <InputGroup>
           <input-group-optional-icon :is-completed="form.initialSpeed > 0" />
           <input-group-number
-            placeholder="initialSpeed"
-            label="initialSpeed"
+            label="ammunition.form.initialSpeed"
             @value="(value) => (form.initialSpeed = value)"
             input-id="initialSpeed"
             :initial-value="form.initialSpeed"
@@ -89,7 +88,7 @@
           <input-group-required-icon :is-validate="form.headTypeId > 0" />
           <input-group-select
             :options="store.prerequisitesAmmoList.data.data.headTypes"
-            type="headType"
+            label="ammunition.form.headType"
             @option-id="(event) => (form.headTypeId = event)"
             required
             input-id="headTypeId"
@@ -101,7 +100,7 @@
           <input-group-required-icon :is-validate="form.bodyTypeId > 0" />
           <input-group-select
             :options="store.prerequisitesAmmoList.data.data.bodyTypes"
-            type="bodyType"
+            label="ammunition.form.bodyType"
             @option-id="(event) => (form.bodyTypeId = event)"
             required
             input-id="bodyTypeId"
@@ -113,7 +112,7 @@
           <input-group-optional-icon :is-completed="form.packaging > 0" />
           <input-group-number
             placeholder="packaging"
-            label="packaging"
+            label="ammunition.form.packaging"
             @value="(value) => (form.packaging = value)"
             input-id="packaging"
             :initial-value="form.packaging"

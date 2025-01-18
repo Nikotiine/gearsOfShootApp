@@ -15,7 +15,7 @@
     "accessC": "Category C Accessory"
   },
   "register": {
-    "title": "Create Your Account",
+    "title": "Create your account",
     "subtitle": "Fill in the different fields",
     "firstName": "First Name",
     "lastName": "Last Name",
@@ -29,7 +29,7 @@
     "create": "Create"
   },
   "connexion": {
-    "title": "Login to Your Account",
+    "title": "Login to your account",
     "subtitle": "Enter your credentials",
     "send": "Login",
     "summary": "User Account",
@@ -60,6 +60,8 @@
     "caliber": "Caliber",
     "factory": "Brand",
     "model": "Model",
+    "percussionType": "Percussion Type",
+    "barrelType": "Barrel Type",
     "weaponType": "Weapon Type",
     "threadedSize": "Thread Size",
     "from": "From",
@@ -67,55 +69,76 @@
     "magazine": "Magazine",
     "packaging": "Packaging",
     "continue": "Continue",
-    "quantity": "Quantity"
+    "quantity": "Quantity",
+    "description": "Description",
+    "handgun": "Handgun",
+    "riffle": "Long Gun",
+    "inches": "Inches",
+    "notRegistered": "Not Registered",
+    "reference": "Reference"
   },
   "weapon": {
     "summary": "Weapon Management",
     "add": {
-      "success": "Add to the database"
+      "success": "Add to database"
+    },
+    "common": {
+      "percussionType": "Percussion Type",
+      "barrelType": "Barrel Type",
+      "barrelLength": "Barrel Length",
+      "barrelSize": "Barrel Thickness",
+      "barrelColor": "Barrel Color",
+      "isThreadedBarrel": "Threaded Barrel",
+      "isAdjustableTrigger": "Adjustable Trigger",
+      "buttMaterial": "Butt Material",
+      "buttColor": "Butt Color",
+      "slideMaterial": "Slide Material",
+      "slideColor": "Slide Color",
+      "isAdjustableButt": "Adjustable Butt",
+      "isAdjustableBusk": "Adjustable Busk",
+      "providedMagazineQuantity": "Provided Magazines",
+      "isOpenAim": "Open Sight",
+      "isAdjustableBackSight": "Adjustable Rear Sight",
+      "isAdjustableFrontSight": "Adjustable Front Sight",
+      "railSize": "Optic Rail Size",
+      "decocking": "Decocking",
+      "triggerType": "Trigger Type",
+      "isExternalHammer": "External Hammer",
+      "isPicatinyRailSlop": "Picatinny Rail for Accessories",
+      "isOpticReady": "Optic Ready?",
+      "providedOpticReadyPlates": "Provided Optic Ready Plates",
+      "qcSlot": "Quick Connect Slot",
+      "grenadierSlot": "Grenadier Slot",
+      "isMlockCompatibility": "M-Lock Compatibility",
+      "isProvidedMagazine": "Provided Magazine"
     },
     "form": {
       "add": "Add a weapon of category",
       "name": "Model Name",
       "variation": "Variant",
-      "percussionType": "Percussion Type",
-      "barrelType": "Barrel Type",
-      "barrelLength": "Barrel Length",
       "length": "Length",
-      "isThreadedBarrel": "Threaded",
-      "isAdjustableTrigger": "Adjustable Trigger",
-      "isProvidedMagazine": "Magazine Provided",
+      "isThreadedBarrel": "Threading",
+
       "description": "Description",
-      "barrelSize": "Thickness",
-      "isAdjustableBusk": "Adjustable Busk",
-      "isAdjustableButt": "Adjustable Stock",
-      "isMlockCompatibility": "M-lock Compatible",
-      "railSize": "Optic Rail Size",
       "qcSlot": "QC Connection",
-      "grenadierSlot": "Grenadieres",
-      "isOpenAim": "Open Sight",
-      "isAdjustableBackSight": "Adjustable Rear Sight",
-      "isAdjustableFrontSight": "Adjustable Front Sight",
-      "buttType": "Stock Material",
-      "mLockOptions": "M-LOCK Position",
+      "buttType": "Butt Material",
+      "mLockOptions": "M-Lock Position",
       "riffleFormTitle": "Specific Long Gun",
       "handgunFormTitle": "Specific Handgun",
       "handGunButtType": "Frame Material",
       "isOpticReady": "OR?",
-      "slideMaterial": "Slide Material",
-      "buttColor": "Stock Color",
-      "barrelColor": "Barrel Color",
-      "slideColor": "Slide Color",
       "opticReadyPlates": "Optic Ready Plate Type",
-      "triggerType": "Trigger Type",
-      "isExternalHammer": "External Hammer",
-      "isPicatinyRailSlop": "Picatinny Rail"
+      "isPicatinyRailSlop": "Picatinny Rail",
+      "yourChoose": "Your choice: ",
+      "selectType": "What type of weapon?",
+      "isParallax": "Adjustable Parallax",
+      "isCollarsProvided": "Collars Provided?"
     }
   },
   "ammunition": {
     "summary": "Ammunition Management",
     "add": {
-      "success": "Add to the database"
+      "success": "Add to database"
     },
     "form": {
       "add": "Add ammunition of category",
@@ -158,6 +181,12 @@
     "summary": "Weapon Type Management",
     "mode": "Operation"
   },
+  "optic": {
+    "form": {
+      "addTitle": "Add a new optic",
+      "success": "Addition of a new optic"
+    }
+  },
   "factory": {
     "form": {
       "addTitle": "Add a new weapon type",
@@ -178,13 +207,13 @@
   },
   "threadedSize": {
     "form": {
-      "addTitle": "Add a new threading",
-      "success": "Addition of a new threading confirmed"
+      "addTitle": "Add a new thread size",
+      "success": "Addition of a new thread size confirmed"
     },
-    "existingList": "List of existing threadings",
+    "existingList": "List of existing thread sizes",
     "type": "Weapon Types",
     "summary": "Weapon Type Management",
-    "size": "Thread Size"
+    "size": "Thread Pitch Size"
   },
   "error": {
     "0001": "Email already used",
@@ -212,22 +241,33 @@
     "threadSize": "Thread Size",
     "magazine": "Magazine Type",
     "notFoundItem": "No items found",
-    "buttType": "Stock Material",
-    "buttColor": "Stock Color",
+    "buttType": "Butt Material",
+    "buttColor": "Butt Color",
     "opticRail": "Optic Rail",
     "slideType": "Slide Type",
     "slideColor": "Slide Color",
     "triggerType": "Trigger Type",
-    "defaultPlaceHolder": "Select"
+    "defaultPlaceHolder": "Select",
+    "headType": "Bullet Type",
+    "bodyType": "Case Type",
+    "opticType": "Optic Type",
+    "focalPlane": "Focal Plane",
+    "opticUnit": "Graduation Unit",
+    "clickValue": "Click Value",
+    "collar": "Collars"
   },
   "inputText": {
     "placeholder": {
       "weaponModel": "Weapon Model",
-      "weaponVariation": "Variant"
+      "weaponVariation": "Variant",
+      "ammunitionModel": "Ammunition Model",
+      "opticModel": "Optic Model"
     },
     "weaponModel": "Model",
     "weaponVariation": "Variant",
-    "default": "Enter text"
+    "default": "Enter text",
+    "ammunitionModel": "Ammunition Model",
+    "opticModel": "Optic Model"
   },
   "inputNumber": {
     "placeholder": {
@@ -237,7 +277,14 @@
       "adjustableTriggerMinWeight": "Min Weight",
       "providedMagazineQuantity": "Quantity",
       "qcSlot": "Number of QC Slots",
-      "grenadierSlot": "Number of Grenadieres"
+      "grenadierSlot": "Number of Grenadier Slots",
+      "initialSpeed": "Speed",
+      "packaging": "Packaging",
+      "min": "Minimum",
+      "max": "Maximum",
+      "diameter": "Diameter",
+      "length": "Length",
+      "eyeRelief": "Eye Relief"
     },
     "barrelLength": "Length",
     "barrelSize": "Thickness",
@@ -246,7 +293,19 @@
     "adjustableTriggerMinWeight": "Min Weight",
     "providedMagazineQuantity": "Provided Quantity",
     "qcSlot": "QC Connection",
-    "grenadierSlot": "Grenadieres"
+    "grenadierSlot": "Grenadier Slots",
+    "initialSpeed": "Initial Speed",
+    "packaging": "Packaging",
+    "minZoom": "Minimum Zoom",
+    "maxZoom": "Maximum Zoom",
+    "maxDrift": "Max Drift",
+    "maxElevation": "Max Elevation",
+    "lensDiameter": "Lens",
+    "bodyDiameter": "Body",
+    "minParallax": "Min Parallax",
+    "maxParallax": "Max Parallax",
+    "length": "Optic Length",
+    "eyeRelief": "Eye Relief"
   },
   "inputMultiSelect": {
     "emptyDefaultMessage": "No data found",

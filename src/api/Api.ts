@@ -138,6 +138,11 @@ export interface OpticReadyPlateDto {
   reference: string
 }
 
+export interface MLockOptionDto {
+  name: string
+  id: number
+}
+
 export interface ListOfPrerequisitesWeaponDto {
   calibers: CaliberDto[]
   factories: FactoryDto[]
@@ -151,6 +156,7 @@ export interface ListOfPrerequisitesWeaponDto {
   triggerTypes: WeaponTriggerTypeDto[]
   colors: ColorDto[]
   opticReadyPlates: OpticReadyPlateDto[]
+  mLockOptions: MLockOptionDto[]
 }
 
 export interface ListOfPrerequisitesWeaponTypeDto {
@@ -525,7 +531,7 @@ export interface RiffleDto {
   isMlockCompatibility: boolean
   /** Visee ouverte ? */
   isOpenAim: boolean
-  mLockOptions: string | null
+  mLockOptions: MLockOptionDto[] | null
 }
 
 export interface CreateRiffleDto {
@@ -613,7 +619,7 @@ export interface CreateRiffleDto {
   isMlockCompatibility: boolean
   /** Visee ouverte ? */
   isOpenAim: boolean
-  mLockOptions: string | null
+  mLockOptions: MLockOptionDto[] | null
 }
 
 export interface UpdateRiffleDto {
@@ -701,7 +707,7 @@ export interface UpdateRiffleDto {
   isMlockCompatibility: boolean
   /** Visee ouverte ? */
   isOpenAim: boolean
-  mLockOptions: string | null
+  mLockOptions: MLockOptionDto[] | null
   id: number
 }
 

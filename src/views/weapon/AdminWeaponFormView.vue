@@ -1,6 +1,14 @@
 <template>
-  <h2-form-component :initial-state="isShowForm" :selected-options="options" />
-  <select-weapon-type-component @next-step="chooseType" :open-drawer="openDrawerForm" />
+  <h2-form-component
+    :initial-state="isShowForm"
+    :selected-options="options"
+    :change-options="toggleDisplay"
+  />
+  <select-weapon-type-component
+    @next-step="chooseType"
+    :open-drawer="openDrawerForm"
+    :reset="!isShowForm"
+  />
   <div v-if="isShowForm">
     <riffle-form-component
       v-if="isRiffleWeapon.value"
@@ -11,12 +19,12 @@
       :selected-options="options"
       v-if="!isRiffleWeapon.value"
       :open-drawer="openDrawerForm"
+      :id="id"
     />
   </div>
 </template>
 <script setup lang="ts">
 import type { WeaponTypeDto } from '@/api/Api'
-
 import SelectWeaponTypeComponent from '@/components/__weapon/SelectWeaponTypeComponent.vue'
 import { computed, ref } from 'vue'
 import { type NewWeapon, useWeaponStore } from '@/stores/weapon'
@@ -33,6 +41,13 @@ const options = ref<NewWeapon>({
   type: 0,
   category: 0
 })
+
+const toggleDisplay = () => {
+  options.value.type = 0
+  options.value.category = 0
+  isShowForm.value = !isShowForm.value
+}
+
 const chooseType = (ids: NewWeapon) => {
   options.value = ids
   isShowForm.value = ids.type > 0 && ids.category > 0

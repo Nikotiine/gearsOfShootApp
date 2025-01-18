@@ -10,7 +10,7 @@
           <input-group-required-icon :is-validate="form.factoryId > 0" />
           <input-group-select
             :options="store.prerequisiteOpticQuery.data.data.factories"
-            type="factory"
+            label="global.factory"
             @option-id="(event) => (form.factoryId = event)"
             required
             filter
@@ -24,7 +24,7 @@
           <input-group-required-icon :is-validate="form.opticTypeId > 0" />
           <input-group-select
             :options="store.prerequisiteOpticQuery.data.data.types"
-            type="opticType"
+            label="optic.common.opticType"
             @option-id="(event) => (form.opticTypeId = event)"
             required
             filter
@@ -37,7 +37,7 @@
           <input-group-required-icon :is-validate="form.focalPlaneId > 0" />
           <input-group-select
             :options="store.prerequisiteOpticQuery.data.data.focalPlanes"
-            type="focalPlane"
+            label="optic.common.focalPlane"
             @option-id="(event) => (form.focalPlaneId = event)"
             required
             input-id="focalPlaneId"
@@ -51,8 +51,8 @@
           <input-group-text
             @value="(value) => (form.name = value)"
             :min-length="3"
-            placeholder="opticModel"
-            label="opticModel"
+            placeholder="global.model"
+            label="optic.common.opticModel"
             required
             input-id="name"
             :initial-value="form.name"
@@ -63,7 +63,7 @@
           <input-group-required-icon :is-validate="form.opticUnitId > 0" />
           <input-group-select
             :options="store.prerequisiteOpticQuery.data.data.units"
-            type="opticUnit"
+            label="optic.form.opticUnit"
             @option-id="(event) => (form.opticUnitId = event)"
             required
             input-id="opticUnitId"
@@ -75,7 +75,7 @@
           <input-group-required-icon :is-validate="form.valueOfOneClick > 0" />
           <input-group-select
             :options="clickValueOption"
-            type="clickValue"
+            label="optic.common.clickValue"
             @option-id="(event) => (form.valueOfOneClick = event)"
             required
             input-id="valueOfOneClick"
@@ -89,8 +89,7 @@
           />
           <input-group-number
             :min="0"
-            placeholder="minZoom"
-            label="minZoom"
+            label="optic.common.minZoom"
             required
             @value="(value) => (form.minZoom = value)"
             input-id="minZoom"
@@ -99,8 +98,7 @@
 
           <input-group-number
             :min="form.minZoom + 1"
-            placeholder="maxZoom"
-            label="maxZoom"
+            label="optic.common.maxZoom"
             required
             @value="(value) => (form.maxZoom = value)"
             input-id="maxZoom"
@@ -112,8 +110,7 @@
           <input-group-required-icon :is-validate="form.maxDrift > 0 && form.maxElevation > 0" />
           <input-group-number
             :min="0"
-            placeholder="max"
-            label="maxDrift"
+            label="optic.common.maxDrift"
             required
             @value="(value) => (form.maxDrift = value)"
             input-id="maxDrift"
@@ -122,8 +119,7 @@
 
           <input-group-number
             :min="0"
-            placeholder="max"
-            label="maxElevation"
+            label="optic.common.maxElevation"
             required
             @value="(value) => (form.maxElevation = value)"
             input-id="maxElevation"
@@ -138,8 +134,7 @@
           />
           <input-group-number
             :min="0"
-            placeholder="diameter"
-            label="lensDiameter"
+            label="optic.common.lensDiameter"
             required
             @value="(value) => (form.lensDiameter = value)"
             input-id="lensDiameter"
@@ -148,8 +143,7 @@
           <InputGroupAddon>mm</InputGroupAddon>
           <input-group-number
             :min="0"
-            placeholder="diameter"
-            label="bodyDiameter"
+            label="optic.common.bodyDiameter"
             required
             @value="(value) => (form.bodyDiameter = value)"
             input-id="bodyDiameter"
@@ -161,8 +155,7 @@
         <InputGroup>
           <input-group-required-icon :is-validate="form.length > 0" />
           <input-group-number
-            placeholder="length"
-            label="length"
+            label="global.length"
             @value="(value) => (form.length = value)"
             input-id="length"
             :initial-value="form.length"
@@ -173,8 +166,7 @@
         <InputGroup>
           <input-group-required-icon :is-validate="form.eyeRelief > 0" />
           <input-group-number
-            placeholder="eyeRelief"
-            label="eyeRelief"
+            label="optic.common.eyeRelief"
             @value="(value) => (form.eyeRelief = value)"
             input-id="eyeRelief"
             :initial-value="form.eyeRelief"
@@ -186,27 +178,26 @@
           <input-group-optional-icon />
           <input-group-check-box
             input-id="isParallax"
-            label="isParallax"
+            tool-tip="optic.common.isParallax"
+            label="optic.form.isParallax"
             @checked="(event) => (form.isParallax = event)"
             :checked="form.isParallax"
             is-width-half-size
           />
-          <InputGroupAddon>de</InputGroupAddon>
+          <InputGroupAddon>{{ t('global.from') }}</InputGroupAddon>
           <input-group-number
             :min="0"
-            placeholder="min"
-            label="minParallax"
+            label="optic.common.minParallax"
             required
             @value="(value) => (form.minParallax = value)"
             input-id="minParallax"
             :initial-value="form.minParallax"
             :disabled="!form.isParallax"
           />
-          <InputGroupAddon>a</InputGroupAddon>
+          <InputGroupAddon>{{ t('global.to') }}</InputGroupAddon>
           <input-group-number
             :min="0"
-            placeholder="max"
-            label="maxParallax"
+            label="optic.common.maxParallax"
             required
             @value="(value) => (form.maxParallax = value)"
             input-id="maxParallax"
@@ -220,13 +211,13 @@
           <input-group-optional-icon />
           <input-group-check-box
             input-id="isCollarsProvided"
-            label="isCollarsProvided"
+            label="optic.common.isCollarsProvided"
             @checked="(event) => (form.isCollarsProvided = event)"
             :checked="form.isCollarsProvided"
           />
           <input-group-select
             :options="store.prerequisiteOpticQuery.data.data.opticCollars"
-            type="collar"
+            label="optic.common.collar"
             @option-id="(event) => (form.providedCollarId = event)"
             input-id="providedCollarId"
             :initial-value="form.providedCollarId ?? 0"

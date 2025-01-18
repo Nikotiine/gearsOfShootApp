@@ -9,13 +9,13 @@
       :placeholder="t('inputMultiSelect.' + placeholder)"
       :maxSelectedLabels="maxSelectedLabels"
       class="w-full md:w-80"
-      @before-hide="onBeforeHide"
+      @change="onChange"
       :disabled="disabled"
       :invalid="invalid"
       :show-toggle-all="showToggleAll"
       :empty-message="t('inputMultiSelect.' + emptyMessage)"
     />
-    <label :for="inputId" v-capitalize="t('weapon.form.' + inputId)"></label>
+    <label :for="inputId">{{ t(label) }}</label>
   </IftaLabel>
 </template>
 <script setup lang="ts">
@@ -34,7 +34,8 @@ const {
   emptyMessage = 'emptyDefaultMessage',
   showToggleAll = false,
   placeholder = 'defaultPlaceHolder',
-  clear = false
+  clear = false,
+  initialValue = []
 } = defineProps<{
   options: any
   maxSelectedLabels?: number
@@ -47,16 +48,27 @@ const {
   showToggleAll?: boolean
   placeholder?: string
   clear?: boolean
+  initialValue?: any
+  label: string
 }>()
 const emit = defineEmits(['selectedOptions'])
-const selectedOptions = ref([])
-const onBeforeHide = () => {
+const selectedOptions = ref(initialValue)
+console.log(initialValue)
+const onChange = () => {
+  console.log(selectedOptions.value)
   emit('selectedOptions', selectedOptions.value)
 }
 watch(
   () => clear,
   () => {
     selectedOptions.value = []
+  }
+)
+watch(
+  () => initialValue,
+  (newValue) => {
+    console.log(initialValue)
+    selectedOptions.value = newValue
   }
 )
 </script>
