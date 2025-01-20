@@ -81,6 +81,8 @@
     "notFoundItem": "Aucun element trouvé",
     "defaultPlaceHolder": "Selectionner",
     "length": "Longueur",
+    "width": "Largeur",
+    "height": "hauteur",
     "min": "Minimum",
     "max": "Maximum"
   },
@@ -140,6 +142,16 @@
       "weaponModel": "Modele d'arme",
       "weaponVariation": "Variante du modele",
       "isPicatinyRailSlop": "Rail picatiny"
+    }
+  },
+  "magazine": {
+    "summary": "gestion des chargeurs",
+    "form": {
+      "add": "Ajouter un chargeur de categorie",
+      "bodyMaterial": "Matiere du chargeur",
+      "capacity": "Capacité",
+      "success": "ajouter a la base de donnee",
+      "compatibleWeaponOptions": "Arme compatible"
     }
   },
   "ammunition": {

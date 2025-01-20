@@ -188,36 +188,57 @@ export interface WeaponMagazineDto {
   body: MaterialDto
   factory: FactoryDto
   caliber: CaliberDto
+  /** @example "C" */
+  category: LegislationCategoryDto
 }
 
 export interface ListOfPrerequisitesWeaponMagazineDto {
   calibers: CaliberDto[]
   factories: FactoryDto[]
   bodies: MaterialDto[]
+  categories: LegislationCategoryDto[]
 }
 
 export interface CreateWeaponMagazineDto {
+  /** Capacite en munition */
   capacity: number
+  /** longeur du chargeur */
   length: number
+  /** hauteur du chargeur */
   height: number
+  /** largeur du chargeur */
   width: number
   reference: string
+  /** matiere du chargeur */
   bodyId: number
+  /** marque du chargeur */
   factoryId: number
+  /** calibre des munitions du chargeur */
   caliberId: number
   description: string | null
+  /** La categorie de l arme en france */
+  categoryId: number
 }
 
 export interface UpdateWeaponMagazineDto {
+  /** Capacite en munition */
   capacity: number
+  /** longeur du chargeur */
   length: number
+  /** hauteur du chargeur */
   height: number
+  /** largeur du chargeur */
   width: number
   reference: string
+  /** matiere du chargeur */
   bodyId: number
+  /** marque du chargeur */
   factoryId: number
+  /** calibre des munitions du chargeur */
   caliberId: number
   description: string | null
+  /** La categorie de l arme en france */
+  categoryId: number
   id: number
 }
 

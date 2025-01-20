@@ -147,9 +147,10 @@
           label="weapon.form.isProvidedMagazine"
           @checked="(event) => (isProvidedMagazine = event)"
           :checked="isProvidedMagazine"
+          :disabled="form.factoryId === 0"
         />
         <input-group-select
-          :options="[]"
+          :options="magazineStore.getByFactoryId.data?.data"
           label="weapon.form.magazine"
           :disabled="!isProvidedMagazine"
           @option-id="(event) => (form.providedMagazineId = event)"
@@ -355,7 +356,7 @@ import { useI18n } from 'vue-i18n'
 import { type NewWeapon, useWeaponStore } from '@/stores/weapon'
 import Textarea from 'primevue/textarea'
 import { storeToRefs } from 'pinia'
-import { type MlockOptions, useRiffleStore } from '@/stores/riffle'
+import { useRiffleStore } from '@/stores/riffle'
 import InputGroupAddonOpenDrawerButton from '@/components/__form/InputGroupAddonOpenDrawerButton.vue'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.vue'
@@ -364,9 +365,11 @@ import InputGroupText from '@/components/__form/InputGroupText.vue'
 import InputGroupNumber from '@/components/__form/InputGroupNumber.vue'
 import InputGroupCheckBox from '@/components/__form/InputGroupCheckBox.vue'
 import InputGroupMultiSelect from '@/components/__form/InputGroupMultiSelect.vue'
+import { useWeaponMagazineStore } from '@/stores/weapon-magazine'
 
 const store = useWeaponStore()
 const riffleStore = useRiffleStore()
+const magazineStore = useWeaponMagazineStore()
 const { railSizes$, materials$, colors$ } = storeToRefs(store)
 const { t } = useI18n()
 const buttonLabel = ref('global.save')
@@ -450,6 +453,12 @@ const isInvalidMaxTriggerValue = computed(() => {
 const adjustableTriggerValue = () => {
   return `${adjustableTriggerMinWeight.value} kg à ${adjustableTriggerMaxWeight.value} kg`
 }
+
+const findMagazinesWithFactory = (check: boolean) => {
+  isProvidedMagazine.value = check
+  magazineStore.setFactoryId(form.value.factoryId)
+}
+
 const submit = () => {
   form.value.mLockOptions = selectedMLockOptions.value
   form.value.adjustableTriggerValue = form.value.isAdjustableTrigger

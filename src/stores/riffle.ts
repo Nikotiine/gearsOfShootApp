@@ -82,6 +82,3 @@ export const useRiffleStore = defineStore('riffle', () => {
     getRiffleById: getRiffleById
   }
 })
-export interface MlockOptions {
-  name: string
-}

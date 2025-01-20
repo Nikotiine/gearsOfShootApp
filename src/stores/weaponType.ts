@@ -42,7 +42,7 @@ export const useWeaponTypeStore = defineStore('weaponType', () => {
   return {
     create: createWeaponTypeMutate,
     getAll: getAllQuery,
-    getAllData$: getAllWeaponType,
+    weaponTypes$: getAllWeaponType,
     prerequisiteList: queryPrerequisitesWeaponTypeQuery,
     modes$: modes
   }

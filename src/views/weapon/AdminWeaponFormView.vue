@@ -19,7 +19,6 @@
       :selected-options="options"
       v-if="!isRiffleWeapon.value"
       :open-drawer="openDrawerForm"
-      :id="id"
     />
   </div>
 </template>
