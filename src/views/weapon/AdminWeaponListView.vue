@@ -1,158 +1,27 @@
 <template>
   <div class="card p-4">
-    <h2 class="text-center mt-2 text-2xl">Liste des armes de Categorie {{ category }}</h2>
-    <div class="text-red-500 text-center" v-if="store.getWeaponsByCategoryQuery.isError">Error</div>
-    <DataTable
-      v-model:filters="filters"
-      :value="store.getWeaponsByCategoryQuery.data?.data"
-      paginator
-      :rows="10"
-      dataKey="id"
-      filterDisplay="row"
-      :loading="store.getWeaponsByCategoryQuery.isLoading"
-      :globalFilterFields="['name', 'factory.name', 'caliber.name', 'reference']"
-    >
-      <template #header>
-        <div class="flex justify-center">
-          <IconField>
-            <InputIcon>
-              <i class="pi pi-search" />
-            </InputIcon>
-            <InputText v-model="filters['global'].value" placeholder="Recherche globale" />
-          </IconField>
-        </div>
-      </template>
-      <template #empty> No customers found. </template>
-      <template #loading> Loading customers data. Please wait. </template>
-      <Column field="name" header="Nom" style="min-width: 12rem" :showFilterMenu="false">
-        <template #body="{ data }">
-          {{ data.name }}
-        </template>
-        <template #filter="{ filterModel, filterCallback }">
-          <InputText
-            v-model="filterModel.value"
-            type="text"
-            @input="filterCallback()"
-            placeholder="Recherche par nom"
-          />
-        </template>
-      </Column>
-      <Column
-        header="Marque"
-        field="factory.name"
-        filterField="factory.name"
-        style="min-width: 12rem"
-        :showFilterMenu="false"
-      >
-        <template #body="{ data }">
-          {{ data.factory.name }}
-        </template>
+    <h2 class="text-center mt-2 text-2xl">
+      Liste des {{ isRiffleType ? 'arme longue' : 'arme de poing' }} de Categorie
+      {{ category }}
+    </h2>
 
-        <template #filter="{ filterModel, filterCallback }">
-          <Select
-            v-model="filterModel.value"
-            @change="filterCallback()"
-            :options="store.prerequisitesWeaponList.data?.data.factories"
-            optionLabel="name"
-            optionValue="name"
-            placeholder="Marque"
-            style="min-width: 12rem"
-            :showClear="true"
-          >
-          </Select>
-        </template>
-      </Column>
-      <Column
-        header="Calibre"
-        filterField="caliber.name"
-        :showFilterMenu="false"
-        style="min-width: 14rem"
-      >
-        <template #body="{ data }">
-          {{ data.caliber.name }}
-        </template>
-        <template #filter="{ filterModel, filterCallback }">
-          <Select
-            v-model="filterModel.value"
-            @change="filterCallback()"
-            :options="store.prerequisitesWeaponList.data?.data.calibers"
-            placeholder="Calibre"
-            optionLabel="name"
-            optionValue="name"
-            style="min-width: 12rem"
-            :showClear="true"
-          >
-          </Select>
-        </template>
-      </Column>
-      <Column field="reference" header="Status" :showFilterMenu="false" style="min-width: 12rem">
-        <template #body="{ data }">
-          {{ data.reference }}
-        </template>
-
-        <template #filter="{ filterModel, filterCallback }">
-          <InputText
-            v-model="filterModel.value"
-            type="text"
-            @input="filterCallback()"
-            placeholder="Recherche par reference"
-          />
-        </template>
-      </Column>
-      <Column header="Actions" :showFilterMenu="false" style="min-width: 12rem">
-        <template #body="{ data }">
-          <div class="flex justify-between">
-            <Button
-              icon="pi pi-eye"
-              rounded
-              aria-label="Filter"
-              as="router-link"
-              :to="'/detail/arme/' + data.id"
-            />
-            <Button
-              icon="pi pi-pencil"
-              rounded
-              aria-label="Filter"
-              severity="warn"
-              as="router-link"
-            />
-            <Button
-              icon="pi pi-trash"
-              rounded
-              aria-label="Filter"
-              severity="danger"
-              as="router-link"
-            /></div
-        ></template>
-      </Column>
-    </DataTable>
+    <riffle-list-component :category="category" v-if="isRiffleType" />
+    <hand-gun-list-component :category="category" v-if="!isRiffleType" />
   </div>
 </template>
 <script setup lang="ts">
-import { useWeaponStore } from '@/stores/weapon'
-import DataTable from 'primevue/datatable'
-import Column from 'primevue/column'
-import InputText from 'primevue/inputtext'
-import Select from 'primevue/select'
-import IconField from 'primevue/iconfield'
-import InputIcon from 'primevue/inputicon'
-import { FilterMatchMode } from '@primevue/core/api'
-import { ref, watchEffect } from 'vue'
-import Button from 'primevue/button'
-const { category } = defineProps<{
-  category: string
-}>()
-const store = useWeaponStore()
+import RiffleListComponent from '@/components/__weapon/RiffleListComponent.vue'
+import { computed } from 'vue'
+import HandGunListComponent from '@/components/__weapon/HandGunListComponent.vue'
+import type { WeaponViewType } from '@/views/weapon/WeaponView.vue'
 
-const filters = ref({
-  global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-  name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-  'factory.name': { value: null, matchMode: FilterMatchMode.EQUALS },
-  'caliber.name': { value: null, matchMode: FilterMatchMode.EQUALS },
-  reference: { value: null, matchMode: FilterMatchMode.STARTS_WITH }
-})
-watchEffect(() => {
-  store.setCategory(category)
+const { category, type } = defineProps<{
+  category: string
+  type: WeaponViewType
+}>()
+
+const isRiffleType = computed(() => {
+  return type === 'riffle'
 })
 </script>
 

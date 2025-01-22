@@ -1,76 +1,314 @@
 {
   "language": {
-    "label": "Langage"
+    "label": "Language"
   },
   "topbar": {
-    "sportShooting": "Tir sportif",
-    "recreationalShooting": "Tir de loisir",
-    "account": "Mon compte",
-    "connexion": "Connexion",
-    "register": "S'enregistrer",
-    "categoryC": "Arme longue cat.C",
-    "categoryBRiffle": "Arme longue cat.B",
-    "categoryBHandgun": "Arme de poing cat.B",
-    "ammoC": "Munition cat.C",
-    "accessC": "Accessoire cat.C"
+    "sportShooting": "Sport Shooting",
+    "recreationalShooting": "Recreational Shooting",
+    "account": "My Account",
+    "connexion": "Login",
+    "register": "Register",
+    "categoryC": "Category C Long Gun",
+    "categoryBRiffle": "Category B Long Gun",
+    "categoryBHandgun": "Category B Handgun",
+    "ammoC": "Category C Ammunition",
+    "accessC": "Category C Accessory"
   },
   "register": {
-    "title": "Creer votre compte",
-    "subtitle": "Renseigner les differents champs",
-    "firstName": "Prénom",
-    "lastName": "Nom",
-    "phone": "Telephone",
-    "city": "ville",
-    "state": "Pays",
-    "address": "adresse postale",
-    "zipCode": "Code postal",
-    "success": "Merci de d'activer vote compte",
-    "summary": "Creation de compte"
+    "title": "Create your account",
+    "subtitle": "Fill in the different fields",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "phone": "Phone",
+    "city": "City",
+    "state": "Country",
+    "address": "Postal Address",
+    "zipCode": "Zip Code",
+    "success": "Thank you for activating your account",
+    "summary": "Account Creation",
+    "create": "Create"
   },
   "connexion": {
-    "title": "Connexion à votre compte",
-    "subtitle": "Renseigner vos identifiants",
-    "send": "Connexion",
-    "summary": "Compte utlisateur",
+    "title": "Login to your account",
+    "subtitle": "Enter your credentials",
+    "send": "Login",
+    "summary": "User Account",
     "login": {
-      "success": "Connexion validé"
+      "success": "Login validated"
     },
-    "logout": "Deconnexion",
-    "myAccount": "Mon compte",
-    "myInvoices": "Mes achats",
+    "logout": "Logout",
+    "myAccount": "My Account",
+    "myInvoices": "My Purchases",
     "admin": "Administration"
   },
   "global": {
-    "password": "Mot de passe",
-    "yes": "Oui",
-    "no": "Non",
-    "cancel": "Annuler",
-    "french": "Francais",
-    "english": "Anglais"
+    "password": "Password",
+    "yes": "Yes",
+    "no": "No",
+    "cancel": "Cancel",
+    "french": "French",
+    "english": "English",
+    "name": "Name",
+    "ref": "Reference",
+    "save": "Save",
+    "select": "Select",
+    "weapon": "Weapon",
+    "ammunition": "Ammunition",
+    "optic": "Optic",
+    "rds": "Sound Moderator",
+    "category": "Category",
+    "caliber": "Caliber",
+    "factory": "Brand",
+    "model": "Model",
+    "percussionType": "Percussion Type",
+    "barrelType": "Barrel Type",
+    "weaponType": "Weapon Type",
+    "threadedSize": "Thread Size",
+    "from": "From",
+    "to": "To",
+    "magazine": "Magazine",
+    "packaging": "Packaging",
+    "continue": "Continue",
+    "quantity": "Quantity",
+    "description": "Description",
+    "handgun": "Handgun",
+    "riffle": "Long Gun",
+    "inches": "Inches",
+    "notRegistered": "Not Registered",
+    "reference": "Reference"
   },
   "weapon": {
-    "summary": "Gestion des armes",
+    "summary": "Weapon Management",
     "add": {
-      "success": "ajouter a la base de donnee"
+      "success": "Add to database"
+    },
+    "common": {
+      "percussionType": "Percussion Type",
+      "barrelType": "Barrel Type",
+      "barrelLength": "Barrel Length",
+      "barrelSize": "Barrel Thickness",
+      "barrelColor": "Barrel Color",
+      "isThreadedBarrel": "Threaded Barrel",
+      "isAdjustableTrigger": "Adjustable Trigger",
+      "buttMaterial": "Butt Material",
+      "buttColor": "Butt Color",
+      "slideMaterial": "Slide Material",
+      "slideColor": "Slide Color",
+      "isAdjustableButt": "Adjustable Butt",
+      "isAdjustableBusk": "Adjustable Busk",
+      "providedMagazineQuantity": "Provided Magazines",
+      "isOpenAim": "Open Sight",
+      "isAdjustableBackSight": "Adjustable Rear Sight",
+      "isAdjustableFrontSight": "Adjustable Front Sight",
+      "railSize": "Optic Rail Size",
+      "decocking": "Decocking",
+      "triggerType": "Trigger Type",
+      "isExternalHammer": "External Hammer",
+      "isPicatinyRailSlop": "Picatinny Rail for Accessories",
+      "isOpticReady": "Optic Ready?",
+      "providedOpticReadyPlates": "Provided Optic Ready Plates",
+      "qcSlot": "Quick Connect Slot",
+      "grenadierSlot": "Grenadier Slot",
+      "isMlockCompatibility": "M-Lock Compatibility",
+      "isProvidedMagazine": "Provided Magazine"
+    },
+    "form": {
+      "add": "Add a weapon of category",
+      "name": "Model Name",
+      "variation": "Variant",
+      "length": "Length",
+      "isThreadedBarrel": "Threading",
+
+      "description": "Description",
+      "qcSlot": "QC Connection",
+      "buttType": "Butt Material",
+      "mLockOptions": "M-Lock Position",
+      "riffleFormTitle": "Specific Long Gun",
+      "handgunFormTitle": "Specific Handgun",
+      "handGunButtType": "Frame Material",
+      "isOpticReady": "OR?",
+      "opticReadyPlates": "Optic Ready Plate Type",
+      "isPicatinyRailSlop": "Picatinny Rail",
+      "yourChoose": "Your choice: ",
+      "selectType": "What type of weapon?",
+      "isParallax": "Adjustable Parallax",
+      "isCollarsProvided": "Collars Provided?"
     }
   },
   "ammunition": {
-    "summary": "Gestion des munition",
+    "summary": "Ammunition Management",
     "add": {
-      "success": "ajouter a la base de donnee"
+      "success": "Add to database"
+    },
+    "form": {
+      "add": "Add ammunition of category",
+      "name": "Name",
+      "initialSpeed": "Initial Speed",
+      "headType": "Bullet Type",
+      "bodyType": "Case Type"
     }
   },
   "admin": {
     "dashboard": {
-      "title": "Dashboard Admin"
+      "title": "Admin Dashboard"
     }
   },
+  "bodyType": {
+    "form": {
+      "addTitle": "Add a new case type",
+      "success": "Addition of a new type confirmed"
+    },
+    "existingList": "List of existing types",
+    "type": "Case Type",
+    "summary": "Case Management"
+  },
+  "headType": {
+    "form": {
+      "addTitle": "Add a new bullet type",
+      "success": "Addition of a new type confirmed"
+    },
+    "existingList": "List of existing bullets",
+    "type": "Bullet Types",
+    "summary": "Bullet Management"
+  },
+  "weaponType": {
+    "form": {
+      "addTitle": "Add a new weapon type",
+      "success": "Addition of a new type confirmed"
+    },
+    "existingList": "List of existing weapon types",
+    "type": "Weapon Types",
+    "summary": "Weapon Type Management",
+    "mode": "Operation"
+  },
+  "optic": {
+    "form": {
+      "addTitle": "Add a new optic",
+      "success": "Addition of a new optic"
+    }
+  },
+  "factory": {
+    "form": {
+      "addTitle": "Add a new weapon type",
+      "success": "Addition of a new type confirmed"
+    },
+    "existingList": "List of existing brands",
+    "type": "Weapon Types",
+    "summary": "Weapon Type Management"
+  },
+  "caliber": {
+    "form": {
+      "addTitle": "Add a new caliber",
+      "success": "Addition of a new type confirmed"
+    },
+    "existingList": "List of existing calibers",
+    "type": "Weapon Types",
+    "summary": "Weapon Type Management"
+  },
+  "threadedSize": {
+    "form": {
+      "addTitle": "Add a new thread size",
+      "success": "Addition of a new thread size confirmed"
+    },
+    "existingList": "List of existing thread sizes",
+    "type": "Weapon Types",
+    "summary": "Weapon Type Management",
+    "size": "Thread Pitch Size"
+  },
   "error": {
-    "0001": "Email deja utilisé",
-    "0002": "Indentifiants invalides",
-    "0100": "Type de douille deja existante",
-    "0102": "Munition deja existante",
-    "0201": "Arme deja existante",
-    "0600": "Marque deja existante"
+    "0001": "Email already used",
+    "0002": "Invalid credentials",
+    "0100": "Case type already exists",
+    "0102": "Ammunition already exists",
+    "0200": "Weapon type already exists",
+    "0201": "Weapon already exists",
+    "0600": "Brand already exists"
+  },
+  "tooltip": {
+    "caliber": "Add a new caliber",
+    "factory": "Add a new brand",
+    "weaponType": "Add a new weapon type",
+    "color": "Add a new color"
+  },
+  "inputSelect": {
+    "caliber": "Caliber",
+    "factory": "Add a new brand",
+    "weaponType": "Weapon Type",
+    "barrelType": "Barrel Type",
+    "barrelColor": "Barrel Color",
+    "legalisationCategory": "Weapon Category",
+    "percussion": "Percussion Type",
+    "threadSize": "Thread Size",
+    "magazine": "Magazine Type",
+    "notFoundItem": "No items found",
+    "buttType": "Butt Material",
+    "buttColor": "Butt Color",
+    "opticRail": "Optic Rail",
+    "slideType": "Slide Type",
+    "slideColor": "Slide Color",
+    "triggerType": "Trigger Type",
+    "defaultPlaceHolder": "Select",
+    "headType": "Bullet Type",
+    "bodyType": "Case Type",
+    "opticType": "Optic Type",
+    "focalPlane": "Focal Plane",
+    "opticUnit": "Graduation Unit",
+    "clickValue": "Click Value",
+    "collar": "Collars"
+  },
+  "inputText": {
+    "placeholder": {
+      "weaponModel": "Weapon Model",
+      "weaponVariation": "Variant",
+      "ammunitionModel": "Ammunition Model",
+      "opticModel": "Optic Model"
+    },
+    "weaponModel": "Model",
+    "weaponVariation": "Variant",
+    "default": "Enter text",
+    "ammunitionModel": "Ammunition Model",
+    "opticModel": "Optic Model"
+  },
+  "inputNumber": {
+    "placeholder": {
+      "barrelLength": "Barrel Length",
+      "barrelSize": "Barrel Thickness",
+      "adjustableTriggerMaxWeight": "Max Weight",
+      "adjustableTriggerMinWeight": "Min Weight",
+      "providedMagazineQuantity": "Quantity",
+      "qcSlot": "Number of QC Slots",
+      "grenadierSlot": "Number of Grenadier Slots",
+      "initialSpeed": "Speed",
+      "packaging": "Packaging",
+      "min": "Minimum",
+      "max": "Maximum",
+      "diameter": "Diameter",
+      "length": "Length",
+      "eyeRelief": "Eye Relief"
+    },
+    "barrelLength": "Length",
+    "barrelSize": "Thickness",
+    "default": "Enter text",
+    "adjustableTriggerMaxWeight": "Max Weight",
+    "adjustableTriggerMinWeight": "Min Weight",
+    "providedMagazineQuantity": "Provided Quantity",
+    "qcSlot": "QC Connection",
+    "grenadierSlot": "Grenadier Slots",
+    "initialSpeed": "Initial Speed",
+    "packaging": "Packaging",
+    "minZoom": "Minimum Zoom",
+    "maxZoom": "Maximum Zoom",
+    "maxDrift": "Max Drift",
+    "maxElevation": "Max Elevation",
+    "lensDiameter": "Lens",
+    "bodyDiameter": "Body",
+    "minParallax": "Min Parallax",
+    "maxParallax": "Max Parallax",
+    "length": "Optic Length",
+    "eyeRelief": "Eye Relief"
+  },
+  "inputMultiSelect": {
+    "emptyDefaultMessage": "No data found",
+    "defaultPlaceHolder": "Select"
   }
 }

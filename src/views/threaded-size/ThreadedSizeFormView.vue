@@ -1,5 +1,4 @@
 <template>
-  <h2 class="text-center text-2xl">{{ t('threadedSize.form.addTitle') }}</h2>
   <div class="text-center mt-2">
     <Button label="Voir les filletage disponible" @click="isVisibleDrawer = true" text />
   </div>

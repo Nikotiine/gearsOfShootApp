@@ -13,7 +13,7 @@
         dataKey="id"
         filterDisplay="row"
         :loading="store.getAll.isLoading"
-        :globalFilterFields="['name', 'type', 'ref']"
+        :globalFilterFields="['name', 'type', 'reference']"
       >
         <template #header>
           <div class="flex justify-center">
@@ -67,7 +67,7 @@
         </Column>
         <Column header="ref" filterField="ref" :showFilterMenu="false" style="min-width: 14rem">
           <template #body="{ data }">
-            {{ data.ref }}
+            {{ data.reference }}
           </template>
           <template #filter="{ filterModel, filterCallback }">
             <InputText

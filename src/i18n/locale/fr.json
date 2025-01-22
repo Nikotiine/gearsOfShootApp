@@ -51,54 +51,122 @@
     "name": "Nom",
     "ref": "Reference",
     "save": "Sauvegarder",
+    "edit": "Modifier",
     "select": "Selectionner",
     "weapon": "Arme",
     "ammunition": "Munition",
     "optic": "Optique",
     "rds": "Moderateur de son",
     "category": "categorie",
-    "caliber": "calibre",
-    "factory": "marque",
-    "model": "modele",
-    "weaponType": "type d'arme",
-    "threadedSize": "taille de filetage",
+    "caliber": "Calibre",
+    "factory": "Marque",
+    "model": "Modele",
+    "variation": "Variante",
+    "percussionType": "Type de percussion",
+    "weaponType": "Type d'arme",
+    "threadedSize": "Taille de filetage",
     "from": "de",
     "to": "à",
-    "magazine": "chargeur",
-   "packaging": "packaging"
-
+    "magazine": "Chargeur",
+    "packaging": "Packaging",
+    "continue": "Continuer",
+    "quantity": "Quantité",
+    "description": "Description",
+    "handgun": "Arme de poing",
+    "riffle": "Arme longue",
+    "inches": "Pouces",
+    "notRegistered": "non renseigné",
+    "reference": "Reference",
+    "legalisationCategory": "Categorie",
+    "notFoundItem": "Aucun element trouvé",
+    "defaultPlaceHolder": "Selectionner",
+    "length": "Longueur",
+    "width": "Largeur",
+    "height": "hauteur",
+    "min": "Minimum",
+    "max": "Maximum"
   },
   "weapon": {
     "summary": "Gestion des armes",
     "add": {
-      "success": "ajouter a la base de donnee"
+      "success": "ajouter a la base de donnee",
+      "edit": "Arme modifié en base de donnee"
+    },
+    "common": {
+      "percussionType": "Type de percussion",
+      "barrelType": "Type de canon",
+      "barrelLength": "Longueur du canon",
+      "barrelSize": "Epaisseur du canon",
+      "barrelColor": "Couleur du canon",
+      "isThreadedBarrel": "Canon filete",
+      "isAdjustableTrigger": "Detente reglable",
+      "buttMaterial": "Matiere de la crosse",
+      "buttColor": "Couleur de la crosse",
+      "slideMaterial": "Matiere de la culasse",
+      "slideColor": "Couleur de la culasse",
+      "isAdjustableButt": "Crosse reglable",
+      "isAdjustableBusk": "Busc ajustable",
+      "providedMagazineQuantity": "Chargeur fournis",
+      "isOpenAim": "Visee ouverte",
+      "isAdjustableBackSight": "Hausse reglable",
+      "isAdjustableFrontSight": "Guidon reglable",
+      "railSize": "Taille du rail d'optique",
+      "decocking": "Decocking",
+      "triggerType": "Type de detente",
+      "isExternalHammer": "Chien exterieur",
+      "isPicatinyRailSlop": "Rail picatiny pour accessoires",
+      "isOpticReady": "Optic ready ?",
+      "providedOpticReadyPlates": "Plaques optic ready fournies",
+      "qcSlot": "Connextion Quick Connect",
+      "grenadierSlot": "Grenadieres",
+      "isMlockCompatibility": "Compatible M-lock",
+      "mLockOptions": "Position MLOCK",
+      "selectType": "Quel type d'arme ?",
+      "handGunButtType": "Matiere de la carcasse",
+      "opticRail": "Rail d'optique",
+      "adjustableTriggerMinWeight": "Poids mini",
+      "adjustableTriggerMaxWeight": "Poids max"
     },
     "form": {
       "add": "Ajouter une arme de categorie",
-      "name": "Nom du modele",
-      "variation": "Variante",
-      "percussionType": "Type de percussion",
-      "barrelType": "Type de canon",
-      "barrelLength": "Longueur de canon",
-      "length": "Longueur",
       "isThreadedBarrel": "Filetage",
-      "isAdjustableTrigger": "Detente reglable",
       "isProvidedMagazine": "Chargeur fournis",
-      "description": "Description"
+      "qcSlot": "Connextion QC",
+      "opticReadyPlates": "Type de plaque Optic ready",
+      "yourChoose": "Votre choix : ",
+      "isParallax": "Parallax reglable",
+      "isCollarsProvided": "Collier fournis ?",
+      "magazine": "Type de chargeur",
+      "selectType": "Quel type d'arme ?",
+      "isOpticReady": "OR ?",
+      "weaponModel": "Modele d'arme",
+      "weaponVariation": "Variante du modele",
+      "isPicatinyRailSlop": "Rail picatiny"
+    }
+  },
+  "magazine": {
+    "summary": "gestion des chargeurs",
+    "form": {
+      "add": "Ajouter un chargeur",
+      "bodyMaterial": "Matiere du chargeur",
+      "capacity": "Capacité",
+      "success": "ajouter a la base de donnee",
+      "compatibleWeaponOptions": "Arme compatible"
     }
   },
   "ammunition": {
     "summary": "Gestion des munition",
     "add": {
-      "success": "ajouter a la base de donnee"
+      "success": "Ajouter a la base de donnee"
     },
     "form": {
       "add": "Ajouter une munition de categorie",
       "name": "Nom ",
-      "initialSpeed": "vitesse initiale",
+      "initialSpeed": "Vitesse initiale",
       "headType": "Type d'ovige",
-      "bodyType": "Type de douille"
-
+      "bodyType": "Type de douille",
+      "ammunitionModel": "Modele de munition",
+      "packaging": "Packaging"
     }
   },
   "admin": {
@@ -132,7 +200,37 @@
     "existingList": "Liste des type d'arme existants",
     "type": "Type d'armes",
     "summary": "Gestion des type d'arme",
-    "mode": "Fonctionnement"
+    "mode": "Mode de fonctionnement"
+  },
+  "optic": {
+    "summary": "Gestion des optiques",
+    "add": {
+      "success": "ajouter a la base de donnee"
+    },
+    "form": {
+      "addTitle": "Ajouter une nouvelle optique",
+      "success": "ajout d'une nouvelle optique",
+      "opticUnit": "Unite de graduation",
+      "isParallax": "Parallaxe"
+    },
+    "common": {
+      "opticType": "Type d'optique",
+      "focalPlane": "Plan focal",
+      "clickValue": "Valeur d'un clic",
+      "isCollarsProvided": "Colliers fournis",
+      "collar": "Colliers",
+      "isParallax": "Parallaxe reglable",
+      "opticModel": "Modele d'optique",
+      "minZoom": "Zoom minimum",
+      "maxZoom": "Zoom maximum",
+      "maxDrift": "Derive maximum",
+      "maxElevation": "Elevation maximum",
+      "lensDiameter": "Diametre de lentille",
+      "bodyDiameter": "Diametre du corps",
+      "eyeRelief": "Degagement occulaire",
+      "minParallax": "Parallax mini",
+      "maxParallax": "Parallax maxi"
+    }
   },
   "factory": {
     "form": {
@@ -141,7 +239,7 @@
     },
     "existingList": "Liste des marques existantes",
     "type": "Type d'armes",
-    "summary": "Gestion des type d'arme"
+    "summary": "Gestion des marques"
   },
   "caliber": {
     "form": {
@@ -170,5 +268,25 @@
     "0200": "Type d arme deja existante",
     "0201": "Arme deja existante",
     "0600": "Marque deja existante"
+  },
+  "tooltip": {
+    "caliber": "Ajouter un nouveau calibre",
+    "factory": "Ajouter une nouvelle marque",
+    "weaponType": "Ajouter un nouveau type d arme",
+    "color": "Ajouter une nouvelle couleur",
+    "material": "Ajouter une nouvelle matiere",
+    "magazine": "Ajouter un chargeur",
+    "threadSize": "Ajouter une taille de filletage"
+  },
+  "inputText": {
+    "label": "Saisir un texte"
+  },
+  "inputNumber": {
+    "placeholder": "default",
+    "label": "Saisir un texte"
+  },
+  "inputMultiSelect": {
+    "emptyDefaultMessage": "Aucune donnée trouvée",
+    "defaultPlaceHolder": "Selectionner"
   }
 }

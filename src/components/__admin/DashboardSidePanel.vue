@@ -5,7 +5,10 @@
 import MegaMenu from 'primevue/megamenu'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
-
+const RIFFLE_LIST_URL: string = '/admin/gestion/list/weapon/riffle/'
+const RIFFLE: string = 'Arme longue'
+const HAND_GUN_LIST_URL: string = '/admin/gestion/list/weapon/handgun/'
+const HAND_GUN: string = 'Arme de poing'
 const { push } = useRouter()
 const items = ref([
   {
@@ -119,11 +122,16 @@ const items = ref([
         {
           label: 'Categorie B',
           items: [
-            { label: 'Arme de poing' },
             {
-              label: 'Arme longue',
+              label: HAND_GUN,
               command: () => {
-                push('/admin/gestion/list/weapon/B')
+                push(HAND_GUN_LIST_URL + 'B')
+              }
+            },
+            {
+              label: RIFFLE,
+              command: () => {
+                push(RIFFLE_LIST_URL + 'B')
               }
             },
             { label: 'rds' },
@@ -142,9 +150,9 @@ const items = ref([
           label: 'Categorie C',
           items: [
             {
-              label: 'Arme longue',
+              label: RIFFLE,
               command: () => {
-                push('/admin/gestion/list/weapon/C')
+                push(RIFFLE_LIST_URL + 'C')
               }
             },
             { label: 'rds' },
@@ -162,8 +170,18 @@ const items = ref([
         {
           label: 'Categorie D',
           items: [
-            { label: 'Arme de poing' },
-            { label: 'Arme longue' },
+            {
+              label: HAND_GUN,
+              command: () => {
+                push(HAND_GUN_LIST_URL + 'D')
+              }
+            },
+            {
+              label: RIFFLE,
+              command: () => {
+                push(RIFFLE_LIST_URL + 'D')
+              }
+            },
             { label: 'Munition' },
             { label: 'Accessoire' }
           ]
@@ -173,7 +191,7 @@ const items = ref([
         {
           label: 'Autre',
           items: [
-            { label: 'Douille et oviges' },
+            { label: 'Optiques' },
             { label: 'Type d arme' },
             {
               label: 'Marques',

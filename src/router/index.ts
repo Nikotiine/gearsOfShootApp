@@ -20,7 +20,12 @@ const router = createRouter({
       component: () => import('../views/AccountView.vue')
     },
     {
-      path: '/detail/arme/:id',
+      path: '/detail/arme-de-poing/:id',
+      props: true,
+      component: () => import('../views/weapon/WeaponView.vue')
+    },
+    {
+      path: '/detail/:type/:id',
       props: true,
       component: () => import('../views/weapon/WeaponView.vue')
     },
@@ -34,7 +39,13 @@ const router = createRouter({
           component: () => import('../views/weapon/AdminWeaponFormView.vue')
         },
         {
-          path: 'gestion/list/weapon/:category',
+          path: 'gestion/edit/weapon/:type/:id',
+          name: 'weaponEditForm',
+          props: true,
+          component: () => import('../views/weapon/AdminWeaponEditView.vue')
+        },
+        {
+          path: 'gestion/list/weapon/:type/:category',
           props: true,
           name: 'weaponList',
           component: () => import('../views/weapon/AdminWeaponListView.vue')

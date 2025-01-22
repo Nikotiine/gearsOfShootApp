@@ -1,8 +1,8 @@
 <template>
-  <weapon-magazine-form-component />
+  <magazine-form-component />
 </template>
 <script setup lang="ts">
-import WeaponMagazineFormComponent from '@/components/__weaponMagazine/WeaponMagazineFormComponent.vue'
+import MagazineFormComponent from '@/components/__weaponMagazine/MagazineFormComponent.vue'
 </script>
 
 <style scoped></style>
