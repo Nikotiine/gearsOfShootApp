@@ -53,6 +53,14 @@ export const useHandGunStore = defineStore('hand-gun', () => {
     }
   })
 
+  const getAllHandgunQuery = useQuery({
+    queryKey: ['getAllHandgunQuery'],
+    queryFn: async () => {
+      const res = await api.api.handGunControllerFindAll()
+      return res
+    }
+  })
+
   const getHandGunById = useQuery({
     queryKey: ['gat-handgun-by-id', handgunId],
     queryFn: async () => {
@@ -69,6 +77,7 @@ export const useHandGunStore = defineStore('hand-gun', () => {
     getAllHandGunByCategory: getAllHandGunByCategoryQuery,
     setHandGunId: setId,
     getHandGunById: getHandGunById,
-    handgunById: handgun
+    handgunById: handgun,
+    getAll: getAllHandgunQuery
   }
 })

@@ -1,13 +1,10 @@
 <template>
   <form @submit.prevent="submit">
-    <div
-      class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4"
-      v-if="store.prerequisitesWeaponList.isSuccess"
-    >
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4" v-if="storesAreLoaded">
       <InputGroup>
         <input-group-required-icon :is-validate="form.caliberId > 0" />
         <input-group-select
-          :options="store.prerequisitesWeaponList.data.data.calibers"
+          :options="calibers$"
           label="global.caliber"
           @option-id="(event) => (form.caliberId = event)"
           required
@@ -15,13 +12,13 @@
           input-id="caliberId"
           :initial-value="form.caliberId"
         />
-        <input-group-addon-open-drawer-button type="caliber" :open-drawer="openDrawer" />
+        <input-group-addon-open-drawer-button type="caliber" />
       </InputGroup>
 
       <InputGroup>
         <input-group-required-icon :is-validate="form.factoryId > 0" />
         <input-group-select
-          :options="store.prerequisitesWeaponList.data.data.factories"
+          :options="factories$"
           label="global.factory"
           @option-id="(event) => (form.factoryId = event)"
           required
@@ -29,7 +26,7 @@
           input-id="factoryId"
           :initial-value="form.factoryId"
         />
-        <input-group-addon-open-drawer-button type="factory" :open-drawer="openDrawer" />
+        <input-group-addon-open-drawer-button type="factory" />
       </InputGroup>
 
       <InputGroup>
@@ -59,7 +56,7 @@
       <InputGroup>
         <input-group-required-icon :is-validate="form.percussionTypeId > 0" />
         <input-group-select
-          :options="store.prerequisitesWeaponList.data.data.percussionTypes"
+          :options="store.prerequisitesWeaponList.data?.data.percussionTypes"
           label="global.percussionType"
           @option-id="(event) => (form.percussionTypeId = event)"
           required
@@ -71,7 +68,7 @@
       <InputGroup>
         <input-group-required-icon :is-validate="form.barrelTypeId > 0" />
         <input-group-select
-          :options="store.prerequisitesWeaponList.data.data.barreTypes"
+          :options="store.prerequisitesWeaponList.data?.data.barreTypes"
           label="weapon.common.barrelType"
           @option-id="(event) => (form.barrelTypeId = event)"
           required
@@ -117,7 +114,7 @@
           input-id="barrelColorId"
           :initial-value="form.barrelColorId ?? 0"
         />
-        <input-group-addon-open-drawer-button type="color" :open-drawer="openDrawer" />
+        <input-group-addon-open-drawer-button type="color" />
       </InputGroup>
 
       <InputGroup>
@@ -129,7 +126,7 @@
           :checked="form.isThreadedBarrel"
         />
         <input-group-select
-          :options="store.prerequisitesWeaponList.data.data.threadedSizes"
+          :options="threadedSizes$"
           label="global.threadedSize"
           optionLabel="size"
           :disabled="!form.isThreadedBarrel"
@@ -137,7 +134,7 @@
           input-id="threadedSizeId"
           :initial-value="form.threadedSizeId ?? 0"
         />
-        <input-group-addon-open-drawer-button type="threadSize" :open-drawer="openDrawer" />
+        <input-group-addon-open-drawer-button type="threadSize" />
       </InputGroup>
 
       <InputGroup>
@@ -145,18 +142,20 @@
         <input-group-check-box
           input-id="isProvidedMagazine"
           label="weapon.form.isProvidedMagazine"
-          @checked="(event) => (isProvidedMagazine = event)"
+          @checked="findMagazinesWithFactory"
           :checked="isProvidedMagazine"
           :disabled="isRevolver"
         />
         <input-group-select
-          :options="[]"
+          :options="magazines$"
           label="weapon.form.magazine"
           :disabled="!isProvidedMagazine"
+          option-label="reference"
           @option-id="(event) => (form.providedMagazineId = event)"
           input-id="providedMagazineId"
           :initial-value="form.providedMagazineId ?? 0"
         />
+        <input-group-addon-open-drawer-button type="magazine" />
       </InputGroup>
 
       <InputGroup>
@@ -172,7 +171,6 @@
           :disabled="!isProvidedMagazine"
           :initial-value="form.providedMagazineQuantity"
         />
-        <input-group-addon-open-drawer-button type="magazine" :open-drawer="openDrawer" />
       </InputGroup>
 
       <InputGroup>
@@ -229,7 +227,7 @@
           :disabled="isRevolver"
           :initial-value="form.slideMaterialId ?? 0"
         />
-        <input-group-addon-open-drawer-button type="material" :open-drawer="openDrawer" />
+        <input-group-addon-open-drawer-button type="material" />
       </InputGroup>
 
       <InputGroup>
@@ -242,7 +240,7 @@
           :disabled="isRevolver"
           :initial-value="form.slideColorId ?? 0"
         />
-        <input-group-addon-open-drawer-button type="color" :open-drawer="openDrawer" />
+        <input-group-addon-open-drawer-button type="color" />
       </InputGroup>
 
       <InputGroup>
@@ -254,7 +252,7 @@
           input-id="buttMaterialId"
           :initial-value="form.buttMaterialId ?? 0"
         />
-        <input-group-addon-open-drawer-button type="material" :open-drawer="openDrawer" />
+        <input-group-addon-open-drawer-button type="material" />
       </InputGroup>
 
       <InputGroup>
@@ -266,7 +264,7 @@
           input-id="buttColorId"
           :initial-value="form.buttColorId ?? 0"
         />
-        <input-group-addon-open-drawer-button type="color" :open-drawer="openDrawer" />
+        <input-group-addon-open-drawer-button type="color" />
       </InputGroup>
 
       <InputGroup>
@@ -283,6 +281,7 @@
           :disabled="!form.isOpticReady"
           @selected-options="(event) => (selectedPlates = event)"
           :clear="resetMultiselect"
+          label="weapon.form.opticReadyPlates"
         />
       </InputGroup>
 
@@ -352,18 +351,24 @@ import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.v
 import InputGroupNumber from '@/components/__form/InputGroupNumber.vue'
 import InputGroupCheckBox from '@/components/__form/InputGroupCheckBox.vue'
 import InputGroupMultiSelect from '@/components/__form/InputGroupMultiSelect.vue'
+import { useWeaponMagazineStore } from '@/stores/weapon-magazine'
+import { useCaliberStore } from '@/stores/caliber'
+import { useFactoryStore } from '@/stores/factory'
+import { useThreadedSizeStore } from '@/stores/threadedSize'
 
 const store = useWeaponStore()
 const handGunStore = useHandGunStore()
-
+const magazineStore = useWeaponMagazineStore()
+const caliberStore = useCaliberStore()
+const factoryStore = useFactoryStore()
+const threadedSizeStore = useThreadedSizeStore()
 const { colors$, materials$, triggerTypes$, opticReadyPlates$, weaponTypes$ } = storeToRefs(store)
-const {
-  selectedOptions,
-  openDrawer,
-  handGun = null
-} = defineProps<{
+const { calibers$ } = storeToRefs(caliberStore)
+const { factories$ } = storeToRefs(factoryStore)
+const { magazines$ } = storeToRefs(magazineStore)
+const { threadedSizes$ } = storeToRefs(threadedSizeStore)
+const { selectedOptions, handGun = null } = defineProps<{
   selectedOptions: NewWeapon
-  openDrawer: Function
   handGun?: HandGunDto
 }>()
 const { t } = useI18n()
@@ -412,9 +417,8 @@ const submit = () => {
   form.value.adjustableTriggerValue = form.value.isAdjustableTrigger
     ? adjustableTriggerValue()
     : null
-  //handGunStore.create.mutate(form.value)
+
   isEditForm.value ? edit({ ...form.value, id: handGun.id }) : create(form.value)
-  // resetForm()
 }
 const adjustableTriggerValue = () => {
   return `de ${adjustableTriggerMinWeight.value} kg à ${adjustableTriggerMaxWeight.value} kg`
@@ -475,6 +479,26 @@ function setEditForm(handgun: HandGunDto) {
   buttonLabel.value = 'global.edit'
   isEditForm.value = true
 }
+/**
+ * Retourne les chageurs en lien avec la marque de l'arme choisi
+ * TODO : Voir si on filtre aussi par calibre
+ * @param check
+ */
+const findMagazinesWithFactory = (check: boolean) => {
+  const selectedFactoryId = form.value.factoryId
+  isProvidedMagazine.value = check
+  const factory = factories$.value.find((f) => f.id === selectedFactoryId)
+  magazineStore.setFactoryId(factory?.name)
+  magazineStore.getByFactoryId.isSuccess
+}
+const storesAreLoaded = computed(() => {
+  return (
+    caliberStore.getAll.isSuccess &&
+    store.prerequisitesWeaponList.isSuccess &&
+    factoryStore.getAll.isSuccess &&
+    threadedSizeStore.getAll.isSuccess
+  )
+})
 </script>
 
 <style scoped></style>

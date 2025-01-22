@@ -2,12 +2,12 @@
   <div class="mt-4">
     <div
       class="grid grid-cols-1 md:grid-cols-2 gap-4 px-4 pt-4"
-      v-if="store.prerequisitesWeaponList.isSuccess"
+      v-if="store.prerequisitesWeaponList.isSuccess && weaponTypeStore.getAll.isSuccess"
     >
       <InputGroup>
         <input-group-required-icon :is-validate="isOnContinue" />
         <input-group-select
-          :options="store.prerequisitesWeaponList.data?.data.types"
+          :options="weaponTypes$"
           label="global.weaponType"
           @option-id="(event) => (typeId = event)"
           required
@@ -16,11 +16,7 @@
           input-id="typeId"
           :initial-value="typeId"
         />
-        <input-group-addon-open-drawer-button
-          type="weaponType"
-          :open-drawer="openDrawer"
-          v-if="!isOnContinue"
-        />
+        <input-group-addon-open-drawer-button type="weaponType" v-if="!isOnContinue" />
       </InputGroup>
       <InputGroup>
         <input-group-required-icon :is-validate="isOnContinue" />
@@ -55,10 +51,13 @@ import { useWeaponStore } from '@/stores/weapon'
 import InputGroupAddonOpenDrawerButton from '@/components/__form/InputGroupAddonOpenDrawerButton.vue'
 import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
+import { useWeaponTypeStore } from '@/stores/weaponType'
+import { storeToRefs } from 'pinia'
 const store = useWeaponStore()
+const weaponTypeStore = useWeaponTypeStore()
+const { weaponTypes$ } = storeToRefs(weaponTypeStore)
 const { t } = useI18n()
-const { openDrawer, reset } = defineProps<{
-  openDrawer: Function
+const { reset } = defineProps<{
   reset: boolean
 }>()
 const emit = defineEmits(['nextStep'])

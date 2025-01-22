@@ -4,22 +4,10 @@
     :selected-options="options"
     :change-options="toggleDisplay"
   />
-  <select-weapon-type-component
-    @next-step="chooseType"
-    :open-drawer="openDrawerForm"
-    :reset="!isShowForm"
-  />
+  <select-weapon-type-component @next-step="chooseType" :reset="!isShowForm" />
   <div v-if="isShowForm">
-    <riffle-form-component
-      v-if="isRiffleWeapon.value"
-      :selected-options="options"
-      :open-drawer="openDrawerForm"
-    />
-    <hand-gun-form-component
-      :selected-options="options"
-      v-if="!isRiffleWeapon.value"
-      :open-drawer="openDrawerForm"
-    />
+    <riffle-form-component v-if="isRiffleWeapon.value" :selected-options="options" />
+    <hand-gun-form-component :selected-options="options" v-if="!isRiffleWeapon.value" />
   </div>
 </template>
 <script setup lang="ts">
@@ -31,7 +19,6 @@ import { storeToRefs } from 'pinia'
 import RiffleFormComponent from '@/components/__weapon/RiffleFormComponent.vue'
 import HandGunFormComponent from '@/components/__weapon/HandGunFormComponent.vue'
 import H2FormComponent from '@/components/__weapon/H2FormComponent.vue'
-import type { DrawerType } from '@/types/form-type'
 
 const store = useWeaponStore()
 const { weaponTypes$ } = storeToRefs(store)
@@ -51,9 +38,7 @@ const chooseType = (ids: NewWeapon) => {
   options.value = ids
   isShowForm.value = ids.type > 0 && ids.category > 0
 }
-const openDrawerForm = (type: DrawerType) => {
-  console.log(type)
-}
+
 const isRiffleWeapon = computed(() => {
   const isRiffleWeapon = ref<boolean>(true)
 

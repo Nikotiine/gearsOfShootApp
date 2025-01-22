@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
 import { useToastStore } from '@/stores/toast'
 import { useMutation, useQuery } from '@tanstack/vue-query'
-import { type CreateFactoryDto, type FactoryDto } from '@/api/Api'
+import { type CreateFactoryDto, type FactoryDto, type FactoryTypeDto } from '@/api/Api'
 import { ref } from 'vue'
 
 export const useFactoryStore = defineStore('factory', () => {
@@ -10,13 +10,14 @@ export const useFactoryStore = defineStore('factory', () => {
   const { successMessage } = useToastStore()
   const factories = ref<FactoryDto[]>([])
   const isEnabledQueryByType = ref<boolean>(false)
+  const factoryTypes = ref<FactoryTypeDto[]>([])
   const factoryType = ref<FactoryTypes>('Weapon')
   const createFactoryMutation = useMutation({
     mutationFn: async (factory: CreateFactoryDto) => {
       return await api.api.factoryControllerCreate(factory)
     },
     onSuccess: (data) => {
-      successMessage('factory.summary', 'factory.create')
+      successMessage('factory.summary', 'factory.form.success')
       factories.value.push(data.data)
     }
   })
@@ -47,7 +48,9 @@ export const useFactoryStore = defineStore('factory', () => {
   const getPrerequisitesFactoryList = useQuery({
     queryKey: ['prerequisitesFactoryList'],
     queryFn: async () => {
-      return await api.api.factoryControllerFindPrerequisitesFactoryList()
+      const res = await api.api.factoryControllerFindPrerequisitesFactoryList()
+      factoryTypes.value = res.data.types
+      return res
     }
   })
 
@@ -57,7 +60,8 @@ export const useFactoryStore = defineStore('factory', () => {
     selectFactoryType: changeFactoryType,
     factories$: factories,
     getAll: getAllQuery,
-    getFactoryTypes: getPrerequisitesFactoryList
+    getFactoryTypes: getPrerequisitesFactoryList,
+    factoryTypes$: factoryTypes
   }
 })
 export type FactoryTypes = 'Weapon' | 'Ammunition' | 'Optic' | 'RDS'

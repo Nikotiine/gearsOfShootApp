@@ -1,13 +1,10 @@
 <template>
   <form @submit.prevent="submit">
-    <div
-      class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4"
-      v-if="store.prerequisitesWeaponList.isSuccess"
-    >
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4" v-if="storesAreLoaded">
       <InputGroup>
         <input-group-required-icon :is-validate="form.caliberId > 0" />
         <input-group-select
-          :options="store.prerequisitesWeaponList.data.data.calibers"
+          :options="calibers$"
           label="global.caliber"
           @option-id="(event) => (form.caliberId = event)"
           required
@@ -15,13 +12,13 @@
           input-id="caliberId"
           :initial-value="form.caliberId"
         />
-        <input-group-addon-open-drawer-button type="caliber" :open-drawer="openDrawer" />
+        <input-group-addon-open-drawer-button type="caliber" />
       </InputGroup>
 
       <InputGroup>
         <input-group-required-icon :is-validate="form.factoryId > 0" />
         <input-group-select
-          :options="store.prerequisitesWeaponList.data.data.factories"
+          :options="factories$"
           label="global.factory"
           @option-id="(event) => (form.factoryId = event)"
           required
@@ -29,7 +26,7 @@
           input-id="factoryId"
           :initial-value="form.factoryId"
         />
-        <input-group-addon-open-drawer-button type="factory" :open-drawer="openDrawer" />
+        <input-group-addon-open-drawer-button type="factory" />
       </InputGroup>
 
       <InputGroup>
@@ -85,8 +82,8 @@
         <input-group-number
           :min="3"
           :min-fraction-digits="2"
-          placeholder="barrelLength"
-          label="barrelLength"
+          placeholder="weapon.common.barrelLength"
+          label="weapon.common.barrelLength"
           required
           @value="(value) => (form.barrelLength = value)"
           input-id="barrelLength"
@@ -98,8 +95,8 @@
       <InputGroup>
         <input-group-optional-icon :is-completed="form.barrelSize > 0" />
         <input-group-number
-          placeholder="barrelSize"
-          label="barrelSize"
+          placeholder="weapon.common.barrelSize"
+          label="weapon.common.barrelSize"
           @value="(value) => (form.barrelSize = value)"
           input-id="barrelSize"
           :initial-value="form.barrelSize"
@@ -117,7 +114,7 @@
           input-id="barrelColorId"
           :initial-value="form.barrelColorId ?? 0"
         />
-        <input-group-addon-open-drawer-button type="color" :open-drawer="openDrawer" />
+        <input-group-addon-open-drawer-button type="color" />
       </InputGroup>
 
       <InputGroup>
@@ -129,7 +126,7 @@
           :checked="form.isThreadedBarrel"
         />
         <input-group-select
-          :options="store.prerequisitesWeaponList.data.data.threadedSizes"
+          :options="threadedSizes$"
           label="global.threadedSize"
           optionLabel="size"
           :disabled="!form.isThreadedBarrel"
@@ -137,7 +134,7 @@
           input-id="threadedSizeId"
           :initial-value="form.threadedSizeId ?? 0"
         />
-        <input-group-addon-open-drawer-button type="threadSize" :open-drawer="openDrawer" />
+        <input-group-addon-open-drawer-button type="threadSize" />
       </InputGroup>
 
       <InputGroup>
@@ -145,18 +142,20 @@
         <input-group-check-box
           input-id="isProvidedMagazine"
           label="weapon.form.isProvidedMagazine"
-          @checked="(event) => (isProvidedMagazine = event)"
+          @checked="findMagazinesWithFactory"
           :checked="isProvidedMagazine"
           :disabled="form.factoryId === 0"
         />
         <input-group-select
-          :options="magazineStore.getByFactoryId.data?.data"
+          :options="magazines$"
           label="weapon.form.magazine"
           :disabled="!isProvidedMagazine"
+          option-label="reference"
           @option-id="(event) => (form.providedMagazineId = event)"
           input-id="providedMagazineId"
           :initial-value="form.providedMagazineId ?? 0"
         />
+        <input-group-addon-open-drawer-button type="magazine" />
       </InputGroup>
 
       <InputGroup>
@@ -171,7 +170,7 @@
           :disabled="!isProvidedMagazine"
           :initial-value="form.providedMagazineQuantity"
         />
-        <input-group-addon-open-drawer-button type="magazine" :open-drawer="openDrawer" />
+        <input-group-addon-open-drawer-button type="magazine" />
       </InputGroup>
 
       <InputGroup>
@@ -217,7 +216,7 @@
           input-id="buttMaterialId"
           :initial-value="form.buttMaterialId ?? 0"
         />
-        <input-group-addon-open-drawer-button type="material" :open-drawer="openDrawer" />
+        <input-group-addon-open-drawer-button type="material" />
       </InputGroup>
 
       <InputGroup class="w-full">
@@ -248,7 +247,7 @@
           input-id="buttColorId"
           :initial-value="form.buttColorId ?? 0"
         />
-        <input-group-addon-open-drawer-button type="color" :open-drawer="openDrawer" />
+        <input-group-addon-open-drawer-button type="color" />
       </InputGroup>
 
       <InputGroup>
@@ -347,7 +346,7 @@
 </template>
 `
 <script setup lang="ts">
-import type { CreateRiffleDto, MLockOptionDto, RiffleDto } from '@/api/Api'
+import type { CreateRiffleDto, MLockOptionDto, RiffleDto, UpdateRiffleDto } from '@/api/Api'
 import InputGroupAddon from 'primevue/inputgroupaddon'
 import Button from 'primevue/button'
 import { computed, ref, watchEffect } from 'vue'
@@ -366,26 +365,35 @@ import InputGroupNumber from '@/components/__form/InputGroupNumber.vue'
 import InputGroupCheckBox from '@/components/__form/InputGroupCheckBox.vue'
 import InputGroupMultiSelect from '@/components/__form/InputGroupMultiSelect.vue'
 import { useWeaponMagazineStore } from '@/stores/weapon-magazine'
+import { useCaliberStore } from '@/stores/caliber'
+import { useFactoryStore } from '@/stores/factory'
+import { useThreadedSizeStore } from '@/stores/threadedSize'
 
 const store = useWeaponStore()
 const riffleStore = useRiffleStore()
 const magazineStore = useWeaponMagazineStore()
+const caliberStore = useCaliberStore()
+const factoryStore = useFactoryStore()
+const threadedSizeStore = useThreadedSizeStore()
 const { railSizes$, materials$, colors$ } = storeToRefs(store)
+const { calibers$ } = storeToRefs(caliberStore)
+const { factories$ } = storeToRefs(factoryStore)
+const { magazines$ } = storeToRefs(magazineStore)
+const { threadedSizes$ } = storeToRefs(threadedSizeStore)
 const { t } = useI18n()
 const buttonLabel = ref('global.save')
 const isEditForm = ref<boolean>(false)
-const {
-  selectedOptions,
-  openDrawer,
-  riffle = null
-} = defineProps<{
+const { selectedOptions, riffle = null } = defineProps<{
   selectedOptions: NewWeapon
-  openDrawer: Function
   riffle?: RiffleDto
 }>()
 const adjustableTriggerMinWeight = ref(0)
 const adjustableTriggerMaxWeight = ref(0)
 const isProvidedMagazine = ref(false)
+const selectedMLockOptions = ref<MLockOptionDto[]>([])
+const resetMultiselect = ref(false)
+
+//*******************Init du formulaire*********************
 const initialForm: CreateRiffleDto = {
   typeId: selectedOptions.type,
   caliberId: 0,
@@ -418,10 +426,7 @@ const initialForm: CreateRiffleDto = {
   barrelColorId: null,
   buttColorId: null
 }
-
 const form = ref<CreateRiffleDto>({ ...initialForm })
-const selectedMLockOptions = ref<MLockOptionDto[]>([])
-const resetMultiselect = ref(false)
 
 /**
  * Validators du formulaire
@@ -441,35 +446,71 @@ const isFormValid = computed(() => {
   return isValid
 })
 
+// Validateur pour les options mlock . Si checkbot mlock options selectionner, les valeur mlock doivent etre rempli (mini 1 option)
 const isInvalidMLockOption = computed(() => {
   return form.value.isMlockCompatibility && selectedMLockOptions.value.length === 0
 })
+
+// Validateur de valeur de point de depart ( le poids maxi ne peux pas etre inferieur au poids mini )
 const isInvalidMaxTriggerValue = computed(() => {
   return (
     form.value.isAdjustableTrigger &&
     adjustableTriggerMaxWeight.value <= adjustableTriggerMinWeight.value
   )
 })
+
+/**
+ * Creer la chaine de caractere des valeur mini et maxi du poid de depart de la detente
+ */
 const adjustableTriggerValue = () => {
   return `${adjustableTriggerMinWeight.value} kg à ${adjustableTriggerMaxWeight.value} kg`
 }
 
+/**
+ * Retourne les chageurs en lien avec la marque de l'arme choisi
+ * TODO : Voir si on filtre aussi par calibre
+ * @param check
+ */
 const findMagazinesWithFactory = (check: boolean) => {
+  const selectedFactoryId = form.value.factoryId
   isProvidedMagazine.value = check
-  magazineStore.setFactoryId(form.value.factoryId)
+  const factory = factories$.value.find((f) => f.id === selectedFactoryId)
+  magazineStore.setFactoryId(factory?.name)
+  magazineStore.getByFactoryId.isSuccess
 }
 
+/**
+ * Soummission du formulaire
+ * Mert a jour les champs mlock et reglage de detente
+ */
 const submit = () => {
   form.value.mLockOptions = selectedMLockOptions.value
   form.value.adjustableTriggerValue = form.value.isAdjustableTrigger
     ? adjustableTriggerValue()
     : null
-  isEditForm.value
-    ? riffleStore.edit.mutate({ ...form.value, id: riffle.id })
-    : riffleStore.create.mutate(form.value)
-  // Reset des champs du formulaire
-  // resetForm()
+  isEditForm.value ? edit({ ...form.value, id: riffle.id }) : create(form.value)
 }
+
+/**
+ * Edition d 'une arme
+ * @param riffle
+ */
+const edit = (riffle: UpdateRiffleDto) => {
+  riffleStore.edit.mutate(riffle)
+}
+
+/**
+ * Creation d'une nouvelle arme
+ * @param riffle
+ */
+const create = (riffle: CreateRiffleDto) => {
+  riffleStore.create.mutate(riffle)
+  resetForm()
+}
+
+/**
+ * Remet le formulaire a vide apres envoie de la creation
+ */
 function resetForm(): void {
   form.value = { ...initialForm }
   resetMultiselect.value = !resetMultiselect.value
@@ -477,11 +518,18 @@ function resetForm(): void {
   adjustableTriggerMaxWeight.value = 0
   selectedMLockOptions.value = []
 }
+
+// Surveille si c'est une edition ou une creation
 watchEffect(() => {
   if (riffle) {
     setEditForm(riffle)
   }
 })
+
+/**
+ * Lors de l'edition d une arme longue pre rempli les champs avec les donnee de l'arme a edité
+ * @param riffle
+ */
 function setEditForm(riffle: RiffleDto) {
   form.value = {
     ...riffle,
@@ -502,6 +550,18 @@ function setEditForm(riffle: RiffleDto) {
   buttonLabel.value = 'global.edit'
   isEditForm.value = true
 }
+
+/**
+ * Verification que tout les store sont chager avant d'afficher la page
+ */
+const storesAreLoaded = computed(() => {
+  return (
+    caliberStore.getAll.isSuccess &&
+    store.prerequisitesWeaponList.isSuccess &&
+    factoryStore.getAll.isSuccess &&
+    threadedSizeStore.getAll.isSuccess
+  )
+})
 </script>
 
 <style scoped></style>

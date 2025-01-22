@@ -53,9 +53,8 @@ const {
 }>()
 const emit = defineEmits(['selectedOptions'])
 const selectedOptions = ref(initialValue)
-console.log(initialValue)
+
 const onChange = () => {
-  console.log(selectedOptions.value)
   emit('selectedOptions', selectedOptions.value)
 }
 watch(
@@ -67,7 +66,6 @@ watch(
 watch(
   () => initialValue,
   (newValue) => {
-    console.log(initialValue)
     selectedOptions.value = newValue
   }
 )

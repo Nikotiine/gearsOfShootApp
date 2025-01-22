@@ -199,91 +199,56 @@ export interface ListOfPrerequisitesWeaponMagazineDto {
   categories: LegislationCategoryDto[]
 }
 
-export interface CreateWeaponMagazineDto {
-  /** Capacite en munition */
-  capacity: number
-  /** longeur du chargeur */
-  length: number
-  /** hauteur du chargeur */
-  height: number
-  /** largeur du chargeur */
-  width: number
-  reference: string
-  /** matiere du chargeur */
-  bodyId: number
-  /** marque du chargeur */
-  factoryId: number
-  /** calibre des munitions du chargeur */
-  caliberId: number
-  description: string | null
-  /** La categorie de l arme en france */
-  categoryId: number
-}
-
-export interface UpdateWeaponMagazineDto {
-  /** Capacite en munition */
-  capacity: number
-  /** longeur du chargeur */
-  length: number
-  /** hauteur du chargeur */
-  height: number
-  /** largeur du chargeur */
-  width: number
-  reference: string
-  /** matiere du chargeur */
-  bodyId: number
-  /** marque du chargeur */
-  factoryId: number
-  /** calibre des munitions du chargeur */
-  caliberId: number
-  description: string | null
-  /** La categorie de l arme en france */
-  categoryId: number
+export interface RiffleDto {
   id: number
-}
-
-export interface SoundNoiseReducerDto {
-  id: number
+  /** @example "CZ-457-VAR-22LR" */
+  reference: string
+  /** @example "CZ 457" */
+  name: string
+  /** @example "Une description de l arme son histoire ..." */
+  description: string
+  /** @example "Varmint ou Luxe" */
+  variation: string | null
+  /** @example "C" */
+  category: LegislationCategoryDto
   caliber: CaliberDto
   factory: FactoryDto
+  type: WeaponTypeDto
+  /** @example 51 */
+  barrelLength: number
+  /** @example false */
+  isAdjustableTrigger: boolean
+  /** @example false */
+  isThreadedBarrel: boolean
+  /** @example "Lourd" */
+  barrelType: WeaponBarrelTypeDto
   threadedSize: ThreadedSizeDto
-  diameter: number
-  length: number
-  name: string
-  description: string
-  reference: string
-  isCleanable: boolean
-}
-
-export interface ListOfPrerequisitesSoundNoiseReducerDto {
-  calibers: CaliberDto[]
-  factories: FactoryDto[]
-  threadedSizes: ThreadedSizeDto[]
-}
-
-export interface CreateSoundNoiseReducerDto {
-  caliberId: number
-  factoryId: number
-  threadedSizeId: number
-  diameter: number
-  length: number
-  name: string
-  description: string
-  reference: string
-  isCleanable: boolean
-}
-
-export interface UpdateSoundNoiseReducerDto {
-  caliberId: number
-  factoryId: number
-  threadedSizeId: number
-  diameter: number
-  length: number
-  name: string
-  description: string
-  reference: string
-  isCleanable: boolean
-  id: number
+  adjustableTriggerValue: string
+  percussionType: PercussionTypeDto
+  providedMagazineQuantity: number
+  providedMagazine: WeaponMagazineDto
+  barrelSize: number
+  buttMaterial: MaterialDto
+  /** Guidon reglable */
+  isAdjustableFrontSight: boolean
+  /** Hausse reglable */
+  isAdjustableBackSight: boolean
+  buttColor: ColorDto
+  barrelColor: ColorDto
+  /** Crosse ajustable en profondeur */
+  isAdjustableButt: boolean
+  /** Busc adjutable */
+  isAdjustableBusk: boolean
+  railSize: RailSizeDto
+  /** Grenadiere */
+  grenadierSlot: number
+  /** Port QC */
+  qcSlot: number
+  /** Rail Mlock */
+  isMlockCompatibility: boolean
+  /** Visee ouverte ? */
+  isOpenAim: boolean
+  mLockOptions: MLockOptionDto[] | null
 }
 
 export interface HandGunDto {
@@ -332,6 +297,97 @@ export interface HandGunDto {
   opticReadyPlates: OpticReadyPlateDto[]
   /** Rail picatiny */
   isPicatinyRailSlop: boolean
+}
+
+export interface CreateWeaponMagazineDto {
+  /** Capacite en munition */
+  capacity: number
+  /** longeur du chargeur */
+  length: number
+  /** hauteur du chargeur */
+  height: number
+  /** largeur du chargeur */
+  width: number
+  reference: string
+  /** matiere du chargeur */
+  bodyId: number
+  /** marque du chargeur */
+  factoryId: number
+  /** calibre des munitions du chargeur */
+  caliberId: number
+  description: string | null
+  /** La categorie de l arme en france */
+  categoryId: number
+  compatibleRiffle: RiffleDto[] | null
+  compatibleHandGun: HandGunDto[] | null
+}
+
+export interface UpdateWeaponMagazineDto {
+  /** Capacite en munition */
+  capacity: number
+  /** longeur du chargeur */
+  length: number
+  /** hauteur du chargeur */
+  height: number
+  /** largeur du chargeur */
+  width: number
+  reference: string
+  /** matiere du chargeur */
+  bodyId: number
+  /** marque du chargeur */
+  factoryId: number
+  /** calibre des munitions du chargeur */
+  caliberId: number
+  description: string | null
+  /** La categorie de l arme en france */
+  categoryId: number
+  compatibleRiffle: RiffleDto[] | null
+  compatibleHandGun: HandGunDto[] | null
+  id: number
+}
+
+export interface SoundNoiseReducerDto {
+  id: number
+  caliber: CaliberDto
+  factory: FactoryDto
+  threadedSize: ThreadedSizeDto
+  diameter: number
+  length: number
+  name: string
+  description: string
+  reference: string
+  isCleanable: boolean
+}
+
+export interface ListOfPrerequisitesSoundNoiseReducerDto {
+  calibers: CaliberDto[]
+  factories: FactoryDto[]
+  threadedSizes: ThreadedSizeDto[]
+}
+
+export interface CreateSoundNoiseReducerDto {
+  caliberId: number
+  factoryId: number
+  threadedSizeId: number
+  diameter: number
+  length: number
+  name: string
+  description: string
+  reference: string
+  isCleanable: boolean
+}
+
+export interface UpdateSoundNoiseReducerDto {
+  caliberId: number
+  factoryId: number
+  threadedSizeId: number
+  diameter: number
+  length: number
+  name: string
+  description: string
+  reference: string
+  isCleanable: boolean
+  id: number
 }
 
 export interface CreateHandGunDto {
@@ -501,58 +557,6 @@ export interface UpdateHandGunDto {
   /** Rail picatiny */
   isPicatinyRailSlop: boolean
   id: number
-}
-
-export interface RiffleDto {
-  id: number
-  /** @example "CZ-457-VAR-22LR" */
-  reference: string
-  /** @example "CZ 457" */
-  name: string
-  /** @example "Une description de l arme son histoire ..." */
-  description: string
-  /** @example "Varmint ou Luxe" */
-  variation: string | null
-  /** @example "C" */
-  category: LegislationCategoryDto
-  caliber: CaliberDto
-  factory: FactoryDto
-  type: WeaponTypeDto
-  /** @example 51 */
-  barrelLength: number
-  /** @example false */
-  isAdjustableTrigger: boolean
-  /** @example false */
-  isThreadedBarrel: boolean
-  /** @example "Lourd" */
-  barrelType: WeaponBarrelTypeDto
-  threadedSize: ThreadedSizeDto
-  adjustableTriggerValue: string
-  percussionType: PercussionTypeDto
-  providedMagazineQuantity: number
-  providedMagazine: WeaponMagazineDto
-  barrelSize: number
-  buttMaterial: MaterialDto
-  /** Guidon reglable */
-  isAdjustableFrontSight: boolean
-  /** Hausse reglable */
-  isAdjustableBackSight: boolean
-  buttColor: ColorDto
-  barrelColor: ColorDto
-  /** Crosse ajustable en profondeur */
-  isAdjustableButt: boolean
-  /** Busc adjutable */
-  isAdjustableBusk: boolean
-  railSize: RailSizeDto
-  /** Grenadiere */
-  grenadierSlot: number
-  /** Port QC */
-  qcSlot: number
-  /** Rail Mlock */
-  isMlockCompatibility: boolean
-  /** Visee ouverte ? */
-  isOpenAim: boolean
-  mLockOptions: MLockOptionDto[] | null
 }
 
 export interface CreateRiffleDto {
@@ -1525,11 +1529,11 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @tags Magazine
      * @name MagazineControllerFindByFactory
      * @summary Filtré par maruqe
-     * @request GET:/api/magazine/by/factory/{factoryId}
+     * @request GET:/api/magazine/by/factory/{factoryName}
      */
-    magazineControllerFindByFactory: (factoryId: number, params: RequestParams = {}) =>
+    magazineControllerFindByFactory: (factoryName: string, params: RequestParams = {}) =>
       this.request<WeaponMagazineDto[], any>({
-        path: `/api/magazine/by/factory/${factoryId}`,
+        path: `/api/magazine/by/factory/${factoryName}`,
         method: 'GET',
         format: 'json',
         ...params

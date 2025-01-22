@@ -1,11 +1,8 @@
 <template>
   <div class="card">
     <h2 class="text-center mt-2 text-2xl">{{ t('magazine.form.add') }}</h2>
-    <form @submit.prevent="submit">
-      <div
-        class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4"
-        v-if="store.prerequisiteList.isSuccess"
-      >
+    <form @submit.prevent="submit" v-if="store.prerequisiteList.isSuccess">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
         <InputGroup>
           <input-group-required-icon :is-validate="form.factoryId > 0" />
           <input-group-select
@@ -17,7 +14,7 @@
             input-id="factoryId"
             :initial-value="form.factoryId"
           />
-          <!--          <input-group-addon-open-drawer-button type="factory" :open-drawer="openDrawer" />-->
+          <input-group-addon-open-drawer-button type="factory" />
         </InputGroup>
         <InputGroup v-if="weaponTypeStore.getAll.isSuccess">
           <input-group-required-icon :is-validate="weaponTypeId > 0" />
@@ -30,11 +27,7 @@
             input-id="typeId"
             :initial-value="weaponTypeId"
           />
-          <!--          <input-group-addon-open-drawer-button
-            type="weaponType"
-            :open-drawer="openDrawer"
-            v-if="!isOnContinue"
-          />-->
+          <input-group-addon-open-drawer-button type="weaponType" />
         </InputGroup>
         <InputGroup>
           <input-group-required-icon :is-validate="form.categoryId > 0" />
@@ -58,7 +51,7 @@
             input-id="opticTypeId"
             :initial-value="form.caliberId"
           />
-          <!--          <input-group-addon-open-drawer-button type="factory" :open-drawer="openDrawer" />-->
+          <input-group-addon-open-drawer-button type="caliber" />
         </InputGroup>
         <InputGroup>
           <input-group-required-icon :is-validate="form.bodyId > 0" />
@@ -67,10 +60,10 @@
             label="magazine.form.bodyMaterial"
             @option-id="(event) => (form.bodyId = event)"
             required
-            input-id="focalPlaneId"
+            input-id="bodyId"
             :initial-value="form.bodyId"
           />
-          <!--          <input-group-addon-open-drawer-button type="factory" :open-drawer="openDrawer" />-->
+          <input-group-addon-open-drawer-button type="material" />
         </InputGroup>
 
         <InputGroup>
@@ -135,7 +128,7 @@
           <input-group-multi-select
             input-id="compatibleWeaponOptions"
             label="magazine.form.compatibleWeaponOptions"
-            :options="compatibleWeaponOptions"
+            :options="options"
             :disabled="weaponTypeId === 0"
             @selected-options="(event) => (selectedCompatibleWeapon = event)"
             :initial-value="selectedCompatibleWeapon"
@@ -167,22 +160,19 @@
 </template>
 <script setup lang="ts">
 import { useWeaponMagazineStore } from '@/stores/weapon-magazine'
-import type { CreateWeaponMagazineDto, WeaponTypeDto } from '@/api/Api'
+import type { CreateWeaponMagazineDto, HandGunDto, RiffleDto, WeaponTypeDto } from '@/api/Api'
 import { computed, ref } from 'vue'
 import Button from 'primevue/button'
-import InputGroupAddon from 'primevue/inputgroupaddon'
+
 import InputGroup from 'primevue/inputgroup'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
 import InputGroupNumber from '@/components/__form/InputGroupNumber.vue'
-
 import Textarea from 'primevue/textarea'
-
 import InputGroupText from '@/components/__form/InputGroupText.vue'
 import { useI18n } from 'vue-i18n'
 import InputGroupAddonOpenDrawerButton from '@/components/__form/InputGroupAddonOpenDrawerButton.vue'
 import { useWeaponTypeStore } from '@/stores/weaponType'
-import InputGroupCheckBox from '@/components/__form/InputGroupCheckBox.vue'
 import InputGroupMultiSelect from '@/components/__form/InputGroupMultiSelect.vue'
 import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.vue'
 import { storeToRefs } from 'pinia'
@@ -204,11 +194,13 @@ const initialFormObject: CreateWeaponMagazineDto = {
   capacity: 0,
   caliberId: 0,
   length: 0,
-  categoryId: 0
+  categoryId: 0,
+  compatibleHandGun: [],
+  compatibleRiffle: []
 }
 const form = ref<CreateWeaponMagazineDto>({ ...initialFormObject })
 const weaponTypeId = ref(0)
-const selectedCompatibleWeapon = ref([])
+const selectedCompatibleWeapon = ref<RiffleDto[] | HandGunDto[]>([])
 const compatibleWeaponOptions = ref([])
 const isFormValid = computed(() => {
   let isValid: boolean = false
@@ -227,20 +219,36 @@ const isFormValid = computed(() => {
   return isValid
 })
 
+const options = computed(() => {
+  let options = compatibleWeaponOptions.value
+  if (form.value.caliberId > 0) {
+    options = options.filter((option) => option.id === form.value.caliberId)
+  }
+
+  return options
+})
+
 const selectWeaponType = (id: number) => {
   weaponTypeId.value = id
   console.log(isRiffleWeapon.value)
   if (isRiffleWeapon.value) {
-    console.log('ttootootto')
-    //compatibleWeaponOptions.value = riffleStore.getAll.data?.data
+    riffleStore.getAll.isSuccess
+      ? (compatibleWeaponOptions.value = riffleStore.getAll.data?.data)
+      : []
   } else {
-    console.log('tatattaata')
+    handGunStore.getAll.isSuccess
+      ? (compatibleWeaponOptions.value = handGunStore.getAll.data?.data)
+      : []
   }
 }
 
 const submit = () => {
-  console.log(form.value)
+  isRiffleWeapon.value
+    ? (form.value.compatibleRiffle = selectedCompatibleWeapon.value)
+    : (form.value.compatibleHandGun = selectedCompatibleWeapon.value)
+
   store.create.mutate(form.value)
+  form.value = { ...initialFormObject }
 }
 
 const isRiffleWeapon = computed(() => {

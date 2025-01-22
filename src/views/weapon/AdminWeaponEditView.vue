@@ -1,7 +1,6 @@
 <template>
   <div v-if="!isRiffle && handGunStore.getHandGunById.isSuccess">
     <hand-gun-form-component
-      :open-drawer="openDrawerForm"
       :selected-options="{
         type: handGunStore.getHandGunById.data.data.type.id,
         category: handGunStore.getHandGunById.data.data.category.id
@@ -11,7 +10,6 @@
   </div>
   <div class="" v-if="isRiffle && riffleStore.getRiffleById.isSuccess">
     <riffle-form-component
-      :open-drawer="openDrawerForm"
       :selected-options="{
         type: riffleStore.getRiffleById.data.data.type.id,
         category: riffleStore.getRiffleById.data.data.category.id
@@ -25,11 +23,9 @@
 import { useHandGunStore } from '@/stores/hand-gun'
 import { useRiffleStore } from '@/stores/riffle'
 import type { WeaponViewType } from '@/views/weapon/WeaponView.vue'
-import { computed, ref, watchEffect } from 'vue'
+import { computed, watchEffect } from 'vue'
 import HandGunFormComponent from '@/components/__weapon/HandGunFormComponent.vue'
-import type { DrawerType } from '@/types/form-type'
 
-import type { NewWeapon } from '@/stores/weapon'
 import RiffleFormComponent from '@/components/__weapon/RiffleFormComponent.vue'
 
 const handGunStore = useHandGunStore()
@@ -40,24 +36,17 @@ const { id, type } = defineProps<{
   type: WeaponViewType
 }>()
 
-const selectedOption = ref<NewWeapon>({
-  type: 0,
-  category: 0
-})
-
 const isRiffle = computed(() => {
   return type === 'riffle'
 })
 watchEffect(() => {
+  const weaponId = parseInt(id)
   if (type === 'riffle') {
-    riffleStore.setRiffleId(id)
+    riffleStore.setRiffleId(weaponId)
   } else {
-    handGunStore.setHandGunId(id)
+    handGunStore.setHandGunId(weaponId)
   }
 })
-const openDrawerForm = (type: DrawerType) => {
-  console.log(type)
-}
 </script>
 
 <style scoped></style>

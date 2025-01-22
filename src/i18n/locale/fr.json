@@ -147,7 +147,7 @@
   "magazine": {
     "summary": "gestion des chargeurs",
     "form": {
-      "add": "Ajouter un chargeur de categorie",
+      "add": "Ajouter un chargeur",
       "bodyMaterial": "Matiere du chargeur",
       "capacity": "Capacité",
       "success": "ajouter a la base de donnee",
@@ -200,7 +200,7 @@
     "existingList": "Liste des type d'arme existants",
     "type": "Type d'armes",
     "summary": "Gestion des type d'arme",
-    "mode": "Fonctionnement"
+    "mode": "Mode de fonctionnement"
   },
   "optic": {
     "summary": "Gestion des optiques",
@@ -239,7 +239,7 @@
     },
     "existingList": "Liste des marques existantes",
     "type": "Type d'armes",
-    "summary": "Gestion des type d'arme"
+    "summary": "Gestion des marques"
   },
   "caliber": {
     "form": {
@@ -275,7 +275,8 @@
     "weaponType": "Ajouter un nouveau type d arme",
     "color": "Ajouter une nouvelle couleur",
     "material": "Ajouter une nouvelle matiere",
-    "magazine": "Ajouter un chargeur"
+    "magazine": "Ajouter un chargeur",
+    "threadSize": "Ajouter une taille de filletage"
   },
   "inputText": {
     "label": "Saisir un texte"

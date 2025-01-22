@@ -7,7 +7,7 @@
       label="Changer les options"
       severity="secondary"
       variant="text"
-      @click="changeOptions"
+      @click="changeOptions()"
     />
   </h3>
 </template>

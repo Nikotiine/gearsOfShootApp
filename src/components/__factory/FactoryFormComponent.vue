@@ -1,37 +1,46 @@
 <template>
+  <h2 class="text-center mt-2 text-2xl">
+    Ajouter une marque de {{ t('global.' + factoryType?.name) }}
+  </h2>
   <form @submit.prevent="submit">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 p-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
       <InputGroup>
-        <InputGroupAddon>
-          <i class="pi pi-id-card"></i>
-        </InputGroupAddon>
-        <InputText v-model="form.name" placeholder="Nom" />
+        <input-group-required-icon :is-validate="form.name.length >= 3" />
+        <input-group-text
+          @value="(value) => (form.name = value)"
+          :min-length="3"
+          placeholder="global.name"
+          label="global.name"
+          required
+          input-id="name"
+          :initial-value="form.name"
+        />
       </InputGroup>
+
       <InputGroup>
-        <InputGroupAddon>
-          <i class="pi pi-id-card"></i>
-        </InputGroupAddon>
-        <InputText v-model="form.reference" placeholder="Ref" />
+        <input-group-required-icon :is-validate="form.reference.length >= 3" />
+        <input-group-text
+          @value="(value) => (form.reference = value)"
+          :min-length="3"
+          placeholder="global.ref"
+          label="global.ref"
+          required
+          input-id="reference"
+          :initial-value="form.reference"
+        />
       </InputGroup>
+
       <InputGroup>
-        <IftaLabel>
-          <Select
-            v-model="form.typeId"
-            optionValue="id"
-            optionLabel="name"
-            @change="$emit('changeType', form.typeId)"
-            :options="store.getFactoryTypes.data?.data.types"
-            placeholder="Categorie"
-            id="type"
-          >
-            <template #option="slotProps">
-              <div class="flex items-center">
-                <div>{{ t('global.' + slotProps.option.name) }}</div>
-              </div>
-            </template>
-          </Select>
-          <label for="type">Type</label>
-        </IftaLabel>
+        <input-group-required-icon :is-validate="form.typeId > 0" />
+        <input-group-select
+          :options="factoryTypeViewModel"
+          option-label="label"
+          label="weapon.common.barrelType"
+          @option-id="(event) => onChangeType(event)"
+          required
+          input-id="typeId"
+          :initial-value="form.typeId"
+        />
       </InputGroup>
     </div>
     <div class="px-4">
@@ -58,18 +67,23 @@
 
 <script setup lang="ts">
 import Textarea from 'primevue/textarea'
-import InputText from 'primevue/inputtext'
-import InputGroupAddon from 'primevue/inputgroupaddon'
-import Select from 'primevue/select'
 import Button from 'primevue/button'
-import IftaLabel from 'primevue/iftalabel'
 import InputGroup from 'primevue/inputgroup'
 import { useFactoryStore } from '@/stores/factory'
 import type { CreateFactoryDto } from '@/api/Api'
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import InputGroupText from '@/components/__form/InputGroupText.vue'
+import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
+import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
+import { storeToRefs } from 'pinia'
 const store = useFactoryStore()
-const { t } = useI18n()
+const { factoryTypes$ } = storeToRefs(store)
+const emit = defineEmits(['onSave', 'changeType'])
+const { t, locale } = useI18n()
+const localeValue = ref(locale.value)
+
+//*******************Init du formulaire*********************
 const initialFactoryFormObject: CreateFactoryDto = {
   name: '',
   description: '',
@@ -77,16 +91,57 @@ const initialFactoryFormObject: CreateFactoryDto = {
   reference: ''
 }
 const form = ref<CreateFactoryDto>({ ...initialFactoryFormObject })
-const submit = () => {
-  store.create.mutate(form.value)
-  form.value.name = ''
-  form.value.reference = ''
-  form.value.description = ''
-}
 
+/**
+ * Lors du changement de type de marque, met a jour le formulaire et emet le nouveau label pour l'affichage du parent
+ * @param id
+ */
+const onChangeType = (id: number) => {
+  form.value.typeId = id
+  emit('changeType', factoryType.value?.name)
+}
+//***********************Validateur*************************
 const isFormValid = computed(() => {
   return !!form.value.name
 })
+
+/**
+ * Sousmission du formulaire pour la creation d'une nouvelle marque
+ * Emet un boolean onSave pour le drawer
+ * Reinitialise le formulaire apres l'envoie
+ */
+const submit = () => {
+  store.create.mutate(form.value)
+  form.value = { ...initialFactoryFormObject }
+  emit('onSave', true)
+}
+
+// Retourne le type courant selectionner (necessaire pour l'afiichage pre filtre de la liste complete des marque )
+const factoryType = computed(() => {
+  return factoryTypes$.value.find((f) => f.id === form.value.typeId)
+})
+
+/**
+ * Creer un viewModel des types de marque pour la traduction multilingues
+ */
+const factoryTypeViewModel = computed(() => {
+  return factoryTypes$.value.map((f) => {
+    return {
+      ...f,
+      label: t('global.' + f.name)
+    }
+  })
+})
+
+/**
+ * Surveille la langue pour la traductions des label des type de marques
+ */
+watch(
+  () => locale.value,
+  (value) => {
+    localeValue.value = value
+  }
+)
 </script>
 
 <style scoped></style>
