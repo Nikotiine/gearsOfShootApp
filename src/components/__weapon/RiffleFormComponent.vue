@@ -26,7 +26,7 @@
           input-id="factoryId"
           :initial-value="form.factoryId"
         />
-        <input-group-addon-open-drawer-button type="factory" />
+        <input-group-addon-open-drawer-button type="factory" factory-type="weapon" />
       </InputGroup>
 
       <InputGroup>
@@ -340,7 +340,7 @@
       </p>
     </div>
     <div class="text-center">
-      <Button type="submit" :label="t(buttonLabel)" :disabled="!isFormValid"></Button>
+      <Button type="submit" :label="t(buttonLabel)" :disabled="!isValidForm"></Button>
     </div>
   </form>
 </template>
@@ -368,6 +368,8 @@ import { useWeaponMagazineStore } from '@/stores/weapon-magazine'
 import { useCaliberStore } from '@/stores/caliber'
 import { useFactoryStore } from '@/stores/factory'
 import { useThreadedSizeStore } from '@/stores/threadedSize'
+import { useColorStore } from '@/stores/color'
+import { useMaterialStore } from '@/stores/material'
 
 const store = useWeaponStore()
 const riffleStore = useRiffleStore()
@@ -375,11 +377,15 @@ const magazineStore = useWeaponMagazineStore()
 const caliberStore = useCaliberStore()
 const factoryStore = useFactoryStore()
 const threadedSizeStore = useThreadedSizeStore()
-const { railSizes$, materials$, colors$ } = storeToRefs(store)
+const colorStore = useColorStore()
+const materialStore = useMaterialStore()
+const { railSizes$ } = storeToRefs(store)
 const { calibers$ } = storeToRefs(caliberStore)
 const { factories$ } = storeToRefs(factoryStore)
 const { magazines$ } = storeToRefs(magazineStore)
 const { threadedSizes$ } = storeToRefs(threadedSizeStore)
+const { colors$ } = storeToRefs(colorStore)
+const { materials$ } = storeToRefs(materialStore)
 const { t } = useI18n()
 const buttonLabel = ref('global.save')
 const isEditForm = ref<boolean>(false)
@@ -431,7 +437,7 @@ const form = ref<CreateRiffleDto>({ ...initialForm })
 /**
  * Validators du formulaire
  */
-const isFormValid = computed(() => {
+const isValidForm = computed(() => {
   let isValid: boolean = false
   if (
     form.value.name &&
@@ -559,7 +565,8 @@ const storesAreLoaded = computed(() => {
     caliberStore.getAll.isSuccess &&
     store.prerequisitesWeaponList.isSuccess &&
     factoryStore.getAll.isSuccess &&
-    threadedSizeStore.getAll.isSuccess
+    threadedSizeStore.getAll.isSuccess &&
+    colorStore.getAll.isSuccess
   )
 })
 </script>

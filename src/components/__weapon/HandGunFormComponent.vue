@@ -26,7 +26,7 @@
           input-id="factoryId"
           :initial-value="form.factoryId"
         />
-        <input-group-addon-open-drawer-button type="factory" />
+        <input-group-addon-open-drawer-button type="factory" factory-type="weapon" />
       </InputGroup>
 
       <InputGroup>
@@ -355,6 +355,8 @@ import { useWeaponMagazineStore } from '@/stores/weapon-magazine'
 import { useCaliberStore } from '@/stores/caliber'
 import { useFactoryStore } from '@/stores/factory'
 import { useThreadedSizeStore } from '@/stores/threadedSize'
+import { useColorStore } from '@/stores/color'
+import { useMaterialStore } from '@/stores/material'
 
 const store = useWeaponStore()
 const handGunStore = useHandGunStore()
@@ -362,11 +364,15 @@ const magazineStore = useWeaponMagazineStore()
 const caliberStore = useCaliberStore()
 const factoryStore = useFactoryStore()
 const threadedSizeStore = useThreadedSizeStore()
-const { colors$, materials$, triggerTypes$, opticReadyPlates$, weaponTypes$ } = storeToRefs(store)
+const colorStore = useColorStore()
+const materialStore = useMaterialStore()
+const { triggerTypes$, opticReadyPlates$, weaponTypes$ } = storeToRefs(store)
 const { calibers$ } = storeToRefs(caliberStore)
 const { factories$ } = storeToRefs(factoryStore)
 const { magazines$ } = storeToRefs(magazineStore)
 const { threadedSizes$ } = storeToRefs(threadedSizeStore)
+const { colors$ } = storeToRefs(colorStore)
+const { materials$ } = storeToRefs(materialStore)
 const { selectedOptions, handGun = null } = defineProps<{
   selectedOptions: NewWeapon
   handGun?: HandGunDto

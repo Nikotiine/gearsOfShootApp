@@ -96,8 +96,18 @@ const items = ref([
                 push('/admin/gestion/add/caliber')
               }
             },
-            { label: 'Swimsuits' },
-            { label: 'Paddles' }
+            {
+              label: 'Matieres',
+              command: () => {
+                push('/admin/gestion/add/material')
+              }
+            },
+            {
+              label: 'Couleur',
+              command: () => {
+                push('/admin/gestion/add/color')
+              }
+            }
           ]
         }
       ],

@@ -34,7 +34,7 @@
       </div>
     </div>
     <div class="text-center mt-6">
-      <Button type="submit" :label="t('global.save')" :disabled="!isFormValid"></Button>
+      <Button type="submit" :label="t('global.save')" :disabled="!isValidForm"></Button>
     </div>
   </form>
 </template>
@@ -52,15 +52,15 @@ const { t } = useI18n()
 const emit = defineEmits(['onSave'])
 
 //*******************Init du formulaire*********************
-const initialFormObject: CreateAmmunitionBodyTypeDto = {
+const initialForm: CreateAmmunitionBodyTypeDto = {
   name: '',
   reference: ''
 }
-const form = ref<CreateAmmunitionBodyTypeDto>({ ...initialFormObject })
+const form = ref<CreateAmmunitionBodyTypeDto>({ ...initialForm })
 
 //***********************Validateur*************************
-const isFormValid = computed(() => {
-  return !!form.value.name
+const isValidForm = computed(() => {
+  return !!form.value.name && !!form.value.reference
 })
 
 /**
@@ -70,7 +70,7 @@ const isFormValid = computed(() => {
  */
 const submit = async () => {
   store.create.mutate(form.value)
-  form.value = { ...initialFormObject }
+  form.value = { ...initialForm }
   emit('onSave', true)
 }
 </script>

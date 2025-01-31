@@ -7,12 +7,16 @@
   >
     <div class="p-4">
       <caliber-form-component v-if="type === 'caliber'" @on-save="isVisible = false" />
-      <factory-form-component v-if="type === 'factory'" @on-save="isVisible = false" />
-      <magazine-form-component v-if="type === 'magazine'" />
+      <factory-form-component
+        v-if="type === 'factory'"
+        @on-save="isVisible = false"
+        :factory="factoryType"
+      />
+      <magazine-form-component v-if="type === 'magazine'" @on-save="isVisible = false" />
       <weapon-type-form-component v-if="type === 'weaponType'" @on-save="isVisible = false" />
-      <color-form-component v-if="type === 'color'" />
+      <color-form-component v-if="type === 'color'" @on-save="isVisible = false" />
       <threaded-size-form-component v-if="type === 'threadSize'" @on-save="isVisible = false" />
-      <material-form-component v-if="type === 'material'" />
+      <material-form-component v-if="type === 'material'" @on-save="isVisible = false" />
     </div>
   </Drawer>
 </template>
@@ -28,10 +32,12 @@ import WeaponTypeFormComponent from '@/components/__weapon/WeaponTypeFormCompone
 import ColorFormComponent from '@/components/__color_and_material/ColorFormComponent.vue'
 import ThreadedSizeFormComponent from '@/components/__threaded-size/ThreadedSizeFormComponent.vue'
 import MaterialFormComponent from '@/components/__color_and_material/MaterialFormComponent.vue'
+import type { FactoryType } from '@/stores/factory'
 
-const { visible, type } = defineProps<{
+const { visible, type, factoryType } = defineProps<{
   visible: boolean
   type?: DrawerType
+  factoryType: FactoryType
 }>()
 const emit = defineEmits(['onClose'])
 const isVisible = ref(false)
