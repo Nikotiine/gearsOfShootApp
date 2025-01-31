@@ -234,12 +234,33 @@
   },
   "factory": {
     "form": {
-      "addTitle": "Ajouter un nouveau type d'arme",
+      "addTitle": "Ajouter une nouvelle marque de type",
       "success": "Ajout d'un nouveau type confirme"
     },
     "existingList": "Liste des marques existantes",
-    "type": "Type d'armes",
-    "summary": "Gestion des marques"
+    "type": "Marque specialisée",
+    "summary": "Gestion des marques",
+    "types": {
+      "ammunition": "Munition",
+      "optic": "Optique",
+      "weapon": "Arme",
+      "rds": "Reducteur de son",
+      "magazine": "Chargeur"
+    }
+  },
+  "color": {
+    "summary": "Gestion des couleurs",
+    "form": {
+      "success": "Ajout d'une nouvelle couleur",
+      "addTitle": "Ajouter une nouvelle couleur"
+    }
+  },
+  "material": {
+    "summary": "Gestion des matieres",
+    "form": {
+      "success": "Ajout d'une nouvelle matiere",
+      "addTitle": "Ajouter une nouvelle matiere"
+    }
   },
   "caliber": {
     "form": {

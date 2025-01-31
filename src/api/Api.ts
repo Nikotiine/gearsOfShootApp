@@ -85,6 +85,28 @@ export interface LegislationCategoryDto {
   name: string
 }
 
+export interface ColorDto {
+  name: string
+  reference: string
+  id: number
+}
+
+export interface CreateColorDto {
+  name: string
+  reference: string
+}
+
+export interface MaterialDto {
+  name: string
+  reference: string
+  id: number
+}
+
+export interface CreateMaterialDto {
+  name: string
+  reference: string
+}
+
 export interface WeaponReloadModeDto {
   id: number
   name: string
@@ -108,11 +130,6 @@ export interface WeaponBarrelTypeDto {
   name: string
 }
 
-export interface MaterialDto {
-  id: number
-  name: string
-}
-
 export interface RailSizeDto {
   id: number
   name: string
@@ -120,12 +137,6 @@ export interface RailSizeDto {
 }
 
 export interface WeaponTriggerTypeDto {
-  id: number
-  name: string
-  reference: string
-}
-
-export interface ColorDto {
   id: number
   name: string
   reference: string
@@ -1387,6 +1398,74 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       this.request<LegislationCategoryDto[], any>({
         path: `/api/legislation-category/all`,
         method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne la listes de toutes les marques sans distinction
+     *
+     * @tags Color
+     * @name ColorControllerFindAll
+     * @summary Liste complète
+     * @request GET:/api/color/all
+     */
+    colorControllerFindAll: (params: RequestParams = {}) =>
+      this.request<ColorDto[], any>({
+        path: `/api/color/all`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Ajoute une nouvelle couleur
+     *
+     * @tags Color
+     * @name ColorControllerCreate
+     * @summary Creation
+     * @request POST:/api/color
+     */
+    colorControllerCreate: (data: CreateColorDto, params: RequestParams = {}) =>
+      this.request<ColorDto, any>({
+        path: `/api/color`,
+        method: 'POST',
+        body: data,
+        type: ContentType.Json,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne la listes de toutes les marques sans distinction
+     *
+     * @tags Material
+     * @name MaterialControllerFindAll
+     * @summary Liste complète
+     * @request GET:/api/material/all
+     */
+    materialControllerFindAll: (params: RequestParams = {}) =>
+      this.request<MaterialDto[], any>({
+        path: `/api/material/all`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Ajoute une nouvelle couleur
+     *
+     * @tags Material
+     * @name MaterialControllerCreate
+     * @summary Creation
+     * @request POST:/api/material
+     */
+    materialControllerCreate: (data: CreateMaterialDto, params: RequestParams = {}) =>
+      this.request<MaterialDto, any>({
+        path: `/api/material`,
+        method: 'POST',
+        body: data,
+        type: ContentType.Json,
         format: 'json',
         ...params
       }),

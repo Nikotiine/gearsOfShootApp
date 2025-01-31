@@ -1,12 +1,12 @@
 <template>
   <div class="card">
     <h2 class="text-center mt-2 text-2xl">{{ t('magazine.form.add') }}</h2>
-    <form @submit.prevent="submit" v-if="store.prerequisiteList.isSuccess">
+    <form @submit.prevent="submit" v-if="storesAreLoaded">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
         <InputGroup>
           <input-group-required-icon :is-validate="form.factoryId > 0" />
           <input-group-select
-            :options="store.prerequisiteList.data.data.factories"
+            :options="factories$"
             label="global.factory"
             @option-id="(event) => (form.factoryId = event)"
             required
@@ -14,12 +14,12 @@
             input-id="factoryId"
             :initial-value="form.factoryId"
           />
-          <input-group-addon-open-drawer-button type="factory" />
+          <input-group-addon-open-drawer-button type="factory" factory-type="magazine" />
         </InputGroup>
         <InputGroup v-if="weaponTypeStore.getAll.isSuccess">
           <input-group-required-icon :is-validate="weaponTypeId > 0" />
           <input-group-select
-            :options="weaponTypeStore.getAll.data?.data"
+            :options="weaponTypes$"
             label="global.weaponType"
             @option-id="(event) => selectWeaponType(event)"
             required
@@ -43,7 +43,7 @@
         <InputGroup>
           <input-group-required-icon :is-validate="form.caliberId > 0" />
           <input-group-select
-            :options="store.prerequisiteList.data.data.calibers"
+            :options="calibers$"
             label="global.caliber"
             @option-id="(event) => (form.caliberId = event)"
             required
@@ -56,7 +56,7 @@
         <InputGroup>
           <input-group-required-icon :is-validate="form.bodyId > 0" />
           <input-group-select
-            :options="store.prerequisiteList.data.data.bodies"
+            :options="materials$"
             label="magazine.form.bodyMaterial"
             @option-id="(event) => (form.bodyId = event)"
             required
@@ -178,12 +178,23 @@ import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.v
 import { storeToRefs } from 'pinia'
 import { useRiffleStore } from '@/stores/riffle'
 import { useHandGunStore } from '@/stores/hand-gun'
+import { useFactoryStore } from '@/stores/factory'
+import { useCaliberStore } from '@/stores/caliber'
+import { useMaterialStore } from '@/stores/material'
 const { t } = useI18n()
+const emit = defineEmits(['onSave'])
 const store = useWeaponMagazineStore()
 const weaponTypeStore = useWeaponTypeStore()
 const riffleStore = useRiffleStore()
+const caliberStore = useCaliberStore()
 const handGunStore = useHandGunStore()
+const factoryStore = useFactoryStore()
+
+const materialStore = useMaterialStore()
+const { factories$ } = storeToRefs(factoryStore)
+const { calibers$ } = storeToRefs(caliberStore)
 const { weaponTypes$ } = storeToRefs(weaponTypeStore)
+const { materials$ } = storeToRefs(materialStore)
 const initialFormObject: CreateWeaponMagazineDto = {
   description: '',
   width: 0,
@@ -230,7 +241,7 @@ const options = computed(() => {
 
 const selectWeaponType = (id: number) => {
   weaponTypeId.value = id
-  console.log(isRiffleWeapon.value)
+
   if (isRiffleWeapon.value) {
     riffleStore.getAll.isSuccess
       ? (compatibleWeaponOptions.value = riffleStore.getAll.data?.data)
@@ -249,6 +260,7 @@ const submit = () => {
 
   store.create.mutate(form.value)
   form.value = { ...initialFormObject }
+  emit('onSave', true)
 }
 
 const isRiffleWeapon = computed(() => {
@@ -263,6 +275,19 @@ const isRiffleWeapon = computed(() => {
   }
 
   return isRiffleWeapon.value
+})
+
+/**
+ * Verification que tout les store sont chager avant d'afficher la page
+ */
+const storesAreLoaded = computed(() => {
+  return (
+    caliberStore.getAll.isSuccess &&
+    factoryStore.getFactoriesByType.isSuccess &&
+    weaponTypeStore.getAll.isSuccess &&
+    materialStore.getAll.isSuccess &&
+    store.prerequisiteList.isSuccess
+  )
 })
 </script>
 

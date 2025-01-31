@@ -31,7 +31,7 @@
             input-id="caliberId"
             :initial-value="form.caliberId"
           />
-          <input-group-addon-open-drawer-button type="caliber" :open-drawer="openDrawer" />
+          <input-group-addon-open-drawer-button type="caliber" />
         </InputGroup>
 
         <InputGroup>
@@ -45,7 +45,7 @@
             input-id="factoryId"
             :initial-value="form.factoryId"
           />
-          <input-group-addon-open-drawer-button type="factory" :open-drawer="openDrawer" />
+          <input-group-addon-open-drawer-button type="factory" factory-type="ammunition" />
         </InputGroup>
 
         <InputGroup>
@@ -162,9 +162,6 @@ import InputGroupNumber from '@/components/__form/InputGroupNumber.vue'
 const { t } = useI18n()
 const store = useAmmunitionStore()
 const { categories$ } = storeToRefs(store)
-const { openDrawer } = defineProps<{
-  openDrawer: Function
-}>()
 const initialCreateAmmunitionFormObject: CreateAmmunitionDto = {
   bodyTypeId: 0,
   caliberId: 0,

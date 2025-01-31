@@ -17,7 +17,7 @@
             input-id="factoryId"
             :initial-value="form.factoryId"
           />
-          <!--          <input-group-addon-open-drawer-button type="factory" :open-drawer="openDrawer" />-->
+          <input-group-addon-open-drawer-button type="factory" factory-type="optic" />
         </InputGroup>
 
         <InputGroup>

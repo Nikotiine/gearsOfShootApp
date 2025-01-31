@@ -68,6 +68,16 @@ const router = createRouter({
           component: () => import('../views/factory/FactoryFormView.vue')
         },
         {
+          path: 'gestion/add/color',
+          name: 'colorForm',
+          component: () => import('../views/color/ColorFormView.vue')
+        },
+        {
+          path: 'gestion/add/material',
+          name: 'materialForm',
+          component: () => import('../views/material/MaterialFormView.vue')
+        },
+        {
           path: 'gestion/add/optic',
           name: 'opticForm',
           component: () => import('../views/optic/AdminOpticFormView.vue')

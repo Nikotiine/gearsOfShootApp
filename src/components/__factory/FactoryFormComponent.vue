@@ -1,6 +1,7 @@
 <template>
   <h2 class="text-center mt-2 text-2xl">
-    Ajouter une marque de {{ t('global.' + factoryType?.name) }}
+    {{ t('factory.form.addTitle') }}
+    <span class="text-blue-500">{{ t('factory.types.' + factoryType?.name) }}</span>
   </h2>
   <form @submit.prevent="submit">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
@@ -35,9 +36,10 @@
         <input-group-select
           :options="factoryTypeViewModel"
           option-label="label"
-          label="weapon.common.barrelType"
+          label="factory.type"
           @option-id="(event) => onChangeType(event)"
           required
+          :disabled="isComeFormDrawer"
           input-id="typeId"
           :initial-value="form.typeId"
         />
@@ -69,9 +71,9 @@
 import Textarea from 'primevue/textarea'
 import Button from 'primevue/button'
 import InputGroup from 'primevue/inputgroup'
-import { useFactoryStore } from '@/stores/factory'
+import { type FactoryType, useFactoryStore } from '@/stores/factory'
 import type { CreateFactoryDto } from '@/api/Api'
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watch, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
 import InputGroupText from '@/components/__form/InputGroupText.vue'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
@@ -82,6 +84,9 @@ const { factoryTypes$ } = storeToRefs(store)
 const emit = defineEmits(['onSave', 'changeType'])
 const { t, locale } = useI18n()
 const localeValue = ref(locale.value)
+const { factory } = defineProps<{
+  factory?: FactoryType
+}>()
 
 //*******************Init du formulaire*********************
 const initialFactoryFormObject: CreateFactoryDto = {
@@ -142,6 +147,15 @@ watch(
     localeValue.value = value
   }
 )
+
+const isComeFormDrawer = ref(false)
+watchEffect(() => {
+  const type = factoryTypes$.value.find((f) => f.name === factory)
+  if (type) {
+    form.value.typeId = type.id
+    isComeFormDrawer.value = true
+  }
+})
 </script>
 
 <style scoped></style>

@@ -11,7 +11,7 @@ export const useFactoryStore = defineStore('factory', () => {
   const factories = ref<FactoryDto[]>([])
   const isEnabledQueryByType = ref<boolean>(false)
   const factoryTypes = ref<FactoryTypeDto[]>([])
-  const factoryType = ref<FactoryTypes>('Weapon')
+  const factoryType = ref<FactoryType>('weapon')
   const createFactoryMutation = useMutation({
     mutationFn: async (factory: CreateFactoryDto) => {
       return await api.api.factoryControllerCreate(factory)
@@ -64,4 +64,4 @@ export const useFactoryStore = defineStore('factory', () => {
     factoryTypes$: factoryTypes
   }
 })
-export type FactoryTypes = 'Weapon' | 'Ammunition' | 'Optic' | 'RDS'
+export type FactoryType = 'weapon' | 'ammunition' | 'optic' | 'rds' | 'magazine'
