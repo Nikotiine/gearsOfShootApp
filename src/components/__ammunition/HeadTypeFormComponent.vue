@@ -1,5 +1,5 @@
 <template>
-  <h2 class="text-center text-2xl">{{ t('bodyType.form.addTitle') }}</h2>
+  <h2 class="text-center text-2xl">{{ t('headType.form.addTitle') }}</h2>
   <form @submit.prevent="submit">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
       <InputGroup>
@@ -38,30 +38,34 @@
     </div>
   </form>
 </template>
-
 <script setup lang="ts">
+import { useHeadTypeStore } from '@/stores/headType'
 import Button from 'primevue/button'
-import InputGroup from 'primevue/inputgroup'
-import type { CreateAmmunitionBodyTypeDto } from '@/api/Api'
-import { computed, ref } from 'vue'
-import { useBodyTypeStore } from '@/stores/bodyType'
-import { useI18n } from 'vue-i18n'
 import InputGroupText from '@/components/__form/InputGroupText.vue'
+import InputGroup from 'primevue/inputgroup'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
-const store = useBodyTypeStore()
+import type { CreateAmmunitionHeadTypeDto } from '@/api/Api'
+import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+const emit = defineEmits(['onSave'])
 const { t } = useI18n()
-const initialFormObject: CreateAmmunitionBodyTypeDto = {
+const store = useHeadTypeStore()
+const initialForm: CreateAmmunitionHeadTypeDto = {
   name: '',
   reference: ''
 }
-const emit = defineEmits(['onSave'])
-const form = ref<CreateAmmunitionBodyTypeDto>({ ...initialFormObject })
+const form = ref<CreateAmmunitionHeadTypeDto>({ ...initialForm })
 const isValidForm = computed(() => {
   return !!form.value.name && !!form.value.reference
 })
+/**
+ * Sousmission du formulaire pour la creation d'une nouvelle ogive
+ * Emet un boolean onSave pour le drawer
+ * Reinitialise le formulaire apres l'envoie
+ */
 const submit = async () => {
   store.create.mutate(form.value)
-  form.value = { ...initialFormObject }
+  form.value = { ...initialForm }
   emit('onSave', true)
 }
 </script>

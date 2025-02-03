@@ -1,6 +1,6 @@
 <template>
-  <div class="border border-blue-500 mt-2" v-if="store.getALl.isSuccess">
-    <DataTable :value="getAllData$" :loading="store.getALl.isLoading">
+  <div class="border border-blue-500 mt-2" v-if="store.getAll.isSuccess">
+    <DataTable :value="bodyTypes$" :loading="store.getAll.isLoading">
       <template #header>
         <div class="flex flex-wrap items-center justify-between gap-2">
           <span class="text-xl font-bold">{{ t('bodyType.existingList') }}</span>
@@ -19,7 +19,7 @@ import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 const store = useBodyTypeStore()
 const { t } = useI18n()
-const { getAllData$ } = storeToRefs(store)
+const { bodyTypes$ } = storeToRefs(store)
 </script>
 
 <style scoped></style>

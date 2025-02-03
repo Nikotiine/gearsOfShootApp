@@ -84,7 +84,9 @@
     "width": "Largeur",
     "height": "hauteur",
     "min": "Minimum",
-    "max": "Maximum"
+    "max": "Maximum",
+    "isLoadingError": "Erreur lors du chargement des donnees",
+    "pleaseWait": "Merci de patienter."
   },
   "weapon": {
     "summary": "Gestion des armes",
@@ -167,6 +169,11 @@
       "bodyType": "Type de douille",
       "ammunitionModel": "Modele de munition",
       "packaging": "Packaging"
+    },
+    "list": {
+      "title": "Liste des munitions de categorie",
+      "notFound": "Aucune munition trouvée",
+      "loading": "Chargement des muntions en cours"
     }
   },
   "admin": {
@@ -297,7 +304,9 @@
     "color": "Ajouter une nouvelle couleur",
     "material": "Ajouter une nouvelle matiere",
     "magazine": "Ajouter un chargeur",
-    "threadSize": "Ajouter une taille de filletage"
+    "threadSize": "Ajouter une taille de filletage",
+    "headType": "Ajouter un type d'ovige",
+    "bodyType": "Ajouter un type de douille"
   },
   "inputText": {
     "label": "Saisir un texte"

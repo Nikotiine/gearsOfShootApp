@@ -7,16 +7,21 @@ import type { LegislationCategoryDto } from '@/api/Api'
 export const useWeaponCategoryStore = defineStore('weapon-category', () => {
   const { api } = useApiStore()
   const categories = ref<LegislationCategoryDto[]>([])
-  const getAllQuery = useQuery({
-    queryKey: ['get-all-categories'],
-    queryFn: async () => {
-      const res = await api.api.legislationCategoryControllerFindAll()
-      categories.value = res.data
-      return res
+  const getAllQuery = () =>
+    useQuery({
+      queryKey: ['get-all-categories'],
+      queryFn: async () => {
+        return await api.api.legislationCategoryControllerFindAll()
+      }
+    })
+  const getIdWithName = async (name: string) => {
+    if (categories.value.length === 0) {
+      console.log('awa')
+      // getAllQuery.isFetched
+      console.log(categories.value)
     }
-  })
-  const getIdWithName = (name: string) => {
     const category = categories.value.find((cat) => cat.name === name)
+    console.log(category)
     return category ? category.id : 0
   }
 

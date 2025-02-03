@@ -782,10 +782,6 @@ export interface AmmunitionDto {
 }
 
 export interface ListOfPrerequisitesAmmunitionDto {
-  calibers: CaliberDto[]
-  factories: FactoryDto[]
-  headTypes: AmmunitionHeadTypeDto[]
-  bodyTypes: AmmunitionBodyTypeDto[]
   categories: LegislationCategoryDto[]
   percussionTypes: PercussionTypeDto[]
 }
@@ -2016,11 +2012,11 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @tags Ammunition
      * @name AmmunitionControllerFindByCategory
      * @summary Filtre par calibre
-     * @request GET:/api/ammunition/by/category/{categoryId}
+     * @request GET:/api/ammunition/by/category/{category}
      */
-    ammunitionControllerFindByCategory: (categoryId: number, params: RequestParams = {}) =>
+    ammunitionControllerFindByCategory: (category: string, params: RequestParams = {}) =>
       this.request<AmmunitionDto[], any>({
-        path: `/api/ammunition/by/category/${categoryId}`,
+        path: `/api/ammunition/by/category/${category}`,
         method: 'GET',
         format: 'json',
         ...params

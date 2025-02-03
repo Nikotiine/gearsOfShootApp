@@ -17,6 +17,8 @@
       <color-form-component v-if="type === 'color'" @on-save="isVisible = false" />
       <threaded-size-form-component v-if="type === 'threadSize'" @on-save="isVisible = false" />
       <material-form-component v-if="type === 'material'" @on-save="isVisible = false" />
+      <head-type-form-component v-if="type === 'headType'" @on-save="isVisible = false" />
+      <body-type-form-component v-if="type === 'bodyType'" @on-save="isVisible = false" />
     </div>
   </Drawer>
 </template>
@@ -33,6 +35,8 @@ import ColorFormComponent from '@/components/__color_and_material/ColorFormCompo
 import ThreadedSizeFormComponent from '@/components/__threaded-size/ThreadedSizeFormComponent.vue'
 import MaterialFormComponent from '@/components/__color_and_material/MaterialFormComponent.vue'
 import type { FactoryType } from '@/stores/factory'
+import HeadTypeFormComponent from '@/components/__ammunition/HeadTypeFormComponent.vue'
+import BodyTypeFormComponent from '@/components/__ammunition/BodyTypeFormComponent.vue'
 
 const { visible, type, factoryType } = defineProps<{
   visible: boolean
