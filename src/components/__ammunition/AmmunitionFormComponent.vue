@@ -4,14 +4,11 @@
       {{ t('ammunition.form.add') }} {{ selectedCategory?.name }}
     </h2>
     <form @submit.prevent="submit">
-      <div
-        class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 p-4"
-        v-if="store.prerequisitesAmmoList.isSuccess"
-      >
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 p-4">
         <InputGroup>
           <input-group-required-icon :is-validate="form.categoryId > 0" />
           <input-group-select
-            :options="store.prerequisitesAmmoList.data.data.categories"
+            :options="categories$?.data"
             label="global.legalisationCategory"
             @option-id="(event) => (form.categoryId = event)"
             required
@@ -23,7 +20,7 @@
         <InputGroup>
           <input-group-required-icon :is-validate="form.caliberId > 0" />
           <input-group-select
-            :options="store.prerequisitesAmmoList.data.data.calibers"
+            :options="calibers$"
             label="global.caliber"
             @option-id="(event) => (form.caliberId = event)"
             required
@@ -37,7 +34,7 @@
         <InputGroup>
           <input-group-required-icon :is-validate="form.factoryId > 0" />
           <input-group-select
-            :options="store.prerequisitesAmmoList.data.data.factories"
+            :options="factories$"
             label="global.factory"
             @option-id="(event) => (form.factoryId = event)"
             required
@@ -45,13 +42,13 @@
             input-id="factoryId"
             :initial-value="form.factoryId"
           />
-          <input-group-addon-open-drawer-button type="factory" factory-type="ammunition" />
+          c
         </InputGroup>
 
         <InputGroup>
           <input-group-required-icon :is-validate="form.percussionTypeId > 0" />
           <input-group-select
-            :options="store.prerequisitesAmmoList.data.data.percussionTypes"
+            :options="store.prerequisitesAmmoList.data?.data.percussionTypes"
             label="global.percussionType"
             @option-id="(event) => (form.percussionTypeId = event)"
             required
@@ -87,31 +84,33 @@
         <InputGroup>
           <input-group-required-icon :is-validate="form.headTypeId > 0" />
           <input-group-select
-            :options="store.prerequisitesAmmoList.data.data.headTypes"
+            :options="headTypes$"
             label="ammunition.form.headType"
             @option-id="(event) => (form.headTypeId = event)"
             required
             input-id="headTypeId"
             :initial-value="form.headTypeId"
           />
+          <input-group-addon-open-drawer-button type="headType" />
         </InputGroup>
 
         <InputGroup>
           <input-group-required-icon :is-validate="form.bodyTypeId > 0" />
           <input-group-select
-            :options="store.prerequisitesAmmoList.data.data.bodyTypes"
+            :options="bodyTypes$"
             label="ammunition.form.bodyType"
             @option-id="(event) => (form.bodyTypeId = event)"
             required
             input-id="bodyTypeId"
             :initial-value="form.bodyTypeId"
           />
+          <input-group-addon-open-drawer-button type="bodyType" />
         </InputGroup>
 
         <InputGroup>
           <input-group-optional-icon :is-completed="form.packaging > 0" />
           <input-group-number
-            placeholder="packaging"
+            placeholder="ammunition.form.packaging"
             label="ammunition.form.packaging"
             @value="(value) => (form.packaging = value)"
             input-id="packaging"
@@ -159,9 +158,24 @@ import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.v
 import InputGroupText from '@/components/__form/InputGroupText.vue'
 import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.vue'
 import InputGroupNumber from '@/components/__form/InputGroupNumber.vue'
+import { useFactoryStore } from '@/stores/factory'
+import { useCaliberStore } from '@/stores/caliber'
+import { useHeadTypeStore } from '@/stores/headType'
+import { useBodyTypeStore } from '@/stores/bodyType'
+import { useWeaponCategoryStore } from '@/stores/weapon-category'
 const { t } = useI18n()
 const store = useAmmunitionStore()
-const { categories$ } = storeToRefs(store)
+const factoryStore = useFactoryStore()
+factoryStore.setTypeOfFactories('ammunition')
+const caliberStore = useCaliberStore()
+const headTypeStore = useHeadTypeStore()
+const bodyTypeStore = useBodyTypeStore()
+const categorieStore = useWeaponCategoryStore()
+const { factories$ } = storeToRefs(factoryStore)
+const { calibers$ } = storeToRefs(caliberStore)
+const { headTypes$ } = storeToRefs(headTypeStore)
+const { bodyTypes$ } = storeToRefs(bodyTypeStore)
+const { data: categories$, isLoading: categorieStoreGetallIsLoading } = categorieStore.getAll()
 const initialCreateAmmunitionFormObject: CreateAmmunitionDto = {
   bodyTypeId: 0,
   caliberId: 0,
@@ -195,9 +209,8 @@ const submit = () => {
   store.create.mutate(form.value)
   form.value = { ...initialCreateAmmunitionFormObject }
 }
-
 const selectedCategory = computed(() => {
-  return categories$.value.find((category) => category.id === form.value.categoryId)
+  return categories$.value?.data.find((category) => category.id === form.value.categoryId)
 })
 </script>
 

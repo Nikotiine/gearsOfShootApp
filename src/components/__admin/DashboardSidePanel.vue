@@ -192,7 +192,12 @@ const items = ref([
                 push(RIFFLE_LIST_URL + 'D')
               }
             },
-            { label: 'Munition' },
+            {
+              label: 'Munition',
+              command: () => {
+                push('/admin/gestion/list/ammunition/D')
+              }
+            },
             { label: 'Accessoire' }
           ]
         }

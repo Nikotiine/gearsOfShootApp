@@ -8,22 +8,22 @@ import { ref } from 'vue'
 export const useHeadTypeStore = defineStore('headType', () => {
   const { api } = useApiStore()
   const { successMessage } = useToastStore()
-  const getAllData = ref<AmmunitionHeadTypeDto[]>([])
+  const headTypes = ref<AmmunitionHeadTypeDto[]>([])
   const headTypeCreateMutation = useMutation({
     mutationFn: async (headType: CreateAmmunitionHeadTypeDto) => {
       return await api.api.ammunitionHeadTypeControllerCreate(headType)
     },
     onSuccess(data) {
       successMessage('headType.summary', 'headType.form.success')
-      getAllData.value.push(data.data)
+      headTypes.value.push(data.data)
     }
   })
   const getAllHeadTypesQuery = useQuery({
     queryKey: ['headTypesQuery'],
     queryFn: async () => {
-      getAllData.value = (await api.api.ammunitionHeadTypeControllerFindAllHeadTypes()).data
+      headTypes.value = (await api.api.ammunitionHeadTypeControllerFindAllHeadTypes()).data
       return api.api.ammunitionBodyTypeControllerFindAllBodyTypes()
     }
   })
-  return { create: headTypeCreateMutation, getAll: getAllHeadTypesQuery, getAllData$: getAllData }
+  return { create: headTypeCreateMutation, getAll: getAllHeadTypesQuery, headTypes$: headTypes }
 })

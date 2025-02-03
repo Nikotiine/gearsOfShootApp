@@ -26,14 +26,16 @@ export const useFactoryStore = defineStore('factory', () => {
     isEnabledQueryByType.value = type !== factoryType.value
   }
 
-  const getAllQuery = useQuery({
-    queryKey: ['getAllFactories'],
-    queryFn: async () => {
-      const res = await api.api.factoryControllerFindAll()
-      factories.value = res.data
-      return res
-    }
-  })
+  const getAllQuery = () =>
+    useQuery({
+      queryKey: ['getAllFactories'],
+      queryFn: async () => {
+        console.log('getAllFactories')
+        const res = await api.api.factoryControllerFindAll()
+        factories.value = res.data
+        return res
+      }
+    })
 
   const getAllByTypeQuery = useQuery({
     queryKey: ['getAllByType', factoryType],
@@ -54,6 +56,26 @@ export const useFactoryStore = defineStore('factory', () => {
     }
   })
 
+  const getFactoriesByType = (type: FactoryType) => {
+    return useQuery({
+      queryKey: ['getAllByType', type],
+      queryFn: async () => {
+        console.log('getAllByTypeQuery')
+        const res = await api.api.factoryControllerFindByType(type)
+        factories.value = res.data
+        return res
+      }
+    })
+  }
+
+  const selectTypeOfQuery = (type: FactoryType) => {
+    if (type === 'all') {
+      getAllQuery()
+    } else {
+      getFactoriesByType(type)
+    }
+  }
+
   return {
     create: createFactoryMutation,
     getFactoriesByType: getAllByTypeQuery,
@@ -61,7 +83,8 @@ export const useFactoryStore = defineStore('factory', () => {
     factories$: factories,
     getAll: getAllQuery,
     getFactoryTypes: getPrerequisitesFactoryList,
-    factoryTypes$: factoryTypes
+    factoryTypes$: factoryTypes,
+    setTypeOfFactories: selectTypeOfQuery
   }
 })
-export type FactoryType = 'weapon' | 'ammunition' | 'optic' | 'rds' | 'magazine'
+export type FactoryType = 'weapon' | 'ammunition' | 'optic' | 'rds' | 'magazine' | 'all'
