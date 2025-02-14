@@ -56,7 +56,7 @@
       <InputGroup>
         <input-group-required-icon :is-validate="form.percussionTypeId > 0" />
         <input-group-select
-          :options="store.prerequisitesWeaponList.data.data.percussionTypes"
+          :options="store.prerequisitesWeaponList.data?.data.percussionTypes"
           label="global.percussionType"
           @option-id="(event) => (form.percussionTypeId = event)"
           required
@@ -68,7 +68,7 @@
       <InputGroup>
         <input-group-required-icon :is-validate="form.barrelTypeId > 0" />
         <input-group-select
-          :options="store.prerequisitesWeaponList.data.data.barreTypes"
+          :options="store.prerequisitesWeaponList.data?.data.barreTypes"
           label="weapon.common.barrelType"
           @option-id="(event) => (form.barrelTypeId = event)"
           required
@@ -142,27 +142,9 @@
         <input-group-check-box
           input-id="isProvidedMagazine"
           label="weapon.form.isProvidedMagazine"
-          @checked="findMagazinesWithFactory"
+          @checked="(event) => (isProvidedMagazine = event)"
           :checked="isProvidedMagazine"
-          :disabled="form.factoryId === 0"
         />
-        <input-group-select
-          :options="magazines$"
-          label="weapon.form.magazine"
-          :disabled="!isProvidedMagazine"
-          option-label="reference"
-          @option-id="(event) => (form.providedMagazineId = event)"
-          input-id="providedMagazineId"
-          :initial-value="form.providedMagazineId ?? 0"
-        />
-        <input-group-addon-open-drawer-button type="magazine" />
-      </InputGroup>
-
-      <InputGroup>
-        <input-group-optional-icon />
-        <InputGroupAddon
-          ><span v-capitalize="t('global.quantity')" class="mx-4"></span
-        ></InputGroupAddon>
         <input-group-number
           label="weapon.common.providedMagazineQuantity"
           @value="(value) => (form.providedMagazineQuantity = value)"
@@ -170,7 +152,6 @@
           :disabled="!isProvidedMagazine"
           :initial-value="form.providedMagazineQuantity"
         />
-        <input-group-addon-open-drawer-button type="magazine" />
       </InputGroup>
 
       <InputGroup>
@@ -315,7 +296,7 @@
         <input-group-multi-select
           input-id="mLockOptions"
           label="weapon.common.mLockOptions"
-          :options="store.prerequisitesWeaponList.data.data.mLockOptions"
+          :options="mLockOptions$"
           :disabled="!form.isMlockCompatibility"
           :invalid="isInvalidMLockOption"
           @selected-options="(event) => (selectedMLockOptions = event)"
@@ -364,28 +345,36 @@ import InputGroupText from '@/components/__form/InputGroupText.vue'
 import InputGroupNumber from '@/components/__form/InputGroupNumber.vue'
 import InputGroupCheckBox from '@/components/__form/InputGroupCheckBox.vue'
 import InputGroupMultiSelect from '@/components/__form/InputGroupMultiSelect.vue'
-import { useWeaponMagazineStore } from '@/stores/weapon-magazine'
 import { useCaliberStore } from '@/stores/caliber'
 import { useFactoryStore } from '@/stores/factory'
 import { useThreadedSizeStore } from '@/stores/threadedSize'
 import { useColorStore } from '@/stores/color'
 import { useMaterialStore } from '@/stores/material'
 
+// Store
 const store = useWeaponStore()
 const riffleStore = useRiffleStore()
-const magazineStore = useWeaponMagazineStore()
 const caliberStore = useCaliberStore()
 const factoryStore = useFactoryStore()
 const threadedSizeStore = useThreadedSizeStore()
 const colorStore = useColorStore()
 const materialStore = useMaterialStore()
-const { railSizes$ } = storeToRefs(store)
+
+// Request
+const { isSuccess: calibersQueryIsSuccess } = caliberStore.getAll()
+const { isSuccess: factoriesQueryIsSuccess } = factoryStore.getFactoriesByType('weapon')
+const { isSuccess: threadedSizesQueryIsSuccess } = threadedSizeStore.getAll()
+const { isSuccess: colorsQueryIsSuccess } = colorStore.getAll()
+const { isSuccess: materialsQueryIsSuccess } = materialStore.getAll()
+
+// Store To Ref
+const { railSizes$, mLockOptions$ } = storeToRefs(store)
 const { calibers$ } = storeToRefs(caliberStore)
 const { factories$ } = storeToRefs(factoryStore)
-const { magazines$ } = storeToRefs(magazineStore)
 const { threadedSizes$ } = storeToRefs(threadedSizeStore)
 const { colors$ } = storeToRefs(colorStore)
 const { materials$ } = storeToRefs(materialStore)
+
 const { t } = useI18n()
 const buttonLabel = ref('global.save')
 const isEditForm = ref<boolean>(false)
@@ -396,9 +385,8 @@ const { selectedOptions, riffle = null } = defineProps<{
 const adjustableTriggerMinWeight = ref(0)
 const adjustableTriggerMaxWeight = ref(0)
 const isProvidedMagazine = ref(false)
-const selectedMLockOptions = ref<MLockOptionDto[]>([])
+const selectedMLockOptions = ref<number[]>([])
 const resetMultiselect = ref(false)
-
 //*******************Init du formulaire*********************
 const initialForm: CreateRiffleDto = {
   typeId: selectedOptions.type,
@@ -415,7 +403,6 @@ const initialForm: CreateRiffleDto = {
   description: '',
   categoryId: selectedOptions.category,
   percussionTypeId: 0,
-  providedMagazineId: null,
   providedMagazineQuantity: 0,
   barrelSize: 0,
   buttMaterialId: null,
@@ -473,28 +460,19 @@ const adjustableTriggerValue = () => {
 }
 
 /**
- * Retourne les chageurs en lien avec la marque de l'arme choisi
- * TODO : Voir si on filtre aussi par calibre
- * @param check
- */
-const findMagazinesWithFactory = (check: boolean) => {
-  const selectedFactoryId = form.value.factoryId
-  isProvidedMagazine.value = check
-  const factory = factories$.value.find((f) => f.id === selectedFactoryId)
-  magazineStore.setFactoryId(factory?.name)
-  magazineStore.getByFactoryId.isSuccess
-}
-
-/**
  * Soummission du formulaire
  * Mert a jour les champs mlock et reglage de detente
  */
 const submit = () => {
-  form.value.mLockOptions = selectedMLockOptions.value
+  form.value.mLockOptions = form.value.isMlockCompatibility ? findMlockOptios() : []
   form.value.adjustableTriggerValue = form.value.isAdjustableTrigger
     ? adjustableTriggerValue()
     : null
   isEditForm.value ? edit({ ...form.value, id: riffle.id }) : create(form.value)
+}
+
+const findMlockOptios = () => {
+  return mLockOptions$.value.filter((or) => selectedMLockOptions.value.includes(or.id))
 }
 
 /**
@@ -547,12 +525,14 @@ function setEditForm(riffle: RiffleDto) {
     caliberId: riffle.caliber.id,
     factoryId: riffle.factory.id ?? 0,
     barrelTypeId: riffle.barrelType.id ?? 0,
-    providedMagazineId: riffle.providedMagazine ? riffle.providedMagazine.id : null,
     typeId: riffle.type.id,
     categoryId: riffle.category.id,
     railSizeId: riffle.railSize ? riffle.railSize.id : null
   }
-  selectedMLockOptions.value = riffle.mLockOptions ?? []
+  if (riffle.mLockOptions && riffle.mLockOptions.length > 0) {
+    selectedMLockOptions.value = riffle.mLockOptions.map((option) => option.id)
+  }
+
   buttonLabel.value = 'global.edit'
   isEditForm.value = true
 }
@@ -562,11 +542,12 @@ function setEditForm(riffle: RiffleDto) {
  */
 const storesAreLoaded = computed(() => {
   return (
-    caliberStore.getAll.isSuccess &&
+    calibersQueryIsSuccess &&
     store.prerequisitesWeaponList.isSuccess &&
-    factoryStore.getAll.isSuccess &&
-    threadedSizeStore.getAll.isSuccess &&
-    colorStore.getAll.isSuccess
+    factoriesQueryIsSuccess &&
+    threadedSizesQueryIsSuccess &&
+    colorsQueryIsSuccess &&
+    materialsQueryIsSuccess
   )
 })
 </script>

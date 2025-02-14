@@ -10,13 +10,14 @@ export const useCaliberStore = defineStore('caliber', () => {
   const { successMessage } = useToastStore()
   const calibers = ref<CaliberDto[]>([])
 
-  const getAllCalibersQuery = useQuery({
-    queryKey: ['getAllCalibers'],
-    queryFn: async () => {
-      calibers.value = (await api.api.caliberControllerFindAllCalibers()).data
-      return api.api.caliberControllerFindAllCalibers()
-    }
-  })
+  const getAllCalibersQuery = () =>
+    useQuery({
+      queryKey: ['getAllCalibers'],
+      queryFn: async () => {
+        calibers.value = (await api.api.caliberControllerFindAllCalibers()).data
+        return api.api.caliberControllerFindAllCalibers()
+      }
+    })
 
   const createCaliberMutation = useMutation({
     mutationFn: async (caliber: CreateCaliberDto) => {

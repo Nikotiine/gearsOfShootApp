@@ -4,6 +4,7 @@
       :id="inputId"
       v-model="selectedOptions"
       :options="options"
+      option-value="id"
       :optionLabel="optionLabel"
       :filter="filter"
       :placeholder="t('inputMultiSelect.' + placeholder)"
@@ -22,7 +23,7 @@
 import MultiSelect from 'primevue/multiselect'
 import IftaLabel from 'primevue/iftalabel'
 import { useI18n } from 'vue-i18n'
-import { ref, watch } from 'vue'
+import { ref, watch, watchEffect } from 'vue'
 const { t } = useI18n()
 const {
   options,
@@ -61,12 +62,6 @@ watch(
   () => clear,
   () => {
     selectedOptions.value = []
-  }
-)
-watch(
-  () => initialValue,
-  (newValue) => {
-    selectedOptions.value = newValue
   }
 )
 </script>

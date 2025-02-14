@@ -6,7 +6,7 @@
         <InputGroup>
           <input-group-required-icon :is-validate="form.factoryId > 0" />
           <input-group-select
-            :options="factories$"
+            :options="factories$?.data"
             label="global.factory"
             @option-id="(event) => (form.factoryId = event)"
             required
@@ -16,10 +16,10 @@
           />
           <input-group-addon-open-drawer-button type="factory" factory-type="magazine" />
         </InputGroup>
-        <InputGroup v-if="weaponTypeStore.getAll.isSuccess">
+        <InputGroup>
           <input-group-required-icon :is-validate="weaponTypeId > 0" />
           <input-group-select
-            :options="weaponTypes$"
+            :options="weaponTypes$?.data"
             label="global.weaponType"
             @option-id="(event) => selectWeaponType(event)"
             required
@@ -43,7 +43,7 @@
         <InputGroup>
           <input-group-required-icon :is-validate="form.caliberId > 0" />
           <input-group-select
-            :options="calibers$"
+            :options="calibers$?.data"
             label="global.caliber"
             @option-id="(event) => (form.caliberId = event)"
             required
@@ -56,7 +56,7 @@
         <InputGroup>
           <input-group-required-icon :is-validate="form.bodyId > 0" />
           <input-group-select
-            :options="materials$"
+            :options="materials$?.data"
             label="magazine.form.bodyMaterial"
             @option-id="(event) => (form.bodyId = event)"
             required
@@ -161,9 +161,8 @@
 <script setup lang="ts">
 import { useWeaponMagazineStore } from '@/stores/weapon-magazine'
 import type { CreateWeaponMagazineDto, HandGunDto, RiffleDto, WeaponTypeDto } from '@/api/Api'
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import Button from 'primevue/button'
-
 import InputGroup from 'primevue/inputgroup'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
@@ -175,26 +174,40 @@ import InputGroupAddonOpenDrawerButton from '@/components/__form/InputGroupAddon
 import { useWeaponTypeStore } from '@/stores/weaponType'
 import InputGroupMultiSelect from '@/components/__form/InputGroupMultiSelect.vue'
 import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.vue'
-import { storeToRefs } from 'pinia'
 import { useRiffleStore } from '@/stores/riffle'
 import { useHandGunStore } from '@/stores/hand-gun'
 import { useFactoryStore } from '@/stores/factory'
 import { useCaliberStore } from '@/stores/caliber'
 import { useMaterialStore } from '@/stores/material'
-const { t } = useI18n()
-const emit = defineEmits(['onSave'])
+import { storeToRefs } from 'pinia'
+
+interface VM {
+  name: string
+  id: number
+}
+
 const store = useWeaponMagazineStore()
-const weaponTypeStore = useWeaponTypeStore()
 const riffleStore = useRiffleStore()
 const caliberStore = useCaliberStore()
 const handGunStore = useHandGunStore()
 const factoryStore = useFactoryStore()
-
+const weaponTypeStore = useWeaponTypeStore()
 const materialStore = useMaterialStore()
-const { factories$ } = storeToRefs(factoryStore)
-const { calibers$ } = storeToRefs(caliberStore)
-const { weaponTypes$ } = storeToRefs(weaponTypeStore)
-const { materials$ } = storeToRefs(materialStore)
+
+const { data: calibers$, isSuccess: calibersQueryIsSuccess } = caliberStore.getAll()
+const { data: weaponTypes$, isSuccess: weaponTypesQueryIsSuccess } = weaponTypeStore.getAll()
+const { data: factories$, isSuccess: factoriesQueryIsSuccess } =
+  factoryStore.getFactoriesByType('magazine')
+const { data: materials$, isSuccess: materialsQueryIsSuccess } = materialStore.getAll()
+
+const { riffles$ } = storeToRefs(riffleStore)
+const { handguns$ } = storeToRefs(handGunStore)
+const enabledRiffleQuery = ref<boolean>(false)
+const enabledHandGunQuery = ref<boolean>(false)
+riffleStore.getAll(enabledRiffleQuery)
+handGunStore.getAll(enabledHandGunQuery)
+const { t } = useI18n()
+const emit = defineEmits(['onSave'])
 const initialFormObject: CreateWeaponMagazineDto = {
   description: '',
   width: 0,
@@ -211,8 +224,8 @@ const initialFormObject: CreateWeaponMagazineDto = {
 }
 const form = ref<CreateWeaponMagazineDto>({ ...initialFormObject })
 const weaponTypeId = ref(0)
-const selectedCompatibleWeapon = ref<RiffleDto[] | HandGunDto[]>([])
-const compatibleWeaponOptions = ref([])
+const selectedCompatibleWeapon = ref<number[]>([])
+const compatibleWeaponOptions = ref<VM[]>([])
 const isFormValid = computed(() => {
   let isValid: boolean = false
   if (
@@ -243,32 +256,35 @@ const selectWeaponType = (id: number) => {
   weaponTypeId.value = id
 
   if (isRiffleWeapon.value) {
-    riffleStore.getAll.isSuccess
-      ? (compatibleWeaponOptions.value = riffleStore.getAll.data?.data)
-      : []
+    enabledRiffleQuery.value = true
   } else {
-    handGunStore.getAll.isSuccess
-      ? (compatibleWeaponOptions.value = handGunStore.getAll.data?.data)
-      : []
+    enabledHandGunQuery.value = true
   }
 }
 
 const submit = () => {
+  const ids = selectedCompatibleWeapon.value
   isRiffleWeapon.value
-    ? (form.value.compatibleRiffle = selectedCompatibleWeapon.value)
-    : (form.value.compatibleHandGun = selectedCompatibleWeapon.value)
-
+    ? (form.value.compatibleRiffle = findCompatibleRiffle(ids))
+    : (form.value.compatibleHandGun = findCompatibleHangun(ids))
   store.create.mutate(form.value)
   form.value = { ...initialFormObject }
   emit('onSave', true)
 }
 
+const findCompatibleRiffle = (ids: number[]): RiffleDto[] => {
+  return riffles$.value.filter((riffle) => ids.includes(riffle.id))
+}
+const findCompatibleHangun = (ids: number[]): HandGunDto[] => {
+  return handguns$.value.filter((handgun) => ids.includes(handgun.id))
+}
+
 const isRiffleWeapon = computed(() => {
   const isRiffleWeapon = ref<boolean>(true)
-
-  const weaponType: WeaponTypeDto | undefined = weaponTypes$.value.find(
-    (type) => type.id === weaponTypeId.value
-  )
+  let weaponType: WeaponTypeDto | undefined = undefined
+  if (weaponTypes$.value) {
+    weaponType = weaponTypes$.value.data.find((w) => w.id === weaponTypeId.value)
+  }
 
   if (weaponType && (weaponType.name === 'Pistolet' || weaponType.name === 'Revolver')) {
     isRiffleWeapon.value = false
@@ -282,13 +298,36 @@ const isRiffleWeapon = computed(() => {
  */
 const storesAreLoaded = computed(() => {
   return (
-    caliberStore.getAll.isSuccess &&
-    factoryStore.getFactoriesByType.isSuccess &&
-    weaponTypeStore.getAll.isSuccess &&
-    materialStore.getAll.isSuccess &&
+    calibersQueryIsSuccess &&
+    factoriesQueryIsSuccess &&
+    weaponTypesQueryIsSuccess &&
+    materialsQueryIsSuccess &&
     store.prerequisiteList.isSuccess
   )
 })
+
+watch(
+  () => riffles$.value,
+  (value) => {
+    compatibleWeaponOptions.value = value.map((riffle) => {
+      return {
+        id: riffle.id,
+        name: riffle.name
+      }
+    })
+  }
+)
+watch(
+  () => handguns$.value,
+  (value) => {
+    compatibleWeaponOptions.value = value.map((handgun) => {
+      return {
+        id: handgun.id,
+        name: handgun.name
+      }
+    })
+  }
+)
 </script>
 
 <style scoped></style>

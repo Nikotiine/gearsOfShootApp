@@ -21,14 +21,15 @@ export const useWeaponTypeStore = defineStore('weaponType', () => {
     }
   })
 
-  const getAllQuery = useQuery({
-    queryKey: ['weaponTypesQuery'],
-    queryFn: async () => {
-      const res = await api.api.weaponTypeControllerFindAllWeaponTypes()
-      weaponTypes.value = res.data
-      return res
-    }
-  })
+  const getAllQuery = () =>
+    useQuery({
+      queryKey: ['weaponTypesQuery'],
+      queryFn: async () => {
+        const res = await api.api.weaponTypeControllerFindAllWeaponTypes()
+        weaponTypes.value = res.data
+        return res
+      }
+    })
 
   const queryPrerequisitesWeaponTypeQuery = useQuery({
     queryKey: ['prerequis-weapon-type'],
