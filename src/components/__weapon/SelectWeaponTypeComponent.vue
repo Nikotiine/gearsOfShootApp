@@ -1,9 +1,6 @@
 <template>
   <div class="mt-4">
-    <div
-      class="grid grid-cols-1 md:grid-cols-2 gap-4 px-4 pt-4"
-      v-if="store.prerequisitesWeaponList.isSuccess && weaponTypeStore.getAll.isSuccess"
-    >
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 px-4 pt-4" v-if="storeAreLoaded">
       <InputGroup>
         <input-group-required-icon :is-validate="isOnContinue" />
         <input-group-select
@@ -21,7 +18,7 @@
       <InputGroup>
         <input-group-required-icon :is-validate="isOnContinue" />
         <input-group-select
-          :options="store.prerequisitesWeaponList.data?.data.categories"
+          :options="categories$?.data"
           label="global.legalisationCategory"
           @option-id="(event) => (categoryId = event)"
           required
@@ -47,14 +44,16 @@ import InputGroup from 'primevue/inputgroup'
 import { computed, ref, watch } from 'vue'
 import Button from 'primevue/button'
 import { useI18n } from 'vue-i18n'
-import { useWeaponStore } from '@/stores/weapon'
 import InputGroupAddonOpenDrawerButton from '@/components/__form/InputGroupAddonOpenDrawerButton.vue'
 import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 import { useWeaponTypeStore } from '@/stores/weaponType'
 import { storeToRefs } from 'pinia'
-const store = useWeaponStore()
+import { useWeaponCategoryStore } from '@/stores/weapon-category'
+const weaponCategoryStore = useWeaponCategoryStore()
+const { isSuccess: categoriesQueryIsSuccess, data: categories$ } = weaponCategoryStore.getAll()
 const weaponTypeStore = useWeaponTypeStore()
+const { isSuccess: typeQueryIsSuccess } = weaponTypeStore.getAll()
 const { weaponTypes$ } = storeToRefs(weaponTypeStore)
 const { t } = useI18n()
 const { reset } = defineProps<{
@@ -77,6 +76,9 @@ const canContinue = computed(() => {
     isContinue = true
   }
   return isContinue
+})
+const storeAreLoaded = computed(() => {
+  return categoriesQueryIsSuccess && typeQueryIsSuccess
 })
 watch(
   () => reset,

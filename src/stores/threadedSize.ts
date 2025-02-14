@@ -9,13 +9,14 @@ export const useThreadedSizeStore = defineStore('threadedSize', () => {
   const { api } = useApiStore()
   const { successMessage } = useToastStore()
   const threadedSizes = ref<ThreadedSizeDto[]>([])
-  const getAllThreadedSizesQuery = useQuery({
-    queryKey: ['getAllThreadedSizes'],
-    queryFn: async () => {
-      threadedSizes.value = (await api.api.threadedSizeControllerFindAllThreadedSize()).data
-      return api.api.threadedSizeControllerFindAllThreadedSize()
-    }
-  })
+  const getAllThreadedSizesQuery = () =>
+    useQuery({
+      queryKey: ['getAllThreadedSizes'],
+      queryFn: async () => {
+        threadedSizes.value = (await api.api.threadedSizeControllerFindAllThreadedSize()).data
+        return api.api.threadedSizeControllerFindAllThreadedSize()
+      }
+    })
 
   const createThreadedSizeMutation = useMutation({
     mutationFn: async (threadedSize: CreateThreadedSizeDto) => {

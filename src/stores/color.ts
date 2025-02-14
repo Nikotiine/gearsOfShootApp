@@ -20,14 +20,15 @@ export const useColorStore = defineStore('color', () => {
     }
   })
 
-  const getAllColorQuery = useQuery({
-    queryKey: ['getAllColorQuery'],
-    queryFn: async () => {
-      const res = await api.api.colorControllerFindAll()
-      colors.value = res.data
-      return res
-    }
-  })
+  const getAllColorQuery = () =>
+    useQuery({
+      queryKey: ['getAllColorQuery'],
+      queryFn: async () => {
+        const res = await api.api.colorControllerFindAll()
+        colors.value = res.data
+        return res
+      }
+    })
 
   return { getAll: getAllColorQuery, colors$: colors, create: createColorMutation }
 })

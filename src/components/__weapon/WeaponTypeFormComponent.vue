@@ -92,7 +92,7 @@ const isFormValid = computed(() => {
  * Emet un boolean onSave pour le drawer
  * Reinitialise le formulaire apres l'envoie
  */
-const submit = () => {
+const submit = async () => {
   store.create.mutate(form.value)
   form.value = { ...initialFormObject }
   emit('onSave', true)

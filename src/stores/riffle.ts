@@ -3,17 +3,11 @@ import { useApiStore } from '@/stores/api'
 import type { CreateRiffleDto, RiffleDto, UpdateRiffleDto } from '@/api/Api'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import { useToastStore } from '@/stores/toast'
-import { computed, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed, type Ref, ref } from 'vue'
 
 export const useRiffleStore = defineStore('riffle', () => {
   const { api } = useApiStore()
   const { successMessage } = useToastStore()
-  const { push } = useRouter()
-  const categoryId = ref<number>(0)
-  const riffleId = ref<number>(0)
-  const findByIdRequestIsEnabled = computed(() => riffleId.value > 0)
-
   const riffles = ref<RiffleDto[]>([])
   const createWeaponMutation = useMutation({
     mutationFn: async (riffle: CreateRiffleDto) => {
@@ -38,47 +32,46 @@ export const useRiffleStore = defineStore('riffle', () => {
     }
   })
 
-  const getAllRiffleQuery = useQuery({
-    queryKey: ['get-all-riffle'],
-    queryFn: async () => {
-      const res = await api.api.riffleControllerFindAll()
-      riffles.value = res.data
-      return res
-    }
-  })
+  const getAllRiffleQuery = (enabled: Ref<boolean>) =>
+    useQuery({
+      queryKey: ['get-all-riffle'],
+      queryFn: async () => {
+        console.log('********', riffles.value)
+        const res = await api.api.riffleControllerFindAll()
+        riffles.value = res.data
+        console.log('********', riffles.value)
+        return res
+      },
+      enabled: () => enabled.value
+    })
 
-  const getAllRiffleByCategoryQuery = useQuery({
-    queryKey: ['get-all-riffle-by-category', categoryId],
-    queryFn: async () => {
-      const res = await api.api.riffleControllerFindAllByCategory(categoryId.value)
-      riffles.value = res.data
-      return res
-    }
-  })
+  const getAllRiffleByCategoryQuery = (catgory: Ref<string>) =>
+    useQuery({
+      queryKey: ['get-all-riffle-by-category', catgory.value],
+      queryFn: async () => {
+        const res = await api.api.riffleControllerFindAllByCategory(catgory.value)
+        riffles.value = res.data
+        return res
+      },
+      enabled: !!catgory.value
+    })
 
-  const getRiffleById = useQuery({
-    queryKey: ['get-riffle-by-id', riffleId],
-    queryFn: async () => {
-      const res = await api.api.riffleControllerFindById(riffleId.value)
-      return res
-    },
-    enabled: findByIdRequestIsEnabled
-  })
-
-  function setCategoryId(id: number): void {
-    categoryId.value = id
-  }
-  function setId(id: number): void {
-    riffleId.value = id
-  }
+  const getRiffleById = (id: Ref<number>) =>
+    useQuery({
+      queryKey: ['get-riffle-by-id', id.value],
+      queryFn: async () => {
+        const res = await api.api.riffleControllerFindById(id.value)
+        return res
+      },
+      enabled: !!id.value
+    })
 
   return {
     create: createWeaponMutation,
     edit: updateRiffleMutation,
-    setCategoryId: setCategoryId,
-    getRiffleByCategory: getAllRiffleByCategoryQuery,
+    getAllByCategory: getAllRiffleByCategoryQuery,
     getAll: getAllRiffleQuery,
-    setRiffleId: setId,
-    getRiffleById: getRiffleById
+    getRiffleById: getRiffleById,
+    riffles$: riffles
   }
 })

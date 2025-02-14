@@ -25,7 +25,7 @@ export const useWeaponStore = defineStore('weapon', () => {
   const categories = ref<LegislationCategoryDto[]>([])
   const weaponTypes = ref<WeaponTypeDto[]>([])
   const railSizes = ref<RailSizeDto[]>([])
-  const materials = ref<MaterialDto[]>([])
+  const mLockOptions = ref<MLockOptionDto[]>([])
   const colors = ref<ColorDto[]>([])
   const triggerTypes = ref<WeaponTriggerTypeDto[]>([])
   const opticReadyPlates = ref<OpticReadyPlateDto[]>([])
@@ -37,7 +37,7 @@ export const useWeaponStore = defineStore('weapon', () => {
       categories.value = res.data.categories
       weaponTypes.value = res.data.types
       railSizes.value = res.data.railSizes
-      materials.value = res.data.buttTypes
+      mLockOptions.value = res.data.mLockOptions
       colors.value = res.data.colors
       triggerTypes.value = res.data.triggerTypes
       opticReadyPlates.value = res.data.opticReadyPlates
@@ -50,7 +50,7 @@ export const useWeaponStore = defineStore('weapon', () => {
     categories$: categories,
     weaponTypes$: weaponTypes,
     railSizes$: railSizes,
-    materials$: materials,
+    mLockOptions$: mLockOptions,
     colors$: colors,
     triggerTypes$: triggerTypes,
     opticReadyPlates$: opticReadyPlates

@@ -20,13 +20,14 @@ export const useMaterialStore = defineStore('material', () => {
     }
   })
 
-  const getAllMaterialsQuery = useQuery({
-    queryKey: ['getAllMaterialsQuery'],
-    queryFn: async () => {
-      const res = await api.api.materialControllerFindAll()
-      materials.value = res.data
-      return res
-    }
-  })
+  const getAllMaterialsQuery = () =>
+    useQuery({
+      queryKey: ['getAllMaterialsQuery'],
+      queryFn: async () => {
+        const res = await api.api.materialControllerFindAll()
+        materials.value = res.data
+        return res
+      }
+    })
   return { getAll: getAllMaterialsQuery, create: createMaterialMutation, materials$: materials }
 })

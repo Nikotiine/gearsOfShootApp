@@ -456,8 +456,6 @@ export interface CreateHandGunDto {
    * @example 1
    */
   providedMagazineQuantity: number
-  /** Le modele de chargeur fournis */
-  providedMagazineId: number | null
   /**
    * L'epaisseur exterieur du canon
    * @example 18
@@ -540,8 +538,6 @@ export interface UpdateHandGunDto {
    * @example 1
    */
   providedMagazineQuantity: number
-  /** Le modele de chargeur fournis */
-  providedMagazineId: number | null
   /**
    * L'epaisseur exterieur du canon
    * @example 18
@@ -625,8 +621,6 @@ export interface CreateRiffleDto {
    * @example 1
    */
   providedMagazineQuantity: number
-  /** Le modele de chargeur fournis */
-  providedMagazineId: number | null
   /**
    * L'epaisseur exterieur du canon
    * @example 18
@@ -713,8 +707,6 @@ export interface UpdateRiffleDto {
    * @example 1
    */
   providedMagazineQuantity: number
-  /** Le modele de chargeur fournis */
-  providedMagazineId: number | null
   /**
    * L'epaisseur exterieur du canon
    * @example 18
@@ -782,7 +774,6 @@ export interface AmmunitionDto {
 }
 
 export interface ListOfPrerequisitesAmmunitionDto {
-  categories: LegislationCategoryDto[]
   percussionTypes: PercussionTypeDto[]
 }
 
@@ -1828,11 +1819,11 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @tags Hand-Gun
      * @name HandGunControllerFindAllByCategory
      * @summary Filtré par categorie
-     * @request GET:/api/hand-gun/by/category/{categoryId}
+     * @request GET:/api/hand-gun/by/category/{category}
      */
-    handGunControllerFindAllByCategory: (categoryId: number, params: RequestParams = {}) =>
+    handGunControllerFindAllByCategory: (category: string, params: RequestParams = {}) =>
       this.request<HandGunDto[], any>({
-        path: `/api/hand-gun/by/category/${categoryId}`,
+        path: `/api/hand-gun/by/category/${category}`,
         method: 'GET',
         format: 'json',
         ...params
@@ -1928,11 +1919,11 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @tags Riffle
      * @name RiffleControllerFindAllByCategory
      * @summary Filtré par categorie
-     * @request GET:/api/riffle/by/category/{categoryId}
+     * @request GET:/api/riffle/by/category/{category}
      */
-    riffleControllerFindAllByCategory: (categoryId: number, params: RequestParams = {}) =>
+    riffleControllerFindAllByCategory: (category: string, params: RequestParams = {}) =>
       this.request<RiffleDto[], any>({
-        path: `/api/riffle/by/category/${categoryId}`,
+        path: `/api/riffle/by/category/${category}`,
         method: 'GET',
         format: 'json',
         ...params

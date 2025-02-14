@@ -70,21 +70,21 @@ export const useFactoryStore = defineStore('factory', () => {
 
   const selectTypeOfQuery = (type: FactoryType) => {
     if (type === 'all') {
-      getAllQuery()
+      return getAllQuery()
     } else {
-      getFactoriesByType(type)
+      return getFactoriesByType(type)
     }
   }
 
   return {
     create: createFactoryMutation,
-    getFactoriesByType: getAllByTypeQuery,
+
     selectFactoryType: changeFactoryType,
     factories$: factories,
     getAll: getAllQuery,
     getFactoryTypes: getPrerequisitesFactoryList,
     factoryTypes$: factoryTypes,
-    setTypeOfFactories: selectTypeOfQuery
+    getFactoriesByType: selectTypeOfQuery
   }
 })
 export type FactoryType = 'weapon' | 'ammunition' | 'optic' | 'rds' | 'magazine' | 'all'

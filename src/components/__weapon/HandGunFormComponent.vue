@@ -142,27 +142,10 @@
         <input-group-check-box
           input-id="isProvidedMagazine"
           label="weapon.form.isProvidedMagazine"
-          @checked="findMagazinesWithFactory"
+          @checked="(event) => (isProvidedMagazine = event)"
           :checked="isProvidedMagazine"
           :disabled="isRevolver"
         />
-        <input-group-select
-          :options="magazines$"
-          label="weapon.form.magazine"
-          :disabled="!isProvidedMagazine"
-          option-label="reference"
-          @option-id="(event) => (form.providedMagazineId = event)"
-          input-id="providedMagazineId"
-          :initial-value="form.providedMagazineId ?? 0"
-        />
-        <input-group-addon-open-drawer-button type="magazine" />
-      </InputGroup>
-
-      <InputGroup>
-        <input-group-optional-icon />
-        <InputGroupAddon
-          ><span v-capitalize="t('global.quantity')" class="mx-4"></span
-        ></InputGroupAddon>
         <input-group-number
           placeholder="global.quantity"
           label="weapon.common.providedMagazineQuantity"
@@ -282,6 +265,7 @@
           @selected-options="(event) => (selectedPlates = event)"
           :clear="resetMultiselect"
           label="weapon.form.opticReadyPlates"
+          :initial-value="selectedPlates"
         />
       </InputGroup>
 
@@ -351,7 +335,6 @@ import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.v
 import InputGroupNumber from '@/components/__form/InputGroupNumber.vue'
 import InputGroupCheckBox from '@/components/__form/InputGroupCheckBox.vue'
 import InputGroupMultiSelect from '@/components/__form/InputGroupMultiSelect.vue'
-import { useWeaponMagazineStore } from '@/stores/weapon-magazine'
 import { useCaliberStore } from '@/stores/caliber'
 import { useFactoryStore } from '@/stores/factory'
 import { useThreadedSizeStore } from '@/stores/threadedSize'
@@ -360,16 +343,21 @@ import { useMaterialStore } from '@/stores/material'
 
 const store = useWeaponStore()
 const handGunStore = useHandGunStore()
-const magazineStore = useWeaponMagazineStore()
 const caliberStore = useCaliberStore()
 const factoryStore = useFactoryStore()
 const threadedSizeStore = useThreadedSizeStore()
 const colorStore = useColorStore()
 const materialStore = useMaterialStore()
+
+const { isSuccess: calibersQueryIsSuccess } = caliberStore.getAll()
+const { isSuccess: factoriesQueryIsSuccess } = factoryStore.getFactoriesByType('weapon')
+const { isSuccess: threadedSizesQueryIsSuccess } = threadedSizeStore.getAll()
+const { isSuccess: colorsQueryIsSuccess } = colorStore.getAll()
+const { isSuccess: materialsQueryIsSuccess } = materialStore.getAll()
+
 const { triggerTypes$, opticReadyPlates$, weaponTypes$ } = storeToRefs(store)
 const { calibers$ } = storeToRefs(caliberStore)
 const { factories$ } = storeToRefs(factoryStore)
-const { magazines$ } = storeToRefs(magazineStore)
 const { threadedSizes$ } = storeToRefs(threadedSizeStore)
 const { colors$ } = storeToRefs(colorStore)
 const { materials$ } = storeToRefs(materialStore)
@@ -378,7 +366,7 @@ const { selectedOptions, handGun = null } = defineProps<{
   handGun?: HandGunDto
 }>()
 const { t } = useI18n()
-const selectedPlates = ref([])
+const selectedPlates = ref<number[]>([])
 const buttonLabel = ref('global.save')
 const adjustableTriggerMinWeight = ref(0)
 const adjustableTriggerMaxWeight = ref(0)
@@ -398,7 +386,6 @@ const initialForm: CreateHandGunDto = {
   description: '',
   categoryId: selectedOptions.category,
   percussionTypeId: 0,
-  providedMagazineId: null,
   providedMagazineQuantity: 0,
   barrelSize: 0,
   buttMaterialId: null,
@@ -419,13 +406,18 @@ const form = ref<CreateHandGunDto>({ ...initialForm })
 const resetMultiselect = ref(false)
 const isEditForm = ref<boolean>(false)
 const submit = () => {
-  form.value.providedOpticReadyPlates = form.value.isOpticReady ? selectedPlates.value : []
+  form.value.providedOpticReadyPlates = form.value.isOpticReady ? findOpticReadyPlates() : []
   form.value.adjustableTriggerValue = form.value.isAdjustableTrigger
     ? adjustableTriggerValue()
     : null
 
   isEditForm.value ? edit({ ...form.value, id: handGun.id }) : create(form.value)
 }
+
+const findOpticReadyPlates = () => {
+  return opticReadyPlates$.value.filter((or) => selectedPlates.value.includes(or.id))
+}
+
 const adjustableTriggerValue = () => {
   return `de ${adjustableTriggerMinWeight.value} kg à ${adjustableTriggerMaxWeight.value} kg`
 }
@@ -477,32 +469,25 @@ function setEditForm(handgun: HandGunDto) {
     triggerTypeId: handgun.triggerType ? handgun.triggerType.id : null,
     threadedSizeId: handgun.threadedSize ? handgun.threadedSize.id : null,
     slideMaterialId: handgun.slideMaterial ? handgun.slideMaterial.id : null,
-    providedMagazineId: handgun.providedMagazine ? handgun.providedMagazine.id : null,
     providedOpticReadyPlates: handgun.opticReadyPlates.length > 0 ? handgun.opticReadyPlates : [],
     typeId: handgun.type.id,
     categoryId: handgun.category.id
   }
+  if (handgun.opticReadyPlates.length > 0) {
+    selectedPlates.value = handgun.opticReadyPlates.map((or) => or.id)
+  }
   buttonLabel.value = 'global.edit'
   isEditForm.value = true
 }
-/**
- * Retourne les chageurs en lien avec la marque de l'arme choisi
- * TODO : Voir si on filtre aussi par calibre
- * @param check
- */
-const findMagazinesWithFactory = (check: boolean) => {
-  const selectedFactoryId = form.value.factoryId
-  isProvidedMagazine.value = check
-  const factory = factories$.value.find((f) => f.id === selectedFactoryId)
-  magazineStore.setFactoryId(factory?.name)
-  magazineStore.getByFactoryId.isSuccess
-}
+
 const storesAreLoaded = computed(() => {
   return (
-    caliberStore.getAll.isSuccess &&
     store.prerequisitesWeaponList.isSuccess &&
-    factoryStore.getAll.isSuccess &&
-    threadedSizeStore.getAll.isSuccess
+    factoriesQueryIsSuccess &&
+    threadedSizesQueryIsSuccess &&
+    calibersQueryIsSuccess &&
+    colorsQueryIsSuccess &&
+    materialsQueryIsSuccess
   )
 })
 </script>

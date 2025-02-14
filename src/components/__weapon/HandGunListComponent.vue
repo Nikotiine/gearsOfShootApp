@@ -1,15 +1,15 @@
 <template>
-  <div class="card p-4" v-if="categoryStore.getAll.isSuccess">
+  <div class="card p-4">
     <!--    <h2 class="text-center mt-2 text-2xl">Liste des armes de Categorie {{ category }}</h2>-->
-    <div class="text-red-500 text-center" v-if="store.getAllHandGunByCategory.isError">Error</div>
+    <div class="text-red-500 text-center" v-if="isError">Error</div>
     <DataTable
       v-model:filters="filters"
-      :value="store.getAllHandGunByCategory.data?.data"
+      :value="handgun$?.data"
       paginator
       :rows="10"
       dataKey="id"
       filterDisplay="row"
-      :loading="store.getAllHandGunByCategory.isLoading"
+      :loading="datasIsloading"
       :globalFilterFields="['name', 'factory.name', 'caliber.name', 'reference']"
     >
       <template #header>
@@ -48,11 +48,11 @@
           {{ data.factory.name }}
         </template>
 
-        <template #filter="{ filterModel, filterCallback }" v-if="factoryStore.getAll.isSuccess">
+        <template #filter="{ filterModel, filterCallback }">
           <Select
             v-model="filterModel.value"
             @change="filterCallback()"
-            :options="factoryStore.getAll.data.data"
+            :options="weaponFactory$?.data"
             optionLabel="name"
             optionValue="name"
             placeholder="Marque"
@@ -71,11 +71,11 @@
         <template #body="{ data }">
           {{ data.caliber.name }}
         </template>
-        <template #filter="{ filterModel, filterCallback }" v-if="caliberStore.getAll.isSuccess">
+        <template #filter="{ filterModel, filterCallback }">
           <Select
             v-model="filterModel.value"
             @change="filterCallback()"
-            :options="caliberStore.getAll.data.data"
+            :options="calibers$?.data"
             placeholder="Calibre"
             optionLabel="name"
             optionValue="name"
@@ -134,7 +134,7 @@
 import { useHandGunStore } from '@/stores/hand-gun'
 import { useFactoryStore } from '@/stores/factory'
 import { useCaliberStore } from '@/stores/caliber'
-import { ref, watchEffect } from 'vue'
+import { ref, watch, watchEffect } from 'vue'
 import { FilterMatchMode } from '@primevue/core/api'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
@@ -149,7 +149,9 @@ const { category } = defineProps<{
 }>()
 const store = useHandGunStore()
 const factoryStore = useFactoryStore()
+const { data: weaponFactory$ } = factoryStore.getFactoriesByType('weapon')
 const caliberStore = useCaliberStore()
+const { data: calibers$ } = caliberStore.getAll()
 const categoryStore = useWeaponCategoryStore()
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -158,9 +160,22 @@ const filters = ref({
   'caliber.name': { value: null, matchMode: FilterMatchMode.EQUALS },
   reference: { value: null, matchMode: FilterMatchMode.STARTS_WITH }
 })
-watchEffect(() => {
-  store.setCategoryId(categoryStore.getCategoryIdByCategoryName(category))
-})
+const currentCategory = ref<string>(category)
+const {
+  data: handgun$,
+  isLoading: datasIsloading,
+  isError,
+  refetch
+} = store.getAllByCategory(currentCategory)
+watch(
+  () => category,
+  (newCategory) => {
+    if (newCategory !== currentCategory.value) {
+      currentCategory.value = newCategory
+      refetch()
+    }
+  }
+)
 </script>
 
 <style scoped></style>

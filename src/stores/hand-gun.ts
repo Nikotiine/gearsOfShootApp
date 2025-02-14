@@ -3,16 +3,14 @@ import { useApiStore } from '@/stores/api'
 import { useToastStore } from '@/stores/toast'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import type { CreateHandGunDto, HandGunDto, UpdateHandGunDto } from '@/api/Api'
-import { computed, ref } from 'vue'
+import { type Ref, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 export const useHandGunStore = defineStore('hand-gun', () => {
   const { api } = useApiStore()
   const { successMessage } = useToastStore()
   const { push } = useRouter()
-  const categoryId = ref<number>(0)
-  const handgunId = ref<number>(0)
-  const findByIdRequestIsEnabled = computed(() => handgunId.value > 0)
+
   const handguns = ref<HandGunDto[]>([])
   const handgun = ref<HandGunDto | null>(null)
   const createHandGunMutation = useMutation({
@@ -38,46 +36,45 @@ export const useHandGunStore = defineStore('hand-gun', () => {
     }
   })
 
-  function setCategoryId(id: number): void {
-    categoryId.value = id
-  }
-  function setId(id: number): void {
-    handgunId.value = id
-  }
-  const getAllHandGunByCategoryQuery = useQuery({
-    queryKey: ['get-all-handgun-by-category', categoryId],
-    queryFn: async () => {
-      const res = await api.api.handGunControllerFindAllByCategory(categoryId.value)
-      handguns.value = res.data
-      return res
-    }
-  })
+  const getAllHandGunByCategoryQuery = (category: Ref<string>) =>
+    useQuery({
+      queryKey: ['get-all-handgun-by-category', category.value],
+      queryFn: async () => {
+        const res = await api.api.handGunControllerFindAllByCategory(category.value)
+        handguns.value = res.data
+        return res
+      },
+      enabled: !!category.value
+    })
 
-  const getAllHandgunQuery = useQuery({
-    queryKey: ['getAllHandgunQuery'],
-    queryFn: async () => {
-      const res = await api.api.handGunControllerFindAll()
-      return res
-    }
-  })
+  const getAllHandgunQuery = (enabled: Ref<boolean>) =>
+    useQuery({
+      queryKey: ['getAllHandgunQuery'],
+      queryFn: async () => {
+        const res = await api.api.handGunControllerFindAll()
+        handguns.value = res.data
+        return res
+      },
+      enabled: () => enabled.value
+    })
 
-  const getHandGunById = useQuery({
-    queryKey: ['gat-handgun-by-id', handgunId],
-    queryFn: async () => {
-      const res = await api.api.handGunControllerFindById(handgunId.value)
-      handgun.value = res.data
-      return res
-    },
-    enabled: findByIdRequestIsEnabled
-  })
+  const getHandGunById = (id: Ref<number>) =>
+    useQuery({
+      queryKey: ['gat-handgun-by-id', id.value],
+      queryFn: async () => {
+        const res = await api.api.handGunControllerFindById(id.value)
+        handgun.value = res.data
+        return res
+      },
+      enabled: !!id.value
+    })
   return {
     create: createHandGunMutation,
     edit: updateHandGunMutation,
-    setCategoryId: setCategoryId,
-    getAllHandGunByCategory: getAllHandGunByCategoryQuery,
-    setHandGunId: setId,
+    getAllByCategory: getAllHandGunByCategoryQuery,
     getHandGunById: getHandGunById,
     handgunById: handgun,
-    getAll: getAllHandgunQuery
+    getAll: getAllHandgunQuery,
+    handguns$: handguns
   }
 })
