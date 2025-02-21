@@ -20,12 +20,12 @@ const router = createRouter({
       component: () => import('../views/AccountView.vue')
     },
     {
-      path: '/detail/arme-de-poing/:id',
+      path: '/detail/magazine/:id',
       props: true,
-      component: () => import('../views/weapon/WeaponView.vue')
+      component: () => import('../views/magazine/MagazineDetailView.vue')
     },
     {
-      path: '/detail/:type/:id',
+      path: '/detail/weapon/:type/:id',
       props: true,
       component: () => import('../views/weapon/WeaponView.vue')
     },
@@ -63,6 +63,12 @@ const router = createRouter({
           component: () => import('../views/ammunition/AdminAmmunitionListView.vue')
         },
         {
+          path: 'gestion/list/magazine/:category',
+          props: true,
+          name: 'magazineList',
+          component: () => import('../views/magazine/MagazineListView.vue')
+        },
+        {
           path: 'gestion/add/factory',
           name: 'factoryForm',
           component: () => import('../views/factory/FactoryFormView.vue')
@@ -98,9 +104,15 @@ const router = createRouter({
           component: () => import('../views/weapon/AdminWeaponTypeFormView.vue')
         },
         {
-          path: 'gestion/add/weaponMagazine',
-          name: 'weaponMagazineForm',
-          component: () => import('../views/weapon/AdminWeaponMagazineFormView.vue')
+          path: 'gestion/add/magazine',
+          name: 'weaponMagazineAddForm',
+          component: () => import('../views/magazine/AdminWeaponMagazineFormView.vue')
+        },
+        {
+          path: 'gestion/edit/magazine/:id',
+          name: 'weaponMagazineEditForm',
+          props: true,
+          component: () => import('../views/magazine/AdminWeaponMagazineFormView.vue')
         },
         {
           path: 'gestion/list/factories',

@@ -12,9 +12,9 @@ import Button from 'primevue/button'
 
 import { ref } from 'vue'
 
-import WeaponTypesTable from '@/components/__weapon/WeaponTypesTable.vue'
+import WeaponTypesTable from '@/components/__weapon/type/WeaponTypesTable.vue'
 import Drawer from 'primevue/drawer'
-import WeaponTypeFormComponent from '@/components/__weapon/WeaponTypeFormComponent.vue'
+import WeaponTypeFormComponent from '@/components/__weapon/type/WeaponTypeFormComponent.vue'
 
 const isVisibleDrawer = ref(false)
 </script>

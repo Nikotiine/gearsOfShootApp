@@ -1,20 +1,22 @@
 <template>
-  <div v-if="!isRiffle && handGunStore.getHandGunById.isSuccess">
+  <div v-if="!isRiffle && getHandGunByIdIsSuccess">
     <hand-gun-form-component
+      v-if="getHandGunByIdIsSuccess"
       :selected-options="{
-        type: handGunStore.getHandGunById.data.data.type.id,
-        category: handGunStore.getHandGunById.data.data.category.id
+        type: handgun.data.type.id,
+        category: handgun.data.category.id
       }"
-      :hand-gun="handGunStore.getHandGunById.data.data"
+      :hand-gun="handgun?.data"
     />
   </div>
-  <div class="" v-if="isRiffle && riffleStore.getRiffleById.isSuccess">
+  <div class="" v-if="isRiffle">
     <riffle-form-component
+      v-if="getriffleByIdIsSuccess"
       :selected-options="{
-        type: riffleStore.getRiffleById.data.data.type.id,
-        category: riffleStore.getRiffleById.data.data.category.id
+        type: riffle.data.type.id,
+        category: riffle.data.data.category.id
       }"
-      :riffle="riffleStore.getRiffleById.data.data"
+      :riffle="riffle.data"
     />
   </div>
 </template>
@@ -23,14 +25,17 @@
 import { useHandGunStore } from '@/stores/hand-gun'
 import { useRiffleStore } from '@/stores/riffle'
 import type { WeaponViewType } from '@/views/weapon/WeaponView.vue'
-import { computed, watchEffect } from 'vue'
-import HandGunFormComponent from '@/components/__weapon/HandGunFormComponent.vue'
+import { computed, ref, watchEffect } from 'vue'
+import HandGunFormComponent from '@/components/__weapon/handgun/HandGunFormComponent.vue'
 
-import RiffleFormComponent from '@/components/__weapon/RiffleFormComponent.vue'
+import RiffleFormComponent from '@/components/__weapon/riffle/RiffleFormComponent.vue'
 
 const handGunStore = useHandGunStore()
-
 const riffleStore = useRiffleStore()
+const riffleId = ref<number>(0)
+const handgunId = ref<number>(0)
+const { data: handgun, isSuccess: getHandGunByIdIsSuccess } = handGunStore.getHandGunById(handgunId)
+const { data: riffle, isSuccess: getriffleByIdIsSuccess } = riffleStore.getRiffleById(riffleId)
 const { id, type } = defineProps<{
   id: string
   type: WeaponViewType
@@ -42,9 +47,9 @@ const isRiffle = computed(() => {
 watchEffect(() => {
   const weaponId = parseInt(id)
   if (type === 'riffle') {
-    riffleStore.setRiffleId(weaponId)
+    riffleId.value = weaponId
   } else {
-    handGunStore.setHandGunId(weaponId)
+    handgunId.value = weaponId
   }
 })
 </script>

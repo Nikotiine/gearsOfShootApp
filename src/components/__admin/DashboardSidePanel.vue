@@ -40,7 +40,7 @@ const items = ref([
             {
               label: 'Chargeur',
               command: () => {
-                push('/admin/gestion/add/weaponMagazine')
+                push('/admin/gestion/add/magazine')
               }
             },
             { label: 'RDS' },
@@ -144,7 +144,12 @@ const items = ref([
                 push(RIFFLE_LIST_URL + 'B')
               }
             },
-            { label: 'rds' },
+            {
+              label: 'Chargeur',
+              command: () => {
+                push('/admin/gestion/list/magazine/B')
+              }
+            },
             {
               label: 'Munition',
               command: () => {

@@ -404,14 +404,13 @@ const initialForm: CreateHandGunDto = {
 }
 const form = ref<CreateHandGunDto>({ ...initialForm })
 const resetMultiselect = ref(false)
-const isEditForm = ref<boolean>(false)
 const submit = () => {
   form.value.providedOpticReadyPlates = form.value.isOpticReady ? findOpticReadyPlates() : []
   form.value.adjustableTriggerValue = form.value.isAdjustableTrigger
     ? adjustableTriggerValue()
     : null
 
-  isEditForm.value ? edit({ ...form.value, id: handGun.id }) : create(form.value)
+  handGun ? edit({ ...form.value, id: handGun.id }) : create(form.value)
 }
 
 const findOpticReadyPlates = () => {
@@ -453,6 +452,7 @@ function resetForm(): void {
 watchEffect(() => {
   if (handGun) {
     setEditForm(handGun)
+    buttonLabel.value = 'global.edit'
   }
 })
 function setEditForm(handgun: HandGunDto) {
@@ -475,9 +475,9 @@ function setEditForm(handgun: HandGunDto) {
   }
   if (handgun.opticReadyPlates.length > 0) {
     selectedPlates.value = handgun.opticReadyPlates.map((or) => or.id)
+  } else {
+    selectedPlates.value = []
   }
-  buttonLabel.value = 'global.edit'
-  isEditForm.value = true
 }
 
 const storesAreLoaded = computed(() => {

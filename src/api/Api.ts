@@ -189,27 +189,6 @@ export interface UpdateWeaponTypeDto {
   id: number
 }
 
-export interface WeaponMagazineDto {
-  id: number
-  capacity: number
-  length: number
-  height: number
-  width: number
-  reference: string
-  body: MaterialDto
-  factory: FactoryDto
-  caliber: CaliberDto
-  /** @example "C" */
-  category: LegislationCategoryDto
-}
-
-export interface ListOfPrerequisitesWeaponMagazineDto {
-  calibers: CaliberDto[]
-  factories: FactoryDto[]
-  bodies: MaterialDto[]
-  categories: LegislationCategoryDto[]
-}
-
 export interface RiffleDto {
   id: number
   /** @example "CZ-457-VAR-22LR" */
@@ -237,7 +216,6 @@ export interface RiffleDto {
   adjustableTriggerValue: string
   percussionType: PercussionTypeDto
   providedMagazineQuantity: number
-  providedMagazine: WeaponMagazineDto
   barrelSize: number
   buttMaterial: MaterialDto
   /** Guidon reglable */
@@ -289,7 +267,6 @@ export interface HandGunDto {
   adjustableTriggerValue: string
   percussionType: PercussionTypeDto
   providedMagazineQuantity: number
-  providedMagazine: WeaponMagazineDto
   barrelSize: number
   buttMaterial: MaterialDto
   /** Guidon reglable */
@@ -308,6 +285,24 @@ export interface HandGunDto {
   opticReadyPlates: OpticReadyPlateDto[]
   /** Rail picatiny */
   isPicatinyRailSlop: boolean
+}
+
+export interface WeaponMagazineDto {
+  id: number
+  capacity: number
+  length: number
+  height: number
+  width: number
+  reference: string
+  body: MaterialDto
+  factory: FactoryDto
+  caliber: CaliberDto
+  /** @example "C" */
+  category: LegislationCategoryDto
+  riffles: RiffleDto[]
+  handguns: HandGunDto[]
+  forWeaponType: WeaponTypeDto
+  description: string
 }
 
 export interface CreateWeaponMagazineDto {
@@ -329,6 +324,8 @@ export interface CreateWeaponMagazineDto {
   description: string | null
   /** La categorie de l arme en france */
   categoryId: number
+  /** La categorie de l arme en france */
+  weaponTypeId: number
   compatibleRiffle: RiffleDto[] | null
   compatibleHandGun: HandGunDto[] | null
 }
@@ -352,6 +349,8 @@ export interface UpdateWeaponMagazineDto {
   description: string | null
   /** La categorie de l arme en france */
   categoryId: number
+  /** La categorie de l arme en france */
+  weaponTypeId: number
   compatibleRiffle: RiffleDto[] | null
   compatibleHandGun: HandGunDto[] | null
   id: number
@@ -1606,16 +1605,16 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
-     * @description Retourne la liste des pre requis de creation d un nouveau chargeur
+     * @description Retourne les chargeurs filtres par categories
      *
      * @tags Magazine
-     * @name MagazineControllerFindPrerequisitesWeaponMagazineList
-     * @summary Liste des prerequis
-     * @request GET:/api/magazine/prerequisites
+     * @name MagazineControllerFindByCategory
+     * @summary Filtré par categorie
+     * @request GET:/api/magazine/by/category/{category}
      */
-    magazineControllerFindPrerequisitesWeaponMagazineList: (params: RequestParams = {}) =>
-      this.request<ListOfPrerequisitesWeaponMagazineDto, any>({
-        path: `/api/magazine/prerequisites`,
+    magazineControllerFindByCategory: (category: string, params: RequestParams = {}) =>
+      this.request<WeaponMagazineDto[], any>({
+        path: `/api/magazine/by/category/${category}`,
         method: 'GET',
         format: 'json',
         ...params

@@ -17,7 +17,7 @@
           <input-group-addon-open-drawer-button type="factory" factory-type="magazine" />
         </InputGroup>
         <InputGroup>
-          <input-group-required-icon :is-validate="weaponTypeId > 0" />
+          <input-group-required-icon :is-validate="form.weaponTypeId > 0" />
           <input-group-select
             :options="weaponTypes$?.data"
             label="global.weaponType"
@@ -25,14 +25,14 @@
             required
             filter
             input-id="typeId"
-            :initial-value="weaponTypeId"
+            :initial-value="form.weaponTypeId"
           />
           <input-group-addon-open-drawer-button type="weaponType" />
         </InputGroup>
         <InputGroup>
           <input-group-required-icon :is-validate="form.categoryId > 0" />
           <input-group-select
-            :options="store.prerequisiteList.data?.data.categories"
+            :options="categories$?.data"
             label="global.legalisationCategory"
             @option-id="(event) => (form.categoryId = event)"
             required
@@ -129,7 +129,7 @@
             input-id="compatibleWeaponOptions"
             label="magazine.form.compatibleWeaponOptions"
             :options="options"
-            :disabled="weaponTypeId === 0"
+            :disabled="disabledMultiSelect"
             @selected-options="(event) => (selectedCompatibleWeapon = event)"
             :initial-value="selectedCompatibleWeapon"
           />
@@ -153,15 +153,22 @@
       </div>
 
       <div class="text-center">
-        <Button type="submit" :label="t('global.save')" :disabled="!isFormValid"></Button>
+        <Button type="submit" :label="t(buttonLabel)" :disabled="!isFormValid"></Button>
       </div>
     </form>
   </div>
 </template>
 <script setup lang="ts">
 import { useWeaponMagazineStore } from '@/stores/weapon-magazine'
-import type { CreateWeaponMagazineDto, HandGunDto, RiffleDto, WeaponTypeDto } from '@/api/Api'
-import { computed, ref, watch } from 'vue'
+import type {
+  CreateWeaponMagazineDto,
+  HandGunDto,
+  RiffleDto,
+  UpdateWeaponMagazineDto,
+  WeaponMagazineDto,
+  WeaponTypeDto
+} from '@/api/Api'
+import { computed, ref, watch, watchEffect } from 'vue'
 import Button from 'primevue/button'
 import InputGroup from 'primevue/inputgroup'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
@@ -180,10 +187,12 @@ import { useFactoryStore } from '@/stores/factory'
 import { useCaliberStore } from '@/stores/caliber'
 import { useMaterialStore } from '@/stores/material'
 import { storeToRefs } from 'pinia'
+import { useWeaponCategoryStore } from '@/stores/weapon-category'
 
 interface VM {
   name: string
   id: number
+  caliberId: number
 }
 
 const store = useWeaponMagazineStore()
@@ -193,7 +202,8 @@ const handGunStore = useHandGunStore()
 const factoryStore = useFactoryStore()
 const weaponTypeStore = useWeaponTypeStore()
 const materialStore = useMaterialStore()
-
+const categoryStore = useWeaponCategoryStore()
+const { data: categories$, isSuccess: categoriesQueryIsSuccess } = categoryStore.getAll()
 const { data: calibers$, isSuccess: calibersQueryIsSuccess } = caliberStore.getAll()
 const { data: weaponTypes$, isSuccess: weaponTypesQueryIsSuccess } = weaponTypeStore.getAll()
 const { data: factories$, isSuccess: factoriesQueryIsSuccess } =
@@ -204,10 +214,10 @@ const { riffles$ } = storeToRefs(riffleStore)
 const { handguns$ } = storeToRefs(handGunStore)
 const enabledRiffleQuery = ref<boolean>(false)
 const enabledHandGunQuery = ref<boolean>(false)
+const buttonLabel = ref('global.save')
 riffleStore.getAll(enabledRiffleQuery)
 handGunStore.getAll(enabledHandGunQuery)
 const { t } = useI18n()
-const emit = defineEmits(['onSave'])
 const initialFormObject: CreateWeaponMagazineDto = {
   description: '',
   width: 0,
@@ -220,10 +230,10 @@ const initialFormObject: CreateWeaponMagazineDto = {
   length: 0,
   categoryId: 0,
   compatibleHandGun: [],
-  compatibleRiffle: []
+  compatibleRiffle: [],
+  weaponTypeId: 0
 }
 const form = ref<CreateWeaponMagazineDto>({ ...initialFormObject })
-const weaponTypeId = ref(0)
 const selectedCompatibleWeapon = ref<number[]>([])
 const compatibleWeaponOptions = ref<VM[]>([])
 const isFormValid = computed(() => {
@@ -243,17 +253,21 @@ const isFormValid = computed(() => {
   return isValid
 })
 
+const { magazine = null } = defineProps<{
+  magazine?: WeaponMagazineDto
+}>()
+
 const options = computed(() => {
   let options = compatibleWeaponOptions.value
   if (form.value.caliberId > 0) {
-    options = options.filter((option) => option.id === form.value.caliberId)
+    options = options.filter((option) => option.caliberId === form.value.caliberId)
   }
 
   return options
 })
 
 const selectWeaponType = (id: number) => {
-  weaponTypeId.value = id
+  form.value.weaponTypeId = id
 
   if (isRiffleWeapon.value) {
     enabledRiffleQuery.value = true
@@ -267,9 +281,20 @@ const submit = () => {
   isRiffleWeapon.value
     ? (form.value.compatibleRiffle = findCompatibleRiffle(ids))
     : (form.value.compatibleHandGun = findCompatibleHangun(ids))
-  store.create.mutate(form.value)
-  form.value = { ...initialFormObject }
-  emit('onSave', true)
+  if (!magazine) {
+    create(form.value)
+    form.value = { ...initialFormObject }
+  } else {
+    edit({ ...form.value, id: magazine.id })
+  }
+}
+
+const create = (magazine: CreateWeaponMagazineDto) => {
+  store.create.mutate(magazine)
+}
+
+const edit = (magazine: UpdateWeaponMagazineDto) => {
+  store.edit.mutate(magazine)
 }
 
 const findCompatibleRiffle = (ids: number[]): RiffleDto[] => {
@@ -283,7 +308,7 @@ const isRiffleWeapon = computed(() => {
   const isRiffleWeapon = ref<boolean>(true)
   let weaponType: WeaponTypeDto | undefined = undefined
   if (weaponTypes$.value) {
-    weaponType = weaponTypes$.value.data.find((w) => w.id === weaponTypeId.value)
+    weaponType = weaponTypes$.value.data.find((w) => w.id === form.value.weaponTypeId)
   }
 
   if (weaponType && (weaponType.name === 'Pistolet' || weaponType.name === 'Revolver')) {
@@ -291,6 +316,10 @@ const isRiffleWeapon = computed(() => {
   }
 
   return isRiffleWeapon.value
+})
+
+const disabledMultiSelect = computed(() => {
+  return form.value.caliberId === 0 || form.value.weaponTypeId === 0
 })
 
 /**
@@ -302,7 +331,7 @@ const storesAreLoaded = computed(() => {
     factoriesQueryIsSuccess &&
     weaponTypesQueryIsSuccess &&
     materialsQueryIsSuccess &&
-    store.prerequisiteList.isSuccess
+    categoriesQueryIsSuccess
   )
 })
 
@@ -312,7 +341,8 @@ watch(
     compatibleWeaponOptions.value = value.map((riffle) => {
       return {
         id: riffle.id,
-        name: riffle.name
+        name: riffle.name,
+        caliberId: riffle.caliber.id
       }
     })
   }
@@ -323,11 +353,43 @@ watch(
     compatibleWeaponOptions.value = value.map((handgun) => {
       return {
         id: handgun.id,
-        name: handgun.name
+        name: handgun.name,
+        caliberId: handgun.caliber.id
       }
     })
   }
 )
+watchEffect(() => {
+  if (magazine) {
+    setEditForm(magazine)
+    buttonLabel.value = 'global.edit'
+  }
+})
+
+const setEditForm = (magazine: WeaponMagazineDto) => {
+  form.value = {
+    description: magazine.description,
+    width: magazine.width,
+    height: magazine.height,
+    bodyId: magazine.body.id,
+    factoryId: magazine.factory.id,
+    reference: magazine.reference,
+    capacity: magazine.capacity,
+    caliberId: magazine.caliber.id,
+    length: magazine.length,
+    categoryId: magazine.category.id,
+    compatibleHandGun: magazine.handguns,
+    compatibleRiffle: magazine.riffles,
+    weaponTypeId: magazine.forWeaponType.id
+  }
+  if (magazine.riffles.length > 0) {
+    selectedCompatibleWeapon.value = magazine.riffles.map((r) => r.id)
+  }
+  if (magazine.handguns.length > 0) {
+    selectedCompatibleWeapon.value = magazine.handguns.map((h) => h.id)
+  }
+  selectWeaponType(magazine.forWeaponType.id)
+}
 </script>
 
 <style scoped></style>

@@ -10,9 +10,9 @@
   </div>
 </template>
 <script setup lang="ts">
-import RiffleListComponent from '@/components/__weapon/RiffleListComponent.vue'
+import RiffleListComponent from '@/components/__weapon/riffle/RiffleTableComponent.vue'
 import { computed } from 'vue'
-import HandGunListComponent from '@/components/__weapon/HandGunListComponent.vue'
+import HandGunListComponent from '@/components/__weapon/handgun/HandGunTableComponent.vue'
 import type { WeaponViewType } from '@/views/weapon/WeaponView.vue'
 
 const { category, type } = defineProps<{
