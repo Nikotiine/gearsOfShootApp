@@ -63,7 +63,7 @@ export const useRiffleStore = defineStore('riffle', () => {
         const res = await api.api.riffleControllerFindById(id.value)
         return res
       },
-      enabled: !!id.value
+      enabled: () => id.value > 0
     })
 
   return {

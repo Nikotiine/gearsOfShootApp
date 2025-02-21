@@ -2,22 +2,26 @@ import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
 import { useToastStore } from '@/stores/toast'
 import { useMutation, useQuery } from '@tanstack/vue-query'
-import type { CreateWeaponMagazineDto, FactoryDto, WeaponMagazineDto } from '@/api/Api'
-import { computed, type Ref, ref } from 'vue'
+import type {
+  CreateWeaponMagazineDto,
+  FactoryDto,
+  UpdateWeaponMagazineDto,
+  WeaponMagazineDto
+} from '@/api/Api'
+import { type Ref, ref } from 'vue'
 
 export const useWeaponMagazineStore = defineStore('weaponMagazine', () => {
   const { api } = useApiStore()
   const { successMessage } = useToastStore()
-  //const factoryName = ref<string>('')
-  const magazineFactories = ref<FactoryDto[]>([])
+
   const magazines = ref<WeaponMagazineDto[]>([])
 
   const createWeaponMagazineMutation = useMutation({
     mutationFn: async (magazine: CreateWeaponMagazineDto) => {
-      const res = await api.api.magazineControllerCreate(magazine)
-      return res
+      return await api.api.magazineControllerCreate(magazine)
     },
-    onSuccess(data, variables, context) {
+    onSuccess(data) {
+      magazines.value.push(data.data)
       successMessage('magazine.summary', 'magazine.form.success')
     }
   })
@@ -33,31 +37,56 @@ export const useWeaponMagazineStore = defineStore('weaponMagazine', () => {
       enabled: !!factoryName.value
     })
 
-  const getAllQuery = useQuery({
-    queryKey: ['getAllMagazine'],
-    queryFn: async () => {
-      const res = await api.api.magazineControllerFindAll()
-      magazines.value = res.data
-      return res
-    },
-    enabled: false
-  })
+  const getAllQuery = (enbaled: Ref<boolean>) =>
+    useQuery({
+      queryKey: ['getAllMagazine'],
+      queryFn: async () => {
+        const res = await api.api.magazineControllerFindAll()
+        magazines.value = res.data
+        return res
+      },
+      enabled: () => enbaled.value
+    })
 
-  const prerequisiteWeaponMagazineList = useQuery({
-    queryKey: ['prerequisite-weapon-magazine'],
-    queryFn: async () => {
-      const res = await api.api.magazineControllerFindPrerequisitesWeaponMagazineList()
-      magazineFactories.value = res.data.factories
-      return res
+  const getAllByCategoryQuery = (category: Ref<string>) =>
+    useQuery({
+      queryKey: ['getAllByCategoryQuery', category.value],
+      queryFn: async () => {
+        const res = await api.api.magazineControllerFindByCategory(category.value)
+        magazines.value = res.data
+        console.log(magazines.value)
+        return res
+      },
+      enabled: !!category.value
+    })
+
+  const getByIdQuery = (id: Ref<number>) =>
+    useQuery({
+      queryKey: ['getById', id.value],
+      queryFn: async () => {
+        const res = await api.api.magazineControllerFindById(id.value)
+        return res
+      },
+      enabled: !!id.value
+    })
+
+  const updateMAgazineMutation = useMutation({
+    mutationFn: async (magazine: UpdateWeaponMagazineDto) => {
+      return await api.api.magazineControllerEdit(magazine.id, magazine)
+    },
+    onSuccess(data) {
+      magazines.value.push(data.data)
+      successMessage('magazine.summary', 'magazine.form.success')
     }
   })
 
   return {
     getAll: getAllQuery,
+    getById: getByIdQuery,
     create: createWeaponMagazineMutation,
-    prerequisiteList: prerequisiteWeaponMagazineList,
     getByFactoryId: getMagazineByFactory,
-    magazineFactories$: magazineFactories,
-    magazines$: magazines
+    getByCategory: getAllByCategoryQuery,
+    magazines$: magazines,
+    edit: updateMAgazineMutation
   }
 })

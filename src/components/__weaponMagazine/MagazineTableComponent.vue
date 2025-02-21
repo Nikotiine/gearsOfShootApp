@@ -4,13 +4,13 @@
     <div class="text-red-500 text-center" v-if="isError">Error</div>
     <DataTable
       v-model:filters="filters"
-      :value="riffles$?.data"
+      :value="magazines$?.data"
       paginator
       :rows="10"
       dataKey="id"
       filterDisplay="row"
-      :loading="datasIsloading"
-      :globalFilterFields="['name', 'factory.name', 'caliber.name', 'reference']"
+      :loading="isLoading"
+      :globalFilterFields="['reference', 'factory.name', 'caliber.name', 'capacity']"
     >
       <template #header>
         <div class="flex justify-center">
@@ -24,9 +24,9 @@
       </template>
       <template #empty> Aucune arme trouvée. </template>
       <template #loading> Loading customers data. Please wait. </template>
-      <Column field="name" header="Nom" style="min-width: 12rem" :showFilterMenu="false">
+      <Column field="reference" header="reference" style="min-width: 12rem" :showFilterMenu="false">
         <template #body="{ data }">
-          {{ data.name }}
+          {{ data.reference }}
         </template>
         <template #filter="{ filterModel, filterCallback }">
           <InputText
@@ -52,7 +52,7 @@
           <Select
             v-model="filterModel.value"
             @change="filterCallback()"
-            :options="weaponFoctory$?.data"
+            :options="magazineFactory$?.data"
             optionLabel="name"
             optionValue="name"
             placeholder="Marque"
@@ -85,9 +85,9 @@
           </Select>
         </template>
       </Column>
-      <Column field="reference" header="Status" :showFilterMenu="false" style="min-width: 12rem">
+      <Column field="capacity" header="capacity" :showFilterMenu="false" style="min-width: 12rem">
         <template #body="{ data }">
-          {{ data.reference }}
+          {{ data.capacity }}
         </template>
 
         <template #filter="{ filterModel, filterCallback }">
@@ -107,7 +107,7 @@
               rounded
               aria-label="Filter"
               as="router-link"
-              :to="'/detail/riffle/' + data.id"
+              :to="'/detail/magazine/' + data.id"
             />
             <Button
               icon="pi pi-pencil"
@@ -115,68 +115,51 @@
               aria-label="Filter"
               severity="warn"
               as="router-link"
-              :to="'/admin/gestion/edit/weapon/riffle/' + data.id"
+              :to="'/admin/gestion/edit/magazine/' + data.id"
             />
-            <!--
-           <Button
-             icon="pi pi-trash"
-             rounded
-             aria-label="Filter"
-             severity="danger"
-             as="router-link"
-           />-->
+            <!--  <Button
+           icon="pi pi-trash"
+           rounded
+           aria-label="Filter"
+           severity="danger"
+           as="router-link"
+         />-->
           </div></template
         >
       </Column>
     </DataTable>
   </div>
 </template>
-
 <script setup lang="ts">
-import { useRiffleStore } from '@/stores/riffle'
-import { FilterMatchMode } from '@primevue/core/api'
-import { ref, watch } from 'vue'
+import { useWeaponMagazineStore } from '@/stores/weapon-magazine'
+import { ref } from 'vue'
+import IconField from 'primevue/iconfield'
+import Button from 'primevue/button'
 import DataTable from 'primevue/datatable'
-import Column from 'primevue/column'
 import InputText from 'primevue/inputtext'
+import Column from 'primevue/column'
 import InputIcon from 'primevue/inputicon'
 import Select from 'primevue/select'
-import Button from 'primevue/button'
-import IconField from 'primevue/iconfield'
+import { FilterMatchMode } from '@primevue/core/api'
 import { useFactoryStore } from '@/stores/factory'
 import { useCaliberStore } from '@/stores/caliber'
 const { category } = defineProps<{
   category: string
 }>()
-const store = useRiffleStore()
 const factoryStore = useFactoryStore()
-const { data: weaponFoctory$ } = factoryStore.getFactoriesByType('weapon')
+const { data: magazineFactory$ } = factoryStore.getFactoriesByType('magazine')
 const caliberStore = useCaliberStore()
 const { data: calibers$ } = caliberStore.getAll()
 const currentCategory = ref<string>(category)
-const {
-  data: riffles$,
-  isLoading: datasIsloading,
-  isError,
-  refetch
-} = store.getAllByCategory(currentCategory)
-
+const store = useWeaponMagazineStore()
+const { data: magazines$, isSuccess, isError, isLoading } = store.getByCategory(currentCategory)
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-  name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+  reference: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
   'factory.name': { value: null, matchMode: FilterMatchMode.EQUALS },
   'caliber.name': { value: null, matchMode: FilterMatchMode.EQUALS },
-  reference: { value: null, matchMode: FilterMatchMode.STARTS_WITH }
+  capacity: { value: null, matchMode: FilterMatchMode.STARTS_WITH }
 })
-watch(
-  () => category,
-  (newCategory) => {
-    if (newCategory !== currentCategory.value) {
-      currentCategory.value = newCategory
-      refetch()
-    }
-  }
-)
 </script>
 
 <style scoped></style>

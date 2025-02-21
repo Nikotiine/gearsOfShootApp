@@ -377,7 +377,6 @@ const { materials$ } = storeToRefs(materialStore)
 
 const { t } = useI18n()
 const buttonLabel = ref('global.save')
-const isEditForm = ref<boolean>(false)
 const { selectedOptions, riffle = null } = defineProps<{
   selectedOptions: NewWeapon
   riffle?: RiffleDto
@@ -468,7 +467,7 @@ const submit = () => {
   form.value.adjustableTriggerValue = form.value.isAdjustableTrigger
     ? adjustableTriggerValue()
     : null
-  isEditForm.value ? edit({ ...form.value, id: riffle.id }) : create(form.value)
+  riffle ? edit({ ...form.value, id: riffle.id }) : create(form.value)
 }
 
 const findMlockOptios = () => {
@@ -507,6 +506,7 @@ function resetForm(): void {
 watchEffect(() => {
   if (riffle) {
     setEditForm(riffle)
+    buttonLabel.value = 'global.edit'
   }
 })
 
@@ -532,9 +532,6 @@ function setEditForm(riffle: RiffleDto) {
   if (riffle.mLockOptions && riffle.mLockOptions.length > 0) {
     selectedMLockOptions.value = riffle.mLockOptions.map((option) => option.id)
   }
-
-  buttonLabel.value = 'global.edit'
-  isEditForm.value = true
 }
 
 /**

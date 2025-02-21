@@ -66,7 +66,7 @@ export const useHandGunStore = defineStore('hand-gun', () => {
         handgun.value = res.data
         return res
       },
-      enabled: !!id.value
+      enabled: () => id.value > 0
     })
   return {
     create: createHandGunMutation,

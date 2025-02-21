@@ -16,8 +16,8 @@ import SelectWeaponTypeComponent from '@/components/__weapon/SelectWeaponTypeCom
 import { computed, ref } from 'vue'
 import { type NewWeapon, useWeaponStore } from '@/stores/weapon'
 import { storeToRefs } from 'pinia'
-import RiffleFormComponent from '@/components/__weapon/RiffleFormComponent.vue'
-import HandGunFormComponent from '@/components/__weapon/HandGunFormComponent.vue'
+import RiffleFormComponent from '@/components/__weapon/riffle/RiffleFormComponent.vue'
+import HandGunFormComponent from '@/components/__weapon/handgun/HandGunFormComponent.vue'
 import H2FormComponent from '@/components/__weapon/H2FormComponent.vue'
 
 const store = useWeaponStore()

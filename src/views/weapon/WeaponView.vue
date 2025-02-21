@@ -1,10 +1,7 @@
 <template>
   <weapon-detail-component
-    v-if="
-      (isRiffle ? riffleStore.getRiffleById.isSuccess : handGunStore.getHandGunById.isSuccess) &&
-      weapon
-    "
-    :weapon="weapon"
+    v-if="(isRiffle ? getRiffleIsSuccess : gethandGunIsSuccess) && weapon"
+    :weapon="isRiffle ? riffle : handgun"
     :type="type"
   />
 </template>
@@ -27,16 +24,15 @@ const { id, type } = defineProps<{
 const isRiffle = computed(() => {
   return type === 'riffle'
 })
-
+const riffleId = ref<number>(0)
+const handgunId = ref<number>(0)
+const { data: riffle, isSuccess: getRiffleIsSuccess } = riffleStore.getRiffleById(riffleId)
+const { data: handgun, isSuccess: gethandGunIsSuccess } = handGunStore.getHandGunById(riffleId)
 watchEffect(() => {
   if (type === 'riffle') {
-    riffleStore.setRiffleId(parseInt(id))
-    weapon.value = riffleStore.getRiffleById.isSuccess ? riffleStore.getRiffleById.data?.data : null
+    riffleId.value = parseInt(id)
   } else {
-    handGunStore.setHandGunId(parseInt(id))
-    weapon.value = handGunStore.getHandGunById.isSuccess
-      ? handGunStore.getHandGunById.data?.data
-      : null
+    handgunId.value = parseInt(id)
   }
 })
 </script>

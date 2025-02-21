@@ -64,6 +64,14 @@ watch(
     selectedOptions.value = []
   }
 )
+watch(
+  () => initialValue,
+  (value, oldValue) => {
+    if (value !== oldValue) {
+      selectedOptions.value = value
+    }
+  }
+)
 </script>
 
 <style scoped></style>

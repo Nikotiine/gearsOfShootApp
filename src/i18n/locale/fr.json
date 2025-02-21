@@ -86,7 +86,8 @@
     "min": "Minimum",
     "max": "Maximum",
     "isLoadingError": "Erreur lors du chargement des donnees",
-    "pleaseWait": "Merci de patienter."
+    "pleaseWait": "Merci de patienter.",
+    "capacity": "Capacité"
   },
   "weapon": {
     "summary": "Gestion des armes",
@@ -154,7 +155,8 @@
       "capacity": "Capacité",
       "success": "ajouter a la base de donnee",
       "compatibleWeaponOptions": "Arme compatible"
-    }
+    },
+    "compatibleWeapons": "Armes compatibles"
   },
   "ammunition": {
     "summary": "Gestion des munition",
