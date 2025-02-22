@@ -57,7 +57,7 @@
     "ammunition": "Munition",
     "optic": "Optique",
     "rds": "Moderateur de son",
-    "category": "categorie",
+    "category": "Categorie",
     "caliber": "Calibre",
     "factory": "Marque",
     "model": "Modele",
@@ -87,7 +87,9 @@
     "max": "Maximum",
     "isLoadingError": "Erreur lors du chargement des donnees",
     "pleaseWait": "Merci de patienter.",
-    "capacity": "Capacité"
+    "capacity": "Capacité",
+    "pieces": "pieces",
+    "piece": "piece"
   },
   "weapon": {
     "summary": "Gestion des armes",
@@ -161,7 +163,8 @@
   "ammunition": {
     "summary": "Gestion des munition",
     "add": {
-      "success": "Ajouter a la base de donnee"
+      "success": "Ajouter a la base de donnee",
+      "update": "Munition modifié"
     },
     "form": {
       "add": "Ajouter une munition de categorie",

@@ -17,9 +17,20 @@
         <span class="field-capitalise">{{ t('global.factory') }}</span> :
         {{ magazine.factory.name }}
       </p>
-      <p>
+      <div>
         <span class="field-capitalise">{{ t('magazine.compatibleWeapons') }}</span> :
-      </p>
+        <div v-if="magazine.forWeaponType.name === 'Pistolet' || 'Revolver'">
+          <ul v-for="weapon in magazine.handguns" v-bind:key="weapon.id">
+            <li class="text-blue-500">{{ weapon.factory.name }} - {{ weapon.name }}</li>
+          </ul>
+        </div>
+        <div v-else>
+          <ul v-for="weapon in magazine.riffles" v-bind:key="weapon.id">
+            <li class="text-blue-500">{{ weapon.factory.name }} - {{ weapon.name }}</li>
+          </ul>
+        </div>
+      </div>
+
       <p>
         <span class="field-capitalise">{{ t('global.capacity') }}</span> :
         {{ magazine.capacity }}

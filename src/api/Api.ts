@@ -1997,11 +1997,27 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
+     * @description Retourne la munition trouver par son id
+     *
+     * @tags Ammunition
+     * @name AmmunitionControllerFindById
+     * @summary Filtré par id
+     * @request GET:/api/ammunition/by/id/{id}
+     */
+    ammunitionControllerFindById: (id: number, params: RequestParams = {}) =>
+      this.request<AmmunitionDto, any>({
+        path: `/api/ammunition/by/id/${id}`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
      * @description Retourne la liste des munitions filtre par calibre
      *
      * @tags Ammunition
      * @name AmmunitionControllerFindByCategory
-     * @summary Filtre par calibre
+     * @summary Filtré par categorie
      * @request GET:/api/ammunition/by/category/{category}
      */
     ammunitionControllerFindByCategory: (category: string, params: RequestParams = {}) =>

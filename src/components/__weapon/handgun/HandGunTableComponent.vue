@@ -107,7 +107,7 @@
               rounded
               aria-label="Filter"
               as="router-link"
-              :to="'/detail/weapon/handgun/' + data.id"
+              :to="'/admin/gestion/detail/weapon/handgun/' + data.id"
             />
             <Button
               icon="pi pi-pencil"

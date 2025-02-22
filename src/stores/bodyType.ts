@@ -25,8 +25,9 @@ export const useBodyTypeStore = defineStore('bodyType', () => {
     useQuery({
       queryKey: ['bodyTypeList'],
       queryFn: async () => {
-        bodyTypes.value = (await api.api.ammunitionBodyTypeControllerFindAllBodyTypes()).data
-        return api.api.ammunitionBodyTypeControllerFindAllBodyTypes()
+        const res = await api.api.ammunitionBodyTypeControllerFindAllBodyTypes()
+        bodyTypes.value = res.data
+        return res
       }
     })
 
