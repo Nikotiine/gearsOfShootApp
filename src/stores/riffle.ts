@@ -3,12 +3,15 @@ import { useApiStore } from '@/stores/api'
 import type { CreateRiffleDto, RiffleDto, UpdateRiffleDto } from '@/api/Api'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import { useToastStore } from '@/stores/toast'
-import { computed, type Ref, ref } from 'vue'
+import { type Ref, ref } from 'vue'
 
 export const useRiffleStore = defineStore('riffle', () => {
   const { api } = useApiStore()
   const { successMessage } = useToastStore()
+
   const riffles = ref<RiffleDto[]>([])
+  const riffle = ref<RiffleDto>()
+
   const createWeaponMutation = useMutation({
     mutationFn: async (riffle: CreateRiffleDto) => {
       return await api.api.riffleControllerCreate(riffle)
@@ -28,7 +31,6 @@ export const useRiffleStore = defineStore('riffle', () => {
       riffles.value.splice(index, 1)
       riffles.value.push(data.data)
       successMessage('weapon.summary', 'weapon.add.edit')
-      //  push('/admin/gestion/list/weapon/riffle/' + data.data.category.name)
     }
   })
 
@@ -36,10 +38,8 @@ export const useRiffleStore = defineStore('riffle', () => {
     useQuery({
       queryKey: ['get-all-riffle'],
       queryFn: async () => {
-        console.log('********', riffles.value)
         const res = await api.api.riffleControllerFindAll()
         riffles.value = res.data
-        console.log('********', riffles.value)
         return res
       },
       enabled: () => enabled.value
@@ -61,6 +61,7 @@ export const useRiffleStore = defineStore('riffle', () => {
       queryKey: ['get-riffle-by-id', id.value],
       queryFn: async () => {
         const res = await api.api.riffleControllerFindById(id.value)
+        riffle.value = res.data
         return res
       },
       enabled: () => id.value > 0
@@ -72,6 +73,7 @@ export const useRiffleStore = defineStore('riffle', () => {
     getAllByCategory: getAllRiffleByCategoryQuery,
     getAll: getAllRiffleQuery,
     getRiffleById: getRiffleById,
-    riffles$: riffles
+    riffles$: riffles,
+    riffle$: riffle
   }
 })

@@ -1,7 +1,7 @@
 <template>
   <weapon-detail-component
-    v-if="(isRiffle ? getRiffleIsSuccess : gethandGunIsSuccess) && weapon"
-    :weapon="isRiffle ? riffle : handgun"
+    v-if="(isRiffle ? getRiffleIsSuccess : getHandGunIsSuccess) && weapon"
+    :weapon="weapon"
     :type="type"
   />
 </template>
@@ -12,10 +12,11 @@ import WeaponDetailComponent from '@/components/__weapon/WeaponDetailComponent.v
 import { useRiffleStore } from '@/stores/riffle'
 import { useHandGunStore } from '@/stores/hand-gun'
 import type { WeaponViewModel } from '@/stores/weapon'
+import { storeToRefs } from 'pinia'
 export type WeaponViewType = 'riffle' | 'handgun'
 const riffleStore = useRiffleStore()
 const handGunStore = useHandGunStore()
-const weapon = ref<WeaponViewModel | null>(null)
+const weapon = ref<WeaponViewModel>()
 const { id, type } = defineProps<{
   id: string
   type: WeaponViewType
@@ -26,13 +27,21 @@ const isRiffle = computed(() => {
 })
 const riffleId = ref<number>(0)
 const handgunId = ref<number>(0)
-const { data: riffle, isSuccess: getRiffleIsSuccess } = riffleStore.getRiffleById(riffleId)
-const { data: handgun, isSuccess: gethandGunIsSuccess } = handGunStore.getHandGunById(riffleId)
+const { isSuccess: getRiffleIsSuccess } = riffleStore.getRiffleById(riffleId)
+const { isSuccess: getHandGunIsSuccess } = handGunStore.getHandGunById(handgunId)
+const { handgun$ } = storeToRefs(handGunStore)
+const { riffle$ } = storeToRefs(riffleStore)
 watchEffect(() => {
   if (type === 'riffle') {
     riffleId.value = parseInt(id)
+    if (riffle$.value) {
+      weapon.value = { ...riffle$.value }
+    }
   } else {
     handgunId.value = parseInt(id)
+    if (handgun$.value) {
+      weapon.value = { ...handgun$.value }
+    }
   }
 })
 </script>

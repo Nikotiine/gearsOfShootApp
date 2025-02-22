@@ -2,19 +2,17 @@ import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
 import { useToastStore } from '@/stores/toast'
 import { useMutation, useQuery } from '@tanstack/vue-query'
-import type {
-  CreateWeaponMagazineDto,
-  FactoryDto,
-  UpdateWeaponMagazineDto,
-  WeaponMagazineDto
-} from '@/api/Api'
+import type { CreateWeaponMagazineDto, UpdateWeaponMagazineDto, WeaponMagazineDto } from '@/api/Api'
 import { type Ref, ref } from 'vue'
 
 export const useWeaponMagazineStore = defineStore('weaponMagazine', () => {
+  // Appel API
   const { api } = useApiStore()
+  // TOAST
   const { successMessage } = useToastStore()
-
+  // Refs
   const magazines = ref<WeaponMagazineDto[]>([])
+  const magazine = ref<WeaponMagazineDto>()
 
   const createWeaponMagazineMutation = useMutation({
     mutationFn: async (magazine: CreateWeaponMagazineDto) => {
@@ -54,7 +52,6 @@ export const useWeaponMagazineStore = defineStore('weaponMagazine', () => {
       queryFn: async () => {
         const res = await api.api.magazineControllerFindByCategory(category.value)
         magazines.value = res.data
-        console.log(magazines.value)
         return res
       },
       enabled: !!category.value
@@ -65,12 +62,13 @@ export const useWeaponMagazineStore = defineStore('weaponMagazine', () => {
       queryKey: ['getById', id.value],
       queryFn: async () => {
         const res = await api.api.magazineControllerFindById(id.value)
+        magazine.value = res.data
         return res
       },
       enabled: !!id.value
     })
 
-  const updateMAgazineMutation = useMutation({
+  const updateMagazineMutation = useMutation({
     mutationFn: async (magazine: UpdateWeaponMagazineDto) => {
       return await api.api.magazineControllerEdit(magazine.id, magazine)
     },
@@ -87,6 +85,7 @@ export const useWeaponMagazineStore = defineStore('weaponMagazine', () => {
     getByFactoryId: getMagazineByFactory,
     getByCategory: getAllByCategoryQuery,
     magazines$: magazines,
-    edit: updateMAgazineMutation
+    magazine$: magazine,
+    edit: updateMagazineMutation
   }
 })

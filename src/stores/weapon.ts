@@ -78,7 +78,6 @@ export interface WeaponViewModel {
   adjustableTriggerValue: string
   percussionType: PercussionTypeDto
   providedMagazineQuantity: number
-  providedMagazine: WeaponMagazineDto
   barrelSize: number
   buttMaterial: MaterialDto
   isAdjustableFrontSight: boolean

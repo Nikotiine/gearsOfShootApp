@@ -4,15 +4,14 @@ import { useToastStore } from '@/stores/toast'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import type { CreateHandGunDto, HandGunDto, UpdateHandGunDto } from '@/api/Api'
 import { type Ref, ref } from 'vue'
-import { useRouter } from 'vue-router'
 
 export const useHandGunStore = defineStore('hand-gun', () => {
   const { api } = useApiStore()
   const { successMessage } = useToastStore()
-  const { push } = useRouter()
 
   const handguns = ref<HandGunDto[]>([])
   const handgun = ref<HandGunDto | null>(null)
+
   const createHandGunMutation = useMutation({
     mutationFn: async (handgun: CreateHandGunDto) => {
       return await api.api.handGunControllerCreate(handgun)
@@ -32,7 +31,6 @@ export const useHandGunStore = defineStore('hand-gun', () => {
       handguns.value.splice(index, 1)
       handguns.value.push(data.data)
       successMessage('weapon.summary', 'weapon.add.edit')
-      push('/admin/gestion/list/weapon/handgun/' + data.data.category.name)
     }
   })
 
@@ -73,7 +71,7 @@ export const useHandGunStore = defineStore('hand-gun', () => {
     edit: updateHandGunMutation,
     getAllByCategory: getAllHandGunByCategoryQuery,
     getHandGunById: getHandGunById,
-    handgunById: handgun,
+    handgun$: handgun,
     getAll: getAllHandgunQuery,
     handguns$: handguns
   }
