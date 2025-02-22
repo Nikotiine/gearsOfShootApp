@@ -9,7 +9,7 @@
       :rows="10"
       dataKey="id"
       filterDisplay="row"
-      :loading="storeAreLoading"
+      :loading="storeAreLoading.value"
       :globalFilterFields="['name', 'factory.name', 'caliber.name', 'reference']"
     >
       <template #header>
@@ -54,7 +54,7 @@
           <Select
             v-model="filterModel.value"
             @change="filterCallback()"
-            :options="factories$"
+            :options="factories$?.data"
             optionLabel="name"
             optionValue="name"
             placeholder="Marque"
@@ -77,7 +77,7 @@
           <Select
             v-model="filterModel.value"
             @change="filterCallback()"
-            :options="calibers$"
+            :options="calibers$?.data"
             placeholder="Calibre"
             optionLabel="name"
             optionValue="name"
@@ -101,25 +101,34 @@
           />
         </template>
       </Column>
-      <!--        <Column field="verified" header="Verified" dataType="boolean" style="min-width: 6rem">
-          <template #body="{ data }">
-            <i
-              class="pi"
-              :class="{
-                'pi-check-circle text-green-500': data.verified,
-                'pi-times-circle text-red-400': !data.verified
-              }"
-            ></i>
-          </template>
-          <template #filter="{ filterModel, filterCallback }">
-            <Checkbox
-              v-model="filterModel.value"
-              :indeterminate="filterModel.value === null"
-              binary
-              @change="filterCallback()"
+      <Column header="Actions" :showFilterMenu="false" style="min-width: 12rem">
+        <template #body="{ data }">
+          <div class="flex justify-between">
+            <Button
+              icon="pi pi-eye"
+              rounded
+              aria-label="Filter"
+              as="router-link"
+              :to="'/admin/gestion/detail/ammunition/' + data.id"
             />
-          </template>
-        </Column>-->
+            <Button
+              icon="pi pi-pencil"
+              rounded
+              aria-label="Filter"
+              severity="warn"
+              as="router-link"
+              :to="'/admin/gestion/edit/ammunition/' + data.id"
+            />
+            <!--  <Button
+           icon="pi pi-trash"
+           rounded
+           aria-label="Filter"
+           severity="danger"
+           as="router-link"
+         />-->
+          </div></template
+        >
+      </Column>
     </DataTable>
   </div>
 </template>
@@ -137,6 +146,7 @@ import { computed, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { FilterMatchMode } from '@primevue/core/api'
 import { useI18n } from 'vue-i18n'
+import Button from 'primevue/button'
 const { category } = defineProps<{
   category: string
 }>()
@@ -144,11 +154,10 @@ const { t } = useI18n()
 const store = useAmmunitionStore()
 const caliberStore = useCaliberStore()
 const factoryStore = useFactoryStore()
-factoryStore.setTypeOfFactories('ammunition')
+const { data: factories$ } = factoryStore.getFactoriesByType('ammunition')
 const currentCategory = ref<string>(category)
 const { data, refetch, isError, isLoading: storeIsLoading } = store.getByCategory(currentCategory)
-const { calibers$ } = storeToRefs(caliberStore)
-const { factories$ } = storeToRefs(factoryStore)
+const { data: calibers$, isLoading: gatAllCalibersIsSuccess } = caliberStore.getAll()
 
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -159,7 +168,7 @@ const filters = ref({
 })
 
 const storeAreLoading = computed(() => {
-  return caliberStore.getAll.isLoading || storeIsLoading.value
+  return gatAllCalibersIsSuccess || storeIsLoading
 })
 
 watch(

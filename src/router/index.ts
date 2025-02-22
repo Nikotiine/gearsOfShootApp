@@ -53,7 +53,6 @@ const router = createRouter({
         {
           path: 'gestion/add/ammunition',
           name: 'ammunitionForm',
-
           component: () => import('../views/ammunition/AdminAmmunitionFormView.vue')
         },
         {
@@ -61,6 +60,18 @@ const router = createRouter({
           props: true,
           name: 'ammunitionList',
           component: () => import('../views/ammunition/AdminAmmunitionListView.vue')
+        },
+        {
+          path: 'gestion/detail/ammunition/:id',
+          name: 'detailAmmunition',
+          props: true,
+          component: () => import('../views/ammunition/AdminAmmunitionDetailView.vue')
+        },
+        {
+          path: 'gestion/edit/ammunition/:id',
+          name: 'editFormAmmunition',
+          props: true,
+          component: () => import('../views/ammunition/AdminAmmunitionFormView.vue')
         },
         {
           path: 'gestion/list/magazine/:category',
@@ -88,6 +99,7 @@ const router = createRouter({
           name: 'opticForm',
           component: () => import('../views/optic/AdminOpticFormView.vue')
         },
+
         {
           path: 'gestion/add/headType',
           name: 'headTypeForm',

@@ -3,7 +3,7 @@
     <h2 class="text-center mt-2 text-2xl">
       {{ t('ammunition.form.add') }} {{ selectedCategory?.name }}
     </h2>
-    <form @submit.prevent="submit">
+    <form @submit.prevent="submit" v-if="storesAreLoaded">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 p-4">
         <InputGroup>
           <input-group-required-icon :is-validate="form.categoryId > 0" />
@@ -136,7 +136,7 @@
       </div>
 
       <div class="text-center">
-        <Button type="submit" :label="t('global.save')" :disabled="!isFormValid"></Button>
+        <Button type="submit" :label="t(buttonLabel)" :disabled="!isFormValid"></Button>
       </div>
     </form>
   </div>
@@ -146,12 +146,11 @@ import Textarea from 'primevue/textarea'
 import InputGroupAddon from 'primevue/inputgroupaddon'
 import Button from 'primevue/button'
 import InputGroup from 'primevue/inputgroup'
-
 import { useAmmunitionStore } from '@/stores/ammunition'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
-import { type CreateAmmunitionDto } from '@/api/Api'
-import { computed, ref } from 'vue'
+import { type AmmunitionDto, type CreateAmmunitionDto, type UpdateAmmunitionDto } from '@/api/Api'
+import { computed, ref, watchEffect } from 'vue'
 import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
 import InputGroupAddonOpenDrawerButton from '@/components/__form/InputGroupAddonOpenDrawerButton.vue'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
@@ -163,19 +162,28 @@ import { useCaliberStore } from '@/stores/caliber'
 import { useHeadTypeStore } from '@/stores/headType'
 import { useBodyTypeStore } from '@/stores/bodyType'
 import { useWeaponCategoryStore } from '@/stores/weapon-category'
+
+const { ammunition = null } = defineProps<{
+  ammunition?: AmmunitionDto
+}>()
+
 const { t } = useI18n()
+const buttonLabel = ref('global.save')
 const store = useAmmunitionStore()
 const factoryStore = useFactoryStore()
-factoryStore.setTypeOfFactories('ammunition')
+const { isSuccess: factoriesQueryIsSuccess } = factoryStore.getFactoriesByType('ammunition')
 const caliberStore = useCaliberStore()
+const { isSuccess: calibersQueryIsSuccess } = caliberStore.getAll()
 const headTypeStore = useHeadTypeStore()
+const { isSuccess: headTypesQueryIsSuccess } = headTypeStore.getAll()
 const bodyTypeStore = useBodyTypeStore()
+const { isSuccess: bodyTypesQueryIsSuccess } = bodyTypeStore.getAll()
 const categorieStore = useWeaponCategoryStore()
 const { factories$ } = storeToRefs(factoryStore)
 const { calibers$ } = storeToRefs(caliberStore)
 const { headTypes$ } = storeToRefs(headTypeStore)
 const { bodyTypes$ } = storeToRefs(bodyTypeStore)
-const { data: categories$, isLoading: categorieStoreGetallIsLoading } = categorieStore.getAll()
+const { data: categories$, isSuccess: categoriesQueryIsSuccess } = categorieStore.getAll()
 const initialCreateAmmunitionFormObject: CreateAmmunitionDto = {
   bodyTypeId: 0,
   caliberId: 0,
@@ -206,11 +214,53 @@ const isFormValid = computed(() => {
   return isValid
 })
 const submit = () => {
-  store.create.mutate(form.value)
+  if (ammunition) {
+    update({ ...form.value, id: ammunition.id })
+  } else {
+    create(form.value)
+  }
+}
+
+const update = (ammunition: UpdateAmmunitionDto) => {
+  store.update.mutate(ammunition)
+}
+
+const create = (ammunition: CreateAmmunitionDto) => {
+  store.create.mutate(ammunition)
   form.value = { ...initialCreateAmmunitionFormObject }
 }
+
 const selectedCategory = computed(() => {
   return categories$.value?.data.find((category) => category.id === form.value.categoryId)
+})
+watchEffect(() => {
+  if (ammunition) {
+    setEditForm(ammunition)
+    buttonLabel.value = 'global.edit'
+  }
+})
+const setEditForm = (ammunition: AmmunitionDto) => {
+  form.value = {
+    ...ammunition,
+    bodyTypeId: ammunition.bodyType.id,
+    factoryId: ammunition.factory.id,
+    headTypeId: ammunition.headType.id,
+    caliberId: ammunition.caliber.id,
+    categoryId: ammunition.category.id,
+    percussionTypeId: ammunition.percussionType.id
+  }
+}
+/**
+ * Verification que tout les store sont chager avant d'afficher la page
+ */
+const storesAreLoaded = computed(() => {
+  return (
+    calibersQueryIsSuccess &&
+    factoriesQueryIsSuccess &&
+    headTypesQueryIsSuccess &&
+    bodyTypesQueryIsSuccess &&
+    categoriesQueryIsSuccess
+  )
 })
 </script>
 

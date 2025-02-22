@@ -4,7 +4,7 @@
 <script setup lang="ts">
 import MagazineFormComponent from '@/components/__weaponMagazine/MagazineFormComponent.vue'
 import { useWeaponMagazineStore } from '@/stores/weapon-magazine'
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 const { id = null } = defineProps<{
   id?: string
 }>()
