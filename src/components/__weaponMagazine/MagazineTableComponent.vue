@@ -107,7 +107,7 @@
               rounded
               aria-label="Filter"
               as="router-link"
-              :to="'/detail/magazine/' + data.id"
+              :to="'/admin/gestion/detail/magazine/' + data.id"
             />
             <Button
               icon="pi pi-pencil"
