@@ -11,8 +11,8 @@ import type { MenuItem } from 'primevue/menuitem'
 import { ref } from 'vue'
 import { useConnexionStore } from '@/stores/connexion'
 import { useRegisterStore } from '@/stores/register'
-const { toggleConnexionDialog } = useConnexionStore()
-const { toggleRegisterDialog } = useRegisterStore()
+const connexionStore = useConnexionStore()
+const registerStore = useRegisterStore()
 import { useI18n } from 'vue-i18n'
 const { t, locale } = useI18n()
 const items: MenuItem = ref([
@@ -21,7 +21,7 @@ const items: MenuItem = ref([
     icon: 'pi pi-sign-in',
     subtext: 'Subtext of item',
     command: () => {
-      toggleConnexionDialog()
+      connexionStore.toggleConnexionDialog()
     }
   },
   {
@@ -29,7 +29,7 @@ const items: MenuItem = ref([
     icon: 'pi pi-user-plus',
     subtext: 'Subtext of item',
     command: () => {
-      toggleRegisterDialog()
+      registerStore.toggleRegisterDialog()
     }
   },
   {

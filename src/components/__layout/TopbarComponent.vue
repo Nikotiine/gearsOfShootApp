@@ -80,9 +80,10 @@ import RegisterDialog from '@/components/__dialog/RegisterDialog.vue'
 import { useSecurityStore } from '@/stores/security'
 import ConnexionSplitButton from '@/components/__layout/ConnexionSplitButton.vue'
 import ConnectedSplitButton from '@/components/__layout/ConnectedSplitButton.vue'
-
+import { useRouter } from 'vue-router'
+const { push } = useRouter()
 const { t } = useI18n()
-const { isLogged, logout } = useSecurityStore()
+const { isLogged } = useSecurityStore()
 
 const items = ref([
   {
@@ -92,7 +93,14 @@ const items = ref([
       [
         {
           items: [
-            { label: 'categoryC', icon: 'pi pi-list', subtext: 'Subtext of item' },
+            {
+              label: 'categoryC',
+              icon: 'pi pi-list',
+              subtext: 'Subtext of item',
+              command: () => {
+                push('/tir/sportif/categorie/c')
+              }
+            },
             { label: 'ammoC', icon: 'pi pi-users', subtext: 'Subtext of item' },
             { label: 'accessC', icon: 'pi pi-file', subtext: 'Subtext of item' }
           ]

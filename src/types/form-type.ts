@@ -1,0 +1,11 @@
+export type DrawerType =
+  | 'caliber'
+  | 'factory'
+  | 'material'
+  | 'color'
+  | 'opticRail'
+  | 'threadSize'
+  | 'weaponType'
+  | 'magazine'
+  | 'bodyType'
+  | 'headType'

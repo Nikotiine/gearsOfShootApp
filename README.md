@@ -1,4 +1,4 @@
-# front
+# Front-end Gears of weapons
 
 This template should help get you started developing with Vue 3 in Vite.
 
@@ -19,11 +19,19 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
 ```sh
 npm install
 ```
-
+### Clone & install Back-end project
+```sh
+git clone https://github.com/Nikotiine/gearsOfShootApi.git
+```
 ### Compile and Hot-Reload for Development
 
 ```sh
 npm run dev
+```
+
+### Update model form API
+```sh
+npm run swagger:generate
 ```
 
 ### Type-Check, Compile and Minify for Production
