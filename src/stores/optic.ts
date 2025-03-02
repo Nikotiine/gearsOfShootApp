@@ -2,31 +2,52 @@ import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
 import { useToastStore } from '@/stores/toast'
 import { useMutation, useQuery } from '@tanstack/vue-query'
-import type { CreateOpticDto, OpticDto, OpticUnitDto } from '@/api/Api'
-import { ref } from 'vue'
+import type {
+  CreateOpticDto,
+  FocalPlaneDto,
+  OpticDto,
+  OpticTypeDto,
+  OpticUnitDto,
+  UpdateOpticDto
+} from '@/api/Api'
+import { type Ref, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 export const useOpticStore = defineStore('optic', () => {
+  // Appel API
   const { api } = useApiStore()
+  // TOAST
   const { successMessage } = useToastStore()
+  // I18N
+  const { t } = useI18n()
+  // Refs
   const opticUnits = ref<OpticUnitDto[]>([])
+  const opticType = ref<OpticTypeDto[]>([])
+  const focalPlanes = ref<FocalPlaneDto[]>([])
   const optics = ref<OpticDto[]>([])
+  const optic = ref<OpticDto>()
+  // *******************Methodes***************
   const queryPrerequisitesOpticList = useQuery({
     queryKey: ['prerequisite-optic'],
     queryFn: async () => {
       const res = await api.api.opticControllerFindPrerequisitesOpticList()
+      opticType.value = res.data.types
       opticUnits.value = res.data.units
+      focalPlanes.value = res.data.focalPlanes
       return res
     }
   })
 
-  const getAllOpticsQuery = useQuery({
-    queryKey: ['all-optics'],
-    queryFn: async () => {
-      const res = await api.api.opticControllerFindAllOptics()
-      optics.value = res.data
-      return res
-    }
-  })
+  const getAllOpticsQuery = () =>
+    useQuery({
+      queryKey: ['all-optics'],
+      queryFn: async () => {
+        console.log('all')
+        const res = await api.api.opticControllerFindAllOptics()
+        optics.value = res.data
+        return res
+      }
+    })
 
   const createOpticMutation = useMutation({
     mutationFn: async (optic: CreateOpticDto) => {
@@ -38,10 +59,58 @@ export const useOpticStore = defineStore('optic', () => {
     }
   })
 
+  const updateOpticMutation = useMutation({
+    mutationFn: async (optic: UpdateOpticDto) => {
+      return await api.api.opticControllerEdit(optic.id, optic)
+    },
+    onSuccess(data) {
+      const index = optics.value.findIndex((optic) => optic.id === data.data.id)
+      optics.value.splice(index, 1)
+      optics.value.push(data.data)
+      successMessage('optic.summary', 'optic.form.success')
+    }
+  })
+
+  const _deleteMutation = useMutation({
+    mutationFn: async (opticId: number) => {
+      return await api.api.opticControllerDelete(opticId)
+    },
+    onSuccess(data) {
+      if (data.data.isSuccess) {
+        const index = optics.value.findIndex((optic) => optic.id === data.data.id)
+        optics.value.splice(index, 1)
+        successMessage('optic.summary', t(data.data.message))
+      }
+    }
+  })
+
+  const deleteFunction = (id: number) => {
+    _deleteMutation.mutate(id)
+  }
+
+  const getByIdQuery = (id: Ref<number>) =>
+    useQuery({
+      queryKey: ['getOpticByIdQuery', id.value],
+      queryFn: async () => {
+        const res = await api.api.opticControllerFindById(id.value)
+        optic.value = res.data
+        return res
+      },
+      enabled: () => id.value > 0,
+      retry: 0
+    })
+
   return {
     prerequisiteOpticQuery: queryPrerequisitesOpticList,
     create: createOpticMutation,
+    edit: updateOpticMutation,
+    delete: deleteFunction,
     units$: opticUnits,
-    getAll: getAllOpticsQuery
+    types$: opticType,
+    focalPlanes$: focalPlanes,
+    getAll: getAllOpticsQuery,
+    getById: getByIdQuery,
+    optic$: optic,
+    optics$: optics
   }
 })

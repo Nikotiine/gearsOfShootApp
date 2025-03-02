@@ -880,7 +880,9 @@ export interface OpticDto {
   factory: FactoryDto
   /** @example "Une description de l optique ..." */
   description: string | null
+  isCollarsProvided: boolean
   maxZoom: number
+  length: number
   minZoom: number
   maxDrift: number
   maxElevation: number
@@ -893,22 +895,14 @@ export interface OpticDto {
   opticUnit: OpticUnitDto
   focalPlane: FocalPlaneDto
   type: OpticTypeDto
-}
-
-export interface OpticCollarDto {
-  id: number
-  diameter: number
-  height: number
-  railSize: RailSizeDto
-  factory: FactoryDto
+  reference: string
+  eyeRelief: number
 }
 
 export interface ListOfPrerequisitesOpticDto {
   types: OpticTypeDto[]
-  factories: FactoryDto[]
   units: OpticUnitDto[]
   focalPlanes: FocalPlaneDto[]
-  opticCollars: OpticCollarDto[]
 }
 
 export interface CreateOpticDto {
@@ -932,7 +926,6 @@ export interface CreateOpticDto {
   length: number
   eyeRelief: number
   isCollarsProvided: boolean
-  providedCollarId: number | null
 }
 
 export interface UpdateOpticDto {
@@ -956,7 +949,6 @@ export interface UpdateOpticDto {
   length: number
   eyeRelief: number
   isCollarsProvided: boolean
-  providedCollarId: number | null
   id: number
 }
 

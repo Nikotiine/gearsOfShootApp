@@ -85,7 +85,7 @@
           </Select>
         </template>
       </Column>
-      <Column field="capacity" header="capacity" :showFilterMenu="false" style="min-width: 12rem">
+      <Column field="capacity" header="Capacité" :showFilterMenu="false" style="min-width: 3rem">
         <template #body="{ data }">
           {{ data.capacity }}
         </template>
@@ -95,46 +95,28 @@
             v-model="filterModel.value"
             type="text"
             @input="filterCallback()"
-            placeholder="Recherche par reference"
+            placeholder="Recherche par capacité"
           />
         </template>
       </Column>
-      <Column header="Actions" :showFilterMenu="false" style="min-width: 12rem">
+      <Column header="Actions" :showFilterMenu="false" style="min-width: 2rem">
         <template #body="{ data }">
-          <div class="flex justify-between">
-            <Button
-              icon="pi pi-eye"
-              rounded
-              aria-label="Filter"
-              as="router-link"
-              :to="'/admin/gestion/detail/magazine/' + data.id"
-            />
-            <Button
-              icon="pi pi-pencil"
-              rounded
-              aria-label="Filter"
-              severity="warn"
-              as="router-link"
-              :to="'/admin/gestion/edit/magazine/' + data.id"
-            />
-            <!--  <Button
-           icon="pi pi-trash"
-           rounded
-           aria-label="Filter"
-           severity="danger"
-           as="router-link"
-         />-->
-          </div></template
-        >
+          <action-menu-component
+            @on-click-action="onClickAction"
+            type="magazine"
+            :reference="data.reference"
+            :id="data.id"
+          />
+        </template>
       </Column>
     </DataTable>
   </div>
 </template>
 <script setup lang="ts">
 import { useWeaponMagazineStore } from '@/stores/weapon-magazine'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import IconField from 'primevue/iconfield'
-import Button from 'primevue/button'
+
 import DataTable from 'primevue/datatable'
 import InputText from 'primevue/inputtext'
 import Column from 'primevue/column'
@@ -143,6 +125,13 @@ import Select from 'primevue/select'
 import { FilterMatchMode } from '@primevue/core/api'
 import { useFactoryStore } from '@/stores/factory'
 import { useCaliberStore } from '@/stores/caliber'
+
+import { RouterEnum } from '@/enum/router.enum'
+import ActionMenuComponent, {
+  type ActionMenuEmit
+} from '@/components/__table/ActionMenuComponent.vue'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 const { category } = defineProps<{
   category: string
 }>()
@@ -152,7 +141,7 @@ const caliberStore = useCaliberStore()
 const { data: calibers$ } = caliberStore.getAll()
 const currentCategory = ref<string>(category)
 const store = useWeaponMagazineStore()
-const { data: magazines$, isSuccess, isError, isLoading } = store.getByCategory(currentCategory)
+const { data: magazines$, isError, isLoading, refetch } = store.getByCategory(currentCategory)
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   reference: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
@@ -160,6 +149,29 @@ const filters = ref({
   'caliber.name': { value: null, matchMode: FilterMatchMode.EQUALS },
   capacity: { value: null, matchMode: FilterMatchMode.STARTS_WITH }
 })
+watch(
+  () => category,
+  (newCategory) => {
+    if (newCategory !== currentCategory.value) {
+      currentCategory.value = newCategory
+      refetch()
+    }
+  }
+)
+const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
+  switch (event) {
+    case 'view':
+      router.push({ name: RouterEnum.MAGAZINE_DETAIL, params: { id: id } })
+      break
+    case 'edit':
+      router.push({ name: RouterEnum.MAGAZINE_EDIT, params: { id: id } })
+      break
+    case true:
+      store.delete(id)
+      refetch()
+      break
+  }
+}
 </script>
 
 <style scoped></style>

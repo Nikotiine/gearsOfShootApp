@@ -89,7 +89,8 @@
     "pleaseWait": "Merci de patienter.",
     "capacity": "Capacité",
     "pieces": "pieces",
-    "piece": "piece"
+    "piece": "piece",
+    "delete": "Supprimer"
   },
   "weapon": {
     "summary": "Gestion des armes",
@@ -225,6 +226,10 @@
       "opticUnit": "Unite de graduation",
       "isParallax": "Parallaxe"
     },
+    "list": {
+      "title": "Liste des optiques",
+      "notFound": "Aucune optique trouvée"
+    },
     "common": {
       "opticType": "Type d'optique",
       "focalPlane": "Plan focal",
@@ -241,7 +246,8 @@
       "bodyDiameter": "Diametre du corps",
       "eyeRelief": "Degagement occulaire",
       "minParallax": "Parallax mini",
-      "maxParallax": "Parallax maxi"
+      "maxParallax": "Parallax maxi",
+      "opticUnit": "Unite de graduation"
     }
   },
   "factory": {
@@ -300,6 +306,7 @@
     "0102": "Munition deja existante",
     "0200": "Type d arme deja existante",
     "0201": "Arme deja existante",
+    "0302": "Optique non trouve, veuillez recommencez",
     "0600": "Marque deja existante"
   },
   "tooltip": {
@@ -323,5 +330,12 @@
   "inputMultiSelect": {
     "emptyDefaultMessage": "Aucune donnée trouvée",
     "defaultPlaceHolder": "Selectionner"
+  },
+  "confirmDialog": {
+    "deleteConfirmation": "Etes vous sur de vouloir supprimer :",
+    "withReference": "avec la reference :"
+  },
+  "deleteMessage": {
+    "000": "Optique supprimeée"
   }
 }

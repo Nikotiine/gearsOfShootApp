@@ -4,14 +4,19 @@ import { useToastStore } from '@/stores/toast'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import type { CreateHandGunDto, HandGunDto, UpdateHandGunDto } from '@/api/Api'
 import { type Ref, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 export const useHandGunStore = defineStore('hand-gun', () => {
+  // Appel API
   const { api } = useApiStore()
+  // TOAST
   const { successMessage } = useToastStore()
-
+  // I18N
+  const { t } = useI18n()
+  // Refs
   const handguns = ref<HandGunDto[]>([])
   const handgun = ref<HandGunDto | null>(null)
-
+  // *******************Methodes***************
   const createHandGunMutation = useMutation({
     mutationFn: async (handgun: CreateHandGunDto) => {
       return await api.api.handGunControllerCreate(handgun)
@@ -66,9 +71,27 @@ export const useHandGunStore = defineStore('hand-gun', () => {
       },
       enabled: () => id.value > 0
     })
+
+  const _deleteMutation = useMutation({
+    mutationFn: async (opticId: number) => {
+      return await api.api.handGunControllerDelete(opticId)
+    },
+    onSuccess(data) {
+      if (data.data.isSuccess) {
+        const index = handguns.value.findIndex((optic) => optic.id === data.data.id)
+        handguns.value.splice(index, 1)
+        successMessage('optic.summary', t(data.data.message))
+      }
+    }
+  })
+
+  const deleteFunction = (id: number) => {
+    _deleteMutation.mutate(id)
+  }
   return {
     create: createHandGunMutation,
     edit: updateHandGunMutation,
+    delete: deleteFunction,
     getAllByCategory: getAllHandGunByCategoryQuery,
     getHandGunById: getHandGunById,
     handgun$: handgun,

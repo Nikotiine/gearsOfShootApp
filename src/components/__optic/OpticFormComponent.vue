@@ -2,14 +2,11 @@
   <div class="card">
     <h2 class="text-center mt-2 text-2xl">{{ t('optic.form.addTitle') }}</h2>
     <form @submit.prevent="submit">
-      <div
-        class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4"
-        v-if="store.prerequisiteOpticQuery.isSuccess"
-      >
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4" v-if="storesAreLoaded">
         <InputGroup>
           <input-group-required-icon :is-validate="form.factoryId > 0" />
           <input-group-select
-            :options="store.prerequisiteOpticQuery.data.data.factories"
+            :options="factories$"
             label="global.factory"
             @option-id="(event) => (form.factoryId = event)"
             required
@@ -36,14 +33,13 @@
         <InputGroup>
           <input-group-required-icon :is-validate="form.focalPlaneId > 0" />
           <input-group-select
-            :options="store.prerequisiteOpticQuery.data.data.focalPlanes"
+            :options="store.prerequisiteOpticQuery.data?.data.focalPlanes"
             label="optic.common.focalPlane"
             @option-id="(event) => (form.focalPlaneId = event)"
             required
             input-id="focalPlaneId"
             :initial-value="form.focalPlaneId"
           />
-          <!--          <input-group-addon-open-drawer-button type="factory" :open-drawer="openDrawer" />-->
         </InputGroup>
 
         <InputGroup>
@@ -62,7 +58,7 @@
         <InputGroup>
           <input-group-required-icon :is-validate="form.opticUnitId > 0" />
           <input-group-select
-            :options="store.prerequisiteOpticQuery.data.data.units"
+            :options="store.prerequisiteOpticQuery.data?.data.units"
             label="optic.form.opticUnit"
             @option-id="(event) => (form.opticUnitId = event)"
             required
@@ -207,21 +203,13 @@
           <InputGroupAddon>yard</InputGroupAddon>
         </InputGroup>
 
-        <InputGroup>
+        <InputGroup class="h-14">
           <input-group-optional-icon />
           <input-group-check-box
             input-id="isCollarsProvided"
             label="optic.common.isCollarsProvided"
             @checked="(event) => (form.isCollarsProvided = event)"
             :checked="form.isCollarsProvided"
-          />
-          <input-group-select
-            :options="store.prerequisiteOpticQuery.data.data.opticCollars"
-            label="optic.common.collar"
-            @option-id="(event) => (form.providedCollarId = event)"
-            input-id="providedCollarId"
-            :initial-value="form.providedCollarId ?? 0"
-            :disabled="!form.isCollarsProvided"
           />
         </InputGroup>
       </div>
@@ -243,14 +231,14 @@
       </div>
 
       <div class="text-center">
-        <Button type="submit" :label="t('global.save')" :disabled="!isFormValid"></Button>
+        <Button type="submit" :label="t(buttonLabel)" :disabled="!isFormValid"></Button>
       </div>
     </form>
   </div>
 </template>
 <script setup lang="ts">
-import { type CreateOpticDto } from '@/api/Api'
-import { computed, ref } from 'vue'
+import { type CreateOpticDto, type OpticDto, type UpdateOpticDto } from '@/api/Api'
+import { computed, ref, watchEffect } from 'vue'
 import { useOpticStore } from '@/stores/optic'
 import InputGroup from 'primevue/inputgroup'
 import Textarea from 'primevue/textarea'
@@ -265,10 +253,17 @@ import InputGroupText from '@/components/__form/InputGroupText.vue'
 import InputGroupNumber from '@/components/__form/InputGroupNumber.vue'
 import InputGroupCheckBox from '@/components/__form/InputGroupCheckBox.vue'
 import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.vue'
-import InputGroupMultiSelect from '@/components/__form/InputGroupMultiSelect.vue'
+import { useFactoryStore } from '@/stores/factory'
 const store = useOpticStore()
+const factoryStore = useFactoryStore()
+const { isSuccess: factoriesQueryIsSuccess } = factoryStore.getFactoriesByType('optic')
+const { factories$ } = storeToRefs(factoryStore)
 const { units$ } = storeToRefs(store)
 const { t } = useI18n()
+const buttonLabel = ref('global.save')
+const { optic = null } = defineProps<{
+  optic?: OpticDto
+}>()
 const initialCreateOpticFormObject: CreateOpticDto = {
   name: '',
   bodyDiameter: 0,
@@ -288,8 +283,7 @@ const initialCreateOpticFormObject: CreateOpticDto = {
   opticTypeId: 0,
   eyeRelief: 0,
   isCollarsProvided: false,
-  length: 0,
-  providedCollarId: null
+  length: 0
 }
 const form = ref<CreateOpticDto>({
   ...initialCreateOpticFormObject
@@ -310,8 +304,19 @@ const isFormValid = computed(() => {
   return isValid
 })
 const submit = () => {
-  store.create.mutate(form.value)
+  if (optic) {
+    edit({ ...form.value, id: optic.id })
+  } else {
+    create(form.value)
+  }
+}
+
+const create = (optic: CreateOpticDto) => {
+  store.create.mutate(optic)
   form.value = { ...initialCreateOpticFormObject }
+}
+const edit = (optic: UpdateOpticDto) => {
+  store.edit.mutate(optic)
 }
 const clickValueOption = computed(() => {
   const moaOptions = [
@@ -327,6 +332,24 @@ const clickValueOption = computed(() => {
     return mradOptions
   }
 })
+const storesAreLoaded = computed(() => {
+  return store.prerequisiteOpticQuery.isSuccess && factoriesQueryIsSuccess
+})
+watchEffect(() => {
+  if (optic) {
+    setEditForm(optic)
+    buttonLabel.value = 'global.edit'
+  }
+})
+const setEditForm = (optic: OpticDto) => {
+  form.value = {
+    ...optic,
+    factoryId: optic.factory.id,
+    focalPlaneId: optic.focalPlane.id,
+    opticTypeId: optic.type.id,
+    opticUnitId: optic.opticUnit.id
+  }
+}
 </script>
 
 <style scoped></style>

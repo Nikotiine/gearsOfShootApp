@@ -4,14 +4,19 @@ import type { CreateRiffleDto, RiffleDto, UpdateRiffleDto } from '@/api/Api'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import { useToastStore } from '@/stores/toast'
 import { type Ref, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 export const useRiffleStore = defineStore('riffle', () => {
+  // Appel API
   const { api } = useApiStore()
+  // TOAST
   const { successMessage } = useToastStore()
-
+  // I18N
+  const { t } = useI18n()
+  // Refs
   const riffles = ref<RiffleDto[]>([])
   const riffle = ref<RiffleDto>()
-
+  // *******************Methodes***************
   const createWeaponMutation = useMutation({
     mutationFn: async (riffle: CreateRiffleDto) => {
       return await api.api.riffleControllerCreate(riffle)
@@ -67,9 +72,26 @@ export const useRiffleStore = defineStore('riffle', () => {
       enabled: () => id.value > 0
     })
 
+  const _deleteMutation = useMutation({
+    mutationFn: async (id: number) => {
+      return await api.api.riffleControllerDelete(id)
+    },
+    onSuccess(data) {
+      if (data.data.isSuccess) {
+        const index = riffles.value.findIndex((optic) => optic.id === data.data.id)
+        riffles.value.splice(index, 1)
+        successMessage('optic.summary', t(data.data.message))
+      }
+    }
+  })
+  const deleteFunction = (id: number) => {
+    _deleteMutation.mutate(id)
+  }
+
   return {
     create: createWeaponMutation,
     edit: updateRiffleMutation,
+    delete: deleteFunction,
     getAllByCategory: getAllRiffleByCategoryQuery,
     getAll: getAllRiffleQuery,
     getRiffleById: getRiffleById,

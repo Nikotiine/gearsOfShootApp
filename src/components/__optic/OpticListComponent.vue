@@ -1,16 +1,16 @@
 <template>
-  <div class="card p-4">
-    <!--    <h2 class="text-center mt-2 text-2xl">Liste des armes de Categorie {{ category }}</h2>-->
-    <div class="text-red-500 text-center" v-if="isError">Error</div>
+  <div class="card p-4" v-if="store.prerequisiteOpticQuery.isSuccess">
+    <h2 class="text-center mt-2 text-2xl">{{ t('optic.list.title') }}</h2>
+    <div class="text-red-500 text-center" v-if="isError">{{ t('global.isLoadingError') }}</div>
     <DataTable
       v-model:filters="filters"
-      :value="handgun$?.data"
+      :value="optics$?.data"
       paginator
       :rows="10"
       dataKey="id"
       filterDisplay="row"
-      :loading="datasIsloading"
-      :globalFilterFields="['name', 'factory.name', 'caliber.name', 'reference']"
+      :loading="storeAreLoading.value"
+      :globalFilterFields="['name', 'factory.name', 'type.name', 'reference']"
     >
       <template #header>
         <div class="flex justify-center">
@@ -22,8 +22,8 @@
           </IconField>
         </div>
       </template>
-      <template #empty> Aucune arme trouvée. </template>
-      <template #loading> Loading customers data. Please wait. </template>
+      <template #empty> {{ t('optic.list.notFound') }} </template>
+      <template #loading> {{ t('optic.list.loading') }} {{ t('global.pleaseWait') }} </template>
       <Column field="name" header="Nom" style="min-width: 12rem" :showFilterMenu="false">
         <template #body="{ data }">
           {{ data.name }}
@@ -52,7 +52,7 @@
           <Select
             v-model="filterModel.value"
             @change="filterCallback()"
-            :options="weaponFactory$?.data"
+            :options="factories$?.data"
             optionLabel="name"
             optionValue="name"
             placeholder="Marque"
@@ -63,20 +63,20 @@
         </template>
       </Column>
       <Column
-        header="Calibre"
-        filterField="caliber.name"
+        header="Type"
+        filterField="type.name"
         :showFilterMenu="false"
         style="min-width: 14rem"
       >
         <template #body="{ data }">
-          {{ data.caliber.name }}
+          {{ data.type.name }}
         </template>
         <template #filter="{ filterModel, filterCallback }">
           <Select
             v-model="filterModel.value"
             @change="filterCallback()"
-            :options="calibers$?.data"
-            placeholder="Calibre"
+            :options="types$"
+            placeholder="Type"
             optionLabel="name"
             optionValue="name"
             style="min-width: 12rem"
@@ -85,7 +85,30 @@
           </Select>
         </template>
       </Column>
-      <Column field="reference" header="Status" :showFilterMenu="false" style="min-width: 12rem">
+      <!--      <Column
+        header="Plan focal"
+        filterField="focalPlane.name"
+        :showFilterMenu="false"
+        style="min-width: 14rem"
+      >
+        <template #body="{ data }">
+          {{ data.focalPlane.name }}
+        </template>
+        <template #filter="{ filterModel, filterCallback }">
+          <Select
+            v-model="filterModel.value"
+            @change="filterCallback()"
+            :options="focalPlanes$"
+            placeholder="Plan focal"
+            optionLabel="name"
+            optionValue="name"
+            style="min-width: 12rem"
+            :showClear="true"
+          >
+          </Select>
+        </template>
+      </Column>-->
+      <Column field="reference" header="Reference" :showFilterMenu="false" style="min-width: 12rem">
         <template #body="{ data }">
           {{ data.reference }}
         </template>
@@ -101,88 +124,72 @@
       </Column>
       <Column header="Actions" :showFilterMenu="false" style="min-width: 12rem">
         <template #body="{ data }">
-          <div class="flex justify-between">
-            <Button
-              icon="pi pi-eye"
-              rounded
-              aria-label="Filter"
-              as="router-link"
-              :to="'/admin/gestion/detail/weapon/handgun/' + data.id"
-            />
-            <Button
-              icon="pi pi-pencil"
-              rounded
-              aria-label="Filter"
-              severity="warn"
-              as="router-link"
-              :to="'/admin/gestion/edit/weapon/handgun/' + data.id"
-            />
-            <Button
-              icon="pi pi-trash"
-              rounded
-              aria-label="Filter"
-              severity="danger"
-              @click="confirmDelete(data.id)"
-            /></div
-        ></template>
+          <action-menu-component
+            @on-click-action="onClickAction"
+            type="optic"
+            :reference="data.reference"
+            :id="data.id"
+        /></template>
       </Column>
     </DataTable>
   </div>
 </template>
 <script setup lang="ts">
-import { useHandGunStore } from '@/stores/hand-gun'
-import { useFactoryStore } from '@/stores/factory'
-import { useCaliberStore } from '@/stores/caliber'
-import { ref, watch } from 'vue'
-import { FilterMatchMode } from '@primevue/core/api'
-import DataTable from 'primevue/datatable'
-import Column from 'primevue/column'
-import InputText from 'primevue/inputtext'
-import InputIcon from 'primevue/inputicon'
-import Select from 'primevue/select'
-import Button from 'primevue/button'
+import { useOpticStore } from '@/stores/optic'
 import IconField from 'primevue/iconfield'
 
-import { useConfirmationStore } from '@/stores/confirmation'
-const { category } = defineProps<{
-  category: string
-}>()
-const confirmationStore = useConfirmationStore()
-const store = useHandGunStore()
+import DataTable from 'primevue/datatable'
+import InputText from 'primevue/inputtext'
+import Column from 'primevue/column'
+import InputIcon from 'primevue/inputicon'
+import Select from 'primevue/select'
+import { useI18n } from 'vue-i18n'
+import { FilterMatchMode } from '@primevue/core/api'
+import { computed, ref } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useFactoryStore } from '@/stores/factory'
+
+import ActionMenuComponent, {
+  type ActionMenuEmit
+} from '@/components/__table/ActionMenuComponent.vue'
+import { RouterEnum } from '@/enum/router.enum'
+import { useRouter } from 'vue-router'
+
+const { t } = useI18n()
+const router = useRouter()
+const store = useOpticStore()
 const factoryStore = useFactoryStore()
-const { data: weaponFactory$ } = factoryStore.getFactoriesByType('weapon')
-const caliberStore = useCaliberStore()
-const { data: calibers$ } = caliberStore.getAll()
+const { data: factories$, isLoading: getFactoriesIsSuccess } =
+  factoryStore.getFactoriesByType('optic')
+const { types$ } = storeToRefs(store)
+
+const { data: optics$, isError, isLoading, refetch } = store.getAll()
 
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
   'factory.name': { value: null, matchMode: FilterMatchMode.EQUALS },
-  'caliber.name': { value: null, matchMode: FilterMatchMode.EQUALS },
+  'type.name': { value: null, matchMode: FilterMatchMode.EQUALS },
+  // 'focalPlane.name': { value: null, matchMode: FilterMatchMode.EQUALS },
   reference: { value: null, matchMode: FilterMatchMode.STARTS_WITH }
 })
-const currentCategory = ref<string>(category)
-const {
-  data: handgun$,
-  isLoading: datasIsloading,
-  isError,
-  refetch
-} = store.getAllByCategory(currentCategory)
-watch(
-  () => category,
-  (newCategory) => {
-    if (newCategory !== currentCategory.value) {
-      currentCategory.value = newCategory
-      refetch()
-    }
-  }
-)
 
-const confirmDelete = async (id: number) => {
-  const res = await confirmationStore.confirmDelete()
-  if (res) {
-    store.delete(id)
-    refetch()
+const storeAreLoading = computed(() => {
+  return getFactoriesIsSuccess && isLoading
+})
+
+const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
+  switch (event) {
+    case 'view':
+      router.push({ name: RouterEnum.OPTIC_DETAIL, params: { id: id } })
+      break
+    case 'edit':
+      router.push({ name: RouterEnum.OPTIC_EDIT, params: { id: id } })
+      break
+    case true:
+      store.delete(id)
+      refetch()
+      break
   }
 }
 </script>

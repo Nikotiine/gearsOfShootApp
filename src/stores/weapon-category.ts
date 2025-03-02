@@ -31,3 +31,8 @@ export const useWeaponCategoryStore = defineStore('weapon-category', () => {
     getCategoryIdByCategoryName: getIdWithName
   }
 })
+export enum LegislationCategory {
+  B = 'B',
+  C = 'C',
+  D = 'D'
+}

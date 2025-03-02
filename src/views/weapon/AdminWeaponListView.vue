@@ -13,7 +13,7 @@
 import RiffleListComponent from '@/components/__weapon/riffle/RiffleTableComponent.vue'
 import { computed } from 'vue'
 import HandGunListComponent from '@/components/__weapon/handgun/HandGunTableComponent.vue'
-import type { WeaponViewType } from '@/views/weapon/WeaponView.vue'
+import type { WeaponViewType } from '@/views/weapon/AdminWeaponView.vue'
 
 const { category, type } = defineProps<{
   category: string

@@ -5,6 +5,8 @@
 import MegaMenu from 'primevue/megamenu'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
+import { LegislationCategory } from '@/stores/weapon-category'
+import { RouterEnum } from '@/enum/router.enum'
 const RIFFLE_LIST_URL: string = '/admin/gestion/list/weapon/riffle/'
 const RIFFLE: string = 'Arme longue'
 const HAND_GUN_LIST_URL: string = '/admin/gestion/list/weapon/handgun/'
@@ -34,17 +36,16 @@ const items = ref([
             {
               label: 'Optique',
               command: () => {
-                push('/admin/gestion/add/optic')
+                push({ name: RouterEnum.OPTIC_NEW })
               }
             },
             {
               label: 'Chargeur',
               command: () => {
-                push('/admin/gestion/add/magazine')
+                push({ name: RouterEnum.MAGAZINE_NEW })
               }
             },
-            { label: 'RDS' },
-            { label: 'Accessories' }
+            { label: 'RDS' }
           ]
         }
       ],
@@ -75,8 +76,7 @@ const items = ref([
               command: () => {
                 push('/admin/gestion/add/threaded-size')
               }
-            },
-            { label: 'Accessoire' }
+            }
           ]
         }
       ],
@@ -113,7 +113,7 @@ const items = ref([
       ],
       [
         {
-          label: 'Tennis',
+          label: 'Accessoires',
           items: [
             { label: 'Balls' },
             { label: 'Rackets' },
@@ -130,51 +130,59 @@ const items = ref([
     items: [
       [
         {
-          label: 'Categorie B',
+          label: 'Categorie ' + LegislationCategory.B,
           items: [
             {
               label: HAND_GUN,
               command: () => {
-                push(HAND_GUN_LIST_URL + 'B')
+                push(HAND_GUN_LIST_URL + LegislationCategory.B)
               }
             },
             {
               label: RIFFLE,
               command: () => {
-                push(RIFFLE_LIST_URL + 'B')
+                push(RIFFLE_LIST_URL + LegislationCategory.B)
               }
             },
             {
               label: 'Chargeur',
               command: () => {
-                push('/admin/gestion/list/magazine/B')
+                push({
+                  name: RouterEnum.MAGAZINE_LIST,
+                  params: { category: LegislationCategory.B }
+                })
               }
             },
             {
               label: 'Munition',
               command: () => {
-                push('/admin/gestion/list/ammunition/B')
+                push('/admin/gestion/list/ammunition/' + LegislationCategory.B)
               }
-            },
-            { label: 'Accessoire' }
+            }
           ]
         }
       ],
       [
         {
-          label: 'Categorie C',
+          label: 'Categorie ' + LegislationCategory.C,
           items: [
             {
               label: RIFFLE,
               command: () => {
-                push(RIFFLE_LIST_URL + 'C')
+                push(RIFFLE_LIST_URL + LegislationCategory.C)
               }
             },
             { label: 'rds' },
             {
               label: 'Munition',
               command: () => {
-                push('/admin/gestion/list/ammunition/C')
+                push('/admin/gestion/list/ammunition/' + LegislationCategory.C)
+              }
+            },
+            {
+              label: 'Chargeur',
+              command: () => {
+                push('/admin/gestion/magazine/list/' + LegislationCategory.C)
               }
             },
             { label: 'Accessoire' }
@@ -183,24 +191,24 @@ const items = ref([
       ],
       [
         {
-          label: 'Categorie D',
+          label: 'Categorie ' + LegislationCategory.D,
           items: [
             {
               label: HAND_GUN,
               command: () => {
-                push(HAND_GUN_LIST_URL + 'D')
+                push(HAND_GUN_LIST_URL + LegislationCategory.D)
               }
             },
             {
               label: RIFFLE,
               command: () => {
-                push(RIFFLE_LIST_URL + 'D')
+                push(RIFFLE_LIST_URL + LegislationCategory.D)
               }
             },
             {
               label: 'Munition',
               command: () => {
-                push('/admin/gestion/list/ammunition/D')
+                push('/admin/gestion/list/ammunition/' + LegislationCategory.D)
               }
             },
             { label: 'Accessoire' }
@@ -211,15 +219,14 @@ const items = ref([
         {
           label: 'Autre',
           items: [
-            { label: 'Optiques' },
+            { label: 'Optiques', command: () => push({ name: RouterEnum.OPTIC_LIST }) },
             { label: 'Type d arme' },
             {
               label: 'Marques',
               command: () => {
                 push('/admin/gestion/list/factories')
               }
-            },
-            { label: 'Training' }
+            }
           ]
         }
       ]

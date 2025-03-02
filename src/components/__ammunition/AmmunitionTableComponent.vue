@@ -119,15 +119,14 @@
               as="router-link"
               :to="'/admin/gestion/edit/ammunition/' + data.id"
             />
-            <!--  <Button
-           icon="pi pi-trash"
-           rounded
-           aria-label="Filter"
-           severity="danger"
-           as="router-link"
-         />-->
-          </div></template
-        >
+            <Button
+              icon="pi pi-trash"
+              rounded
+              aria-label="delete"
+              severity="danger"
+              @click="confirmDelete(data.id)"
+            /></div
+        ></template>
       </Column>
     </DataTable>
   </div>
@@ -143,10 +142,11 @@ import { useAmmunitionStore } from '@/stores/ammunition'
 import { useCaliberStore } from '@/stores/caliber'
 import { useFactoryStore } from '@/stores/factory'
 import { computed, ref, watch } from 'vue'
-import { storeToRefs } from 'pinia'
 import { FilterMatchMode } from '@primevue/core/api'
 import { useI18n } from 'vue-i18n'
 import Button from 'primevue/button'
+import { useConfirmationStore } from '@/stores/confirmation'
+
 const { category } = defineProps<{
   category: string
 }>()
@@ -180,6 +180,14 @@ watch(
     }
   }
 )
+const confirmationStore = useConfirmationStore()
+const confirmDelete = async (id: number) => {
+  const res = await confirmationStore.confirmDelete()
+  if (res) {
+    store.delete(id)
+    refetch()
+  }
+}
 </script>
 
 <style scoped></style>

@@ -6,10 +6,13 @@ import { useMutation, useQuery } from '@tanstack/vue-query'
 import type { AmmunitionBodyTypeDto, CreateAmmunitionBodyTypeDto } from '@/api/Api'
 
 export const useBodyTypeStore = defineStore('bodyType', () => {
+  // Appel API
   const { api } = useApiStore()
+  // TOAST
   const { successMessage } = useToastStore()
-
+  // Refs
   const bodyTypes = ref<AmmunitionBodyTypeDto[]>([])
+  // *******************Methodes***************
   const createAmmunitionBodyTypeMutation = useMutation({
     mutationFn: async (bodyType: CreateAmmunitionBodyTypeDto) => {
       return await api.api.ammunitionBodyTypeControllerCreate(bodyType)

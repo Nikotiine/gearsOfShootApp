@@ -13,7 +13,7 @@ export const useWeaponMagazineStore = defineStore('weaponMagazine', () => {
   // Refs
   const magazines = ref<WeaponMagazineDto[]>([])
   const magazine = ref<WeaponMagazineDto>()
-
+  // *******************Methodes***************$
   const createWeaponMagazineMutation = useMutation({
     mutationFn: async (magazine: CreateWeaponMagazineDto) => {
       return await api.api.magazineControllerCreate(magazine)
@@ -78,6 +78,17 @@ export const useWeaponMagazineStore = defineStore('weaponMagazine', () => {
     }
   })
 
+  const _deleteMagazineMutation = useMutation({
+    mutationFn: async (id: number) => {
+      return await api.api.magazineControllerDelete(id)
+    },
+    onSuccess(data) {
+      successMessage('magazine.summary', data.data.message)
+    }
+  })
+  const deleteFunction = (id: number) => {
+    _deleteMagazineMutation.mutate(id)
+  }
   return {
     getAll: getAllQuery,
     getById: getByIdQuery,
@@ -86,6 +97,7 @@ export const useWeaponMagazineStore = defineStore('weaponMagazine', () => {
     getByCategory: getAllByCategoryQuery,
     magazines$: magazines,
     magazine$: magazine,
-    edit: updateMagazineMutation
+    edit: updateMagazineMutation,
+    delete: deleteFunction
   }
 })

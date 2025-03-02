@@ -117,16 +117,15 @@
               as="router-link"
               :to="'/admin/gestion/edit/weapon/riffle/' + data.id"
             />
-            <!--
-           <Button
-             icon="pi pi-trash"
-             rounded
-             aria-label="Filter"
-             severity="danger"
-             as="router-link"
-           />-->
-          </div></template
-        >
+
+            <Button
+              icon="pi pi-trash"
+              rounded
+              aria-label="delete"
+              severity="danger"
+              @click="confirmDelete(data.id)"
+            /></div
+        ></template>
       </Column>
     </DataTable>
   </div>
@@ -145,6 +144,7 @@ import Button from 'primevue/button'
 import IconField from 'primevue/iconfield'
 import { useFactoryStore } from '@/stores/factory'
 import { useCaliberStore } from '@/stores/caliber'
+import { useConfirmationStore } from '@/stores/confirmation'
 const { category } = defineProps<{
   category: string
 }>()
@@ -177,6 +177,14 @@ watch(
     }
   }
 )
+const confirmationStore = useConfirmationStore()
+const confirmDelete = async (id: number) => {
+  const res = await confirmationStore.confirmDelete()
+  if (res) {
+    store.delete(id)
+    refetch()
+  }
+}
 </script>
 
 <style scoped></style>

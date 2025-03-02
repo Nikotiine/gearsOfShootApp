@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import { RouterEnum } from '@/enum/router.enum'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -40,7 +41,7 @@ const router = createRouter({
           path: 'gestion/detail/weapon/:type/:id',
           props: true,
           name: 'weaponDetail',
-          component: () => import('../views/weapon/WeaponView.vue')
+          component: () => import('../views/weapon/AdminWeaponView.vue')
         },
         {
           path: 'gestion/edit/weapon/:type/:id',
@@ -72,36 +73,67 @@ const router = createRouter({
           props: true,
           component: () => import('../views/ammunition/AdminAmmunitionFormView.vue')
         },
-        // Magazine
         {
-          path: 'gestion/detail/magazine/:id',
-          props: true,
-          name: 'magazineDetail',
-          component: () => import('../views/magazine/MagazineDetailView.vue')
+          path: 'gestion',
+          children: [
+            {
+              path: 'magazine',
+              children: [
+                {
+                  path: 'detail/:id',
+                  props: true,
+                  name: RouterEnum.MAGAZINE_DETAIL,
+                  component: () => import('../views/magazine/AdminMagazineDetailView.vue')
+                },
+                {
+                  path: 'list/:category',
+                  props: true,
+                  name: RouterEnum.MAGAZINE_LIST,
+                  component: () => import('../views/magazine/AdminMagazineListView.vue')
+                },
+                {
+                  path: 'add',
+                  name: RouterEnum.MAGAZINE_NEW,
+                  component: () => import('../views/magazine/AdminWeaponMagazineFormView.vue')
+                },
+                {
+                  path: 'edit/:id',
+                  name: RouterEnum.MAGAZINE_EDIT,
+                  props: true,
+                  component: () => import('../views/magazine/AdminWeaponMagazineFormView.vue')
+                }
+              ]
+            },
+            {
+              path: 'optic',
+              children: [
+                {
+                  path: 'add',
+                  name: RouterEnum.OPTIC_NEW,
+                  component: () => import('../views/optic/AdminOpticFormView.vue')
+                },
+                {
+                  path: 'list',
+                  name: RouterEnum.OPTIC_LIST,
+                  component: () => import('../views/optic/AdminOpticListView.vue')
+                },
+                {
+                  path: 'detail/:id',
+                  props: true,
+                  name: RouterEnum.OPTIC_DETAIL,
+                  component: () => import('../views/optic/AdminOpticDetailView.vue')
+                },
+                {
+                  path: 'edit/:id',
+                  props: true,
+                  name: RouterEnum.OPTIC_EDIT,
+                  component: () => import('../views/optic/AdminOpticFormView.vue')
+                }
+              ]
+            }
+          ]
         },
-        {
-          path: 'gestion/list/magazine/:category',
-          props: true,
-          name: 'magazineList',
-          component: () => import('../views/magazine/MagazineListView.vue')
-        },
-        {
-          path: 'gestion/add/magazine',
-          name: 'mgazineAddForm',
-          component: () => import('../views/magazine/AdminWeaponMagazineFormView.vue')
-        },
-        {
-          path: 'gestion/edit/magazine/:id',
-          name: 'magazineEditForm',
-          props: true,
-          component: () => import('../views/magazine/AdminWeaponMagazineFormView.vue')
-        },
-        // Optic
-        {
-          path: 'gestion/add/optic',
-          name: 'opticAddForm',
-          component: () => import('../views/optic/AdminOpticFormView.vue')
-        },
+
         {
           path: 'gestion/add/factory',
           name: 'factoryAddForm',
