@@ -27,55 +27,36 @@ const router = createRouter({
       children: [
         // Weapon
         {
-          path: 'gestion/add/weapon',
-          name: 'weaponAddForm',
-          component: () => import('../views/weapon/AdminWeaponFormView.vue')
-        },
-        {
-          path: 'gestion/list/weapon/:type/:category',
-          props: true,
-          name: 'weaponList',
-          component: () => import('../views/weapon/AdminWeaponListView.vue')
-        },
-        {
-          path: 'gestion/detail/weapon/:type/:id',
-          props: true,
-          name: 'weaponDetail',
-          component: () => import('../views/weapon/AdminWeaponView.vue')
-        },
-        {
-          path: 'gestion/edit/weapon/:type/:id',
-          name: 'weaponEditForm',
-          props: true,
-          component: () => import('../views/weapon/AdminWeaponEditView.vue')
-        },
-        // Ammunition
-        {
-          path: 'gestion/add/ammunition',
-          name: 'ammunitionAddForm',
-          component: () => import('../views/ammunition/AdminAmmunitionFormView.vue')
-        },
-        {
-          path: 'gestion/list/ammunition/:category',
-          props: true,
-          name: 'ammunitionList',
-          component: () => import('../views/ammunition/AdminAmmunitionListView.vue')
-        },
-        {
-          path: 'gestion/detail/ammunition/:id',
-          name: 'ammunitionDetail',
-          props: true,
-          component: () => import('../views/ammunition/AdminAmmunitionDetailView.vue')
-        },
-        {
-          path: 'gestion/edit/ammunition/:id',
-          name: 'ammunitionEditForm',
-          props: true,
-          component: () => import('../views/ammunition/AdminAmmunitionFormView.vue')
-        },
-        {
           path: 'gestion',
           children: [
+            {
+              path: 'ammunition',
+              children: [
+                {
+                  path: 'new',
+                  name: RouterEnum.AMMUNITION_NEW,
+                  component: () => import('../views/ammunition/AdminAmmunitionFormView.vue')
+                },
+                {
+                  path: 'list/:category',
+                  name: RouterEnum.AMMUNITION_LIST,
+                  props: true,
+                  component: () => import('../views/ammunition/AdminAmmunitionListView.vue')
+                },
+                {
+                  path: 'detail/:id',
+                  name: RouterEnum.AMMUNITION_DETAIL,
+                  props: true,
+                  component: () => import('../views/ammunition/AdminAmmunitionDetailView.vue')
+                },
+                {
+                  path: 'edit/:id',
+                  name: RouterEnum.AMMUNITION_EDIT,
+                  props: true,
+                  component: () => import('../views/ammunition/AdminAmmunitionFormView.vue')
+                }
+              ]
+            },
             {
               path: 'magazine',
               children: [
@@ -92,7 +73,7 @@ const router = createRouter({
                   component: () => import('../views/magazine/AdminMagazineListView.vue')
                 },
                 {
-                  path: 'add',
+                  path: 'new',
                   name: RouterEnum.MAGAZINE_NEW,
                   component: () => import('../views/magazine/AdminWeaponMagazineFormView.vue')
                 },
@@ -108,7 +89,7 @@ const router = createRouter({
               path: 'optic',
               children: [
                 {
-                  path: 'add',
+                  path: 'new',
                   name: RouterEnum.OPTIC_NEW,
                   component: () => import('../views/optic/AdminOpticFormView.vue')
                 },
@@ -130,55 +111,121 @@ const router = createRouter({
                   component: () => import('../views/optic/AdminOpticFormView.vue')
                 }
               ]
+            },
+            {
+              path: 'weapon',
+              children: [
+                {
+                  path: 'new',
+                  name: RouterEnum.WEAPON_NEW,
+                  component: () => import('../views/weapon/AdminWeaponFormView.vue')
+                },
+                {
+                  path: 'list/:type/:category',
+                  name: RouterEnum.WEAPON_LIST,
+                  props: true,
+                  component: () => import('../views/weapon/AdminWeaponListView.vue')
+                },
+                {
+                  path: 'detail/:type/:id',
+                  name: RouterEnum.WEAPON_DETAIL,
+                  props: true,
+                  component: () => import('../views/weapon/AdminWeaponView.vue')
+                },
+                {
+                  path: 'edit/:type/:id',
+                  name: RouterEnum.WEAPON_EDIT,
+                  props: true,
+                  component: () => import('../views/weapon/AdminWeaponEditView.vue')
+                }
+              ]
+            },
+            {
+              path: 'factory',
+              children: [
+                {
+                  path: 'new',
+                  name: RouterEnum.FACTORY_NEW,
+                  component: () => import('../views/factory/FactoryFormView.vue')
+                },
+                {
+                  path: 'list',
+                  name: RouterEnum.FACTORY_LIST,
+                  component: () => import('../views/factory/FactoriesListView.vue')
+                }
+              ]
+            },
+            {
+              path: 'color',
+              children: [
+                {
+                  path: 'new',
+                  name: RouterEnum.COLOR_NEW,
+                  component: () => import('../views/color/ColorFormView.vue')
+                }
+              ]
+            },
+            {
+              path: 'material',
+              children: [
+                {
+                  path: 'new',
+                  name: RouterEnum.MATERIAL_NEW,
+                  component: () => import('../views/material/MaterialFormView.vue')
+                }
+              ]
+            },
+            {
+              path: 'headType',
+              children: [
+                {
+                  path: 'new',
+                  name: RouterEnum.HEAD_TYPE_NEW,
+                  component: () => import('../views/ammunition/AdminAmmunitionHeadTypeFormView.vue')
+                }
+              ]
+            },
+            {
+              path: 'bodyType',
+              children: [
+                {
+                  path: 'new',
+                  name: RouterEnum.BODY_TYPE_NEW,
+                  component: () => import('../views/ammunition/AdminAmmunitionBodyTypeFormView.vue')
+                }
+              ]
+            },
+            {
+              path: 'weaponType',
+              children: [
+                {
+                  path: 'new',
+                  name: RouterEnum.WEAPON_TYPE_NEW,
+                  component: () => import('../views/weapon/AdminWeaponTypeFormView.vue')
+                }
+              ]
+            },
+            {
+              path: 'caliber',
+              children: [
+                {
+                  path: 'new',
+                  name: RouterEnum.CALIBER_NEW,
+                  component: () => import('../views/caliber/CaliberFormView.vue')
+                }
+              ]
+            },
+            {
+              path: 'threaded-size',
+              children: [
+                {
+                  path: 'new',
+                  name: RouterEnum.THREADED_SIZE_NEW,
+                  component: () => import('../views/threaded-size/ThreadedSizeFormView.vue')
+                }
+              ]
             }
           ]
-        },
-
-        {
-          path: 'gestion/add/factory',
-          name: 'factoryAddForm',
-          component: () => import('../views/factory/FactoryFormView.vue')
-        },
-        {
-          path: 'gestion/add/color',
-          name: 'colorAddForm',
-          component: () => import('../views/color/ColorFormView.vue')
-        },
-        {
-          path: 'gestion/add/material',
-          name: 'materialAddForm',
-          component: () => import('../views/material/MaterialFormView.vue')
-        },
-        {
-          path: 'gestion/add/headType',
-          name: 'headTypeAddForm',
-          component: () => import('../views/ammunition/AdminAmmunitionHeadTypeFormView.vue')
-        },
-        {
-          path: 'gestion/add/bodyType',
-          name: 'bodyTypeAddForm',
-          component: () => import('../views/ammunition/AdminAmmunitionBodyTypeFormView.vue')
-        },
-        {
-          path: 'gestion/add/weaponType',
-          name: 'weaponTypeAddForm',
-          component: () => import('../views/weapon/AdminWeaponTypeFormView.vue')
-        },
-        {
-          path: 'gestion/list/factories',
-          props: true,
-          name: 'factoriesList',
-          component: () => import('../views/factory/FactoriesListView.vue')
-        },
-        {
-          path: 'gestion/add/caliber',
-          name: 'caliberAddForm',
-          component: () => import('../views/caliber/CaliberFormView.vue')
-        },
-        {
-          path: 'gestion/add/threaded-size',
-          name: 'threadedSizeForm',
-          component: () => import('../views/threaded-size/ThreadedSizeFormView.vue')
         }
       ]
     }

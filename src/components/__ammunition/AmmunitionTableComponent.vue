@@ -103,30 +103,12 @@
       </Column>
       <Column header="Actions" :showFilterMenu="false" style="min-width: 12rem">
         <template #body="{ data }">
-          <div class="flex justify-between">
-            <Button
-              icon="pi pi-eye"
-              rounded
-              aria-label="Filter"
-              as="router-link"
-              :to="'/admin/gestion/detail/ammunition/' + data.id"
-            />
-            <Button
-              icon="pi pi-pencil"
-              rounded
-              aria-label="Filter"
-              severity="warn"
-              as="router-link"
-              :to="'/admin/gestion/edit/ammunition/' + data.id"
-            />
-            <Button
-              icon="pi pi-trash"
-              rounded
-              aria-label="delete"
-              severity="danger"
-              @click="confirmDelete(data.id)"
-            /></div
-        ></template>
+          <action-menu-component
+            @on-click-action="onClickAction"
+            type="magazine"
+            :reference="data.reference"
+            :id="data.id"
+        /></template>
       </Column>
     </DataTable>
   </div>
@@ -144,14 +126,18 @@ import { useFactoryStore } from '@/stores/factory'
 import { computed, ref, watch } from 'vue'
 import { FilterMatchMode } from '@primevue/core/api'
 import { useI18n } from 'vue-i18n'
-import Button from 'primevue/button'
-import { useConfirmationStore } from '@/stores/confirmation'
+import { RouterEnum } from '@/enum/router.enum'
+import { useRouter } from 'vue-router'
+import ActionMenuComponent, {
+  type ActionMenuEmit
+} from '@/components/__table/ActionMenuComponent.vue'
 
 const { category } = defineProps<{
   category: string
 }>()
 const { t } = useI18n()
 const store = useAmmunitionStore()
+const router = useRouter()
 const caliberStore = useCaliberStore()
 const factoryStore = useFactoryStore()
 const { data: factories$ } = factoryStore.getFactoriesByType('ammunition')
@@ -180,12 +166,19 @@ watch(
     }
   }
 )
-const confirmationStore = useConfirmationStore()
-const confirmDelete = async (id: number) => {
-  const res = await confirmationStore.confirmDelete()
-  if (res) {
-    store.delete(id)
-    refetch()
+
+const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
+  switch (event) {
+    case 'view':
+      router.push({ name: RouterEnum.AMMUNITION_DETAIL, params: { id: id } })
+      break
+    case 'edit':
+      router.push({ name: RouterEnum.AMMUNITION_EDIT, params: { id: id } })
+      break
+    case true:
+      store.delete(id)
+      refetch()
+      break
   }
 }
 </script>

@@ -14,6 +14,7 @@ import RiffleListComponent from '@/components/__weapon/riffle/RiffleTableCompone
 import { computed } from 'vue'
 import HandGunListComponent from '@/components/__weapon/handgun/HandGunTableComponent.vue'
 import type { WeaponViewType } from '@/views/weapon/AdminWeaponView.vue'
+import { WeaponEnum } from '@/enum/weapon.enum'
 
 const { category, type } = defineProps<{
   category: string
@@ -21,7 +22,7 @@ const { category, type } = defineProps<{
 }>()
 
 const isRiffleType = computed(() => {
-  return type === 'riffle'
+  return type === WeaponEnum.RIFFLE
 })
 </script>
 

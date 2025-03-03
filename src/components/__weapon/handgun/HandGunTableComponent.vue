@@ -101,30 +101,12 @@
       </Column>
       <Column header="Actions" :showFilterMenu="false" style="min-width: 12rem">
         <template #body="{ data }">
-          <div class="flex justify-between">
-            <Button
-              icon="pi pi-eye"
-              rounded
-              aria-label="Filter"
-              as="router-link"
-              :to="'/admin/gestion/detail/weapon/handgun/' + data.id"
-            />
-            <Button
-              icon="pi pi-pencil"
-              rounded
-              aria-label="Filter"
-              severity="warn"
-              as="router-link"
-              :to="'/admin/gestion/edit/weapon/handgun/' + data.id"
-            />
-            <Button
-              icon="pi pi-trash"
-              rounded
-              aria-label="Filter"
-              severity="danger"
-              @click="confirmDelete(data.id)"
-            /></div
-        ></template>
+          <action-menu-component
+            @on-click-action="onClickAction"
+            type="handgun"
+            :reference="data.reference"
+            :id="data.id"
+        /></template>
       </Column>
     </DataTable>
   </div>
@@ -140,14 +122,17 @@ import Column from 'primevue/column'
 import InputText from 'primevue/inputtext'
 import InputIcon from 'primevue/inputicon'
 import Select from 'primevue/select'
-import Button from 'primevue/button'
 import IconField from 'primevue/iconfield'
-
-import { useConfirmationStore } from '@/stores/confirmation'
+import ActionMenuComponent, {
+  type ActionMenuEmit
+} from '@/components/__table/ActionMenuComponent.vue'
+import { RouterEnum } from '@/enum/router.enum'
+import { useRouter } from 'vue-router'
+import { WeaponEnum } from '@/enum/weapon.enum'
 const { category } = defineProps<{
   category: string
 }>()
-const confirmationStore = useConfirmationStore()
+const router = useRouter()
 const store = useHandGunStore()
 const factoryStore = useFactoryStore()
 const { data: weaponFactory$ } = factoryStore.getFactoriesByType('weapon')
@@ -178,11 +163,18 @@ watch(
   }
 )
 
-const confirmDelete = async (id: number) => {
-  const res = await confirmationStore.confirmDelete()
-  if (res) {
-    store.delete(id)
-    refetch()
+const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
+  switch (event) {
+    case 'view':
+      router.push({ name: RouterEnum.WEAPON_DETAIL, params: { id: id, type: WeaponEnum.HAND_GUN } })
+      break
+    case 'edit':
+      router.push({ name: RouterEnum.WEAPON_EDIT, params: { id: id, type: WeaponEnum.HAND_GUN } })
+      break
+    case true:
+      store.delete(id)
+      refetch()
+      break
   }
 }
 </script>

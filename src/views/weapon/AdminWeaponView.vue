@@ -13,6 +13,7 @@ import { useRiffleStore } from '@/stores/riffle'
 import { useHandGunStore } from '@/stores/hand-gun'
 import type { WeaponViewModel } from '@/stores/weapon'
 import { storeToRefs } from 'pinia'
+import { WeaponEnum } from '@/enum/weapon.enum'
 export type WeaponViewType = 'riffle' | 'handgun'
 const riffleStore = useRiffleStore()
 const handGunStore = useHandGunStore()
@@ -23,7 +24,7 @@ const { id, type } = defineProps<{
 }>()
 
 const isRiffle = computed(() => {
-  return type === 'riffle'
+  return type === WeaponEnum.RIFFLE
 })
 const riffleId = ref<number>(0)
 const handgunId = ref<number>(0)
@@ -32,7 +33,7 @@ const { isSuccess: getHandGunIsSuccess } = handGunStore.getHandGunById(handgunId
 const { handgun$ } = storeToRefs(handGunStore)
 const { riffle$ } = storeToRefs(riffleStore)
 watchEffect(() => {
-  if (type === 'riffle') {
+  if (type === WeaponEnum.RIFFLE) {
     riffleId.value = parseInt(id)
     if (riffle$.value) {
       weapon.value = { ...riffle$.value }
