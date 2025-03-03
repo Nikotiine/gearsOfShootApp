@@ -50,16 +50,16 @@ export const useHandGunStore = defineStore('hand-gun', () => {
       enabled: !!category.value
     })
 
-  const getAllHandgunQuery = (enabled: Ref<boolean>) =>
-    useQuery({
-      queryKey: ['getAllHandgunQuery'],
-      queryFn: async () => {
-        const res = await api.api.handGunControllerFindAll()
-        handguns.value = res.data
-        return res
-      },
-      enabled: () => enabled.value
-    })
+  const _getAllHandgunQuery = useQuery({
+    queryKey: ['getAllHandgunQuery'],
+    queryFn: async () => {
+      return await api.api.handGunControllerFindAll()
+    }
+  })
+
+  const getAllFunction = () => {
+    return _getAllHandgunQuery.data.value?.data ?? []
+  }
 
   const getHandGunById = (id: Ref<number>) =>
     useQuery({
@@ -95,7 +95,7 @@ export const useHandGunStore = defineStore('hand-gun', () => {
     getAllByCategory: getAllHandGunByCategoryQuery,
     getHandGunById: getHandGunById,
     handgun$: handgun,
-    getAll: getAllHandgunQuery,
+    getAll: getAllFunction,
     handguns$: handguns
   }
 })

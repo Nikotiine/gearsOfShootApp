@@ -39,16 +39,16 @@ export const useRiffleStore = defineStore('riffle', () => {
     }
   })
 
-  const getAllRiffleQuery = (enabled: Ref<boolean>) =>
-    useQuery({
-      queryKey: ['get-all-riffle'],
-      queryFn: async () => {
-        const res = await api.api.riffleControllerFindAll()
-        riffles.value = res.data
-        return res
-      },
-      enabled: () => enabled.value
-    })
+  const _getAllRiffleQuery = useQuery({
+    queryKey: ['get-all-riffle'],
+    queryFn: async () => {
+      return await api.api.riffleControllerFindAll()
+    }
+  })
+
+  const getAllData = (): RiffleDto[] => {
+    return _getAllRiffleQuery.data.value?.data ?? []
+  }
 
   const getAllRiffleByCategoryQuery = (catgory: Ref<string>) =>
     useQuery({
@@ -93,9 +93,9 @@ export const useRiffleStore = defineStore('riffle', () => {
     edit: updateRiffleMutation,
     delete: deleteFunction,
     getAllByCategory: getAllRiffleByCategoryQuery,
-    getAll: getAllRiffleQuery,
     getRiffleById: getRiffleById,
     riffles$: riffles,
-    riffle$: riffle
+    riffle$: riffle,
+    getAll: getAllData
   }
 })

@@ -210,13 +210,11 @@ const { data: factories$, isSuccess: factoriesQueryIsSuccess } =
   factoryStore.getFactoriesByType('magazine')
 const { data: materials$, isSuccess: materialsQueryIsSuccess } = materialStore.getAll()
 
-const { riffles$ } = storeToRefs(riffleStore)
-const { handguns$ } = storeToRefs(handGunStore)
-const enabledRiffleQuery = ref<boolean>(false)
-const enabledHandGunQuery = ref<boolean>(false)
+const riffles$ = ref<RiffleDto[]>([])
+const handguns$ = ref<HandGunDto[]>([])
+
 const buttonLabel = ref('global.save')
-riffleStore.getAll(enabledRiffleQuery)
-handGunStore.getAll(enabledHandGunQuery)
+
 const { t } = useI18n()
 const initialFormObject: CreateWeaponMagazineDto = {
   description: '',
@@ -270,9 +268,9 @@ const selectWeaponType = (id: number) => {
   form.value.weaponTypeId = id
 
   if (isRiffleWeapon.value) {
-    enabledRiffleQuery.value = true
+    riffles$.value = riffleStore.getAll()
   } else {
-    enabledHandGunQuery.value = true
+    handguns$.value = handGunStore.getAll()
   }
 }
 
@@ -359,12 +357,6 @@ watch(
     })
   }
 )
-watchEffect(() => {
-  if (magazine) {
-    setEditForm(magazine)
-    buttonLabel.value = 'global.edit'
-  }
-})
 
 const setEditForm = (magazine: WeaponMagazineDto) => {
   form.value = {
@@ -383,13 +375,21 @@ const setEditForm = (magazine: WeaponMagazineDto) => {
     weaponTypeId: magazine.forWeaponType.id
   }
   if (magazine.riffles.length > 0) {
+    riffles$.value = riffleStore.getAll()
     selectedCompatibleWeapon.value = magazine.riffles.map((r) => r.id)
   }
   if (magazine.handguns.length > 0) {
+    handguns$.value = handGunStore.getAll()
     selectedCompatibleWeapon.value = magazine.handguns.map((h) => h.id)
   }
   selectWeaponType(magazine.forWeaponType.id)
 }
+watchEffect(() => {
+  if (magazine) {
+    setEditForm(magazine)
+    buttonLabel.value = 'global.edit'
+  }
+})
 </script>
 
 <style scoped></style>
