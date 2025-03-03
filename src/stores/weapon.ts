@@ -13,7 +13,6 @@ import type {
   RailSizeDto,
   ThreadedSizeDto,
   WeaponBarrelTypeDto,
-  WeaponMagazineDto,
   WeaponTriggerTypeDto,
   WeaponTypeDto
 } from '@/api/Api'

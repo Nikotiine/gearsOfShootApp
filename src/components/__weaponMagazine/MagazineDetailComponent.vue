@@ -24,7 +24,7 @@
             <li class="text-blue-500">{{ weapon.factory.name }} - {{ weapon.name }}</li>
           </ul>
         </div>
-        <div v-else>
+        <div v-if="magazine.forWeaponType.name !== 'Pistolet' || 'Revolver'">
           <ul v-for="weapon in magazine.riffles" v-bind:key="weapon.id">
             <li class="text-blue-500">{{ weapon.factory.name }} - {{ weapon.name }}</li>
           </ul>

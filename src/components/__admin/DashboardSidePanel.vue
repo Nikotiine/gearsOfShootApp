@@ -5,9 +5,12 @@
 import MegaMenu from 'primevue/megamenu'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
-const RIFFLE_LIST_URL: string = '/admin/gestion/list/weapon/riffle/'
+import { LegislationCategory } from '@/stores/weapon-category'
+import { RouterEnum } from '@/enum/router.enum'
+import { WeaponEnum } from '@/enum/weapon.enum'
+
 const RIFFLE: string = 'Arme longue'
-const HAND_GUN_LIST_URL: string = '/admin/gestion/list/weapon/handgun/'
+
 const HAND_GUN: string = 'Arme de poing'
 const { push } = useRouter()
 const items = ref([
@@ -22,29 +25,28 @@ const items = ref([
             {
               label: 'Arme',
               command: () => {
-                push('/admin/gestion/add/weapon')
+                push({ name: RouterEnum.WEAPON_NEW })
               }
             },
             {
               label: 'Munition',
               command: () => {
-                push('/admin/gestion/add/ammunition')
+                push({ name: RouterEnum.AMMUNITION_NEW })
               }
             },
             {
               label: 'Optique',
               command: () => {
-                push('/admin/gestion/add/optic')
+                push({ name: RouterEnum.OPTIC_NEW })
               }
             },
             {
               label: 'Chargeur',
               command: () => {
-                push('/admin/gestion/add/magazine')
+                push({ name: RouterEnum.MAGAZINE_NEW })
               }
             },
-            { label: 'RDS' },
-            { label: 'Accessories' }
+            { label: 'RDS' }
           ]
         }
       ],
@@ -55,28 +57,27 @@ const items = ref([
             {
               label: 'Douille',
               command: () => {
-                push('/admin/gestion/add/bodyType')
+                push({ name: RouterEnum.BODY_TYPE_NEW })
               }
             },
             {
               label: 'Ovige',
               command: () => {
-                push('/admin/gestion/add/headType')
+                push({ name: RouterEnum.HEAD_TYPE_NEW })
               }
             },
             {
               label: 'Type d arme',
               command: () => {
-                push('/admin/gestion/add/weaponType')
+                push({ name: RouterEnum.WEAPON_TYPE_NEW })
               }
             },
             {
               label: 'Filletage',
               command: () => {
-                push('/admin/gestion/add/threaded-size')
+                push({ name: RouterEnum.THREADED_SIZE_NEW })
               }
-            },
-            { label: 'Accessoire' }
+            }
           ]
         }
       ],
@@ -87,25 +88,25 @@ const items = ref([
             {
               label: 'Marques',
               command: () => {
-                push('/admin/gestion/add/factory')
+                push({ name: RouterEnum.FACTORY_NEW })
               }
             },
             {
               label: 'Calibre',
               command: () => {
-                push('/admin/gestion/add/caliber')
+                push({ name: RouterEnum.CALIBER_NEW })
               }
             },
             {
               label: 'Matieres',
               command: () => {
-                push('/admin/gestion/add/material')
+                push({ name: RouterEnum.MAGAZINE_NEW })
               }
             },
             {
               label: 'Couleur',
               command: () => {
-                push('/admin/gestion/add/color')
+                push({ name: RouterEnum.COLOR_NEW })
               }
             }
           ]
@@ -113,7 +114,7 @@ const items = ref([
       ],
       [
         {
-          label: 'Tennis',
+          label: 'Accessoires',
           items: [
             { label: 'Balls' },
             { label: 'Rackets' },
@@ -130,51 +131,77 @@ const items = ref([
     items: [
       [
         {
-          label: 'Categorie B',
+          label: 'Categorie ' + LegislationCategory.B,
           items: [
             {
               label: HAND_GUN,
               command: () => {
-                push(HAND_GUN_LIST_URL + 'B')
+                push({
+                  name: RouterEnum.WEAPON_LIST,
+                  params: { type: WeaponEnum.HAND_GUN, category: LegislationCategory.B }
+                })
               }
             },
             {
               label: RIFFLE,
               command: () => {
-                push(RIFFLE_LIST_URL + 'B')
+                push({
+                  name: RouterEnum.WEAPON_LIST,
+                  params: { type: WeaponEnum.RIFFLE, category: LegislationCategory.B }
+                })
               }
             },
             {
               label: 'Chargeur',
               command: () => {
-                push('/admin/gestion/list/magazine/B')
+                push({
+                  name: RouterEnum.MAGAZINE_LIST,
+                  params: { category: LegislationCategory.B }
+                })
               }
             },
             {
               label: 'Munition',
               command: () => {
-                push('/admin/gestion/list/ammunition/B')
+                push({
+                  name: RouterEnum.AMMUNITION_LIST,
+                  params: { category: LegislationCategory.B }
+                })
               }
-            },
-            { label: 'Accessoire' }
+            }
           ]
         }
       ],
       [
         {
-          label: 'Categorie C',
+          label: 'Categorie ' + LegislationCategory.C,
           items: [
             {
               label: RIFFLE,
               command: () => {
-                push(RIFFLE_LIST_URL + 'C')
+                push({
+                  name: RouterEnum.WEAPON_LIST,
+                  params: { type: WeaponEnum.RIFFLE, category: LegislationCategory.C }
+                })
               }
             },
             { label: 'rds' },
             {
               label: 'Munition',
               command: () => {
-                push('/admin/gestion/list/ammunition/C')
+                push({
+                  name: RouterEnum.AMMUNITION_LIST,
+                  params: { category: LegislationCategory.C }
+                })
+              }
+            },
+            {
+              label: 'Chargeur',
+              command: () => {
+                push({
+                  name: RouterEnum.MAGAZINE_LIST,
+                  params: { category: LegislationCategory.C }
+                })
               }
             },
             { label: 'Accessoire' }
@@ -183,24 +210,33 @@ const items = ref([
       ],
       [
         {
-          label: 'Categorie D',
+          label: 'Categorie ' + LegislationCategory.D,
           items: [
             {
               label: HAND_GUN,
               command: () => {
-                push(HAND_GUN_LIST_URL + 'D')
+                push({
+                  name: RouterEnum.WEAPON_LIST,
+                  params: { type: WeaponEnum.HAND_GUN, category: LegislationCategory.D }
+                })
               }
             },
             {
               label: RIFFLE,
               command: () => {
-                push(RIFFLE_LIST_URL + 'D')
+                push({
+                  name: RouterEnum.WEAPON_LIST,
+                  params: { type: WeaponEnum.RIFFLE, category: LegislationCategory.D }
+                })
               }
             },
             {
               label: 'Munition',
               command: () => {
-                push('/admin/gestion/list/ammunition/D')
+                push({
+                  name: RouterEnum.AMMUNITION_LIST,
+                  params: { category: LegislationCategory.D }
+                })
               }
             },
             { label: 'Accessoire' }
@@ -211,15 +247,14 @@ const items = ref([
         {
           label: 'Autre',
           items: [
-            { label: 'Optiques' },
+            { label: 'Optiques', command: () => push({ name: RouterEnum.OPTIC_LIST }) },
             { label: 'Type d arme' },
             {
               label: 'Marques',
               command: () => {
-                push('/admin/gestion/list/factories')
+                push({ name: RouterEnum.FACTORY_LIST })
               }
-            },
-            { label: 'Training' }
+            }
           ]
         }
       ]

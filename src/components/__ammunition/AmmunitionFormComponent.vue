@@ -222,7 +222,7 @@ const submit = () => {
 }
 
 const update = (ammunition: UpdateAmmunitionDto) => {
-  store.update.mutate(ammunition)
+  store.edit.mutate(ammunition)
 }
 
 const create = (ammunition: CreateAmmunitionDto) => {

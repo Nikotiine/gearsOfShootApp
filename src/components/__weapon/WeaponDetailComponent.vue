@@ -205,7 +205,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import type { WeaponViewType } from '@/views/weapon/WeaponView.vue'
+import type { WeaponViewType } from '@/views/weapon/AdminWeaponView.vue'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { WeaponViewModel } from '@/stores/weapon'

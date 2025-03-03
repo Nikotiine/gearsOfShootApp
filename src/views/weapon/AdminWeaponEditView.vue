@@ -24,7 +24,7 @@
 <script setup lang="ts">
 import { useHandGunStore } from '@/stores/hand-gun'
 import { useRiffleStore } from '@/stores/riffle'
-import type { WeaponViewType } from '@/views/weapon/WeaponView.vue'
+import type { WeaponViewType } from '@/views/weapon/AdminWeaponView.vue'
 import { computed, ref, watchEffect } from 'vue'
 import HandGunFormComponent from '@/components/__weapon/handgun/HandGunFormComponent.vue'
 
