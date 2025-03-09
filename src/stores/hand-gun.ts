@@ -16,6 +16,11 @@ export const useHandGunStore = defineStore('hand-gun', () => {
   // Refs
   const handguns = ref<HandGunDto[]>([])
   const handgun = ref<HandGunDto | null>(null)
+  // Private Attibute
+  const _SUMMARY = 'weapon.summary'
+  const _GET_ALL_BY_CATEGORY_FN = 'getAllHandGunByCategory'
+  const _GET_ALL_FN = 'getAllHandGun'
+  const _GET_BY_ID_FN = 'getHandGunById'
   // *******************Methodes***************
   const createHandGunMutation = useMutation({
     mutationFn: async (handgun: CreateHandGunDto) => {
@@ -23,7 +28,7 @@ export const useHandGunStore = defineStore('hand-gun', () => {
     },
     onSuccess(data) {
       handguns.value.push(data.data)
-      successMessage('weapon.summary', 'weapon.add.success')
+      successMessage(_SUMMARY, 'weapon.add.success')
     }
   })
 
@@ -35,13 +40,13 @@ export const useHandGunStore = defineStore('hand-gun', () => {
       const index = handguns.value.findIndex((hand) => hand.id === data.data.id)
       handguns.value.splice(index, 1)
       handguns.value.push(data.data)
-      successMessage('weapon.summary', 'weapon.add.edit')
+      successMessage(_SUMMARY, 'weapon.add.edit')
     }
   })
 
   const getAllHandGunByCategoryQuery = (category: Ref<string>) =>
     useQuery({
-      queryKey: ['get-all-handgun-by-category', category.value],
+      queryKey: [_GET_ALL_BY_CATEGORY_FN, category.value],
       queryFn: async () => {
         const res = await api.api.handGunControllerFindAllByCategory(category.value)
         handguns.value = res.data
@@ -51,7 +56,7 @@ export const useHandGunStore = defineStore('hand-gun', () => {
     })
 
   const _getAllHandgunQuery = useQuery({
-    queryKey: ['getAllHandgunQuery'],
+    queryKey: [_GET_ALL_FN],
     queryFn: async () => {
       return await api.api.handGunControllerFindAll()
     }
@@ -63,7 +68,7 @@ export const useHandGunStore = defineStore('hand-gun', () => {
 
   const getHandGunById = (id: Ref<number>) =>
     useQuery({
-      queryKey: ['gat-handgun-by-id', id.value],
+      queryKey: [_GET_BY_ID_FN, id.value],
       queryFn: async () => {
         const res = await api.api.handGunControllerFindById(id.value)
         handgun.value = res.data
@@ -80,7 +85,7 @@ export const useHandGunStore = defineStore('hand-gun', () => {
       if (data.data.isSuccess) {
         const index = handguns.value.findIndex((optic) => optic.id === data.data.id)
         handguns.value.splice(index, 1)
-        successMessage('optic.summary', t(data.data.message))
+        successMessage(_SUMMARY, t(data.data.message))
       }
     }
   })

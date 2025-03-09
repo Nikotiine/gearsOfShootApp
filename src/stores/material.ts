@@ -6,23 +6,29 @@ import type { CreateMaterialDto, MaterialDto } from '@/api/Api'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 
 export const useMaterialStore = defineStore('material', () => {
+  // Appel API
   const { api } = useApiStore()
+  // TOAST
   const { successMessage } = useToastStore()
+  // Refs
   const materials = ref<MaterialDto[]>([])
-
+  // Private Attibute
+  const _SUMMARY = 'material.summary'
+  const _GET_ALL_FN = 'getAllMaterial'
+  // *******************Methodes***************
   const createMaterialMutation = useMutation({
     mutationFn: async (materialDto: CreateMaterialDto) => {
       return await api.api.materialControllerCreate(materialDto)
     },
     onSuccess(data) {
-      successMessage('material.summary', 'material.form.success')
+      successMessage(_SUMMARY, 'material.form.success')
       materials.value.push(data.data)
     }
   })
 
   const getAllMaterialsQuery = () =>
     useQuery({
-      queryKey: ['getAllMaterialsQuery'],
+      queryKey: [_GET_ALL_FN],
       queryFn: async () => {
         const res = await api.api.materialControllerFindAll()
         materials.value = res.data

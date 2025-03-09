@@ -6,11 +6,13 @@ export const useRailSizeStore = defineStore('rail-size', () => {
   // Appel API
   const { api } = useApiStore()
   // Refs
+  // Private Attibute
 
+  const _GET_ALL_FN = 'getAllRailSizes'
   // *******************Methodes***************
   const getAllQuery = () =>
     useQuery({
-      queryKey: ['rail-size-get-all'],
+      queryKey: [_GET_ALL_FN],
       queryFn: async () => {
         return api.api.railSizeControllerFindAll()
       }

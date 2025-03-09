@@ -16,6 +16,11 @@ export const useRiffleStore = defineStore('riffle', () => {
   // Refs
   const riffles = ref<RiffleDto[]>([])
   const riffle = ref<RiffleDto>()
+  // Private Attibute
+  const _SUMMARY = 'weapon.summary'
+  const _GET_ALL_BY_CATEGORY_FN = 'getAllRiffleByCategory'
+  const _GET_ALL_FN = 'getAllRiffle'
+  const _GET_BY_ID_FN = 'getRiffleById'
   // *******************Methodes***************
   const createWeaponMutation = useMutation({
     mutationFn: async (riffle: CreateRiffleDto) => {
@@ -23,7 +28,7 @@ export const useRiffleStore = defineStore('riffle', () => {
     },
     onSuccess(data) {
       riffles.value.push(data.data)
-      successMessage('weapon.summary', 'weapon.add.success')
+      successMessage(_SUMMARY, 'weapon.add.success')
     }
   })
 
@@ -35,12 +40,12 @@ export const useRiffleStore = defineStore('riffle', () => {
       const index = riffles.value.findIndex((riffle) => riffle.id === data.data.id)
       riffles.value.splice(index, 1)
       riffles.value.push(data.data)
-      successMessage('weapon.summary', 'weapon.add.edit')
+      successMessage(_SUMMARY, 'weapon.add.edit')
     }
   })
 
   const _getAllRiffleQuery = useQuery({
-    queryKey: ['get-all-riffle'],
+    queryKey: [_GET_ALL_FN],
     queryFn: async () => {
       return await api.api.riffleControllerFindAll()
     }
@@ -52,7 +57,7 @@ export const useRiffleStore = defineStore('riffle', () => {
 
   const getAllRiffleByCategoryQuery = (catgory: Ref<string>) =>
     useQuery({
-      queryKey: ['get-all-riffle-by-category', catgory.value],
+      queryKey: [_GET_ALL_BY_CATEGORY_FN, catgory.value],
       queryFn: async () => {
         const res = await api.api.riffleControllerFindAllByCategory(catgory.value)
         riffles.value = res.data
@@ -63,7 +68,7 @@ export const useRiffleStore = defineStore('riffle', () => {
 
   const getRiffleById = (id: Ref<number>) =>
     useQuery({
-      queryKey: ['get-riffle-by-id', id.value],
+      queryKey: [_GET_BY_ID_FN, id.value],
       queryFn: async () => {
         const res = await api.api.riffleControllerFindById(id.value)
         riffle.value = res.data
@@ -80,7 +85,7 @@ export const useRiffleStore = defineStore('riffle', () => {
       if (data.data.isSuccess) {
         const index = riffles.value.findIndex((optic) => optic.id === data.data.id)
         riffles.value.splice(index, 1)
-        successMessage('optic.summary', t(data.data.message))
+        successMessage(_SUMMARY, t(data.data.message))
       }
     }
   })
