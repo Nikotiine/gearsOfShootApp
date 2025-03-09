@@ -224,6 +224,21 @@ const router = createRouter({
                   component: () => import('../views/threaded-size/ThreadedSizeFormView.vue')
                 }
               ]
+            },
+            {
+              path: 'optic-collar',
+              children: [
+                {
+                  path: 'new',
+                  name: RouterEnum.OPTIC_COLLAR_NEW,
+                  component: () => import('../views/optic/AdminOpticCollarFormView.vue')
+                },
+                {
+                  path: 'list',
+                  name: RouterEnum.OPTIC_COLLAR_LIST,
+                  component: () => import('../views/optic/AdminOpticCollarListView.vue')
+                }
+              ]
             }
           ]
         }

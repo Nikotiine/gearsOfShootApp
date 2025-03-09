@@ -116,7 +116,12 @@ const items = ref([
         {
           label: 'Accessoires',
           items: [
-            { label: 'Balls' },
+            {
+              label: 'Collier d optique',
+              command: () => {
+                push({ name: RouterEnum.OPTIC_COLLAR_NEW })
+              }
+            },
             { label: 'Rackets' },
             { label: 'Shoes' },
             { label: 'Training' }
@@ -248,6 +253,7 @@ const items = ref([
           label: 'Autre',
           items: [
             { label: 'Optiques', command: () => push({ name: RouterEnum.OPTIC_LIST }) },
+            { label: 'Collier', command: () => push({ name: RouterEnum.OPTIC_COLLAR_LIST }) },
             { label: 'Type d arme' },
             {
               label: 'Marques',

@@ -235,7 +235,7 @@
         <input-group-optional-icon :is-completed="form.railSizeId > 0" />
         <input-group-select
           :options="railSizes$"
-          label="weapon.common.opticRail"
+          label="global.opticRail"
           @option-id="(event) => (form.railSizeId = event)"
           filter
           input-id="railSizeId"

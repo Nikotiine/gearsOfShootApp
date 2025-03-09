@@ -82,7 +82,7 @@
     "defaultPlaceHolder": "Selectionner",
     "length": "Longueur",
     "width": "Largeur",
-    "height": "hauteur",
+    "height": "Hauteur",
     "min": "Minimum",
     "max": "Maximum",
     "isLoadingError": "Erreur lors du chargement des donnees",
@@ -90,7 +90,9 @@
     "capacity": "Capacité",
     "pieces": "pieces",
     "piece": "piece",
-    "delete": "Supprimer"
+    "delete": "Supprimer",
+    "opticRail": "Rail d'optique",
+    "diameter": "Diametre"
   },
   "weapon": {
     "summary": "Gestion des armes",
@@ -129,7 +131,7 @@
       "mLockOptions": "Position MLOCK",
       "selectType": "Quel type d'arme ?",
       "handGunButtType": "Matiere de la carcasse",
-      "opticRail": "Rail d'optique",
+
       "adjustableTriggerMinWeight": "Poids mini",
       "adjustableTriggerMaxWeight": "Poids max"
     },
@@ -298,6 +300,16 @@
     "type": "Type d'armes",
     "summary": "Gestion des type d'arme",
     "size": "Taille du pas de vis"
+  },
+  "opticCollar": {
+    "form": {
+      "addTitle": "Ajouter un nouveau collier",
+      "success": "Ajout d'un nouveau collier confirme",
+      "update": "Collier correctement modifié"
+    },
+    "list": {
+      "title": "List des colliers d optique"
+    }
   },
   "error": {
     "0001": "Email deja utilisé",

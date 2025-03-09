@@ -184,7 +184,7 @@ const { calibers$ } = storeToRefs(caliberStore)
 const { headTypes$ } = storeToRefs(headTypeStore)
 const { bodyTypes$ } = storeToRefs(bodyTypeStore)
 const { data: categories$, isSuccess: categoriesQueryIsSuccess } = categorieStore.getAll()
-const initialCreateAmmunitionFormObject: CreateAmmunitionDto = {
+const initialForm: CreateAmmunitionDto = {
   bodyTypeId: 0,
   caliberId: 0,
   factoryId: 0,
@@ -197,7 +197,7 @@ const initialCreateAmmunitionFormObject: CreateAmmunitionDto = {
   percussionTypeId: 0
 }
 const form = ref<CreateAmmunitionDto>({
-  ...initialCreateAmmunitionFormObject
+  ...initialForm
 })
 
 const isFormValid = computed(() => {
@@ -227,7 +227,7 @@ const update = (ammunition: UpdateAmmunitionDto) => {
 
 const create = (ammunition: CreateAmmunitionDto) => {
   store.create.mutate(ammunition)
-  form.value = { ...initialCreateAmmunitionFormObject }
+  form.value = { ...initialForm }
 }
 
 const selectedCategory = computed(() => {

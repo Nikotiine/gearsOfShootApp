@@ -26,9 +26,15 @@ export const useOpticStore = defineStore('optic', () => {
   const focalPlanes = ref<FocalPlaneDto[]>([])
   const optics = ref<OpticDto[]>([])
   const optic = ref<OpticDto>()
+
+  // Private Attibute
+  const _SUMMARY = 'optic.summary'
+  const _GET_ALL_FN = 'getAllOptic'
+  const _GET_BY_ID_FN = 'getOpticById'
+  const _PREREQUISITE_FN = 'prerequisite-optic'
   // *******************Methodes***************
   const queryPrerequisitesOpticList = useQuery({
-    queryKey: ['prerequisite-optic'],
+    queryKey: [_PREREQUISITE_FN],
     queryFn: async () => {
       const res = await api.api.opticControllerFindPrerequisitesOpticList()
       opticType.value = res.data.types
@@ -40,9 +46,8 @@ export const useOpticStore = defineStore('optic', () => {
 
   const getAllOpticsQuery = () =>
     useQuery({
-      queryKey: ['all-optics'],
+      queryKey: [_GET_ALL_FN],
       queryFn: async () => {
-        console.log('all')
         const res = await api.api.opticControllerFindAllOptics()
         optics.value = res.data
         return res
@@ -55,7 +60,7 @@ export const useOpticStore = defineStore('optic', () => {
     },
     onSuccess(data) {
       optics.value.push(data.data)
-      successMessage('optic.summary', 'optic.form.success')
+      successMessage(_SUMMARY, 'optic.form.success')
     }
   })
 
@@ -67,7 +72,7 @@ export const useOpticStore = defineStore('optic', () => {
       const index = optics.value.findIndex((optic) => optic.id === data.data.id)
       optics.value.splice(index, 1)
       optics.value.push(data.data)
-      successMessage('optic.summary', 'optic.form.success')
+      successMessage(_SUMMARY, 'optic.form.success')
     }
   })
 
@@ -79,7 +84,7 @@ export const useOpticStore = defineStore('optic', () => {
       if (data.data.isSuccess) {
         const index = optics.value.findIndex((optic) => optic.id === data.data.id)
         optics.value.splice(index, 1)
-        successMessage('optic.summary', t(data.data.message))
+        successMessage(_SUMMARY, t(data.data.message))
       }
     }
   })
@@ -90,7 +95,7 @@ export const useOpticStore = defineStore('optic', () => {
 
   const getByIdQuery = (id: Ref<number>) =>
     useQuery({
-      queryKey: ['getOpticByIdQuery', id.value],
+      queryKey: [_GET_BY_ID_FN, id.value],
       queryFn: async () => {
         const res = await api.api.opticControllerFindById(id.value)
         optic.value = res.data

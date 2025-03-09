@@ -87,4 +87,11 @@ export const useFactoryStore = defineStore('factory', () => {
     getFactoriesByType: selectTypeOfQuery
   }
 })
-export type FactoryType = 'weapon' | 'ammunition' | 'optic' | 'rds' | 'magazine' | 'all'
+export type FactoryType =
+  | 'weapon'
+  | 'ammunition'
+  | 'optic'
+  | 'rds'
+  | 'magazine'
+  | 'all'
+  | 'accessory'
