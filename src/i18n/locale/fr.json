@@ -132,7 +132,6 @@
       "mLockOptions": "Position MLOCK",
       "selectType": "Quel type d'arme ?",
       "handGunButtType": "Matiere de la carcasse",
-
       "adjustableTriggerMinWeight": "Poids mini",
       "adjustableTriggerMaxWeight": "Poids max"
     },
@@ -303,15 +302,13 @@
     "size": "Taille du pas de vis"
   },
   "opticCollar": {
-    "form": {
-      "save": "Ajouter un nouveau collier",
-      "edit": "Modifier un collier",
-      "success": "Ajout d'un nouveau collier confirme",
-      "update": "Collier correctement modifié"
-    },
-    "list": {
-      "title": "List des colliers d optique"
-    }
+    "summary": "Gestion des colliers d'optique",
+    "save": "Ajouter un nouveau collier",
+    "edit": "Modifier un collier",
+    "success": "Ajout d'un nouveau collier confirme",
+    "update": "Collier correctement modifié",
+    "list":  "Liste des colliers d'optique",
+    "deleted": "Collier supprimé"
   },
   "error": {
     "0001": "Email deja utilisé",

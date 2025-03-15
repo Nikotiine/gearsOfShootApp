@@ -1,6 +1,6 @@
 <template>
   <h2 class="text-center mt-2 text-2xl">
-    {{ t('opticCollar.form.' + formStatus) }}
+    {{ t('opticCollar.' + formStatus) }}
   </h2>
   <form @submit.prevent="submit" v-if="storeAreLoaded">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
@@ -113,15 +113,7 @@ const { id } = defineProps<{
   id?: string
 }>()
 
-const initialForm: CreateOpticCollarDto = {
-  diameter: 0,
-  factoryId: 0,
-  height: 0,
-  name: '',
-  railSizeId: 0,
-  description: ''
-}
-const { form } = store.builder(id)
+const { form, resetForm } = store.builder(id)
 const submit = () => {
   if (id) {
     update({ ...form.value, id: parseInt(id) })
@@ -131,7 +123,7 @@ const submit = () => {
 }
 const create = (collar: CreateOpticCollarDto) => {
   store.create.mutate(collar)
-  form.value = { ...initialForm }
+  resetForm()
 }
 const update = (collar: UpdateOpticCollarDto) => {
   store.edit.mutate(collar)

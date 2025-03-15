@@ -5,6 +5,8 @@ import { useI18n } from 'vue-i18n'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import type { CreateOpticCollarDto, OpticCollarDto, UpdateOpticCollarDto } from '@/api/Api'
 import { ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import { RouterEnum } from '@/enum/router.enum'
 
 export const useOpticCollarStore = defineStore('optic-collar', () => {
   // Appel API
@@ -13,11 +15,14 @@ export const useOpticCollarStore = defineStore('optic-collar', () => {
   const { successMessage } = useToastStore()
   // I18N
   const { t } = useI18n()
+  // Router
+  const { push } = useRouter()
   // Refs
   const collars = ref<OpticCollarDto[]>([])
   const collar = ref<OpticCollarDto>()
   // Private Attibute
-  const _SUMMARY = 'opticCollar.summary'
+  const I18N_PREFIX = 'opticCollar'
+  const _SUMMARY = I18N_PREFIX + '.summary'
   const _GET_ALL_FN = 'getAllOpticCollar'
   const _GET_BY_ID_FN = 'getOpticCollarById'
   // *******************Methodes***************
@@ -27,7 +32,7 @@ export const useOpticCollarStore = defineStore('optic-collar', () => {
     },
     onSuccess: (data) => {
       collars.value.push(data.data)
-      successMessage(_SUMMARY, 'opticCollar.form.success')
+      successMessage(_SUMMARY, I18N_PREFIX + '.success')
     }
   })
 
@@ -39,7 +44,8 @@ export const useOpticCollarStore = defineStore('optic-collar', () => {
       const index = collars.value.findIndex((collar) => collar.id === data.data.id)
       collars.value.splice(index, 1)
       collars.value.push(data.data)
-      successMessage(_SUMMARY, 'opticCollar.form.update')
+      successMessage(_SUMMARY, I18N_PREFIX + '.update')
+      push({ name: RouterEnum.OPTIC_COLLAR_LIST })
     }
   })
 
@@ -61,7 +67,7 @@ export const useOpticCollarStore = defineStore('optic-collar', () => {
       if (data.data.isSuccess) {
         const index = collars.value.findIndex((optic) => optic.id === data.data.id)
         collars.value.splice(index, 1)
-        successMessage(_SUMMARY, t(data.data.message))
+        successMessage(_SUMMARY, t(I18N_PREFIX + '.deleted'))
       }
     }
   })
@@ -93,7 +99,16 @@ export const useOpticCollarStore = defineStore('optic-collar', () => {
       railSizeId: 0,
       description: ''
     })
-
+    const resetForm = () => {
+      form.value = {
+        diameter: 0,
+        factoryId: 0,
+        height: 0,
+        name: '',
+        railSizeId: 0,
+        description: ''
+      }
+    }
     const { data, isSuccess } = getByIdQuery(id)
 
     watch(
@@ -110,7 +125,7 @@ export const useOpticCollarStore = defineStore('optic-collar', () => {
       { immediate: true }
     )
 
-    return { form, isSuccess }
+    return { form, isSuccess, resetForm }
   }
 
   return {

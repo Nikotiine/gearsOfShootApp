@@ -1,6 +1,6 @@
 <template>
   <div class="card p-4" v-if="isSuccess">
-    <h2 class="text-center mt-2 text-2xl">{{ t('opticCollar.list.title') }}</h2>
+    <h2 class="text-center mt-2 text-2xl">{{ t('opticCollar.list') }}</h2>
     <div class="text-red-500 text-center" v-if="isError">{{ t('global.isLoadingError') }}</div>
     <DataTable
       v-model:filters="filters"
@@ -176,11 +176,10 @@ const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
       router.push({ name: RouterEnum.OPTIC_COLLAR_DETAIL, params: { id: id } })
       break
     case 'edit':
-      console.log(typeof id)
       router.push({ name: RouterEnum.OPTIC_COLLAR_EDIT, params: { id: id } })
       break
     case true:
-      //  store.delete(id)
+      store.delete(id)
       refetch()
       break
   }
