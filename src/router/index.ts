@@ -234,9 +234,21 @@ const router = createRouter({
                   component: () => import('../views/optic/AdminOpticCollarFormView.vue')
                 },
                 {
+                  path: 'edit/:id',
+                  props: true,
+                  name: RouterEnum.OPTIC_COLLAR_EDIT,
+                  component: () => import('../views/optic/AdminOpticCollarFormView.vue')
+                },
+                {
                   path: 'list',
                   name: RouterEnum.OPTIC_COLLAR_LIST,
                   component: () => import('../views/optic/AdminOpticCollarListView.vue')
+                },
+                {
+                  path: 'detail/:id',
+                  props: true,
+                  name: RouterEnum.OPTIC_COLLAR_DETAIL,
+                  component: () => import('../views/optic/AdminOpticCollarDetailView.vue')
                 }
               ]
             }

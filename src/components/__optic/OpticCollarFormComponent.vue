@@ -1,6 +1,6 @@
 <template>
   <h2 class="text-center mt-2 text-2xl">
-    {{ t('opticCollar.form.addTitle') }}
+    {{ t('opticCollar.form.' + formStatus) }}
   </h2>
   <form @submit.prevent="submit" v-if="storeAreLoaded">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
@@ -27,8 +27,10 @@
           required
           input-id="factoryId"
           :initial-value="form.factoryId"
-        /> </InputGroup
-      ><InputGroup>
+        />
+      </InputGroup>
+
+      <InputGroup>
         <input-group-required-icon :is-validate="form.railSizeId > 0" />
         <input-group-select
           :options="railSize$?.data"
@@ -40,6 +42,7 @@
           :initial-value="form.railSizeId"
         />
       </InputGroup>
+
       <InputGroup>
         <input-group-optional-icon :is-completed="form.height > 0" />
         <input-group-number
@@ -50,6 +53,7 @@
         />
         <InputGroupAddon> mm </InputGroupAddon>
       </InputGroup>
+
       <InputGroup>
         <input-group-optional-icon :is-completed="form.diameter > 0" />
         <input-group-number
@@ -76,19 +80,15 @@
         {{ t('error.' + store.create.error.response.data.message) }}
       </p>
     </div>
-
-    <div class="text-center mt-2">
-      <Button type="submit" :label="t('global.save')" :disabled="!isFormValid"></Button>
-    </div>
+    <save-button :status="formStatus" :disabled="!isFormValid" />
   </form>
 </template>
 <script setup lang="ts">
-import type { CreateOpticCollarDto, OpticCollarDto } from '@/api/Api'
-import { computed, ref } from 'vue'
+import type { CreateOpticCollarDto, UpdateOpticCollarDto } from '@/api/Api'
+import { computed, ref, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
-import Button from 'primevue/button'
 import InputGroup from 'primevue/inputgroup'
 import Textarea from 'primevue/textarea'
 import InputGroupText from '@/components/__form/InputGroupText.vue'
@@ -98,18 +98,21 @@ import InputGroupAddon from 'primevue/inputgroupaddon'
 import { useFactoryStore } from '@/stores/factory'
 import { useRailSizeStore } from '@/stores/rail-size'
 import { useOpticCollarStore } from '@/stores/optic-collar'
+import SaveButton from '@/components/__form/SaveButton.vue'
+import type { FormStatus } from '@/types/form-status.type'
 
 const { t } = useI18n()
+const formStatus = ref<FormStatus>('save')
 const store = useOpticCollarStore()
 const factoryStore = useFactoryStore()
 const railSizeStore = useRailSizeStore()
 const { data: factories$, isSuccess: factoriesQueryIsSuccess } =
   factoryStore.getFactoriesByType('accessory')
-const { data: railSize$, isSuccess: railSizeQueryIsSucess } = railSizeStore.getAll()
-
-const { collar } = defineProps<{
-  collar?: OpticCollarDto
+const { data: railSize$, isSuccess: railSizeQueryIsSuccess } = railSizeStore.getAll()
+const { id } = defineProps<{
+  id?: string
 }>()
+
 const initialForm: CreateOpticCollarDto = {
   diameter: 0,
   factoryId: 0,
@@ -118,10 +121,10 @@ const initialForm: CreateOpticCollarDto = {
   railSizeId: 0,
   description: ''
 }
-const form = ref<CreateOpticCollarDto>({ ...initialForm })
+const { form } = store.builder(id)
 const submit = () => {
-  if (collar) {
-    update({ ...form.value, id: collar.id })
+  if (id) {
+    update({ ...form.value, id: parseInt(id) })
   } else {
     create(form.value)
   }
@@ -130,11 +133,11 @@ const create = (collar: CreateOpticCollarDto) => {
   store.create.mutate(collar)
   form.value = { ...initialForm }
 }
-const update = (collar: any) => {
-  console.log(collar)
+const update = (collar: UpdateOpticCollarDto) => {
+  store.edit.mutate(collar)
 }
 const storeAreLoaded = computed(() => {
-  return factoriesQueryIsSuccess && railSizeQueryIsSucess
+  return factoriesQueryIsSuccess && railSizeQueryIsSuccess
 })
 const isFormValid = computed(() => {
   let isValid: boolean = false
@@ -148,6 +151,13 @@ const isFormValid = computed(() => {
     isValid = true
   }
   return isValid
+})
+watchEffect(() => {
+  if (id) {
+    formStatus.value = 'edit'
+  } else {
+    formStatus.value = 'save'
+  }
 })
 </script>
 

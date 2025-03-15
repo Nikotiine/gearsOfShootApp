@@ -152,6 +152,7 @@ import { ref } from 'vue'
 import { FilterMatchMode } from '@primevue/core/api'
 import { RouterEnum } from '@/enum/router.enum'
 import { useRouter } from 'vue-router'
+
 const store = useOpticCollarStore()
 const { data: collar$, isSuccess, isError, isLoading, refetch } = store.getAll()
 const { t } = useI18n()
@@ -172,10 +173,11 @@ const filters = ref({
 const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
   switch (event) {
     case 'view':
-      router.push({ name: RouterEnum.OPTIC_DETAIL, params: { id: id } })
+      router.push({ name: RouterEnum.OPTIC_COLLAR_DETAIL, params: { id: id } })
       break
     case 'edit':
-      router.push({ name: RouterEnum.OPTIC_EDIT, params: { id: id } })
+      console.log(typeof id)
+      router.push({ name: RouterEnum.OPTIC_COLLAR_EDIT, params: { id: id } })
       break
     case true:
       //  store.delete(id)

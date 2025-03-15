@@ -2,12 +2,12 @@ import { defineStore } from 'pinia'
 
 import { useConfirm } from 'primevue/useconfirm'
 import { useI18n } from 'vue-i18n'
-import type { DrawerType } from '@/types/form-type'
+import type { ActionMenuEmit } from '@/components/__table/ActionMenuComponent.vue'
 export const useConfirmationStore = defineStore('confirmation', () => {
   const confirmDialog = useConfirm()
 
   const { t } = useI18n()
-  const confirmDelete = (type: DrawerType, reference: string): Promise<boolean> => {
+  const confirmDelete = (type: ActionMenuEmit, reference: string): Promise<boolean> => {
     return new Promise((resolve) => {
       confirmDialog.require({
         message: `${t('confirmDialog.deleteConfirmation')} ${t('global.' + type).toUpperCase()} ${t('confirmDialog.withReference')} ${reference}`,

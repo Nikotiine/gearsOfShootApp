@@ -92,7 +92,8 @@
     "piece": "piece",
     "delete": "Supprimer",
     "opticRail": "Rail d'optique",
-    "diameter": "Diametre"
+    "diameter": "Diametre",
+    "collar": "Collier d'optique"
   },
   "weapon": {
     "summary": "Gestion des armes",
@@ -303,7 +304,8 @@
   },
   "opticCollar": {
     "form": {
-      "addTitle": "Ajouter un nouveau collier",
+      "save": "Ajouter un nouveau collier",
+      "edit": "Modifier un collier",
       "success": "Ajout d'un nouveau collier confirme",
       "update": "Collier correctement modifié"
     },

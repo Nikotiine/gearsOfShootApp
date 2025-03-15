@@ -4,7 +4,7 @@ import { useToastStore } from '@/stores/toast'
 import { useI18n } from 'vue-i18n'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import type { CreateOpticCollarDto, OpticCollarDto, UpdateOpticCollarDto } from '@/api/Api'
-import { type Ref, ref } from 'vue'
+import { ref, watch } from 'vue'
 
 export const useOpticCollarStore = defineStore('optic-collar', () => {
   // Appel API
@@ -53,18 +53,6 @@ export const useOpticCollarStore = defineStore('optic-collar', () => {
       }
     })
 
-  const getByIdQuery = (id: Ref<number>) =>
-    useQuery({
-      queryKey: [_GET_BY_ID_FN, id.value],
-      queryFn: async () => {
-        const res = await api.api.opticCollarControllerFindById(id.value)
-        collar.value = res.data
-        return res
-      },
-      enabled: () => id.value > 0,
-      retry: 0
-    })
-
   const _deleteMutation = useMutation({
     mutationFn: async (opticId: number) => {
       return await api.api.opticCollarControllerDelete(opticId)
@@ -82,6 +70,49 @@ export const useOpticCollarStore = defineStore('optic-collar', () => {
     _deleteMutation.mutate(id)
   }
 
+  const getByIdQuery = (id?: string) =>
+    useQuery({
+      queryKey: [_GET_BY_ID_FN, id],
+      queryFn: () => _fetchCollarById(id),
+      enabled: !!id,
+      retry: 0
+    })
+
+  const _fetchCollarById = async (id?: string) => {
+    if (!id) return null
+    const res = await api.api.opticCollarControllerFindById(parseInt(id))
+    return res.data
+  }
+
+  function useOpticCollarForm(id?: string) {
+    const form = ref<CreateOpticCollarDto>({
+      diameter: 0,
+      factoryId: 0,
+      height: 0,
+      name: '',
+      railSizeId: 0,
+      description: ''
+    })
+
+    const { data, isSuccess } = getByIdQuery(id)
+
+    watch(
+      () => data.value,
+      (newData) => {
+        if (isSuccess.value && newData) {
+          form.value = {
+            ...newData,
+            factoryId: newData.factory.id,
+            railSizeId: newData.railSize.id
+          }
+        }
+      },
+      { immediate: true }
+    )
+
+    return { form, isSuccess }
+  }
+
   return {
     create: createOpticCollarMutation,
     collars$: collars,
@@ -89,6 +120,7 @@ export const useOpticCollarStore = defineStore('optic-collar', () => {
     getById: getByIdQuery,
     delete: deleteFunction,
     edit: updateOpticCollarMutation,
-    collar$: collar
+    collar$: collar,
+    builder: useOpticCollarForm
   }
 })
