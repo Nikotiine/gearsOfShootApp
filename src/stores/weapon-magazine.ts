@@ -13,20 +13,26 @@ export const useWeaponMagazineStore = defineStore('weaponMagazine', () => {
   // Refs
   const magazines = ref<WeaponMagazineDto[]>([])
   const magazine = ref<WeaponMagazineDto>()
-
+  // Private Attibute
+  const _SUMMARY = 'magazine.summary'
+  const _GET_ALL_BY_CATEGORY_FN = 'getAllMagazineByCategory'
+  const _GET_ALL_BY_FACTORY_FN = 'getAllMagazineByFactory'
+  const _GET_ALL_FN = 'getAllMagazine'
+  const _GET_BY_ID_FN = 'getMagazineById'
+  // *******************Methodes***************$
   const createWeaponMagazineMutation = useMutation({
     mutationFn: async (magazine: CreateWeaponMagazineDto) => {
       return await api.api.magazineControllerCreate(magazine)
     },
     onSuccess(data) {
       magazines.value.push(data.data)
-      successMessage('magazine.summary', 'magazine.form.success')
+      successMessage(_SUMMARY, 'magazine.form.success')
     }
   })
 
   const getMagazineByFactory = (factoryName: Ref<string>) =>
     useQuery({
-      queryKey: ['getMagazineByFactory', factoryName.value],
+      queryKey: [_GET_ALL_BY_FACTORY_FN, factoryName.value],
       queryFn: async () => {
         const res = await api.api.magazineControllerFindByFactory(factoryName.value)
         magazines.value = res.data
@@ -35,20 +41,20 @@ export const useWeaponMagazineStore = defineStore('weaponMagazine', () => {
       enabled: !!factoryName.value
     })
 
-  const getAllQuery = (enbaled: Ref<boolean>) =>
+  const getAllQuery = (enabled: Ref<boolean>) =>
     useQuery({
-      queryKey: ['getAllMagazine'],
+      queryKey: [_GET_ALL_FN],
       queryFn: async () => {
         const res = await api.api.magazineControllerFindAll()
         magazines.value = res.data
         return res
       },
-      enabled: () => enbaled.value
+      enabled: () => enabled.value
     })
 
   const getAllByCategoryQuery = (category: Ref<string>) =>
     useQuery({
-      queryKey: ['getAllByCategoryQuery', category.value],
+      queryKey: [_GET_ALL_BY_CATEGORY_FN, category.value],
       queryFn: async () => {
         const res = await api.api.magazineControllerFindByCategory(category.value)
         magazines.value = res.data
@@ -59,7 +65,7 @@ export const useWeaponMagazineStore = defineStore('weaponMagazine', () => {
 
   const getByIdQuery = (id: Ref<number>) =>
     useQuery({
-      queryKey: ['getById', id.value],
+      queryKey: [_GET_BY_ID_FN, id.value],
       queryFn: async () => {
         const res = await api.api.magazineControllerFindById(id.value)
         magazine.value = res.data
@@ -74,10 +80,21 @@ export const useWeaponMagazineStore = defineStore('weaponMagazine', () => {
     },
     onSuccess(data) {
       magazines.value.push(data.data)
-      successMessage('magazine.summary', 'magazine.form.success')
+      successMessage(_SUMMARY, 'magazine.form.success')
     }
   })
 
+  const _deleteMagazineMutation = useMutation({
+    mutationFn: async (id: number) => {
+      return await api.api.magazineControllerDelete(id)
+    },
+    onSuccess(data) {
+      successMessage(_SUMMARY, data.data.message)
+    }
+  })
+  const deleteFunction = (id: number) => {
+    _deleteMagazineMutation.mutate(id)
+  }
   return {
     getAll: getAllQuery,
     getById: getByIdQuery,
@@ -86,6 +103,7 @@ export const useWeaponMagazineStore = defineStore('weaponMagazine', () => {
     getByCategory: getAllByCategoryQuery,
     magazines$: magazines,
     magazine$: magazine,
-    edit: updateMagazineMutation
+    edit: updateMagazineMutation,
+    delete: deleteFunction
   }
 })

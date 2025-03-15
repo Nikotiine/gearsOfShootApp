@@ -1,6 +1,6 @@
 <template>
-  <div class="border border-blue-500 mt-2" v-if="store.getAll.isSuccess">
-    <DataTable :value="getAllData$" :loading="store.getAll.isLoading">
+  <div class="border border-blue-500 mt-2" v-if="isSuccess">
+    <DataTable :value="data?.data" :loading="isLoading">
       <template #header>
         <div class="flex flex-wrap items-center justify-between gap-2">
           <span class="text-xl font-bold">{{ t('weaponType.existingList') }}</span>
@@ -16,11 +16,10 @@
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import { useWeaponTypeStore } from '@/stores/weaponType'
-import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 const store = useWeaponTypeStore()
-const { getAllData$ } = storeToRefs(store)
+const { data, isSuccess, isLoading } = store.getAll()
 </script>
 
 <style scoped></style>

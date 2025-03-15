@@ -57,7 +57,7 @@
     "ammunition": "Munition",
     "optic": "Optique",
     "rds": "Moderateur de son",
-    "category": "categorie",
+    "category": "Categorie",
     "caliber": "Calibre",
     "factory": "Marque",
     "model": "Modele",
@@ -82,12 +82,18 @@
     "defaultPlaceHolder": "Selectionner",
     "length": "Longueur",
     "width": "Largeur",
-    "height": "hauteur",
+    "height": "Hauteur",
     "min": "Minimum",
     "max": "Maximum",
     "isLoadingError": "Erreur lors du chargement des donnees",
     "pleaseWait": "Merci de patienter.",
-    "capacity": "Capacité"
+    "capacity": "Capacité",
+    "pieces": "pieces",
+    "piece": "piece",
+    "delete": "Supprimer",
+    "opticRail": "Rail d'optique",
+    "diameter": "Diametre",
+    "collar": "Collier d'optique"
   },
   "weapon": {
     "summary": "Gestion des armes",
@@ -126,7 +132,6 @@
       "mLockOptions": "Position MLOCK",
       "selectType": "Quel type d'arme ?",
       "handGunButtType": "Matiere de la carcasse",
-      "opticRail": "Rail d'optique",
       "adjustableTriggerMinWeight": "Poids mini",
       "adjustableTriggerMaxWeight": "Poids max"
     },
@@ -161,7 +166,8 @@
   "ammunition": {
     "summary": "Gestion des munition",
     "add": {
-      "success": "Ajouter a la base de donnee"
+      "success": "Ajouter a la base de donnee",
+      "update": "Munition modifié"
     },
     "form": {
       "add": "Ajouter une munition de categorie",
@@ -222,6 +228,10 @@
       "opticUnit": "Unite de graduation",
       "isParallax": "Parallaxe"
     },
+    "list": {
+      "title": "Liste des optiques",
+      "notFound": "Aucune optique trouvée"
+    },
     "common": {
       "opticType": "Type d'optique",
       "focalPlane": "Plan focal",
@@ -238,7 +248,8 @@
       "bodyDiameter": "Diametre du corps",
       "eyeRelief": "Degagement occulaire",
       "minParallax": "Parallax mini",
-      "maxParallax": "Parallax maxi"
+      "maxParallax": "Parallax maxi",
+      "opticUnit": "Unite de graduation"
     }
   },
   "factory": {
@@ -290,6 +301,15 @@
     "summary": "Gestion des type d'arme",
     "size": "Taille du pas de vis"
   },
+  "opticCollar": {
+    "summary": "Gestion des colliers d'optique",
+    "save": "Ajouter un nouveau collier",
+    "edit": "Modifier un collier",
+    "success": "Ajout d'un nouveau collier confirme",
+    "update": "Collier correctement modifié",
+    "list":  "Liste des colliers d'optique",
+    "deleted": "Collier supprimé"
+  },
   "error": {
     "0001": "Email deja utilisé",
     "0002": "Indentifiants invalides",
@@ -297,6 +317,7 @@
     "0102": "Munition deja existante",
     "0200": "Type d arme deja existante",
     "0201": "Arme deja existante",
+    "0302": "Optique non trouve, veuillez recommencez",
     "0600": "Marque deja existante"
   },
   "tooltip": {
@@ -320,5 +341,12 @@
   "inputMultiSelect": {
     "emptyDefaultMessage": "Aucune donnée trouvée",
     "defaultPlaceHolder": "Selectionner"
+  },
+  "confirmDialog": {
+    "deleteConfirmation": "Etes vous sur de vouloir supprimer :",
+    "withReference": "avec la reference :"
+  },
+  "deleteMessage": {
+    "000": "Optique supprimeée"
   }
 }

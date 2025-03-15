@@ -38,7 +38,7 @@ export interface CreateFactoryDto {
   reference: string
 }
 
-export interface EditFactoryDto {
+export interface UpdateFactoryDto {
   /** @example "Colt" */
   name: string
   typeId: number
@@ -107,6 +107,12 @@ export interface CreateMaterialDto {
   reference: string
 }
 
+export interface RailSizeDto {
+  id: number
+  name: string
+  reference: string
+}
+
 export interface WeaponReloadModeDto {
   id: number
   name: string
@@ -128,12 +134,6 @@ export interface PercussionTypeDto {
 export interface WeaponBarrelTypeDto {
   id: number
   name: string
-}
-
-export interface RailSizeDto {
-  id: number
-  name: string
-  reference: string
 }
 
 export interface WeaponTriggerTypeDto {
@@ -880,7 +880,9 @@ export interface OpticDto {
   factory: FactoryDto
   /** @example "Une description de l optique ..." */
   description: string | null
+  isCollarsProvided: boolean
   maxZoom: number
+  length: number
   minZoom: number
   maxDrift: number
   maxElevation: number
@@ -893,22 +895,14 @@ export interface OpticDto {
   opticUnit: OpticUnitDto
   focalPlane: FocalPlaneDto
   type: OpticTypeDto
-}
-
-export interface OpticCollarDto {
-  id: number
-  diameter: number
-  height: number
-  railSize: RailSizeDto
-  factory: FactoryDto
+  reference: string
+  eyeRelief: number
 }
 
 export interface ListOfPrerequisitesOpticDto {
   types: OpticTypeDto[]
-  factories: FactoryDto[]
   units: OpticUnitDto[]
   focalPlanes: FocalPlaneDto[]
-  opticCollars: OpticCollarDto[]
 }
 
 export interface CreateOpticDto {
@@ -932,7 +926,6 @@ export interface CreateOpticDto {
   length: number
   eyeRelief: number
   isCollarsProvided: boolean
-  providedCollarId: number | null
 }
 
 export interface UpdateOpticDto {
@@ -956,13 +949,45 @@ export interface UpdateOpticDto {
   length: number
   eyeRelief: number
   isCollarsProvided: boolean
-  providedCollarId: number | null
   id: number
 }
 
 export interface CreateOpticTypeDto {
   name: string
   reference: string
+}
+
+export interface OpticCollarDto {
+  id: number
+  diameter: number
+  height: number
+  railSize: RailSizeDto
+  factory: FactoryDto
+  /** @example "Une description de la marque et ses produits" */
+  description: string
+  reference: string
+  name: string
+}
+
+export interface CreateOpticCollarDto {
+  diameter: number
+  height: number
+  railSizeId: number
+  factoryId: number
+  name: string
+  /** @example "Une description de la marque et ses produits" */
+  description: string
+}
+
+export interface UpdateOpticCollarDto {
+  diameter: number
+  height: number
+  railSizeId: number
+  factoryId: number
+  name: string
+  /** @example "Une description de la marque et ses produits" */
+  description: string
+  id: number
 }
 
 export enum CreateUserDtoRoleEnum {
@@ -1129,7 +1154,7 @@ export class HttpClient<SecurityDataType = unknown> {
 
 /**
  * @title Gears of shoot
- * @version 1.0
+ * @version 0.1.0
  * @contact
  *
  * Gears of shoot API
@@ -1210,7 +1235,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @summary Edition
      * @request PUT:/api/factory/{id}
      */
-    factoryControllerEdit: (id: number, data: EditFactoryDto, params: RequestParams = {}) =>
+    factoryControllerEdit: (id: number, data: UpdateFactoryDto, params: RequestParams = {}) =>
       this.request<FactoryDto, any>({
         path: `/api/factory/${id}`,
         method: 'PUT',
@@ -1452,6 +1477,22 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
         method: 'POST',
         body: data,
         type: ContentType.Json,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne la listes de toutes les taille de rail optique
+     *
+     * @tags Rail-size
+     * @name RailSizeControllerFindAll
+     * @summary Liste complète
+     * @request GET:/api/rail-size
+     */
+    railSizeControllerFindAll: (params: RequestParams = {}) =>
+      this.request<RailSizeDto[], any>({
+        path: `/api/rail-size`,
+        method: 'GET',
         format: 'json',
         ...params
       }),
@@ -1997,11 +2038,27 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
+     * @description Retourne la munition trouver par son id
+     *
+     * @tags Ammunition
+     * @name AmmunitionControllerFindById
+     * @summary Filtré par id
+     * @request GET:/api/ammunition/by/id/{id}
+     */
+    ammunitionControllerFindById: (id: number, params: RequestParams = {}) =>
+      this.request<AmmunitionDto, any>({
+        path: `/api/ammunition/by/id/${id}`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
      * @description Retourne la liste des munitions filtre par calibre
      *
      * @tags Ammunition
      * @name AmmunitionControllerFindByCategory
-     * @summary Filtre par calibre
+     * @summary Filtré par categorie
      * @request GET:/api/ammunition/by/category/{category}
      */
     ammunitionControllerFindByCategory: (category: string, params: RequestParams = {}) =>
@@ -2289,7 +2346,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags Optic
      * @name OpticControllerFindAllOptics
-     * @summary Liste complete
+     * @summary Liste complète
      * @request GET:/api/optic/all
      */
     opticControllerFindAllOptics: (params: RequestParams = {}) =>
@@ -2305,12 +2362,12 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags Optic
      * @name OpticControllerFindById
-     * @summary Par id
-     * @request GET:/api/optic/by/{id}
+     * @summary Filtré par id
+     * @request GET:/api/optic/by/id/{id}
      */
     opticControllerFindById: (id: number, params: RequestParams = {}) =>
       this.request<OpticDto, any>({
-        path: `/api/optic/by/${id}`,
+        path: `/api/optic/by/id/${id}`,
         method: 'GET',
         format: 'json',
         ...params
@@ -2373,7 +2430,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags Optic
      * @name OpticControllerDelete
-     * @summary Suppression logique
+     * @summary Suppresion logique
      * @request DELETE:/api/optic/{id}
      */
     opticControllerDelete: (id: number, params: RequestParams = {}) =>
@@ -2447,6 +2504,94 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
     opticTypeControllerDelete: (id: number, params: RequestParams = {}) =>
       this.request<ApiDeleteResponseDto, any>({
         path: `/api/optic-type/${id}`,
+        method: 'DELETE',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Liste complete des collier d optique
+     *
+     * @tags Optic-Collar
+     * @name OpticCollarControllerFindAll
+     * @summary Liste complète
+     * @request GET:/api/optic-collar/all
+     */
+    opticCollarControllerFindAll: (params: RequestParams = {}) =>
+      this.request<OpticCollarDto[], any>({
+        path: `/api/optic-collar/all`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne le detail de l optique
+     *
+     * @tags Optic-Collar
+     * @name OpticCollarControllerFindById
+     * @summary Filtré par id
+     * @request GET:/api/optic-collar/by/id/{id}
+     */
+    opticCollarControllerFindById: (id: number, params: RequestParams = {}) =>
+      this.request<OpticCollarDto, any>({
+        path: `/api/optic-collar/by/id/${id}`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Creation d un nouveau collier d optique
+     *
+     * @tags Optic-Collar
+     * @name OpticCollarControllerCreate
+     * @summary Creation
+     * @request POST:/api/optic-collar
+     */
+    opticCollarControllerCreate: (data: CreateOpticCollarDto, params: RequestParams = {}) =>
+      this.request<OpticCollarDto, any>({
+        path: `/api/optic-collar`,
+        method: 'POST',
+        body: data,
+        type: ContentType.Json,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Edition de l optique
+     *
+     * @tags Optic-Collar
+     * @name OpticCollarControllerEdit
+     * @summary Edition
+     * @request PUT:/api/optic-collar/{id}
+     */
+    opticCollarControllerEdit: (
+      id: number,
+      data: UpdateOpticCollarDto,
+      params: RequestParams = {}
+    ) =>
+      this.request<OpticCollarDto, any>({
+        path: `/api/optic-collar/${id}`,
+        method: 'PUT',
+        body: data,
+        type: ContentType.Json,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Suppression logique de l optique
+     *
+     * @tags Optic-Collar
+     * @name OpticCollarControllerDelete
+     * @summary Suppresion logique
+     * @request DELETE:/api/optic-collar/{id}
+     */
+    opticCollarControllerDelete: (id: number, params: RequestParams = {}) =>
+      this.request<ApiDeleteResponseDto, any>({
+        path: `/api/optic-collar/${id}`,
         method: 'DELETE',
         format: 'json',
         ...params

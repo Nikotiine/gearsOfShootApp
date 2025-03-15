@@ -1,6 +1,6 @@
 <template>
-  <div class="border border-blue-500 mt-2" v-if="store.getAll.isSuccess">
-    <DataTable :value="threadedSizes$" :loading="store.getAll.isLoading">
+  <div class="border border-blue-500 mt-2" v-if="isSuccess">
+    <DataTable :value="threadedSizes$?.data" :loading="isLoading">
       <template #header>
         <div class="flex flex-wrap items-center justify-between gap-2">
           <span class="text-xl font-bold">{{ t('threadedSize.existingList') }}</span>
@@ -14,13 +14,12 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { useThreadedSizeStore } from '@/stores/threadedSize'
-import { storeToRefs } from 'pinia'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 
 const { t } = useI18n()
 const store = useThreadedSizeStore()
-const { threadedSizes$ } = storeToRefs(store)
+const { data: threadedSizes$, isLoading, isSuccess } = store.getAll()
 </script>
 
 <style scoped></style>

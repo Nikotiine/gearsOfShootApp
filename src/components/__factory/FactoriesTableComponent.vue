@@ -1,10 +1,10 @@
 <template>
   <div class="card">
     <h2 class="text-center mt-2 text-2xl">{{ t('factory.existingList') }}</h2>
-    <div class="text-red-500 text-center" v-if="store.getAll.isError">
-      {{ t('error.' + store.getAll.error.response.data.message) }}
+    <div class="text-red-500 text-center" v-if="isError">
+      {{ t('error.' + error.response.data.message) }}
     </div>
-    <div class="mt-2" v-if="store.getAll.isSuccess">
+    <div class="mt-2" v-if="isSuccess">
       <DataTable
         v-model:filters="filters"
         :value="factories$"
@@ -12,7 +12,7 @@
         :rows="10"
         dataKey="id"
         filterDisplay="row"
-        :loading="store.getAll.isLoading"
+        :loading="isLoading"
         :globalFilterFields="['name', 'type', 'reference']"
       >
         <template #header>
@@ -101,6 +101,7 @@ const props = defineProps<{
 
 const { t } = useI18n()
 const store = useFactoryStore()
+const { isError, isSuccess, isLoading, error } = store.getAll()
 const { factories$ } = storeToRefs(store)
 
 const filters = ref({

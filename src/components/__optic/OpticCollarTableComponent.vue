@@ -1,16 +1,16 @@
 <template>
-  <div class="card p-4">
-    <h2 class="text-center mt-2 text-2xl">{{ t('ammunition.list.title') }} {{ category }}</h2>
+  <div class="card p-4" v-if="isSuccess">
+    <h2 class="text-center mt-2 text-2xl">{{ t('opticCollar.list') }}</h2>
     <div class="text-red-500 text-center" v-if="isError">{{ t('global.isLoadingError') }}</div>
     <DataTable
       v-model:filters="filters"
-      :value="data?.data"
+      :value="collar$?.data"
       paginator
       :rows="10"
       dataKey="id"
       filterDisplay="row"
-      :loading="storeAreLoading"
-      :globalFilterFields="['name', 'factory.name', 'caliber.name', 'reference']"
+      :loading="isLoading"
+      :globalFilterFields="['name', 'factory.name', 'railSize.name', 'reference']"
     >
       <template #header>
         <div class="flex justify-center">
@@ -22,10 +22,8 @@
           </IconField>
         </div>
       </template>
-      <template #empty> {{ t('ammunition.list.notFound') }} </template>
-      <template #loading>
-        {{ t('ammunition.list.loading') }} {{ t('global.pleaseWait') }}
-      </template>
+      <template #empty> {{ t('optic.list.notFound') }} </template>
+      <template #loading> {{ t('optic.list.loading') }} {{ t('global.pleaseWait') }} </template>
       <Column field="name" header="Nom" style="min-width: 12rem" :showFilterMenu="false">
         <template #body="{ data }">
           {{ data.name }}
@@ -54,7 +52,7 @@
           <Select
             v-model="filterModel.value"
             @change="filterCallback()"
-            :options="factories$"
+            :options="factories$?.data"
             optionLabel="name"
             optionValue="name"
             placeholder="Marque"
@@ -65,20 +63,20 @@
         </template>
       </Column>
       <Column
-        header="Calibre"
-        filterField="caliber.name"
+        header="Rail"
+        filterField="railSize.name"
         :showFilterMenu="false"
         style="min-width: 14rem"
       >
         <template #body="{ data }">
-          {{ data.caliber.name }}
+          {{ data.railSize.name }}
         </template>
         <template #filter="{ filterModel, filterCallback }">
           <Select
             v-model="filterModel.value"
             @change="filterCallback()"
-            :options="calibers$"
-            placeholder="Calibre"
+            :options="railSize$?.data"
+            placeholder="Rail"
             optionLabel="name"
             optionValue="name"
             style="min-width: 12rem"
@@ -87,6 +85,29 @@
           </Select>
         </template>
       </Column>
+      <!--      <Column
+        header="Plan focal"
+        filterField="focalPlane.name"
+        :showFilterMenu="false"
+        style="min-width: 14rem"
+      >
+        <template #body="{ data }">
+          {{ data.focalPlane.name }}
+        </template>
+        <template #filter="{ filterModel, filterCallback }">
+          <Select
+            v-model="filterModel.value"
+            @change="filterCallback()"
+            :options="focalPlanes$"
+            placeholder="Plan focal"
+            optionLabel="name"
+            optionValue="name"
+            style="min-width: 12rem"
+            :showClear="true"
+          >
+          </Select>
+        </template>
+      </Column>-->
       <Column field="reference" header="Reference" :showFilterMenu="false" style="min-width: 12rem">
         <template #body="{ data }">
           {{ data.reference }}
@@ -101,76 +122,68 @@
           />
         </template>
       </Column>
-      <!--        <Column field="verified" header="Verified" dataType="boolean" style="min-width: 6rem">
-          <template #body="{ data }">
-            <i
-              class="pi"
-              :class="{
-                'pi-check-circle text-green-500': data.verified,
-                'pi-times-circle text-red-400': !data.verified
-              }"
-            ></i>
-          </template>
-          <template #filter="{ filterModel, filterCallback }">
-            <Checkbox
-              v-model="filterModel.value"
-              :indeterminate="filterModel.value === null"
-              binary
-              @change="filterCallback()"
-            />
-          </template>
-        </Column>-->
+      <Column header="Actions" :showFilterMenu="false" style="min-width: 12rem">
+        <template #body="{ data }">
+          <action-menu-component
+            @on-click-action="onClickAction"
+            type="optic"
+            :reference="data.reference"
+            :id="data.id"
+        /></template>
+      </Column>
     </DataTable>
   </div>
 </template>
 <script setup lang="ts">
+import { useOpticCollarStore } from '@/stores/optic-collar'
+import ActionMenuComponent, {
+  type ActionMenuEmit
+} from '@/components/__table/ActionMenuComponent.vue'
 import IconField from 'primevue/iconfield'
-import InputIcon from 'primevue/inputicon'
-import InputText from 'primevue/inputtext'
-import Select from 'primevue/select'
-import Column from 'primevue/column'
 import DataTable from 'primevue/datatable'
-import { useAmmunitionStore } from '@/stores/ammunition'
-import { useCaliberStore } from '@/stores/caliber'
-import { useFactoryStore } from '@/stores/factory'
-import { computed, ref, watch } from 'vue'
-import { storeToRefs } from 'pinia'
-import { FilterMatchMode } from '@primevue/core/api'
+import InputText from 'primevue/inputtext'
+import Column from 'primevue/column'
+import InputIcon from 'primevue/inputicon'
+import Select from 'primevue/select'
 import { useI18n } from 'vue-i18n'
-const { category } = defineProps<{
-  category: string
-}>()
-const { t } = useI18n()
-const store = useAmmunitionStore()
-const caliberStore = useCaliberStore()
-const factoryStore = useFactoryStore()
-factoryStore.setTypeOfFactories('ammunition')
-const currentCategory = ref<string>(category)
-const { data, refetch, isError, isLoading: storeIsLoading } = store.getByCategory(currentCategory)
-const { calibers$ } = storeToRefs(caliberStore)
-const { factories$ } = storeToRefs(factoryStore)
+import { useFactoryStore } from '@/stores/factory'
+import { useRailSizeStore } from '@/stores/rail-size'
+import { ref } from 'vue'
+import { FilterMatchMode } from '@primevue/core/api'
+import { RouterEnum } from '@/enum/router.enum'
+import { useRouter } from 'vue-router'
 
+const store = useOpticCollarStore()
+const { data: collar$, isSuccess, isError, isLoading, refetch } = store.getAll()
+const { t } = useI18n()
+const factoryStore = useFactoryStore()
+const railSizeStore = useRailSizeStore()
+const router = useRouter()
+const { data: factories$, isSuccess: factoriesQueryIsSuccess } =
+  factoryStore.getFactoriesByType('accessory')
+const { data: railSize$, isSuccess: railSizeQueryIsSucess } = railSizeStore.getAll()
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
   'factory.name': { value: null, matchMode: FilterMatchMode.EQUALS },
-  'caliber.name': { value: null, matchMode: FilterMatchMode.EQUALS },
+  'railSize.name': { value: null, matchMode: FilterMatchMode.EQUALS },
+  // 'focalPlane.name': { value: null, matchMode: FilterMatchMode.EQUALS },
   reference: { value: null, matchMode: FilterMatchMode.STARTS_WITH }
 })
-
-const storeAreLoading = computed(() => {
-  return caliberStore.getAll.isLoading || storeIsLoading.value
-})
-
-watch(
-  () => category,
-  (newCategory) => {
-    if (newCategory !== currentCategory.value) {
-      currentCategory.value = newCategory
+const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
+  switch (event) {
+    case 'view':
+      router.push({ name: RouterEnum.OPTIC_COLLAR_DETAIL, params: { id: id } })
+      break
+    case 'edit':
+      router.push({ name: RouterEnum.OPTIC_COLLAR_EDIT, params: { id: id } })
+      break
+    case true:
+      store.delete(id)
       refetch()
-    }
+      break
   }
-)
+}
 </script>
 
 <style scoped></style>

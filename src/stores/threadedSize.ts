@@ -6,12 +6,19 @@ import type { CreateThreadedSizeDto, ThreadedSizeDto } from '@/api/Api'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 
 export const useThreadedSizeStore = defineStore('threadedSize', () => {
+  // Appel API
   const { api } = useApiStore()
+  // TOAST
   const { successMessage } = useToastStore()
+  // Refs
   const threadedSizes = ref<ThreadedSizeDto[]>([])
+  // Private Attibute
+  const _SUMMARY = 'threadedSize.summary'
+  const _GET_ALL_FN = 'getAllThreadedSizes'
+  // *******************Methodes***************
   const getAllThreadedSizesQuery = () =>
     useQuery({
-      queryKey: ['getAllThreadedSizes'],
+      queryKey: [_GET_ALL_FN],
       queryFn: async () => {
         threadedSizes.value = (await api.api.threadedSizeControllerFindAllThreadedSize()).data
         return api.api.threadedSizeControllerFindAllThreadedSize()
@@ -24,7 +31,7 @@ export const useThreadedSizeStore = defineStore('threadedSize', () => {
     },
     onSuccess(data) {
       threadedSizes.value.push(data.data)
-      successMessage('threadedSize.summary', 'threadedSize.form.success')
+      successMessage(_SUMMARY, 'threadedSize.form.success')
     }
   })
 

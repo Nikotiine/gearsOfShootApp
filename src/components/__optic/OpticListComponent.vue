@@ -1,16 +1,16 @@
 <template>
-  <div class="card p-4">
-    <!--    <h2 class="text-center mt-2 text-2xl">Liste des armes de Categorie {{ category }}</h2>-->
-    <div class="text-red-500 text-center" v-if="isError">Error</div>
+  <div class="card p-4" v-if="store.prerequisiteOpticQuery.isSuccess">
+    <h2 class="text-center mt-2 text-2xl">{{ t('optic.list.title') }}</h2>
+    <div class="text-red-500 text-center" v-if="isError">{{ t('global.isLoadingError') }}</div>
     <DataTable
       v-model:filters="filters"
-      :value="magazines$?.data"
+      :value="optics$?.data"
       paginator
       :rows="10"
       dataKey="id"
       filterDisplay="row"
-      :loading="isLoading"
-      :globalFilterFields="['reference', 'factory.name', 'caliber.name', 'capacity']"
+      :loading="storeAreLoading.value"
+      :globalFilterFields="['name', 'factory.name', 'type.name', 'reference']"
     >
       <template #header>
         <div class="flex justify-center">
@@ -22,11 +22,11 @@
           </IconField>
         </div>
       </template>
-      <template #empty> Aucune arme trouvée. </template>
-      <template #loading> Loading customers data. Please wait. </template>
-      <Column field="reference" header="reference" style="min-width: 12rem" :showFilterMenu="false">
+      <template #empty> {{ t('optic.list.notFound') }} </template>
+      <template #loading> {{ t('optic.list.loading') }} {{ t('global.pleaseWait') }} </template>
+      <Column field="name" header="Nom" style="min-width: 12rem" :showFilterMenu="false">
         <template #body="{ data }">
-          {{ data.reference }}
+          {{ data.name }}
         </template>
         <template #filter="{ filterModel, filterCallback }">
           <InputText
@@ -52,7 +52,7 @@
           <Select
             v-model="filterModel.value"
             @change="filterCallback()"
-            :options="magazineFactory$?.data"
+            :options="factories$?.data"
             optionLabel="name"
             optionValue="name"
             placeholder="Marque"
@@ -63,20 +63,20 @@
         </template>
       </Column>
       <Column
-        header="Calibre"
-        filterField="caliber.name"
+        header="Type"
+        filterField="type.name"
         :showFilterMenu="false"
         style="min-width: 14rem"
       >
         <template #body="{ data }">
-          {{ data.caliber.name }}
+          {{ data.type.name }}
         </template>
         <template #filter="{ filterModel, filterCallback }">
           <Select
             v-model="filterModel.value"
             @change="filterCallback()"
-            :options="calibers$?.data"
-            placeholder="Calibre"
+            :options="types$"
+            placeholder="Type"
             optionLabel="name"
             optionValue="name"
             style="min-width: 12rem"
@@ -85,9 +85,32 @@
           </Select>
         </template>
       </Column>
-      <Column field="capacity" header="Capacité" :showFilterMenu="false" style="min-width: 3rem">
+      <!--      <Column
+        header="Plan focal"
+        filterField="focalPlane.name"
+        :showFilterMenu="false"
+        style="min-width: 14rem"
+      >
         <template #body="{ data }">
-          {{ data.capacity }}
+          {{ data.focalPlane.name }}
+        </template>
+        <template #filter="{ filterModel, filterCallback }">
+          <Select
+            v-model="filterModel.value"
+            @change="filterCallback()"
+            :options="focalPlanes$"
+            placeholder="Plan focal"
+            optionLabel="name"
+            optionValue="name"
+            style="min-width: 12rem"
+            :showClear="true"
+          >
+          </Select>
+        </template>
+      </Column>-->
+      <Column field="reference" header="Reference" :showFilterMenu="false" style="min-width: 12rem">
+        <template #body="{ data }">
+          {{ data.reference }}
         </template>
 
         <template #filter="{ filterModel, filterCallback }">
@@ -95,26 +118,24 @@
             v-model="filterModel.value"
             type="text"
             @input="filterCallback()"
-            placeholder="Recherche par capacité"
+            placeholder="Recherche par reference"
           />
         </template>
       </Column>
-      <Column header="Actions" :showFilterMenu="false" style="min-width: 2rem">
+      <Column header="Actions" :showFilterMenu="false" style="min-width: 12rem">
         <template #body="{ data }">
           <action-menu-component
             @on-click-action="onClickAction"
-            type="magazine"
+            type="optic"
             :reference="data.reference"
             :id="data.id"
-          />
-        </template>
+        /></template>
       </Column>
     </DataTable>
   </div>
 </template>
 <script setup lang="ts">
-import { useWeaponMagazineStore } from '@/stores/weapon-magazine'
-import { ref, watch } from 'vue'
+import { useOpticStore } from '@/stores/optic'
 import IconField from 'primevue/iconfield'
 
 import DataTable from 'primevue/datatable'
@@ -122,49 +143,48 @@ import InputText from 'primevue/inputtext'
 import Column from 'primevue/column'
 import InputIcon from 'primevue/inputicon'
 import Select from 'primevue/select'
+import { useI18n } from 'vue-i18n'
 import { FilterMatchMode } from '@primevue/core/api'
+import { computed, ref } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useFactoryStore } from '@/stores/factory'
-import { useCaliberStore } from '@/stores/caliber'
 
-import { RouterEnum } from '@/enum/router.enum'
 import ActionMenuComponent, {
   type ActionMenuEmit
 } from '@/components/__table/ActionMenuComponent.vue'
+import { RouterEnum } from '@/enum/router.enum'
 import { useRouter } from 'vue-router'
+
+const { t } = useI18n()
 const router = useRouter()
-const { category } = defineProps<{
-  category: string
-}>()
+const store = useOpticStore()
 const factoryStore = useFactoryStore()
-const { data: magazineFactory$ } = factoryStore.getFactoriesByType('magazine')
-const caliberStore = useCaliberStore()
-const { data: calibers$ } = caliberStore.getAll()
-const currentCategory = ref<string>(category)
-const store = useWeaponMagazineStore()
-const { data: magazines$, isError, isLoading, refetch } = store.getByCategory(currentCategory)
+const { data: factories$, isLoading: getFactoriesIsSuccess } =
+  factoryStore.getFactoriesByType('optic')
+const { types$ } = storeToRefs(store)
+
+const { data: optics$, isError, isLoading, refetch } = store.getAll()
+
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-  reference: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+  name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
   'factory.name': { value: null, matchMode: FilterMatchMode.EQUALS },
-  'caliber.name': { value: null, matchMode: FilterMatchMode.EQUALS },
-  capacity: { value: null, matchMode: FilterMatchMode.STARTS_WITH }
+  'type.name': { value: null, matchMode: FilterMatchMode.EQUALS },
+  // 'focalPlane.name': { value: null, matchMode: FilterMatchMode.EQUALS },
+  reference: { value: null, matchMode: FilterMatchMode.STARTS_WITH }
 })
-watch(
-  () => category,
-  (newCategory) => {
-    if (newCategory !== currentCategory.value) {
-      currentCategory.value = newCategory
-      refetch()
-    }
-  }
-)
+
+const storeAreLoading = computed(() => {
+  return getFactoriesIsSuccess && isLoading
+})
+
 const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
   switch (event) {
     case 'view':
-      router.push({ name: RouterEnum.MAGAZINE_DETAIL, params: { id: id } })
+      router.push({ name: RouterEnum.OPTIC_DETAIL, params: { id: id } })
       break
     case 'edit':
-      router.push({ name: RouterEnum.MAGAZINE_EDIT, params: { id: id } })
+      router.push({ name: RouterEnum.OPTIC_EDIT, params: { id: id } })
       break
     case true:
       store.delete(id)
