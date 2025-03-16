@@ -3,7 +3,7 @@ import { useApiStore } from '@/stores/api'
 import { useToastStore } from '@/stores/toast'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import type { CreateWeaponMagazineDto, UpdateWeaponMagazineDto, WeaponMagazineDto } from '@/api/Api'
-import { type Ref, ref } from 'vue'
+import { type Ref, ref, watch } from 'vue'
 
 export const useWeaponMagazineStore = defineStore('weaponMagazine', () => {
   // Appel API
@@ -14,7 +14,8 @@ export const useWeaponMagazineStore = defineStore('weaponMagazine', () => {
   const magazines = ref<WeaponMagazineDto[]>([])
   const magazine = ref<WeaponMagazineDto>()
   // Private Attibute
-  const _SUMMARY = 'magazine.summary'
+  const I18N_PREFIX = 'magazine'
+  const _SUMMARY = I18N_PREFIX + '.summary'
   const _GET_ALL_BY_CATEGORY_FN = 'getAllMagazineByCategory'
   const _GET_ALL_BY_FACTORY_FN = 'getAllMagazineByFactory'
   const _GET_ALL_FN = 'getAllMagazine'
@@ -26,7 +27,7 @@ export const useWeaponMagazineStore = defineStore('weaponMagazine', () => {
     },
     onSuccess(data) {
       magazines.value.push(data.data)
-      successMessage(_SUMMARY, 'magazine.form.success')
+      successMessage(_SUMMARY, I18N_PREFIX + '.success')
     }
   })
 
@@ -63,16 +64,60 @@ export const useWeaponMagazineStore = defineStore('weaponMagazine', () => {
       enabled: !!category.value
     })
 
-  const getByIdQuery = (id: Ref<number>) =>
+  const getByIdQuery = (id?: string) =>
     useQuery({
-      queryKey: [_GET_BY_ID_FN, id.value],
-      queryFn: async () => {
-        const res = await api.api.magazineControllerFindById(id.value)
-        magazine.value = res.data
-        return res
-      },
-      enabled: !!id.value
+      queryKey: [_GET_BY_ID_FN, id],
+      queryFn: () => _fetchById(id),
+      enabled: !!id,
+      retry: 0
     })
+
+  const _fetchById = async (id?: string) => {
+    if (!id) return null
+    const res = await api.api.magazineControllerFindById(parseInt(id))
+    return res.data
+  }
+
+  function useWeaponForm(id?: string) {
+    const emptyForm: CreateWeaponMagazineDto = {
+      description: '',
+      width: 0,
+      height: 0,
+      bodyId: 0,
+      factoryId: 0,
+      capacity: 0,
+      caliberId: 0,
+      length: 0,
+      categoryId: 0,
+      compatibleHandGun: [],
+      compatibleRiffle: [],
+      weaponTypeId: 0
+    }
+    const form = ref<CreateWeaponMagazineDto>({ ...emptyForm })
+    const resetForm = () => {
+      form.value = emptyForm
+    }
+    const { data, isSuccess } = getByIdQuery(id)
+    watch(
+      () => data.value,
+      (newData) => {
+        if (isSuccess.value && newData) {
+          form.value = {
+            ...newData,
+            factoryId: newData.factory.id,
+            caliberId: newData.caliber.id,
+            categoryId: newData.category.id,
+            weaponTypeId: newData.forWeaponType.id,
+            bodyId: newData.body.id,
+            compatibleRiffle: newData.riffles ? newData.riffles : [],
+            compatibleHandGun: newData.handguns ? newData.handguns : []
+          }
+        }
+      },
+      { immediate: true }
+    )
+    return { form, isSuccess, resetForm }
+  }
 
   const updateMagazineMutation = useMutation({
     mutationFn: async (magazine: UpdateWeaponMagazineDto) => {
@@ -80,7 +125,7 @@ export const useWeaponMagazineStore = defineStore('weaponMagazine', () => {
     },
     onSuccess(data) {
       magazines.value.push(data.data)
-      successMessage(_SUMMARY, 'magazine.form.success')
+      successMessage(_SUMMARY, I18N_PREFIX + '.updated')
     }
   })
 
@@ -89,7 +134,11 @@ export const useWeaponMagazineStore = defineStore('weaponMagazine', () => {
       return await api.api.magazineControllerDelete(id)
     },
     onSuccess(data) {
-      successMessage(_SUMMARY, data.data.message)
+      if (data.data.isSuccess) {
+        const index = magazines.value.findIndex((magazine) => magazine.id === data.data.id)
+        magazines.value.splice(index, 1)
+        successMessage(_SUMMARY, I18N_PREFIX + '.deleted')
+      }
     }
   })
   const deleteFunction = (id: number) => {
@@ -104,6 +153,7 @@ export const useWeaponMagazineStore = defineStore('weaponMagazine', () => {
     magazines$: magazines,
     magazine$: magazine,
     edit: updateMagazineMutation,
-    delete: deleteFunction
+    delete: deleteFunction,
+    builder: useWeaponForm
   }
 })

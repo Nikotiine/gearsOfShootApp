@@ -1,19 +1,22 @@
 <template>
-  <magazine-form-component :magazine="magazine?.data" />
+  <magazine-form-component :id="id" :key="id" :form-status="formStatus" />
 </template>
 <script setup lang="ts">
 import MagazineFormComponent from '@/components/__weaponMagazine/MagazineFormComponent.vue'
-import { useWeaponMagazineStore } from '@/stores/weapon-magazine'
-import { ref } from 'vue'
-const { id = null } = defineProps<{
-  id?: string
-}>()
-const store = useWeaponMagazineStore()
-const magazineId = ref<number>(0)
-if (id) {
-  magazineId.value = parseInt(id)
-}
-const { data: magazine } = store.getById(magazineId)
+import { ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
+import type { FormStatus } from '@/types/form-status.type'
+const route = useRoute()
+
+const id = ref<string | undefined>(route.params.id ? (route.params.id as string) : undefined)
+const formStatus = ref<FormStatus>(route.params.id ? 'edit' : 'save')
+watch(
+  () => route.params.id,
+  (newId) => {
+    id.value = newId ? (newId as string) : undefined
+    formStatus.value = newId ? 'edit' : 'save'
+  }
+)
 </script>
 
 <style scoped></style>

@@ -98,7 +98,8 @@
     "delete": "Supprimer",
     "opticRail": "Rail d'optique",
     "diameter": "Diametre",
-    "collar": "Collier d'optique"
+    "collar": "Collier d'optique",
+    "material": "Matiere"
   },
   "weapon": {
     "summary": "Gestion des armes",
@@ -159,14 +160,14 @@
   },
   "magazine": {
     "summary": "gestion des chargeurs",
-    "form": {
-      "add": "Ajouter un chargeur",
-      "bodyMaterial": "Matiere du chargeur",
-      "capacity": "Capacité",
-      "success": "ajouter a la base de donnee",
-      "compatibleWeaponOptions": "Arme compatible"
-    },
-    "compatibleWeapons": "Armes compatibles"
+    "save": "Ajouter un chargeur",
+    "edit": "Modifier un chargeur",
+    "bodyMaterial": "Matiere du chargeur",
+    "capacity": "Capacité",
+    "compatibleWeaponOptions": "Arme compatible",
+    "success": "ajouter a la base de donnee",
+    "compatibleWeapons": "Armes compatibles",
+    "updated": "Chargeur correctement modifié"
   },
   "ammunition": {
     "summary": "Gestion des munition",

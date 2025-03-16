@@ -314,7 +314,6 @@ export interface CreateWeaponMagazineDto {
   height: number
   /** largeur du chargeur */
   width: number
-  reference: string
   /** matiere du chargeur */
   bodyId: number
   /** marque du chargeur */
@@ -339,7 +338,6 @@ export interface UpdateWeaponMagazineDto {
   height: number
   /** largeur du chargeur */
   width: number
-  reference: string
   /** matiere du chargeur */
   bodyId: number
   /** marque du chargeur */

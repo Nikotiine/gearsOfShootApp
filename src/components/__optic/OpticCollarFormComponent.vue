@@ -102,7 +102,6 @@ import SaveButton from '@/components/__form/SaveButton.vue'
 import type { FormStatus } from '@/types/form-status.type'
 
 const { t } = useI18n()
-const formStatus = ref<FormStatus>('save')
 const store = useOpticCollarStore()
 const factoryStore = useFactoryStore()
 const railSizeStore = useRailSizeStore()
@@ -111,6 +110,7 @@ const { data: factories$, isSuccess: factoriesQueryIsSuccess } =
 const { data: railSize$, isSuccess: railSizeQueryIsSuccess } = railSizeStore.getAll()
 const { id } = defineProps<{
   id?: string
+  formStatus: FormStatus
 }>()
 
 const { form, resetForm } = store.builder(id)
@@ -143,13 +143,6 @@ const isFormValid = computed(() => {
     isValid = true
   }
   return isValid
-})
-watchEffect(() => {
-  if (id) {
-    formStatus.value = 'edit'
-  } else {
-    formStatus.value = 'save'
-  }
 })
 </script>
 

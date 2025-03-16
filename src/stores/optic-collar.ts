@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
 import { useToastStore } from '@/stores/toast'
-import { useI18n } from 'vue-i18n'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import type { CreateOpticCollarDto, OpticCollarDto, UpdateOpticCollarDto } from '@/api/Api'
 import { ref, watch } from 'vue'
@@ -13,8 +12,6 @@ export const useOpticCollarStore = defineStore('optic-collar', () => {
   const { api } = useApiStore()
   // TOAST
   const { successMessage } = useToastStore()
-  // I18N
-  const { t } = useI18n()
   // Router
   const { push } = useRouter()
   // Refs
@@ -67,7 +64,7 @@ export const useOpticCollarStore = defineStore('optic-collar', () => {
       if (data.data.isSuccess) {
         const index = collars.value.findIndex((optic) => optic.id === data.data.id)
         collars.value.splice(index, 1)
-        successMessage(_SUMMARY, t(I18N_PREFIX + '.deleted'))
+        successMessage(_SUMMARY, I18N_PREFIX + '.deleted')
       }
     }
   })
@@ -79,12 +76,12 @@ export const useOpticCollarStore = defineStore('optic-collar', () => {
   const getByIdQuery = (id?: string) =>
     useQuery({
       queryKey: [_GET_BY_ID_FN, id],
-      queryFn: () => _fetchCollarById(id),
+      queryFn: () => _fetchById(id),
       enabled: !!id,
       retry: 0
     })
 
-  const _fetchCollarById = async (id?: string) => {
+  const _fetchById = async (id?: string) => {
     if (!id) return null
     const res = await api.api.opticCollarControllerFindById(parseInt(id))
     return res.data
