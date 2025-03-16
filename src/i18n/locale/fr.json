@@ -41,6 +41,11 @@
     "myInvoices": "Mes achats",
     "admin": "Administration"
   },
+  "dashboard": {
+    "home": "Accueil",
+    "newProduct": "Nouvelle reference",
+    "product": "Produit"
+  },
   "global": {
     "password": "Mot de passe",
     "yes": "Oui",
