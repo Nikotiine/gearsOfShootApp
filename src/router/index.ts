@@ -23,9 +23,13 @@ const router = createRouter({
 
     {
       path: '/admin',
-      component: () => import('../views/admin/AdminDashboardView.vue'),
+      component: () => import('../views/admin/AdminLayout.vue'),
+      name: RouterEnum.ADMIN_DASHBOARD,
       children: [
-        // Weapon
+        {
+          path: '',
+          component: () => import('../views/admin/AdminDashboardView.vue')
+        },
         {
           path: 'gestion',
           children: [

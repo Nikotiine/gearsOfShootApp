@@ -1,5 +1,5 @@
 <template>
-  <MegaMenu :model="items" orientation="vertical" class="mr-4 w-8/12 mt-12" />
+  <MegaMenu :model="items" orientation="vertical" class="mr-4 w-full" />
 </template>
 <script setup lang="ts">
 import MegaMenu from 'primevue/megamenu'
@@ -8,19 +8,27 @@ import { ref } from 'vue'
 import { LegislationCategory } from '@/stores/weapon-category'
 import { RouterEnum } from '@/enum/router.enum'
 import { WeaponEnum } from '@/enum/weapon.enum'
-
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 const RIFFLE: string = 'Arme longue'
-
 const HAND_GUN: string = 'Arme de poing'
+const I18N_PREFIX: string = 'dashboard.'
 const { push } = useRouter()
 const items = ref([
   {
-    label: 'Reference',
-    icon: 'pi pi-clock',
+    label: t(I18N_PREFIX + 'home'),
+    icon: 'pi pi-home',
+    command: () => {
+      push({ name: RouterEnum.ADMIN_DASHBOARD })
+    }
+  },
+  {
+    label: t(I18N_PREFIX + 'newProduct'),
+    icon: 'pi pi-plus',
     items: [
       [
         {
-          label: 'Ajout',
+          label: 'Produits',
           items: [
             {
               label: 'Arme',
@@ -52,8 +60,14 @@ const items = ref([
       ],
       [
         {
-          label: 'Type',
+          label: 'Specifique arme',
           items: [
+            {
+              label: 'Calibre',
+              command: () => {
+                push({ name: RouterEnum.CALIBER_NEW })
+              }
+            },
             {
               label: 'Douille',
               command: () => {
@@ -83,7 +97,7 @@ const items = ref([
       ],
       [
         {
-          label: 'Autre',
+          label: 'Details communs',
           items: [
             {
               label: 'Marques',
@@ -91,12 +105,7 @@ const items = ref([
                 push({ name: RouterEnum.FACTORY_NEW })
               }
             },
-            {
-              label: 'Calibre',
-              command: () => {
-                push({ name: RouterEnum.CALIBER_NEW })
-              }
-            },
+
             {
               label: 'Matieres',
               command: () => {
@@ -121,10 +130,7 @@ const items = ref([
               command: () => {
                 push({ name: RouterEnum.OPTIC_COLLAR_NEW })
               }
-            },
-            { label: 'Rackets' },
-            { label: 'Shoes' },
-            { label: 'Training' }
+            }
           ]
         }
       ]
@@ -132,7 +138,7 @@ const items = ref([
   },
   {
     label: 'Liste',
-    icon: 'pi pi-clock',
+    icon: 'pi pi-list',
     items: [
       [
         {
@@ -313,7 +319,7 @@ const items = ref([
   },
   {
     label: 'Utilisateurs',
-    icon: 'pi pi-clock',
+    icon: 'pi pi-users',
     items: [
       [
         {
