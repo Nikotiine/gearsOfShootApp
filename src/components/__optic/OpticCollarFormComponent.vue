@@ -85,7 +85,7 @@
 </template>
 <script setup lang="ts">
 import type { CreateOpticCollarDto, UpdateOpticCollarDto } from '@/api/Api'
-import { computed, ref, watchEffect } from 'vue'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
@@ -102,7 +102,6 @@ import SaveButton from '@/components/__form/SaveButton.vue'
 import type { FormStatus } from '@/types/form-status.type'
 
 const { t } = useI18n()
-const formStatus = ref<FormStatus>('save')
 const store = useOpticCollarStore()
 const factoryStore = useFactoryStore()
 const railSizeStore = useRailSizeStore()
@@ -111,9 +110,10 @@ const { data: factories$, isSuccess: factoriesQueryIsSuccess } =
 const { data: railSize$, isSuccess: railSizeQueryIsSuccess } = railSizeStore.getAll()
 const { id } = defineProps<{
   id?: string
+  formStatus: FormStatus
 }>()
 
-const { form, resetForm } = store.builder(id)
+const { form, resetForm } = store.formBuilder(id)
 const submit = () => {
   if (id) {
     update({ ...form.value, id: parseInt(id) })
@@ -143,13 +143,6 @@ const isFormValid = computed(() => {
     isValid = true
   }
   return isValid
-})
-watchEffect(() => {
-  if (id) {
-    formStatus.value = 'edit'
-  } else {
-    formStatus.value = 'save'
-  }
 })
 </script>
 

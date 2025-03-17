@@ -1,6 +1,6 @@
 <template>
   <div class="card p-4">
-    <!--    <h2 class="text-center mt-2 text-2xl">Liste des armes de Categorie {{ category }}</h2>-->
+    <h2 class="text-center mt-2 text-2xl">{{ t('magazine.list') }} {{ category }}</h2>
     <div class="text-red-500 text-center" v-if="isError">Error</div>
     <DataTable
       v-model:filters="filters"
@@ -22,8 +22,8 @@
           </IconField>
         </div>
       </template>
-      <template #empty> Aucune arme trouvée. </template>
-      <template #loading> Loading customers data. Please wait. </template>
+      <template #empty> {{ t('magazine.notFound') }} </template>
+      <template #loading> {{ t('ammunition.loading') }} {{ t('global.pleaseWait') }} </template>
       <Column field="reference" header="reference" style="min-width: 12rem" :showFilterMenu="false">
         <template #body="{ data }">
           {{ data.reference }}
@@ -131,10 +131,12 @@ import ActionMenuComponent, {
   type ActionMenuEmit
 } from '@/components/__table/ActionMenuComponent.vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 const router = useRouter()
 const { category } = defineProps<{
   category: string
 }>()
+const { t } = useI18n()
 const factoryStore = useFactoryStore()
 const { data: magazineFactory$ } = factoryStore.getFactoriesByType('magazine')
 const caliberStore = useCaliberStore()

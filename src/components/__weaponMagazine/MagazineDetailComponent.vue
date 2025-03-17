@@ -35,6 +35,19 @@
         <span class="field-capitalise">{{ t('global.capacity') }}</span> :
         {{ magazine.capacity }}
       </p>
+      <p>
+        <span class="field-capitalise">{{ t('global.material') }}</span> :
+        {{ magazine.body.name }}
+      </p>
+      <p>
+        <span class="field-capitalise">{{ t('global.height') }}</span> : {{ magazine.height }} cm
+      </p>
+      <p>
+        <span class="field-capitalise">{{ t('global.width') }}</span> : {{ magazine.width }} cm
+      </p>
+      <p>
+        <span class="field-capitalise">{{ t('global.length') }}</span> : {{ magazine.length }} cm
+      </p>
     </div>
   </div>
 </template>

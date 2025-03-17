@@ -16,7 +16,7 @@
         </p>
 
         <p>
-          <span class="field-capitalise">{{ t('optic.common.bodyDiameter') }}</span> :
+          <span class="field-capitalise">{{ t('optic.bodyDiameter') }}</span> :
 
           {{ data.data.bodyDiameter }}
         </p>
@@ -32,7 +32,7 @@
         </p>
 
         <p>
-          <span class="field-capitalise">{{ t('optic.common.focalPlane') }}</span>
+          <span class="field-capitalise">{{ t('optic.focalPlane') }}</span>
           :
           {{ data.data.focalPlane.name }}
         </p>
@@ -42,28 +42,28 @@
           {{ data.data.length }}
         </p>
         <p>
-          <span class="field-capitalise">{{ t('optic.common.maxElevation') }}</span>
+          <span class="field-capitalise">{{ t('optic.maxElevation') }}</span>
           :
           {{ data.data.maxElevation }}
         </p>
         <p>
-          <span class="field-capitalise">{{ t('optic.common.maxDrift') }}</span>
+          <span class="field-capitalise">{{ t('optic.maxDrift') }}</span>
           :
           {{ data.data.maxDrift }}
         </p>
 
         <p>
-          <span class="field-capitalise">{{ t('optic.common.opticUnit') }}</span>
+          <span class="field-capitalise">{{ t('optic.opticUnit') }}</span>
           :
           {{ data.data.opticUnit.name }}
         </p>
         <p>
-          <span class="field-capitalise">{{ t('optic.common.clickValue') }}</span>
+          <span class="field-capitalise">{{ t('optic.clickValue') }}</span>
           :
           {{ data.data.valueOfOneClick }}
         </p>
         <p>
-          <span class="field-capitalise">{{ t('optic.common.eyeRelief') }}</span>
+          <span class="field-capitalise">{{ t('optic.eyeRelief') }}</span>
           :
           {{ data.data.eyeRelief }}
         </p>
