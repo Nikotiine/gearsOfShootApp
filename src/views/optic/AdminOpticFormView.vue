@@ -1,19 +1,23 @@
 <template>
-  <optic-form-component :optic="optic?.data" />
+  <optic-form-component :id="id" :key="id" :form-status="formStatus" />
 </template>
 <script setup lang="ts">
+import { useRoute } from 'vue-router'
+import { ref, watch } from 'vue'
+import type { FormStatus } from '@/types/form-status.type'
 import OpticFormComponent from '@/components/__optic/OpticFormComponent.vue'
-import { ref } from 'vue'
-import { useOpticStore } from '@/stores/optic'
-const store = useOpticStore()
-const { id } = defineProps<{
-  id?: string
-}>()
-const opticId = ref<number>(0)
-if (id) {
-  opticId.value = parseInt(id)
-}
-const { data: optic } = store.getById(opticId)
+
+const route = useRoute()
+
+const id = ref<string | undefined>(route.params.id ? (route.params.id as string) : undefined)
+const formStatus = ref<FormStatus>(route.params.id ? 'edit' : 'save')
+watch(
+  () => route.params.id,
+  (newId) => {
+    id.value = newId ? (newId as string) : undefined
+    formStatus.value = newId ? 'edit' : 'save'
+  }
+)
 </script>
 
 <style scoped></style>

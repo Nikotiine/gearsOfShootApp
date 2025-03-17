@@ -88,23 +88,19 @@ export const useOpticCollarStore = defineStore('optic-collar', () => {
   }
 
   function useOpticCollarForm(id?: string) {
-    const form = ref<CreateOpticCollarDto>({
+    const emptyForm: CreateOpticCollarDto = {
       diameter: 0,
       factoryId: 0,
       height: 0,
       name: '',
       railSizeId: 0,
       description: ''
+    }
+    const form = ref<CreateOpticCollarDto>({
+      ...emptyForm
     })
     const resetForm = () => {
-      form.value = {
-        diameter: 0,
-        factoryId: 0,
-        height: 0,
-        name: '',
-        railSizeId: 0,
-        description: ''
-      }
+      form.value = emptyForm
     }
     const { data, isSuccess } = getByIdQuery(id)
 
@@ -133,6 +129,6 @@ export const useOpticCollarStore = defineStore('optic-collar', () => {
     delete: deleteFunction,
     edit: updateOpticCollarMutation,
     collar$: collar,
-    builder: useOpticCollarForm
+    formBuilder: useOpticCollarForm
   }
 })

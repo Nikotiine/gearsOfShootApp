@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <h2 class="text-center mt-2 text-2xl">
-      {{ t('ammunition.form.add') }} {{ selectedCategory?.name }}
+      {{ t('ammunition.' + formStatus) }} {{ selectedCategory?.name }}
     </h2>
     <form @submit.prevent="submit" v-if="storesAreLoaded">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 p-4">
@@ -63,7 +63,7 @@
             @value="(value) => (form.name = value)"
             :min-length="2"
             placeholder="global.model"
-            label="ammunition.form.ammunitionModel"
+            label="ammunition.nameLabel"
             required
             input-id="name"
             :initial-value="form.name"
@@ -73,7 +73,7 @@
         <InputGroup>
           <input-group-optional-icon :is-completed="form.initialSpeed > 0" />
           <input-group-number
-            label="ammunition.form.initialSpeed"
+            label="ammunition.initialSpeed"
             @value="(value) => (form.initialSpeed = value)"
             input-id="initialSpeed"
             :initial-value="form.initialSpeed"
@@ -85,7 +85,7 @@
           <input-group-required-icon :is-validate="form.headTypeId > 0" />
           <input-group-select
             :options="headTypes$"
-            label="ammunition.form.headType"
+            label="ammunition.headType"
             @option-id="(event) => (form.headTypeId = event)"
             required
             input-id="headTypeId"
@@ -98,7 +98,7 @@
           <input-group-required-icon :is-validate="form.bodyTypeId > 0" />
           <input-group-select
             :options="bodyTypes$"
-            label="ammunition.form.bodyType"
+            label="ammunition.bodyType"
             @option-id="(event) => (form.bodyTypeId = event)"
             required
             input-id="bodyTypeId"
@@ -110,8 +110,8 @@
         <InputGroup>
           <input-group-optional-icon :is-completed="form.packaging > 0" />
           <input-group-number
-            placeholder="ammunition.form.packaging"
-            label="ammunition.form.packaging"
+            placeholder="ammunition.packaging"
+            label="ammunition.packaging"
             @value="(value) => (form.packaging = value)"
             input-id="packaging"
             :initial-value="form.packaging"
@@ -136,7 +136,7 @@
       </div>
 
       <div class="text-center">
-        <Button type="submit" :label="t(buttonLabel)" :disabled="!isFormValid"></Button>
+        <save-button :status="formStatus" :disabled="!isFormValid" />
       </div>
     </form>
   </div>
@@ -144,13 +144,12 @@
 <script setup lang="ts">
 import Textarea from 'primevue/textarea'
 import InputGroupAddon from 'primevue/inputgroupaddon'
-import Button from 'primevue/button'
 import InputGroup from 'primevue/inputgroup'
 import { useAmmunitionStore } from '@/stores/ammunition'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
-import { type AmmunitionDto, type CreateAmmunitionDto, type UpdateAmmunitionDto } from '@/api/Api'
-import { computed, ref, watchEffect } from 'vue'
+import { type CreateAmmunitionDto, type UpdateAmmunitionDto } from '@/api/Api'
+import { computed } from 'vue'
 import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
 import InputGroupAddonOpenDrawerButton from '@/components/__form/InputGroupAddonOpenDrawerButton.vue'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
@@ -162,14 +161,17 @@ import { useCaliberStore } from '@/stores/caliber'
 import { useHeadTypeStore } from '@/stores/headType'
 import { useBodyTypeStore } from '@/stores/bodyType'
 import { useWeaponCategoryStore } from '@/stores/weapon-category'
+import type { FormStatus } from '@/types/form-status.type'
+import SaveButton from '@/components/__form/SaveButton.vue'
 
-const { ammunition = null } = defineProps<{
-  ammunition?: AmmunitionDto
+const { id } = defineProps<{
+  id?: string
+  formStatus: FormStatus
 }>()
 
 const { t } = useI18n()
-const buttonLabel = ref('global.save')
 const store = useAmmunitionStore()
+const { form, resetForm } = store.formBuilder(id)
 const factoryStore = useFactoryStore()
 const { isSuccess: factoriesQueryIsSuccess } = factoryStore.getFactoriesByType('ammunition')
 const caliberStore = useCaliberStore()
@@ -184,21 +186,6 @@ const { calibers$ } = storeToRefs(caliberStore)
 const { headTypes$ } = storeToRefs(headTypeStore)
 const { bodyTypes$ } = storeToRefs(bodyTypeStore)
 const { data: categories$, isSuccess: categoriesQueryIsSuccess } = categorieStore.getAll()
-const initialForm: CreateAmmunitionDto = {
-  bodyTypeId: 0,
-  caliberId: 0,
-  factoryId: 0,
-  name: '',
-  categoryId: 0,
-  initialSpeed: 0,
-  description: '',
-  packaging: 50,
-  headTypeId: 0,
-  percussionTypeId: 0
-}
-const form = ref<CreateAmmunitionDto>({
-  ...initialForm
-})
 
 const isFormValid = computed(() => {
   let isValid: boolean = false
@@ -214,8 +201,8 @@ const isFormValid = computed(() => {
   return isValid
 })
 const submit = () => {
-  if (ammunition) {
-    update({ ...form.value, id: ammunition.id })
+  if (id) {
+    update({ ...form.value, id: parseInt(id) })
   } else {
     create(form.value)
   }
@@ -227,29 +214,13 @@ const update = (ammunition: UpdateAmmunitionDto) => {
 
 const create = (ammunition: CreateAmmunitionDto) => {
   store.create.mutate(ammunition)
-  form.value = { ...initialForm }
+  resetForm()
 }
 
 const selectedCategory = computed(() => {
   return categories$.value?.data.find((category) => category.id === form.value.categoryId)
 })
-watchEffect(() => {
-  if (ammunition) {
-    setEditForm(ammunition)
-    buttonLabel.value = 'global.edit'
-  }
-})
-const setEditForm = (ammunition: AmmunitionDto) => {
-  form.value = {
-    ...ammunition,
-    bodyTypeId: ammunition.bodyType.id,
-    factoryId: ammunition.factory.id,
-    headTypeId: ammunition.headType.id,
-    caliberId: ammunition.caliber.id,
-    categoryId: ammunition.category.id,
-    percussionTypeId: ammunition.percussionType.id
-  }
-}
+
 /**
  * Verification que tout les store sont chager avant d'afficher la page
  */

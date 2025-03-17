@@ -167,28 +167,27 @@
     "compatibleWeaponOptions": "Arme compatible",
     "success": "ajouter a la base de donnee",
     "compatibleWeapons": "Armes compatibles",
-    "updated": "Chargeur correctement modifié"
+    "updated": "Chargeur correctement modifié",
+    "list":"Liste des chargeurs de categorie",
+    "notFound": "Aucun chargeur trouvé",
+    "loading": "Chargement des chargeurs en cours"
   },
   "ammunition": {
     "summary": "Gestion des munition",
+    "save": "Ajouter une munition de categorie",
+    "edit": "Modifier une munition de categorie",
+    "nameLabel": "Modele de munition",
+    "initialSpeed": "Vitesse initiale",
+    "headType": "Type d'ovige",
+    "bodyType": "Type de douille",
+    "packaging": "Packaging",
     "add": {
       "success": "Ajouter a la base de donnee",
       "update": "Munition modifié"
     },
-    "form": {
-      "add": "Ajouter une munition de categorie",
-      "name": "Nom ",
-      "initialSpeed": "Vitesse initiale",
-      "headType": "Type d'ovige",
-      "bodyType": "Type de douille",
-      "ammunitionModel": "Modele de munition",
-      "packaging": "Packaging"
-    },
-    "list": {
-      "title": "Liste des munitions de categorie",
-      "notFound": "Aucune munition trouvée",
-      "loading": "Chargement des muntions en cours"
-    }
+    "list":"Liste des munitions de categorie",
+    "notFound": "Aucune munition trouvée",
+    "loading": "Chargement des muntions en cours"
   },
   "admin": {
     "dashboard": {
@@ -225,38 +224,30 @@
   },
   "optic": {
     "summary": "Gestion des optiques",
-    "add": {
-      "success": "ajouter a la base de donnee"
-    },
-    "form": {
-      "addTitle": "Ajouter une nouvelle optique",
-      "success": "ajout d'une nouvelle optique",
-      "opticUnit": "Unite de graduation",
-      "isParallax": "Parallaxe"
-    },
-    "list": {
-      "title": "Liste des optiques",
-      "notFound": "Aucune optique trouvée"
-    },
-    "common": {
-      "opticType": "Type d'optique",
-      "focalPlane": "Plan focal",
-      "clickValue": "Valeur d'un clic",
-      "isCollarsProvided": "Colliers fournis",
-      "collar": "Colliers",
-      "isParallax": "Parallaxe reglable",
-      "opticModel": "Modele d'optique",
-      "minZoom": "Zoom minimum",
-      "maxZoom": "Zoom maximum",
-      "maxDrift": "Derive maximum",
-      "maxElevation": "Elevation maximum",
-      "lensDiameter": "Diametre de lentille",
-      "bodyDiameter": "Diametre du corps",
-      "eyeRelief": "Degagement occulaire",
-      "minParallax": "Parallax mini",
-      "maxParallax": "Parallax maxi",
-      "opticUnit": "Unite de graduation"
-    }
+    "save": "Ajouter une nouvelle optique",
+    "edit": "Modifier une optique",
+    "success": "Ajout d'une nouvelle optique confirmé",
+    "update": "Optique correctement modifiée",
+    "opticUnit": "Unite de graduation",
+    "isParallax": "Parallaxe",
+    "list": "Liste des optiques",
+    "notFound": "Aucune optique trouvée",
+    "loading": "Chargement des optiques en cours",
+    "opticType": "Type d'optique",
+    "focalPlane": "Plan focal",
+    "clickValue": "Valeur d'un clic",
+    "isCollarsProvided": "Colliers fournis",
+    "collar": "Colliers",
+    "opticModel": "Modele d'optique",
+    "minZoom": "Zoom minimum",
+    "maxZoom": "Zoom maximum",
+    "maxDrift": "Derive maximum",
+    "maxElevation": "Elevation maximum",
+    "lensDiameter": "Diametre de lentille",
+    "bodyDiameter": "Diametre du corps",
+    "eyeRelief": "Degagement occulaire",
+    "minParallax": "Parallax mini",
+    "maxParallax": "Parallax maxi"
   },
   "factory": {
     "form": {
@@ -311,10 +302,12 @@
     "summary": "Gestion des colliers d'optique",
     "save": "Ajouter un nouveau collier",
     "edit": "Modifier un collier",
-    "success": "Ajout d'un nouveau collier confirme",
+    "success": "Ajout d'un nouveau collier confirmé",
     "update": "Collier correctement modifié",
     "list":  "Liste des colliers d'optique",
-    "deleted": "Collier supprimé"
+    "deleted": "Collier supprimé",
+    "notFound": "Aucun collier trouvé",
+    "loading": "Chargement des colliers en cours"
   },
   "error": {
     "0001": "Email deja utilisé",

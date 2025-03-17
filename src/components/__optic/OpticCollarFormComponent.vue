@@ -85,7 +85,7 @@
 </template>
 <script setup lang="ts">
 import type { CreateOpticCollarDto, UpdateOpticCollarDto } from '@/api/Api'
-import { computed, ref, watchEffect } from 'vue'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
@@ -113,7 +113,7 @@ const { id } = defineProps<{
   formStatus: FormStatus
 }>()
 
-const { form, resetForm } = store.builder(id)
+const { form, resetForm } = store.formBuilder(id)
 const submit = () => {
   if (id) {
     update({ ...form.value, id: parseInt(id) })

@@ -22,8 +22,10 @@
           </IconField>
         </div>
       </template>
-      <template #empty> {{ t('optic.list.notFound') }} </template>
-      <template #loading> {{ t('optic.list.loading') }} {{ t('global.pleaseWait') }} </template>
+      <template #empty> {{ t('opticCollar.notFound') }} </template>
+      <template #loading>
+        {{ t('opticCollar.loading') }} {{ t('opticCollar.pleaseWait') }}
+      </template>
       <Column field="name" header="Nom" style="min-width: 12rem" :showFilterMenu="false">
         <template #body="{ data }">
           {{ data.name }}
@@ -85,29 +87,6 @@
           </Select>
         </template>
       </Column>
-      <!--      <Column
-        header="Plan focal"
-        filterField="focalPlane.name"
-        :showFilterMenu="false"
-        style="min-width: 14rem"
-      >
-        <template #body="{ data }">
-          {{ data.focalPlane.name }}
-        </template>
-        <template #filter="{ filterModel, filterCallback }">
-          <Select
-            v-model="filterModel.value"
-            @change="filterCallback()"
-            :options="focalPlanes$"
-            placeholder="Plan focal"
-            optionLabel="name"
-            optionValue="name"
-            style="min-width: 12rem"
-            :showClear="true"
-          >
-          </Select>
-        </template>
-      </Column>-->
       <Column field="reference" header="Reference" :showFilterMenu="false" style="min-width: 12rem">
         <template #body="{ data }">
           {{ data.reference }}
@@ -159,15 +138,13 @@ const { t } = useI18n()
 const factoryStore = useFactoryStore()
 const railSizeStore = useRailSizeStore()
 const router = useRouter()
-const { data: factories$, isSuccess: factoriesQueryIsSuccess } =
-  factoryStore.getFactoriesByType('accessory')
-const { data: railSize$, isSuccess: railSizeQueryIsSucess } = railSizeStore.getAll()
+const { data: factories$ } = factoryStore.getFactoriesByType('accessory')
+const { data: railSize$ } = railSizeStore.getAll()
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
   'factory.name': { value: null, matchMode: FilterMatchMode.EQUALS },
   'railSize.name': { value: null, matchMode: FilterMatchMode.EQUALS },
-  // 'focalPlane.name': { value: null, matchMode: FilterMatchMode.EQUALS },
   reference: { value: null, matchMode: FilterMatchMode.STARTS_WITH }
 })
 const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {

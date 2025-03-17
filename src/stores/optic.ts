@@ -10,16 +10,18 @@ import type {
   OpticUnitDto,
   UpdateOpticDto
 } from '@/api/Api'
-import { type Ref, ref } from 'vue'
-import { useI18n } from 'vue-i18n'
+import { ref, watch } from 'vue'
+import { RouterEnum } from '@/enum/router.enum'
+import { useRouter } from 'vue-router'
 
 export const useOpticStore = defineStore('optic', () => {
   // Appel API
   const { api } = useApiStore()
   // TOAST
   const { successMessage } = useToastStore()
-  // I18N
-  const { t } = useI18n()
+
+  // Router
+  const { push } = useRouter()
   // Refs
   const opticUnits = ref<OpticUnitDto[]>([])
   const opticType = ref<OpticTypeDto[]>([])
@@ -28,7 +30,8 @@ export const useOpticStore = defineStore('optic', () => {
   const optic = ref<OpticDto>()
 
   // Private Attibute
-  const _SUMMARY = 'optic.summary'
+  const I18N_PREFIX = 'optic'
+  const _SUMMARY = I18N_PREFIX + '.summary'
   const _GET_ALL_FN = 'getAllOptic'
   const _GET_BY_ID_FN = 'getOpticById'
   const _PREREQUISITE_FN = 'prerequisite-optic'
@@ -60,7 +63,7 @@ export const useOpticStore = defineStore('optic', () => {
     },
     onSuccess(data) {
       optics.value.push(data.data)
-      successMessage(_SUMMARY, 'optic.form.success')
+      successMessage(_SUMMARY, I18N_PREFIX + '.success')
     }
   })
 
@@ -72,7 +75,8 @@ export const useOpticStore = defineStore('optic', () => {
       const index = optics.value.findIndex((optic) => optic.id === data.data.id)
       optics.value.splice(index, 1)
       optics.value.push(data.data)
-      successMessage(_SUMMARY, 'optic.form.success')
+      push({ name: RouterEnum.OPTIC_LIST })
+      successMessage(_SUMMARY, I18N_PREFIX + '.update')
     }
   })
 
@@ -84,7 +88,7 @@ export const useOpticStore = defineStore('optic', () => {
       if (data.data.isSuccess) {
         const index = optics.value.findIndex((optic) => optic.id === data.data.id)
         optics.value.splice(index, 1)
-        successMessage(_SUMMARY, t(data.data.message))
+        successMessage(_SUMMARY, I18N_PREFIX + '.deleted')
       }
     }
   })
@@ -93,17 +97,65 @@ export const useOpticStore = defineStore('optic', () => {
     _deleteMutation.mutate(id)
   }
 
-  const getByIdQuery = (id: Ref<number>) =>
+  const _fetchById = async (id?: string) => {
+    if (!id) return null
+    const res = await api.api.opticControllerFindById(parseInt(id))
+    return res.data
+  }
+
+  const getByIdQuery = (id?: string) =>
     useQuery({
-      queryKey: [_GET_BY_ID_FN, id.value],
-      queryFn: async () => {
-        const res = await api.api.opticControllerFindById(id.value)
-        optic.value = res.data
-        return res
-      },
-      enabled: () => id.value > 0,
+      queryKey: [_GET_BY_ID_FN, id],
+      queryFn: () => _fetchById(id),
+      enabled: !!id,
       retry: 0
     })
+
+  function useOpticForm(id?: string) {
+    const emptyForm: CreateOpticDto = {
+      name: '',
+      bodyDiameter: 0,
+      description: '',
+      factoryId: 0,
+      maxDrift: 0,
+      maxElevation: 0,
+      isParallax: false,
+      minZoom: 0,
+      maxZoom: 0,
+      minParallax: 0,
+      maxParallax: 0,
+      lensDiameter: 0,
+      valueOfOneClick: 0,
+      focalPlaneId: 0,
+      opticUnitId: 0,
+      opticTypeId: 0,
+      eyeRelief: 0,
+      isCollarsProvided: false,
+      length: 0
+    }
+    const form = ref<CreateOpticDto>({ ...emptyForm })
+    const resetForm = () => {
+      form.value = emptyForm
+    }
+    const { data, isSuccess } = getByIdQuery(id)
+
+    watch(
+      () => data.value,
+      (newData) => {
+        if (isSuccess.value && newData) {
+          form.value = {
+            ...newData,
+            factoryId: newData.factory.id,
+            focalPlaneId: newData.focalPlane.id,
+            opticUnitId: newData.opticUnit.id,
+            opticTypeId: newData.type.id
+          }
+        }
+      },
+      { immediate: true }
+    )
+    return { form, isSuccess, resetForm }
+  }
 
   return {
     prerequisiteOpticQuery: queryPrerequisitesOpticList,
@@ -116,6 +168,7 @@ export const useOpticStore = defineStore('optic', () => {
     getAll: getAllOpticsQuery,
     getById: getByIdQuery,
     optic$: optic,
-    optics$: optics
+    optics$: optics,
+    formBuilder: useOpticForm
   }
 })

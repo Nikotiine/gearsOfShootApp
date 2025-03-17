@@ -1,6 +1,6 @@
 <template>
   <div class="card p-4">
-    <h2 class="text-center mt-2 text-2xl">{{ t('ammunition.list.title') }} {{ category }}</h2>
+    <h2 class="text-center mt-2 text-2xl">{{ t('ammunition.list') }} {{ category }}</h2>
     <div class="text-red-500 text-center" v-if="isError">{{ t('global.isLoadingError') }}</div>
     <DataTable
       v-model:filters="filters"
@@ -22,10 +22,8 @@
           </IconField>
         </div>
       </template>
-      <template #empty> {{ t('ammunition.list.notFound') }} </template>
-      <template #loading>
-        {{ t('ammunition.list.loading') }} {{ t('global.pleaseWait') }}
-      </template>
+      <template #empty> {{ t('ammunition.notFound') }} </template>
+      <template #loading> {{ t('ammunition.loading') }} {{ t('global.pleaseWait') }} </template>
       <Column field="name" header="Nom" style="min-width: 12rem" :showFilterMenu="false">
         <template #body="{ data }">
           {{ data.name }}
