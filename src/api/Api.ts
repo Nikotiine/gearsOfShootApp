@@ -354,50 +354,6 @@ export interface UpdateWeaponMagazineDto {
   id: number
 }
 
-export interface SoundNoiseReducerDto {
-  id: number
-  caliber: CaliberDto
-  factory: FactoryDto
-  threadedSize: ThreadedSizeDto
-  diameter: number
-  length: number
-  name: string
-  description: string
-  reference: string
-  isCleanable: boolean
-}
-
-export interface ListOfPrerequisitesSoundNoiseReducerDto {
-  calibers: CaliberDto[]
-  factories: FactoryDto[]
-  threadedSizes: ThreadedSizeDto[]
-}
-
-export interface CreateSoundNoiseReducerDto {
-  caliberId: number
-  factoryId: number
-  threadedSizeId: number
-  diameter: number
-  length: number
-  name: string
-  description: string
-  reference: string
-  isCleanable: boolean
-}
-
-export interface UpdateSoundNoiseReducerDto {
-  caliberId: number
-  factoryId: number
-  threadedSizeId: number
-  diameter: number
-  length: number
-  name: string
-  description: string
-  reference: string
-  isCleanable: boolean
-  id: number
-}
-
 export interface CreateHandGunDto {
   /**
    * Nom du model de l arme
@@ -985,6 +941,42 @@ export interface UpdateOpticCollarDto {
   name: string
   /** @example "Une description de la marque et ses produits" */
   description: string
+  id: number
+}
+
+export interface SoundNoiseReducerDto {
+  id: number
+  caliber: CaliberDto
+  factory: FactoryDto
+  threadedSize: ThreadedSizeDto
+  diameter: number
+  length: number
+  name: string
+  description: string
+  reference: string
+  isCleanable: boolean
+}
+
+export interface CreateSoundNoiseReducerDto {
+  caliberId: number
+  factoryId: number
+  threadedSizeId: number
+  diameter: number
+  length: number
+  name: string
+  description: string
+  isCleanable: boolean
+}
+
+export interface UpdateSoundNoiseReducerDto {
+  caliberId: number
+  factoryId: number
+  threadedSizeId: number
+  diameter: number
+  length: number
+  name: string
+  description: string
+  isCleanable: boolean
   id: number
 }
 
@@ -1710,110 +1702,6 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
     magazineControllerDelete: (id: number, params: RequestParams = {}) =>
       this.request<ApiDeleteResponseDto, any>({
         path: `/api/magazine/${id}`,
-        method: 'DELETE',
-        format: 'json',
-        ...params
-      }),
-
-    /**
-     * @description Retourne la liste de tous les reducteur de son disponible
-     *
-     * @tags Sound-reducer
-     * @name SoundReducerControllerFindAll
-     * @summary Liste des RDS
-     * @request GET:/api/sound-reducer/all
-     */
-    soundReducerControllerFindAll: (params: RequestParams = {}) =>
-      this.request<SoundNoiseReducerDto[], any>({
-        path: `/api/sound-reducer/all`,
-        method: 'GET',
-        format: 'json',
-        ...params
-      }),
-
-    /**
-     * @description Retourne le detail du rds selectionner avec son id
-     *
-     * @tags Sound-reducer
-     * @name SoundReducerControllerFindById
-     * @summary Par id
-     * @request GET:/api/sound-reducer/by/{id}
-     */
-    soundReducerControllerFindById: (id: number, params: RequestParams = {}) =>
-      this.request<SoundNoiseReducerDto, any>({
-        path: `/api/sound-reducer/by/${id}`,
-        method: 'GET',
-        format: 'json',
-        ...params
-      }),
-
-    /**
-     * @description Retourne la liste des pre requis pour la creation d un nouveau rds
-     *
-     * @tags Sound-reducer
-     * @name SoundReducerControllerFindPrerequisitesSoundReducerList
-     * @summary Liste des prerequis
-     * @request GET:/api/sound-reducer/prerequisites
-     */
-    soundReducerControllerFindPrerequisitesSoundReducerList: (params: RequestParams = {}) =>
-      this.request<ListOfPrerequisitesSoundNoiseReducerDto, any>({
-        path: `/api/sound-reducer/prerequisites`,
-        method: 'GET',
-        format: 'json',
-        ...params
-      }),
-
-    /**
-     * @description Ajout d un nouveau reducteur de son en base de donnee
-     *
-     * @tags Sound-reducer
-     * @name SoundReducerControllerCreate
-     * @summary Ajout d un RDS
-     * @request POST:/api/sound-reducer
-     */
-    soundReducerControllerCreate: (data: CreateSoundNoiseReducerDto, params: RequestParams = {}) =>
-      this.request<SoundNoiseReducerDto, any>({
-        path: `/api/sound-reducer`,
-        method: 'POST',
-        body: data,
-        type: ContentType.Json,
-        format: 'json',
-        ...params
-      }),
-
-    /**
-     * @description Edition d un reducteur de son
-     *
-     * @tags Sound-reducer
-     * @name SoundReducerControllerEdit
-     * @summary Edition
-     * @request PUT:/api/sound-reducer/{id}
-     */
-    soundReducerControllerEdit: (
-      id: number,
-      data: UpdateSoundNoiseReducerDto,
-      params: RequestParams = {}
-    ) =>
-      this.request<SoundNoiseReducerDto, any>({
-        path: `/api/sound-reducer/${id}`,
-        method: 'PUT',
-        body: data,
-        type: ContentType.Json,
-        format: 'json',
-        ...params
-      }),
-
-    /**
-     * @description Suppression logique d un reducteur de son
-     *
-     * @tags Sound-reducer
-     * @name SoundReducerControllerDelete
-     * @summary Suppression logique
-     * @request DELETE:/api/sound-reducer/{id}
-     */
-    soundReducerControllerDelete: (id: number, params: RequestParams = {}) =>
-      this.request<ApiDeleteResponseDto, any>({
-        path: `/api/sound-reducer/${id}`,
         method: 'DELETE',
         format: 'json',
         ...params
@@ -2590,6 +2478,94 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
     opticCollarControllerDelete: (id: number, params: RequestParams = {}) =>
       this.request<ApiDeleteResponseDto, any>({
         path: `/api/optic-collar/${id}`,
+        method: 'DELETE',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne la liste de tous les reducteurs de son disponible
+     *
+     * @tags Sound-reducer
+     * @name SoundReducerControllerFindAll
+     * @summary Liste complète
+     * @request GET:/api/sound-reducer/all
+     */
+    soundReducerControllerFindAll: (params: RequestParams = {}) =>
+      this.request<SoundNoiseReducerDto[], any>({
+        path: `/api/sound-reducer/all`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne le detail du rds selectionner avec son id
+     *
+     * @tags Sound-reducer
+     * @name SoundReducerControllerFindById
+     * @summary Filtré par id
+     * @request GET:/api/sound-reducer/by/id/{id}
+     */
+    soundReducerControllerFindById: (id: number, params: RequestParams = {}) =>
+      this.request<SoundNoiseReducerDto, any>({
+        path: `/api/sound-reducer/by/id/${id}`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Ajout d un nouveau reducteur de son en base de donnee
+     *
+     * @tags Sound-reducer
+     * @name SoundReducerControllerCreate
+     * @summary Creation
+     * @request POST:/api/sound-reducer
+     */
+    soundReducerControllerCreate: (data: CreateSoundNoiseReducerDto, params: RequestParams = {}) =>
+      this.request<SoundNoiseReducerDto, any>({
+        path: `/api/sound-reducer`,
+        method: 'POST',
+        body: data,
+        type: ContentType.Json,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Edition d un reducteur de son
+     *
+     * @tags Sound-reducer
+     * @name SoundReducerControllerEdit
+     * @summary Edition
+     * @request PUT:/api/sound-reducer/{id}
+     */
+    soundReducerControllerEdit: (
+      id: number,
+      data: UpdateSoundNoiseReducerDto,
+      params: RequestParams = {}
+    ) =>
+      this.request<SoundNoiseReducerDto, any>({
+        path: `/api/sound-reducer/${id}`,
+        method: 'PUT',
+        body: data,
+        type: ContentType.Json,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Suppression logique d un reducteur de son
+     *
+     * @tags Sound-reducer
+     * @name SoundReducerControllerDelete
+     * @summary Suppresion logique
+     * @request DELETE:/api/sound-reducer/{id}
+     */
+    soundReducerControllerDelete: (id: number, params: RequestParams = {}) =>
+      this.request<ApiDeleteResponseDto, any>({
+        path: `/api/sound-reducer/${id}`,
         method: 'DELETE',
         format: 'json',
         ...params

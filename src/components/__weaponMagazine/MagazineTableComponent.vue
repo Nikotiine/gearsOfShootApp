@@ -132,6 +132,7 @@ import ActionMenuComponent, {
 } from '@/components/__table/ActionMenuComponent.vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+
 const router = useRouter()
 const { category } = defineProps<{
   category: string

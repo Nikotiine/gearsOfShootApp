@@ -6,6 +6,8 @@ import type { CreateOpticCollarDto, OpticCollarDto, UpdateOpticCollarDto } from 
 import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { RouterEnum } from '@/enum/router.enum'
+import { useFormHandler } from '@/shared/useFormHandler'
+import type { AxiosResponse } from 'axios'
 
 export const useOpticCollarStore = defineStore('optic-collar', () => {
   // Appel API
@@ -23,25 +25,17 @@ export const useOpticCollarStore = defineStore('optic-collar', () => {
   const _GET_ALL_FN = 'getAllOpticCollar'
   const _GET_BY_ID_FN = 'getOpticCollarById'
   // *******************Methodes***************
-  const createOpticCollarMutation = useMutation({
-    mutationFn: async (collar: CreateOpticCollarDto) => {
-      return api.api.opticCollarControllerCreate(collar)
-    },
-    onSuccess: (data) => {
-      collars.value.push(data.data)
-      successMessage(_SUMMARY, I18N_PREFIX + '.success')
+  const _createMutation = useMutation({
+    mutationFn: async (optic: CreateOpticCollarDto) => {
+      return await api.api.opticCollarControllerCreate(optic)
     }
   })
 
-  const updateOpticCollarMutation = useMutation({
+  const _updateMutation = useMutation({
     mutationFn: async (collar: UpdateOpticCollarDto) => {
       return await api.api.opticCollarControllerEdit(collar.id, collar)
     },
     onSuccess: (data) => {
-      const index = collars.value.findIndex((collar) => collar.id === data.data.id)
-      collars.value.splice(index, 1)
-      collars.value.push(data.data)
-      successMessage(_SUMMARY, I18N_PREFIX + '.update')
       push({ name: RouterEnum.OPTIC_COLLAR_LIST })
     }
   })
@@ -96,38 +90,25 @@ export const useOpticCollarStore = defineStore('optic-collar', () => {
       railSizeId: 0,
       description: ''
     }
-    const form = ref<CreateOpticCollarDto>({
-      ...emptyForm
-    })
-    const resetForm = () => {
-      form.value = emptyForm
-    }
-    const { data, isSuccess } = getByIdQuery(id)
-
-    watch(
-      () => data.value,
-      (newData) => {
-        if (isSuccess.value && newData) {
-          form.value = {
-            ...newData,
-            factoryId: newData.factory.id,
-            railSizeId: newData.railSize.id
-          }
-        }
-      },
-      { immediate: true }
+    return useFormHandler<CreateOpticCollarDto, AxiosResponse<OpticCollarDto>>(
+      emptyForm,
+      getByIdQuery,
+      _createMutation,
+      _updateMutation,
+      I18N_PREFIX,
+      id,
+      (data) => ({
+        ...data,
+        factoryId: data.factory.id,
+        railSizeId: data.railSize.id
+      })
     )
-
-    return { form, isSuccess, resetForm }
   }
-
   return {
-    create: createOpticCollarMutation,
     collars$: collars,
     getAll: getAllQuery,
     getById: getByIdQuery,
     delete: deleteFunction,
-    edit: updateOpticCollarMutation,
     collar$: collar,
     formBuilder: useOpticCollarForm
   }

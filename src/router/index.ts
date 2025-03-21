@@ -40,7 +40,7 @@ const router = createRouter({
                 {
                   path: 'new',
                   name: RouterEnum.AMMUNITION_NEW,
-                  component: () => import('../views/ammunition/AdminAmmunitionFormView.vue')
+                  component: () => import('../views/shared/FormView.vue')
                 },
                 {
                   path: 'list/:category',
@@ -58,7 +58,7 @@ const router = createRouter({
                   path: 'edit/:id',
                   name: RouterEnum.AMMUNITION_EDIT,
                   props: true,
-                  component: () => import('../views/ammunition/AdminAmmunitionFormView.vue')
+                  component: () => import('../views/shared/FormView.vue')
                 }
               ]
             },
@@ -80,13 +80,13 @@ const router = createRouter({
                 {
                   path: 'new',
                   name: RouterEnum.MAGAZINE_NEW,
-                  component: () => import('../views/magazine/AdminWeaponMagazineFormView.vue')
+                  component: () => import('../views/shared/FormView.vue')
                 },
                 {
                   path: 'edit/:id',
                   name: RouterEnum.MAGAZINE_EDIT,
                   props: true,
-                  component: () => import('../views/magazine/AdminWeaponMagazineFormView.vue')
+                  component: () => import('../views/shared/FormView.vue')
                 }
               ]
             },
@@ -96,7 +96,7 @@ const router = createRouter({
                 {
                   path: 'new',
                   name: RouterEnum.OPTIC_NEW,
-                  component: () => import('../views/optic/AdminOpticFormView.vue')
+                  component: () => import('../views/shared/FormView.vue')
                 },
                 {
                   path: 'list',
@@ -113,7 +113,7 @@ const router = createRouter({
                   path: 'edit/:id',
                   props: true,
                   name: RouterEnum.OPTIC_EDIT,
-                  component: () => import('../views/optic/AdminOpticFormView.vue')
+                  component: () => import('../views/shared/FormView.vue')
                 }
               ]
             },
@@ -151,7 +151,7 @@ const router = createRouter({
                 {
                   path: 'new',
                   name: RouterEnum.FACTORY_NEW,
-                  component: () => import('../views/factory/FactoryFormView.vue')
+                  component: () => import('../views/shared/FormView.vue')
                 },
                 {
                   path: 'list',
@@ -166,7 +166,7 @@ const router = createRouter({
                 {
                   path: 'new',
                   name: RouterEnum.COLOR_NEW,
-                  component: () => import('../views/color/ColorFormView.vue')
+                  component: () => import('../views/shared/FormView.vue')
                 }
               ]
             },
@@ -176,7 +176,7 @@ const router = createRouter({
                 {
                   path: 'new',
                   name: RouterEnum.MATERIAL_NEW,
-                  component: () => import('../views/material/MaterialFormView.vue')
+                  component: () => import('../views/shared/FormView.vue')
                 }
               ]
             },
@@ -186,7 +186,7 @@ const router = createRouter({
                 {
                   path: 'new',
                   name: RouterEnum.HEAD_TYPE_NEW,
-                  component: () => import('../views/ammunition/AdminAmmunitionHeadTypeFormView.vue')
+                  component: () => import('../views/shared/FormView.vue')
                 }
               ]
             },
@@ -196,7 +196,7 @@ const router = createRouter({
                 {
                   path: 'new',
                   name: RouterEnum.BODY_TYPE_NEW,
-                  component: () => import('../views/ammunition/AdminAmmunitionBodyTypeFormView.vue')
+                  component: () => import('../views/shared/FormView.vue')
                 }
               ]
             },
@@ -206,7 +206,7 @@ const router = createRouter({
                 {
                   path: 'new',
                   name: RouterEnum.WEAPON_TYPE_NEW,
-                  component: () => import('../views/weapon/AdminWeaponTypeFormView.vue')
+                  component: () => import('../views/shared/FormView.vue')
                 }
               ]
             },
@@ -216,7 +216,7 @@ const router = createRouter({
                 {
                   path: 'new',
                   name: RouterEnum.CALIBER_NEW,
-                  component: () => import('../views/caliber/CaliberFormView.vue')
+                  component: () => import('../views/shared/FormView.vue')
                 }
               ]
             },
@@ -226,7 +226,7 @@ const router = createRouter({
                 {
                   path: 'new',
                   name: RouterEnum.THREADED_SIZE_NEW,
-                  component: () => import('../views/threaded-size/ThreadedSizeFormView.vue')
+                  component: () => import('../views/shared/FormView.vue')
                 }
               ]
             },
@@ -236,13 +236,13 @@ const router = createRouter({
                 {
                   path: 'new',
                   name: RouterEnum.OPTIC_COLLAR_NEW,
-                  component: () => import('../views/optic/AdminOpticCollarFormView.vue')
+                  component: () => import('../views/shared/FormView.vue')
                 },
                 {
                   path: 'edit/:id',
                   props: true,
                   name: RouterEnum.OPTIC_COLLAR_EDIT,
-                  component: () => import('../views/optic/AdminOpticCollarFormView.vue')
+                  component: () => import('../views/shared/FormView.vue')
                 },
                 {
                   path: 'list',
@@ -254,6 +254,33 @@ const router = createRouter({
                   props: true,
                   name: RouterEnum.OPTIC_COLLAR_DETAIL,
                   component: () => import('../views/optic/AdminOpticCollarDetailView.vue')
+                }
+              ]
+            },
+            {
+              path: 'rds',
+              children: [
+                {
+                  path: 'new',
+                  name: RouterEnum.RDS_NEW,
+                  component: () => import('../views/shared/FormView.vue')
+                },
+                {
+                  path: 'list',
+                  name: RouterEnum.RDS_LIST,
+                  component: () => import('../views/accessory/rds/SoundReducerListView.vue')
+                },
+                {
+                  path: 'detail/:id',
+                  name: RouterEnum.RDS_DETAIL,
+                  props: true,
+                  component: () => import('../views/accessory/rds/SoundReducerDetailView.vue')
+                },
+                {
+                  path: 'edit/:id',
+                  name: RouterEnum.RDS_EDIT,
+                  props: true,
+                  component: () => import('../views/shared/FormView.vue')
                 }
               ]
             }

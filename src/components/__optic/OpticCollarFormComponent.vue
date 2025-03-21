@@ -75,11 +75,11 @@
         placeholder="Description"
       />
     </div>
-    <div class="text-red-500 p-4" v-if="store.create.isError">
+    <!--    <div class="text-red-500 p-4" v-if="store.create.isError">
       <p class="text-xl font-bold">
         {{ t('error.' + store.create.error.response.data.message) }}
       </p>
-    </div>
+    </div>-->
     <save-button :status="formStatus" :disabled="!isFormValid" />
   </form>
 </template>
@@ -113,21 +113,21 @@ const { id } = defineProps<{
   formStatus: FormStatus
 }>()
 
-const { form, resetForm } = store.formBuilder(id)
-const submit = () => {
+const { form, submit } = store.formBuilder(id)
+/*const submit = () => {
   if (id) {
     update({ ...form.value, id: parseInt(id) })
   } else {
     create(form.value)
   }
-}
-const create = (collar: CreateOpticCollarDto) => {
+}*/
+/*const create = (collar: CreateOpticCollarDto) => {
   store.create.mutate(collar)
   resetForm()
 }
 const update = (collar: UpdateOpticCollarDto) => {
   store.edit.mutate(collar)
-}
+}*/
 const storeAreLoaded = computed(() => {
   return factoriesQueryIsSuccess && railSizeQueryIsSuccess
 })
