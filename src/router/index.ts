@@ -156,7 +156,7 @@ const router = createRouter({
                 {
                   path: 'list',
                   name: RouterEnum.FACTORY_LIST,
-                  component: () => import('../views/factory/FactoriesListView.vue')
+                  component: () => import('../views/shared/TableView.vue')
                 }
               ]
             },
@@ -247,7 +247,7 @@ const router = createRouter({
                 {
                   path: 'list',
                   name: RouterEnum.OPTIC_COLLAR_LIST,
-                  component: () => import('../views/optic/AdminOpticCollarListView.vue')
+                  component: () => import('../views/shared/TableView.vue')
                 },
                 {
                   path: 'detail/:id',
@@ -268,7 +268,7 @@ const router = createRouter({
                 {
                   path: 'list',
                   name: RouterEnum.RDS_LIST,
-                  component: () => import('../views/accessory/rds/SoundReducerListView.vue')
+                  component: () => import('../views/shared/TableView.vue')
                 },
                 {
                   path: 'detail/:id',
