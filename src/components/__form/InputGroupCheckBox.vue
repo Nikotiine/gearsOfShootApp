@@ -1,5 +1,5 @@
 <template>
-  <InputGroupAddon :class="isWidthHalfSize ? 'w-6/12' : 'w-4/12'">
+  <InputGroupAddon :class="withSize">
     <Checkbox
       :id="inputId"
       v-model="isCheck"
@@ -9,10 +9,10 @@
     />
     <label
       :for="inputId"
-      v-tooltip="toolTip ? t(toolTip) : null"
+      v-tooltip="toolTip ? t(i18nPrefix + toolTip) : null"
       :class="isCheck ? checkedTextColor : ''"
     >
-      {{ t(label) }}
+      {{ t(i18nPrefix + label) }}
     </label>
   </InputGroupAddon>
 </template>
@@ -20,23 +20,27 @@
 import InputGroupAddon from 'primevue/inputgroupaddon'
 import Checkbox from 'primevue/checkbox'
 import { useI18n } from 'vue-i18n'
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
+export type CheckboxSize = 'small' | 'medium' | 'large'
 const { t } = useI18n()
 const checkedTextColor: string = 'text-slate-500'
 const {
   label,
   inputId,
   checked = false,
-  isWidthHalfSize = false,
   disabled = false,
-  toolTip = null
+  toolTip = null,
+  i18nPrefix = 'global',
+  size = 'small'
 } = defineProps<{
   label: string
+  i18nPrefix?: string
   inputId: string
   checked?: boolean
   isWidthHalfSize?: boolean
   disabled?: boolean
   toolTip?: string
+  size?: CheckboxSize
 }>()
 const isCheck = ref(checked)
 const emit = defineEmits(['checked'])
@@ -50,6 +54,21 @@ watch(
     isCheck.value = newValue
   }
 )
+const withSize = computed(() => {
+  let width = ''
+  switch (size) {
+    case 'small':
+      width = 'w-4/12'
+      break
+    case 'medium':
+      width = 'w-6/12'
+      break
+    case 'large':
+      width = 'w-full'
+      break
+  }
+  return width
+})
 </script>
 
 <style scoped>

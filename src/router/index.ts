@@ -274,7 +274,7 @@ const router = createRouter({
                   path: 'detail/:id',
                   name: RouterEnum.RDS_DETAIL,
                   props: true,
-                  component: () => import('../views/accessory/rds/SoundReducerDetailView.vue')
+                  component: () => import('../views/shared/DetailView.vue')
                 },
                 {
                   path: 'edit/:id',

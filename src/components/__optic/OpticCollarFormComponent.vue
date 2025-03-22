@@ -84,7 +84,6 @@
   </form>
 </template>
 <script setup lang="ts">
-import type { CreateOpticCollarDto, UpdateOpticCollarDto } from '@/api/Api'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
@@ -100,6 +99,7 @@ import { useRailSizeStore } from '@/stores/rail-size'
 import { useOpticCollarStore } from '@/stores/optic-collar'
 import SaveButton from '@/components/__form/SaveButton.vue'
 import type { FormStatus } from '@/types/form-status.type'
+import { storeToRefs } from 'pinia'
 
 const { t } = useI18n()
 const store = useOpticCollarStore()
@@ -114,20 +114,7 @@ const { id } = defineProps<{
 }>()
 
 const { form, submit } = store.formBuilder(id)
-/*const submit = () => {
-  if (id) {
-    update({ ...form.value, id: parseInt(id) })
-  } else {
-    create(form.value)
-  }
-}*/
-/*const create = (collar: CreateOpticCollarDto) => {
-  store.create.mutate(collar)
-  resetForm()
-}
-const update = (collar: UpdateOpticCollarDto) => {
-  store.edit.mutate(collar)
-}*/
+
 const storeAreLoaded = computed(() => {
   return factoriesQueryIsSuccess && railSizeQueryIsSuccess
 })

@@ -11,16 +11,20 @@ import type {
 import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
 import { RouterEnum } from '@/enum/router.enum'
+import { ref } from 'vue'
+import { useToastStore } from '@/stores/toast'
 
-const useSoundReducderStore = defineStore('sound-noise-reducer', () => {
+export const useSoundReducerStore = defineStore('sound-noise-reducer', () => {
   // Appel API
   const { api } = useApiStore()
-
+  // TOAST
+  const { successMessage } = useToastStore()
   // Router
   const { push } = useRouter()
 
   // Private Attibute
-  const I18N_PREFIX = 'soundNoiseReducer'
+  const _I18N_PREFIX = 'soundNoiseReducer.'
+  const _SUMMARY = _I18N_PREFIX + 'summary'
   const _GET_ALL_FN = 'getAllSoundNoiseReducer'
   const _GET_BY_ID_FN = 'getSoundNoiseReducerById'
   // *******************Methodes***************
@@ -47,6 +51,20 @@ const useSoundReducderStore = defineStore('sound-noise-reducer', () => {
       push({ name: RouterEnum.RDS_LIST })
     }
   })
+  const _deleteMutation = useMutation({
+    mutationFn: async (opticId: number) => {
+      return await api.api.opticCollarControllerDelete(opticId)
+    },
+    onSuccess(data) {
+      if (data.data.isSuccess) {
+        successMessage(_SUMMARY, _I18N_PREFIX + 'deleted')
+      }
+    }
+  })
+
+  const deleteFunction = (id: number) => {
+    _deleteMutation.mutate(id)
+  }
   const getByIdQuery = (id?: string) =>
     useQuery({
       queryKey: [_GET_BY_ID_FN, id],
@@ -55,7 +73,7 @@ const useSoundReducderStore = defineStore('sound-noise-reducer', () => {
       retry: 0
     })
   const getAllQuery = () => {
-    useQuery({
+    return useQuery({
       queryKey: [_GET_ALL_FN],
       queryFn: () => _fetchAll(),
       retry: 0
@@ -71,14 +89,16 @@ const useSoundReducderStore = defineStore('sound-noise-reducer', () => {
       factoryId: 0,
       length: 0,
       isCleanable: false,
-      threadedSizeId: 0
+      threadedSizeId: 0,
+      chicane: 0,
+      estimatedNoiseReduction: 0
     }
     return useFormHandler<CreateSoundNoiseReducerDto, AxiosResponse<SoundNoiseReducerDto>>(
       emptyForm,
       getByIdQuery,
       _createMutation,
       _updateMutation,
-      I18N_PREFIX,
+      _I18N_PREFIX,
       id,
       (data) => ({
         ...data,
@@ -88,9 +108,13 @@ const useSoundReducderStore = defineStore('sound-noise-reducer', () => {
       })
     )
   }
+  const I18N_PREFIX = ref(_I18N_PREFIX)
+
   return {
     getById: getByIdQuery,
     getAll: getAllQuery,
-    formBuilder: useSoundNoiseForm
+    formBuilder: useSoundNoiseForm,
+    i18nPrefix: I18N_PREFIX,
+    delete: deleteFunction
   }
 })

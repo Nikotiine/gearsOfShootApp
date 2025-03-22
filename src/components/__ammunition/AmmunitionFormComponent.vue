@@ -180,12 +180,12 @@ const headTypeStore = useHeadTypeStore()
 const { isSuccess: headTypesQueryIsSuccess } = headTypeStore.getAll()
 const bodyTypeStore = useBodyTypeStore()
 const { isSuccess: bodyTypesQueryIsSuccess } = bodyTypeStore.getAll()
-const categorieStore = useWeaponCategoryStore()
+const categoryStore = useWeaponCategoryStore()
 const { factories$ } = storeToRefs(factoryStore)
 const { calibers$ } = storeToRefs(caliberStore)
 const { headTypes$ } = storeToRefs(headTypeStore)
 const { bodyTypes$ } = storeToRefs(bodyTypeStore)
-const { data: categories$, isSuccess: categoriesQueryIsSuccess } = categorieStore.getAll()
+const { data: categories$, isSuccess: categoriesQueryIsSuccess } = categoryStore.getAll()
 
 const isFormValid = computed(() => {
   let isValid: boolean = false

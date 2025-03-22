@@ -37,14 +37,14 @@ export function useFormHandler<TForm extends object, TMutationResponse, TError =
         { ...form.value, id: parseInt(id) },
         {
           onSuccess: () => {
-            successMessage(i18nPrefix + '.summary', i18nPrefix + '.update')
+            successMessage(i18nPrefix + 'summary', i18nPrefix + 'update')
           }
         }
       )
     } else {
       createMutation.mutate(form.value, {
         onSuccess: () => {
-          successMessage(i18nPrefix + '.summary', i18nPrefix + '.success')
+          successMessage(i18nPrefix + 'summary', i18nPrefix + 'success')
           resetForm()
         }
       })

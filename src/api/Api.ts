@@ -955,6 +955,8 @@ export interface SoundNoiseReducerDto {
   description: string
   reference: string
   isCleanable: boolean
+  chicane: number
+  estimatedNoiseReduction: number
 }
 
 export interface CreateSoundNoiseReducerDto {
@@ -963,6 +965,8 @@ export interface CreateSoundNoiseReducerDto {
   threadedSizeId: number
   diameter: number
   length: number
+  chicane: number
+  estimatedNoiseReduction: number
   name: string
   description: string
   isCleanable: boolean
@@ -974,6 +978,8 @@ export interface UpdateSoundNoiseReducerDto {
   threadedSizeId: number
   diameter: number
   length: number
+  chicane: number
+  estimatedNoiseReduction: number
   name: string
   description: string
   isCleanable: boolean

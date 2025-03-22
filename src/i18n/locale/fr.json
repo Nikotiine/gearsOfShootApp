@@ -249,6 +249,22 @@
     "minParallax": "Parallax mini",
     "maxParallax": "Parallax maxi"
   },
+  "soundNoiseReducer": {
+    "save": "Ajouter un nouveau RDS",
+    "summary": "Gestion des accessoires / RDS",
+    "edit": "Modifier un RDS",
+    "success": "Ajout d'un nouveau RDS",
+    "update": "RDS correctement modifié",
+    "name": "Nom du model de RDS",
+    "factory": "Marque",
+    "threadedSize": "Filetage compatible",
+    "caliber": "Calibre compatible",
+    "diameter": "Diametre exterieur",
+    "isCleanable": "Demontable pour le nettoyage ?",
+    "length": "Longeur",
+    "chicane": "Nombre de chicanes",
+    "estimatedNoiseReduction": "Reduction de bruit estimé"
+  },
   "factory": {
     "form": {
       "addTitle": "Ajouter une nouvelle marque de type",
