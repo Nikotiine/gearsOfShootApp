@@ -54,7 +54,12 @@ const items = ref([
                 push({ name: RouterEnum.MAGAZINE_NEW })
               }
             },
-            { label: 'RDS' }
+            {
+              label: 'RDS',
+              command: () => {
+                push({ name: RouterEnum.RDS_NEW })
+              }
+            }
           ]
         }
       ],
@@ -260,7 +265,7 @@ const items = ref([
           items: [
             { label: 'Optiques', command: () => push({ name: RouterEnum.OPTIC_LIST }) },
             { label: 'Collier', command: () => push({ name: RouterEnum.OPTIC_COLLAR_LIST }) },
-            { label: 'Type d arme' },
+            { label: 'RDS', command: () => push({ name: RouterEnum.RDS_LIST }) },
             {
               label: 'Marques',
               command: () => {

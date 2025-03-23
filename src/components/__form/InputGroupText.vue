@@ -3,12 +3,12 @@
     <InputText
       :id="inputId"
       v-model="value"
-      :placeholder="t(placeholder)"
+      :placeholder="t(i18nPrefix + placeholder)"
       @focus="onFocus"
       :invalid="isInvalid"
       @change="onChange"
     />
-    <label :for="inputId">{{ t(label) + isRequiredText }}</label>
+    <label :for="inputId">{{ t(i18nPrefix + label) + isRequiredText }}</label>
   </IftaLabel>
 </template>
 
@@ -22,8 +22,11 @@ const {
   minLength = 0,
   label = 'label',
   required = false,
-  initialValue = ''
+  initialValue = '',
+  i18nPrefix = 'global',
+  placeholder = 'defaultPlaceHolder'
 } = defineProps<{
+  i18nPrefix?: string
   minLength?: number
   placeholder?: string
   label?: string

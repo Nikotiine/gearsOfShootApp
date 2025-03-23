@@ -17,7 +17,13 @@ import Menu from 'primevue/menu'
 import { ref } from 'vue'
 import type { MenuItem } from 'primevue/menuitem'
 import { useConfirmationStore } from '@/stores/confirmation'
-export type ActionMenuType = 'optic' | 'magazine' | 'ammunition' | 'riffle' | 'handgun'
+export type ActionMenuType =
+  | 'optic'
+  | 'magazine'
+  | 'ammunition'
+  | 'riffle'
+  | 'handgun'
+  | 'accessory'
 export type ActionMenuEmit = 'view' | 'edit'
 const confirmationStore = useConfirmationStore()
 const { type, reference, id } = defineProps<{

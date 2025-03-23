@@ -2,7 +2,7 @@
   <IftaLabel>
     <InputNumber
       v-model="value"
-      :placeholder="t(placeholder)"
+      :placeholder="t(i18nPrefix + placeholder)"
       :minFractionDigits="minFractionDigits"
       :id="inputId"
       @focus="onFocus"
@@ -10,7 +10,7 @@
       :invalid="isInvalid"
       :disabled="disabled"
     />
-    <label :for="inputId">{{ t(label) + isRequiredInput }}</label>
+    <label :for="inputId">{{ t(i18nPrefix + label) + isRequiredInput }}</label>
   </IftaLabel>
 </template>
 
@@ -30,9 +30,11 @@ const {
   disabled = false,
   maxWidth = 100,
   initialValue = 0,
-  placeholder = 'inputNumber.placeholder'
+  placeholder = 'defaultPlaceHolder',
+  i18nPrefix = 'global'
 } = defineProps<{
   min?: number
+  i18nPrefix?: string
   minFractionDigits?: number
   placeholder?: string
   required?: boolean

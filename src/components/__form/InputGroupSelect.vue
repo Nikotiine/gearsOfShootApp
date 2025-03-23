@@ -7,16 +7,16 @@
       :options="options"
       :optionLabel="optionLabel"
       :optionValue="optionValue"
-      :placeholder="t(placeholder)"
+      :placeholder="t(i18nPrefix + placeholder)"
       @focus="onFocus()"
       checkmark
       :highlightOnSelect="true"
       :invalid="isInvalid"
       :disabled="disabled"
       :filter="filter"
-      :emptyMessage="t('global.notFoundItem')"
+      :emptyMessage="t(emptyMessage)"
     />
-    <label :for="inputId">{{ t(label) + isRequiredSelect }}</label>
+    <label :for="inputId">{{ t(i18nPrefix + label) + isRequiredSelect }}</label>
   </IftaLabel>
 </template>
 <script setup lang="ts">
@@ -27,6 +27,7 @@ import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 const requiredLabel: string = '(*)'
+const emptyMessage: string = 'global.notFoundItem'
 const hasFocused = ref(false)
 const {
   options,
@@ -36,9 +37,11 @@ const {
   optionLabel = 'name',
   optionValue = 'id',
   maxWidth = 100,
-  placeholder = 'global.defaultPlaceHolder',
+  placeholder = 'defaultPlaceHolder',
+  i18nPrefix = 'global',
   initialValue = 0
 } = defineProps<{
+  i18nPrefix?: string
   options: any
   label: string
   required?: boolean
