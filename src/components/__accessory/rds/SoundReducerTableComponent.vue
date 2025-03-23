@@ -131,14 +131,14 @@ import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useFactoryStore } from '@/stores/factory'
 import { useCaliberStore } from '@/stores/caliber'
-import { storeToRefs } from 'pinia'
+
 const store = useSoundReducerStore()
 const { t } = useI18n()
 const router = useRouter()
 const factoryStore = useFactoryStore()
 const { data: factories$ } = factoryStore.getFactoriesByType('accessory')
 const { data, isSuccess, isError, isLoading, refetch } = store.getAll()
-const { i18nPrefix } = storeToRefs(store)
+const i18nPrefix = store.getI18NPrefix()
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },

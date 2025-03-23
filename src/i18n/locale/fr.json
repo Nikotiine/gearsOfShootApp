@@ -253,6 +253,7 @@
     "save": "Ajouter un nouveau RDS",
     "summary": "Gestion des accessoires / RDS",
     "edit": "Modifier un RDS",
+    "detailTitle": "Reducteur de son",
     "success": "Ajout d'un nouveau RDS",
     "update": "RDS correctement modifié",
     "name": "Nom du model de RDS",
@@ -261,6 +262,8 @@
     "caliber": "Calibre compatible",
     "diameter": "Diametre exterieur",
     "isCleanable": "Demontable pour le nettoyage ?",
+    "cleanable": "Demontable",
+    "isNotCleanable": "Non demontable",
     "length": "Longeur",
     "chicane": "Nombre de chicanes",
     "estimatedNoiseReduction": "Reduction de bruit estimé"

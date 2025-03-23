@@ -168,7 +168,7 @@ const { data: threadSize$, isSuccess: threadedSizeIsIsSuccess } = threadedSizeSt
 const { data: caliber$, isSuccess: calibersQueryIsSuccess } = caliberStore.getAll()
 const { data: factories$, isSuccess: factoriesQueryIsSuccess } =
   factoryStore.getFactoriesByType('accessory')
-const { i18nPrefix } = storeToRefs(store)
+const i18nPrefix = store.getI18NPrefix()
 /**
  * Verification que tout les store sont chager avant d'afficher la page
  */

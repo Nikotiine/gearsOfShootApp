@@ -11,7 +11,6 @@ import type {
 import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
 import { RouterEnum } from '@/enum/router.enum'
-import { ref } from 'vue'
 import { useToastStore } from '@/stores/toast'
 
 export const useSoundReducerStore = defineStore('sound-noise-reducer', () => {
@@ -108,13 +107,14 @@ export const useSoundReducerStore = defineStore('sound-noise-reducer', () => {
       })
     )
   }
-  const I18N_PREFIX = ref(_I18N_PREFIX)
-
+  function getI18NPrefix(): string {
+    return _I18N_PREFIX
+  }
   return {
     getById: getByIdQuery,
     getAll: getAllQuery,
     formBuilder: useSoundNoiseForm,
-    i18nPrefix: I18N_PREFIX,
+    getI18NPrefix,
     delete: deleteFunction
   }
 })
