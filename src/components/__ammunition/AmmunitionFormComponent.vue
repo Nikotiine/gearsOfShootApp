@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <h2 class="text-center mt-2 text-2xl">
-      {{ t('ammunition.' + formStatus) }} {{ selectedCategory?.name }}
+      {{ t(i18nPrefix + formStatus) }} {{ selectedCategory?.name }}
     </h2>
     <form @submit.prevent="submit" v-if="storesAreLoaded">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 p-4">
@@ -9,9 +9,10 @@
           <input-group-required-icon :is-validate="form.categoryId > 0" />
           <input-group-select
             :options="categories$?.data"
-            label="global.legalisationCategory"
+            label="legalisationCategory"
             @option-id="(event) => (form.categoryId = event)"
             required
+            placeholder="legalisationCategory"
             input-id="categoryId"
             :initial-value="form.categoryId"
           />
@@ -21,9 +22,10 @@
           <input-group-required-icon :is-validate="form.caliberId > 0" />
           <input-group-select
             :options="calibers$"
-            label="global.caliber"
+            label="caliber"
             @option-id="(event) => (form.caliberId = event)"
             required
+            placeholder="caliber"
             filter
             input-id="caliberId"
             :initial-value="form.caliberId"
@@ -35,23 +37,24 @@
           <input-group-required-icon :is-validate="form.factoryId > 0" />
           <input-group-select
             :options="factories$"
-            label="global.factory"
+            label="factory"
             @option-id="(event) => (form.factoryId = event)"
             required
+            placeholder="factory"
             filter
             input-id="factoryId"
             :initial-value="form.factoryId"
           />
-          c
         </InputGroup>
 
         <InputGroup>
           <input-group-required-icon :is-validate="form.percussionTypeId > 0" />
           <input-group-select
             :options="store.prerequisitesAmmoList.data?.data.percussionTypes"
-            label="global.percussionType"
+            label="percussionType"
             @option-id="(event) => (form.percussionTypeId = event)"
             required
+            placeholder="percussionType"
             input-id="percussionTypeId"
             :initial-value="form.percussionTypeId"
           />
@@ -62,8 +65,9 @@
           <input-group-text
             @value="(value) => (form.name = value)"
             :min-length="2"
-            placeholder="global.model"
-            label="ammunition.nameLabel"
+            :i18n-prefix="i18nPrefix"
+            placeholder="name"
+            label="name"
             required
             input-id="name"
             :initial-value="form.name"
@@ -73,7 +77,9 @@
         <InputGroup>
           <input-group-optional-icon :is-completed="form.initialSpeed > 0" />
           <input-group-number
-            label="ammunition.initialSpeed"
+            :i18n-prefix="i18nPrefix"
+            label="initialSpeed"
+            placeholder="initialSpeed"
             @value="(value) => (form.initialSpeed = value)"
             input-id="initialSpeed"
             :initial-value="form.initialSpeed"
@@ -85,9 +91,11 @@
           <input-group-required-icon :is-validate="form.headTypeId > 0" />
           <input-group-select
             :options="headTypes$"
-            label="ammunition.headType"
+            :i18n-prefix="i18nPrefix"
+            label="headType"
             @option-id="(event) => (form.headTypeId = event)"
             required
+            placeholder="headType"
             input-id="headTypeId"
             :initial-value="form.headTypeId"
           />
@@ -98,7 +106,9 @@
           <input-group-required-icon :is-validate="form.bodyTypeId > 0" />
           <input-group-select
             :options="bodyTypes$"
-            label="ammunition.bodyType"
+            :i18n-prefix="i18nPrefix"
+            placeholder="bodyType"
+            label="bodyType"
             @option-id="(event) => (form.bodyTypeId = event)"
             required
             input-id="bodyTypeId"
@@ -110,8 +120,9 @@
         <InputGroup>
           <input-group-optional-icon :is-completed="form.packaging > 0" />
           <input-group-number
-            placeholder="ammunition.packaging"
-            label="ammunition.packaging"
+            :i18n-prefix="i18nPrefix"
+            placeholder="packaging"
+            label="packaging"
             @value="(value) => (form.packaging = value)"
             input-id="packaging"
             :initial-value="form.packaging"
@@ -129,11 +140,11 @@
           placeholder="Description"
         />
       </div>
-      <div class="text-red-500 p-4" v-if="store.create.isError">
+      <!--      <div class="text-red-500 p-4" v-if="store.create.isError">
         <p class="text-xl font-bold">
           {{ t('error.' + store.create.error.response.data.message) }}
         </p>
-      </div>
+      </div>-->
 
       <div class="text-center">
         <save-button :status="formStatus" :disabled="!isFormValid" />
@@ -148,7 +159,6 @@ import InputGroup from 'primevue/inputgroup'
 import { useAmmunitionStore } from '@/stores/ammunition'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
-import { type CreateAmmunitionDto, type UpdateAmmunitionDto } from '@/api/Api'
 import { computed } from 'vue'
 import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
 import InputGroupAddonOpenDrawerButton from '@/components/__form/InputGroupAddonOpenDrawerButton.vue'
@@ -171,7 +181,8 @@ const { id } = defineProps<{
 
 const { t } = useI18n()
 const store = useAmmunitionStore()
-const { form, resetForm } = store.formBuilder(id)
+const i18nPrefix = store.getI18NPrefix()
+const { form, submit } = store.formBuilder(id)
 const factoryStore = useFactoryStore()
 const { isSuccess: factoriesQueryIsSuccess } = factoryStore.getFactoriesByType('ammunition')
 const caliberStore = useCaliberStore()
@@ -200,22 +211,6 @@ const isFormValid = computed(() => {
   }
   return isValid
 })
-const submit = () => {
-  if (id) {
-    update({ ...form.value, id: parseInt(id) })
-  } else {
-    create(form.value)
-  }
-}
-
-const update = (ammunition: UpdateAmmunitionDto) => {
-  store.edit.mutate(ammunition)
-}
-
-const create = (ammunition: CreateAmmunitionDto) => {
-  store.create.mutate(ammunition)
-  resetForm()
-}
 
 const selectedCategory = computed(() => {
   return categories$.value?.data.find((category) => category.id === form.value.categoryId)

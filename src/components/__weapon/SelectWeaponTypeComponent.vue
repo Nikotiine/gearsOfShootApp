@@ -18,7 +18,7 @@
       <InputGroup>
         <input-group-required-icon :is-validate="isOnContinue" />
         <input-group-select
-          :options="categories$?.data"
+          :options="categories$"
           label="global.legalisationCategory"
           @option-id="(event) => (categoryId = event)"
           required

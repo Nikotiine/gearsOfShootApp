@@ -171,8 +171,7 @@ const items = ref([
               label: 'Chargeur',
               command: () => {
                 push({
-                  name: RouterEnum.MAGAZINE_LIST,
-                  params: { category: LegislationCategory.B }
+                  name: RouterEnum.MAGAZINE_LIST
                 })
               }
             },
@@ -180,8 +179,7 @@ const items = ref([
               label: 'Munition',
               command: () => {
                 push({
-                  name: RouterEnum.AMMUNITION_LIST,
-                  params: { category: LegislationCategory.B }
+                  name: RouterEnum.AMMUNITION_LIST
                 })
               }
             }
@@ -198,16 +196,6 @@ const items = ref([
                 push({
                   name: RouterEnum.WEAPON_LIST,
                   params: { type: WeaponEnum.RIFFLE, category: LegislationCategory.C }
-                })
-              }
-            },
-            { label: 'rds' },
-            {
-              label: 'Munition',
-              command: () => {
-                push({
-                  name: RouterEnum.AMMUNITION_LIST,
-                  params: { category: LegislationCategory.C }
                 })
               }
             },
@@ -243,15 +231,6 @@ const items = ref([
                 push({
                   name: RouterEnum.WEAPON_LIST,
                   params: { type: WeaponEnum.RIFFLE, category: LegislationCategory.D }
-                })
-              }
-            },
-            {
-              label: 'Munition',
-              command: () => {
-                push({
-                  name: RouterEnum.AMMUNITION_LIST,
-                  params: { category: LegislationCategory.D }
                 })
               }
             },

@@ -53,16 +53,20 @@ export const useWeaponMagazineStore = defineStore('weaponMagazine', () => {
       enabled: () => enabled.value
     })
 
-  const getAllByCategoryQuery = (category: Ref<string>) =>
+  const getAllByCategoryQuery = (categoryId: number) =>
     useQuery({
-      queryKey: [_GET_ALL_BY_CATEGORY_FN, category.value],
+      queryKey: [_GET_ALL_BY_CATEGORY_FN, categoryId],
       queryFn: async () => {
-        const res = await api.api.magazineControllerFindByCategory(category.value)
-        magazines.value = res.data
-        return res
+        await _fetchAllByCategoryId(categoryId)
       },
-      enabled: !!category.value
+      enabled: !!categoryId
     })
+
+  const _fetchAllByCategoryId = async (categoryId: number) => {
+    if (!categoryId) return null
+    const res = await api.api.magazineControllerFindByCategory(categoryId)
+    return res.data
+  }
 
   const getByIdQuery = (id?: string) =>
     useQuery({

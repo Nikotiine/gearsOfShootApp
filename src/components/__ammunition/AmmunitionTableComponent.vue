@@ -1,10 +1,10 @@
 <template>
   <div class="card p-4">
-    <h2 class="text-center mt-2 text-2xl">{{ t('ammunition.list') }} {{ category }}</h2>
+    <h2 class="text-center mt-2 text-2xl">{{ t(i18nPrefix + 'list') }} {{ categoryId }}</h2>
     <div class="text-red-500 text-center" v-if="isError">{{ t('global.isLoadingError') }}</div>
     <DataTable
       v-model:filters="filters"
-      :value="data?.data"
+      :value="data"
       paginator
       :rows="10"
       dataKey="id"
@@ -22,8 +22,8 @@
           </IconField>
         </div>
       </template>
-      <template #empty> {{ t('ammunition.notFound') }} </template>
-      <template #loading> {{ t('ammunition.loading') }} {{ t('global.pleaseWait') }} </template>
+      <template #empty> {{ t(i18nPrefix + 'notFound') }} </template>
+      <template #loading> {{ t(i18nPrefix + 'loading') }} {{ t('global.pleaseWait') }} </template>
       <Column field="name" header="Nom" style="min-width: 12rem" :showFilterMenu="false">
         <template #body="{ data }">
           {{ data.name }}
@@ -130,17 +130,17 @@ import ActionMenuComponent, {
   type ActionMenuEmit
 } from '@/components/__table/ActionMenuComponent.vue'
 
-const { category } = defineProps<{
-  category: string
+const { categoryId } = defineProps<{
+  categoryId: number
 }>()
 const { t } = useI18n()
 const store = useAmmunitionStore()
+const i18nPrefix = store.getI18NPrefix()
 const router = useRouter()
 const caliberStore = useCaliberStore()
 const factoryStore = useFactoryStore()
 const { data: factories$ } = factoryStore.getFactoriesByType('ammunition')
-const currentCategory = ref<string>(category)
-const { data, refetch, isError, isLoading: storeIsLoading } = store.getByCategory(currentCategory)
+const { data, refetch, isError, isLoading: storeIsLoading } = store.getByCategory(categoryId)
 const { data: calibers$, isLoading: gatAllCalibersIsSuccess } = caliberStore.getAll()
 
 const filters = ref({
@@ -154,16 +154,6 @@ const filters = ref({
 const storeAreLoading = computed(() => {
   return gatAllCalibersIsSuccess || storeIsLoading
 })
-
-watch(
-  () => category,
-  (newCategory) => {
-    if (newCategory !== currentCategory.value) {
-      currentCategory.value = newCategory
-      refetch()
-    }
-  }
-)
 
 const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
   switch (event) {

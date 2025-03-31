@@ -24,7 +24,7 @@
         </p>
 
         <p>
-          <span class="field-capitalise">{{ t('global.model') }}</span> :
+          <span class="field-capitalise">{{ t(i18nPrefix + 'name') }}</span> :
           {{ data.name }}
         </p>
 
@@ -35,23 +35,23 @@
         </p>
 
         <p>
-          <span class="field-capitalise">{{ t('ammunition.headType') }}</span>
+          <span class="field-capitalise">{{ t(i18nPrefix + 'headType') }}</span>
           :
           {{ data.headType.name }}
         </p>
         <p>
-          <span class="field-capitalise">{{ t('ammunition.bodyType') }}</span>
+          <span class="field-capitalise">{{ t(i18nPrefix + 'bodyType') }}</span>
           :
           {{ data.bodyType.name }}
         </p>
 
         <p>
-          <span class="field-capitalise">{{ t('ammunition.initialSpeed') }}</span>
+          <span class="field-capitalise">{{ t(i18nPrefix + 'initialSpeed') }}</span>
           :
           {{ data.initialSpeed }} m/s
         </p>
         <p>
-          <span class="field-capitalise">{{ t('ammunition.packaging') }}</span>
+          <span class="field-capitalise">{{ t(i18nPrefix + 'packaging') }}</span>
           :
           {{ data.packaging }}
           {{ data.packaging > 1 ? t('global.pieces') : t('global.piece') }}
@@ -80,6 +80,7 @@ const { id } = defineProps<{
   id: string
 }>()
 const store = useAmmunitionStore()
+const i18nPrefix = store.getI18NPrefix()
 const { t } = useI18n()
 
 const { data, isSuccess } = store.getById(id)

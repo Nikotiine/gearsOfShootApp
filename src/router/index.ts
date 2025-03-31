@@ -43,16 +43,15 @@ const router = createRouter({
                   component: () => import('../views/shared/FormView.vue')
                 },
                 {
-                  path: 'list/:category',
+                  path: 'list',
                   name: RouterEnum.AMMUNITION_LIST,
-                  props: true,
-                  component: () => import('../views/ammunition/AdminAmmunitionListView.vue')
+                  component: () => import('../views/shared/TableWithSelectCategoryView.vue')
                 },
                 {
                   path: 'detail/:id',
                   name: RouterEnum.AMMUNITION_DETAIL,
                   props: true,
-                  component: () => import('../views/ammunition/AdminAmmunitionDetailView.vue')
+                  component: () => import('../views/shared/DetailView.vue')
                 },
                 {
                   path: 'edit/:id',
@@ -72,10 +71,9 @@ const router = createRouter({
                   component: () => import('../views/magazine/AdminMagazineDetailView.vue')
                 },
                 {
-                  path: 'list/:category',
-                  props: true,
+                  path: 'list',
                   name: RouterEnum.MAGAZINE_LIST,
-                  component: () => import('../views/magazine/AdminMagazineListView.vue')
+                  component: () => import('../views/shared/TableWithSelectCategoryView.vue')
                 },
                 {
                   path: 'new',
@@ -101,13 +99,13 @@ const router = createRouter({
                 {
                   path: 'list',
                   name: RouterEnum.OPTIC_LIST,
-                  component: () => import('../views/optic/AdminOpticListView.vue')
+                  component: () => import('../views/shared/TableView.vue')
                 },
                 {
                   path: 'detail/:id',
                   props: true,
                   name: RouterEnum.OPTIC_DETAIL,
-                  component: () => import('../views/optic/AdminOpticDetailView.vue')
+                  component: () => import('../views/shared/DetailView.vue')
                 },
                 {
                   path: 'edit/:id',
@@ -253,7 +251,7 @@ const router = createRouter({
                   path: 'detail/:id',
                   props: true,
                   name: RouterEnum.OPTIC_COLLAR_DETAIL,
-                  component: () => import('../views/optic/AdminOpticCollarDetailView.vue')
+                  component: () => import('../views/shared/DetailView.vue')
                 }
               ]
             },

@@ -1649,7 +1649,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @summary Filtré par categorie
      * @request GET:/api/magazine/by/category/{category}
      */
-    magazineControllerFindByCategory: (category: string, params: RequestParams = {}) =>
+    magazineControllerFindByCategory: (category: number, params: RequestParams = {}) =>
       this.request<WeaponMagazineDto[], any>({
         path: `/api/magazine/by/category/${category}`,
         method: 'GET',
@@ -1953,7 +1953,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @summary Filtré par categorie
      * @request GET:/api/ammunition/by/category/{category}
      */
-    ammunitionControllerFindByCategory: (category: string, params: RequestParams = {}) =>
+    ammunitionControllerFindByCategory: (category: number, params: RequestParams = {}) =>
       this.request<AmmunitionDto[], any>({
         path: `/api/ammunition/by/category/${category}`,
         method: 'GET',

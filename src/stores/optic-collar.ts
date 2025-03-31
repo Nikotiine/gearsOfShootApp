@@ -24,6 +24,9 @@ export const useOpticCollarStore = defineStore('optic-collar', () => {
   const _SUMMARY = I18N_PREFIX + '.summary'
   const _GET_ALL_FN = 'getAllOpticCollar'
   const _GET_BY_ID_FN = 'getOpticCollarById'
+  function getI18nPrefix(): string {
+    return I18N_PREFIX + '.'
+  }
   // *******************Methodes***************
   const _createMutation = useMutation({
     mutationFn: async (optic: CreateOpticCollarDto) => {
@@ -95,7 +98,7 @@ export const useOpticCollarStore = defineStore('optic-collar', () => {
       getByIdQuery,
       _createMutation,
       _updateMutation,
-      I18N_PREFIX,
+      getI18nPrefix(),
       id,
       (data) => ({
         ...data,

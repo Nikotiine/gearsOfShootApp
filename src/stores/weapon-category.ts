@@ -6,29 +6,25 @@ import type { LegislationCategoryDto } from '@/api/Api'
 
 export const useWeaponCategoryStore = defineStore('weapon-category', () => {
   const { api } = useApiStore()
+  // Private Attibute
+
+  const _GET_ALL_FN = 'getAllWeaponCategories'
+  // const _GET_BY_ID_FN = 'getSoundNoiseReducerById'
   const categories = ref<LegislationCategoryDto[]>([])
   const getAllQuery = () =>
     useQuery({
-      queryKey: ['get-all-categories'],
-      queryFn: async () => {
-        return await api.api.legislationCategoryControllerFindAll()
-      }
+      queryKey: [_GET_ALL_FN],
+      queryFn: async () => _fetchAll(),
+      retry: 0
     })
-  const getIdWithName = async (name: string) => {
-    if (categories.value.length === 0) {
-      console.log('awa')
-      // getAllQuery.isFetched
-      console.log(categories.value)
-    }
-    const category = categories.value.find((cat) => cat.name === name)
-    console.log(category)
-    return category ? category.id : 0
+  const _fetchAll = async () => {
+    const res = await api.api.legislationCategoryControllerFindAll()
+    return res.data
   }
 
   return {
     getAll: getAllQuery,
-    categories$: categories,
-    getCategoryIdByCategoryName: getIdWithName
+    categories$: categories
   }
 })
 export enum LegislationCategory {

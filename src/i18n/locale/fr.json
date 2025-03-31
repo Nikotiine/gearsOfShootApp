@@ -176,15 +176,13 @@
     "summary": "Gestion des munition",
     "save": "Ajouter une munition de categorie",
     "edit": "Modifier une munition de categorie",
-    "nameLabel": "Modele de munition",
+    "name": "Modele de munition",
     "initialSpeed": "Vitesse initiale",
     "headType": "Type d'ovige",
     "bodyType": "Type de douille",
     "packaging": "Packaging",
-    "add": {
-      "success": "Ajouter a la base de donnee",
-      "update": "Munition modifié"
-    },
+    "success": "Ajouter a la base de donnee",
+    "update": "Munition modifié",
     "list":"Liste des munitions de categorie",
     "notFound": "Aucune munition trouvée",
     "loading": "Chargement des muntions en cours"

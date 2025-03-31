@@ -31,7 +31,7 @@ const {
   maxWidth = 100,
   initialValue = 0,
   placeholder = 'defaultPlaceHolder',
-  i18nPrefix = 'global'
+  i18nPrefix = 'global.'
 } = defineProps<{
   min?: number
   i18nPrefix?: string
