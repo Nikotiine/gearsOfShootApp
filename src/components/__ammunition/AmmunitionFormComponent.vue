@@ -1,14 +1,14 @@
 <template>
   <div class="card">
     <h2 class="text-center mt-2 text-2xl">
-      {{ t(i18nPrefix + formStatus) }} {{ selectedCategory?.name }}
+      {{ t(i18nPrefix + formStatus) }}
     </h2>
     <form @submit.prevent="submit" v-if="storesAreLoaded">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 p-4">
         <InputGroup>
           <input-group-required-icon :is-validate="form.categoryId > 0" />
           <input-group-select
-            :options="categories$?.data"
+            :options="categories$"
             label="legalisationCategory"
             @option-id="(event) => (form.categoryId = event)"
             required
@@ -18,7 +18,7 @@
           />
         </InputGroup>
 
-        <InputGroup>
+        <!--        <InputGroup>
           <input-group-required-icon :is-validate="form.caliberId > 0" />
           <input-group-select
             :options="calibers$"
@@ -31,9 +31,14 @@
             :initial-value="form.caliberId"
           />
           <input-group-addon-open-drawer-button type="caliber" />
-        </InputGroup>
+        </InputGroup>-->
 
-        <InputGroup>
+        <caliber-input-select
+          :initial-value="form.caliberId"
+          :can-add-new="true"
+          @on-select="(event) => (form.caliberId = event)"
+        />
+        <!--        <InputGroup>
           <input-group-required-icon :is-validate="form.factoryId > 0" />
           <input-group-select
             :options="factories$"
@@ -45,8 +50,13 @@
             input-id="factoryId"
             :initial-value="form.factoryId"
           />
-        </InputGroup>
-
+        </InputGroup>-->
+        <factory-input-select
+          :initial-value="form.factoryId"
+          :can-add-new="true"
+          type="ammunition"
+          :factory-type="'ammunition'"
+        />
         <InputGroup>
           <input-group-required-icon :is-validate="form.percussionTypeId > 0" />
           <input-group-select
@@ -137,14 +147,9 @@
           rows="5"
           cols="30"
           class="w-full"
-          placeholder="Description"
+          :placeholder="t('global.description')"
         />
       </div>
-      <!--      <div class="text-red-500 p-4" v-if="store.create.isError">
-        <p class="text-xl font-bold">
-          {{ t('error.' + store.create.error.response.data.message) }}
-        </p>
-      </div>-->
 
       <div class="text-center">
         <save-button :status="formStatus" :disabled="!isFormValid" />
@@ -173,6 +178,8 @@ import { useBodyTypeStore } from '@/stores/bodyType'
 import { useWeaponCategoryStore } from '@/stores/weapon-category'
 import type { FormStatus } from '@/types/form-status.type'
 import SaveButton from '@/components/__form/SaveButton.vue'
+import CaliberInputSelect from '@/components/__form/__specific_select/CaliberInputSelect.vue'
+import FactoryInputSelect from '@/components/__form/__specific_select/FactoryInputSelect.vue'
 
 const { id } = defineProps<{
   id?: string
@@ -181,22 +188,20 @@ const { id } = defineProps<{
 
 const { t } = useI18n()
 const store = useAmmunitionStore()
-const i18nPrefix = store.getI18NPrefix()
+const i18nPrefix = store.getI18NPrefix
 const { form, submit } = store.formBuilder(id)
 const factoryStore = useFactoryStore()
 const { isSuccess: factoriesQueryIsSuccess } = factoryStore.getFactoriesByType('ammunition')
 const caliberStore = useCaliberStore()
-const { isSuccess: calibersQueryIsSuccess } = caliberStore.getAll()
+const { data: calibers$ } = caliberStore.getAll()
 const headTypeStore = useHeadTypeStore()
-const { isSuccess: headTypesQueryIsSuccess } = headTypeStore.getAll()
+const { data: headTypes$ } = headTypeStore.getAll()
 const bodyTypeStore = useBodyTypeStore()
 const { isSuccess: bodyTypesQueryIsSuccess } = bodyTypeStore.getAll()
 const categoryStore = useWeaponCategoryStore()
 const { factories$ } = storeToRefs(factoryStore)
-const { calibers$ } = storeToRefs(caliberStore)
-const { headTypes$ } = storeToRefs(headTypeStore)
 const { bodyTypes$ } = storeToRefs(bodyTypeStore)
-const { data: categories$, isSuccess: categoriesQueryIsSuccess } = categoryStore.getAll()
+const { data: categories$ } = categoryStore.getAll()
 
 const isFormValid = computed(() => {
   let isValid: boolean = false
@@ -212,21 +217,11 @@ const isFormValid = computed(() => {
   return isValid
 })
 
-const selectedCategory = computed(() => {
-  return categories$.value?.data.find((category) => category.id === form.value.categoryId)
-})
-
 /**
  * Verification que tout les store sont chager avant d'afficher la page
  */
 const storesAreLoaded = computed(() => {
-  return (
-    calibersQueryIsSuccess &&
-    factoriesQueryIsSuccess &&
-    headTypesQueryIsSuccess &&
-    bodyTypesQueryIsSuccess &&
-    categoriesQueryIsSuccess
-  )
+  return factoriesQueryIsSuccess && bodyTypesQueryIsSuccess
 })
 </script>
 

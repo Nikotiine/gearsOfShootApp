@@ -38,16 +38,6 @@ export interface CreateFactoryDto {
   reference: string
 }
 
-export interface UpdateFactoryDto {
-  /** @example "Colt" */
-  name: string
-  typeId: number
-  /** @example "Une description de la marque et ses produits" */
-  description: string
-  reference: string
-  id: number
-}
-
 export interface ApiDeleteResponseDto {
   id: number
   isSuccess: boolean
@@ -1162,12 +1152,28 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags Factory
      * @name FactoryControllerFindAll
-     * @summary Liste complete
+     * @summary Liste complète
      * @request GET:/api/factory/all
      */
     factoryControllerFindAll: (params: RequestParams = {}) =>
       this.request<FactoryDto[], any>({
         path: `/api/factory/all`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne le detail de la marque
+     *
+     * @tags Factory
+     * @name FactoryControllerFindById
+     * @summary Filtré par id
+     * @request GET:/api/factory/by/id/{id}
+     */
+    factoryControllerFindById: (id: number, params: RequestParams = {}) =>
+      this.request<FactoryDto, any>({
+        path: `/api/factory/by/id/${id}`,
         method: 'GET',
         format: 'json',
         ...params
@@ -1231,7 +1237,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @summary Edition
      * @request PUT:/api/factory/{id}
      */
-    factoryControllerEdit: (id: number, data: UpdateFactoryDto, params: RequestParams = {}) =>
+    factoryControllerEdit: (id: number, data: FactoryDto, params: RequestParams = {}) =>
       this.request<FactoryDto, any>({
         path: `/api/factory/${id}`,
         method: 'PUT',
@@ -1262,12 +1268,28 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags Caliber
      * @name CaliberControllerFindAllCalibers
-     * @summary Liste complete
-     * @request GET:/api/caliber
+     * @summary Liste complète
+     * @request GET:/api/caliber/all
      */
     caliberControllerFindAllCalibers: (params: RequestParams = {}) =>
       this.request<CaliberDto[], any>({
-        path: `/api/caliber`,
+        path: `/api/caliber/all`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne le detail de l optique
+     *
+     * @tags Caliber
+     * @name CaliberControllerFindById
+     * @summary Filtré par id
+     * @request GET:/api/caliber/by/id/{id}
+     */
+    caliberControllerFindById: (id: number, params: RequestParams = {}) =>
+      this.request<CaliberDto, any>({
+        path: `/api/caliber/by/id/${id}`,
         method: 'GET',
         format: 'json',
         ...params

@@ -135,7 +135,7 @@ const { categoryId } = defineProps<{
 }>()
 const { t } = useI18n()
 const store = useAmmunitionStore()
-const i18nPrefix = store.getI18NPrefix()
+const i18nPrefix = store.getI18NPrefix
 const router = useRouter()
 const caliberStore = useCaliberStore()
 const factoryStore = useFactoryStore()

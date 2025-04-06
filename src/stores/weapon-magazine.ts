@@ -3,7 +3,9 @@ import { useApiStore } from '@/stores/api'
 import { useToastStore } from '@/stores/toast'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import type { CreateWeaponMagazineDto, UpdateWeaponMagazineDto, WeaponMagazineDto } from '@/api/Api'
-import { type Ref, ref, watch } from 'vue'
+import { type Ref, ref } from 'vue'
+import { useFormHandler } from '@/shared/useFormHandler'
+import type { AxiosResponse } from 'axios'
 
 export const useWeaponMagazineStore = defineStore('weaponMagazine', () => {
   // Appel API
@@ -21,13 +23,9 @@ export const useWeaponMagazineStore = defineStore('weaponMagazine', () => {
   const _GET_ALL_FN = 'getAllMagazine'
   const _GET_BY_ID_FN = 'getMagazineById'
   // *******************Methodes***************$
-  const createWeaponMagazineMutation = useMutation({
+  const _createMutation = useMutation({
     mutationFn: async (magazine: CreateWeaponMagazineDto) => {
       return await api.api.magazineControllerCreate(magazine)
-    },
-    onSuccess(data) {
-      magazines.value.push(data.data)
-      successMessage(_SUMMARY, I18N_PREFIX + '.success')
     }
   })
 
@@ -97,39 +95,29 @@ export const useWeaponMagazineStore = defineStore('weaponMagazine', () => {
       compatibleRiffle: [],
       weaponTypeId: 0
     }
-    const form = ref<CreateWeaponMagazineDto>({ ...emptyForm })
-    const resetForm = () => {
-      form.value = emptyForm
-    }
-    const { data, isSuccess } = getByIdQuery(id)
-    watch(
-      () => data.value,
-      (newData) => {
-        if (isSuccess.value && newData) {
-          form.value = {
-            ...newData,
-            factoryId: newData.factory.id,
-            caliberId: newData.caliber.id,
-            categoryId: newData.category.id,
-            weaponTypeId: newData.forWeaponType.id,
-            bodyId: newData.body.id,
-            compatibleRiffle: newData.riffles ? newData.riffles : [],
-            compatibleHandGun: newData.handguns ? newData.handguns : []
-          }
-        }
-      },
-      { immediate: true }
+    return useFormHandler<CreateWeaponMagazineDto, AxiosResponse<WeaponMagazineDto>>(
+      emptyForm,
+      getByIdQuery,
+      _createMutation,
+      _updateMutation,
+      I18N_PREFIX,
+      id,
+      (data) => ({
+        ...data,
+        factoryId: data.factory.id,
+        caliberId: data.caliber.id,
+        categoryId: data.category.id,
+        weaponTypeId: data.forWeaponType.id,
+        bodyId: data.body.id,
+        compatibleRiffle: data.riffles ? data.riffles : [],
+        compatibleHandGun: data.handguns ? data.handguns : []
+      })
     )
-    return { form, isSuccess, resetForm }
   }
 
-  const updateMagazineMutation = useMutation({
+  const _updateMutation = useMutation({
     mutationFn: async (magazine: UpdateWeaponMagazineDto) => {
       return await api.api.magazineControllerEdit(magazine.id, magazine)
-    },
-    onSuccess(data) {
-      magazines.value.push(data.data)
-      successMessage(_SUMMARY, I18N_PREFIX + '.updated')
     }
   })
 
@@ -151,12 +139,12 @@ export const useWeaponMagazineStore = defineStore('weaponMagazine', () => {
   return {
     getAll: getAllQuery,
     getById: getByIdQuery,
-    create: createWeaponMagazineMutation,
+    create: _createMutation,
     getByFactoryId: getMagazineByFactory,
     getByCategory: getAllByCategoryQuery,
     magazines$: magazines,
     magazine$: magazine,
-    edit: updateMagazineMutation,
+    edit: _updateMutation,
     delete: deleteFunction,
     builder: useWeaponForm
   }

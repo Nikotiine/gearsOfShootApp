@@ -80,7 +80,7 @@ const { id } = defineProps<{
   id: string
 }>()
 const store = useAmmunitionStore()
-const i18nPrefix = store.getI18NPrefix()
+const i18nPrefix = store.getI18NPrefix
 const { t } = useI18n()
 
 const { data, isSuccess } = store.getById(id)

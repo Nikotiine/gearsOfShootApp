@@ -24,6 +24,7 @@ export type ActionMenuType =
   | 'riffle'
   | 'handgun'
   | 'accessory'
+  | 'factory'
 export type ActionMenuEmit = 'view' | 'edit'
 const confirmationStore = useConfirmationStore()
 const { type, reference, id } = defineProps<{

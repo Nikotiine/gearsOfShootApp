@@ -3,10 +3,10 @@ import { useApiStore } from '@/stores/api'
 import { useToastStore } from '@/stores/toast'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import type { AmmunitionDto, CreateAmmunitionDto, UpdateAmmunitionDto } from '@/api/Api'
-import { type Ref, ref } from 'vue'
-import { useI18n } from 'vue-i18n'
+import { ref } from 'vue'
 import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
+import { getI18NPrefix, I18NSuffix } from '@/enum/I18NSuffix.enum'
 
 export const useAmmunitionStore = defineStore('ammunition', () => {
   // Appel API
@@ -16,13 +16,13 @@ export const useAmmunitionStore = defineStore('ammunition', () => {
   // I18N
   const ammunition = ref<AmmunitionDto>()
   // Private Attibute
-  const _I18N_PREFIX = 'ammunition.'
-  const _SUMMARY = _I18N_PREFIX + '.summary'
+  const _I18N_PREFIX = 'ammunition'
   // const _GET_ALL_FN = 'getAllAmmuntiion'
   const _GET_ALL_BY_CATEGORY_FN = 'getAllAmmunitionByCategory'
   const _GET_BY_ID_FN = 'getAmmunitionById'
   const _PREREQUISITE_FN = 'prerequisite-ammunition'
   // *******************Methodes***************
+
   const queryPrerequisitesAmmunitionList = useQuery({
     queryKey: [_PREREQUISITE_FN],
     queryFn: async () => {
@@ -105,15 +105,15 @@ export const useAmmunitionStore = defineStore('ammunition', () => {
       return await api.api.ammunitionControllerDelete(id)
     },
     onSuccess() {
-      successMessage(_SUMMARY, _I18N_PREFIX + 'deleted')
+      successMessage(
+        getI18NPrefix(_I18N_PREFIX) + I18NSuffix.SUMMARY,
+        getI18NPrefix(_I18N_PREFIX) + I18NSuffix.DELETED
+      )
     }
   })
 
   const deleteFunction = (id: number) => {
     _deleteAmmunitionMutation.mutate(id)
-  }
-  function getI18NPrefix(): string {
-    return _I18N_PREFIX
   }
 
   return {
@@ -123,6 +123,6 @@ export const useAmmunitionStore = defineStore('ammunition', () => {
     getById: getByIdQuery,
     ammunition$: ammunition,
     formBuilder: useAmmunitionForm,
-    getI18NPrefix
+    getI18NPrefix: getI18NPrefix(_I18N_PREFIX)
   }
 })

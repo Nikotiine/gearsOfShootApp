@@ -8,5 +8,8 @@ export const useToastStore = defineStore('toast', () => {
   function successMessage(summary: string, message: string) {
     toast.add({ severity: 'info', summary: t(summary), detail: t(message), life: 3000 })
   }
-  return { successMessage }
+  function errorMessage(summary: string, message: string) {
+    toast.add({ severity: 'error', summary: t(summary), detail: t(message), life: 5000 })
+  }
+  return { successMessage, errorMessage }
 })

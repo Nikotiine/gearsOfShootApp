@@ -297,6 +297,8 @@
     }
   },
   "caliber": {
+    "name": "Nom du calibre",
+    "reference": "Reference",
     "form": {
       "addTitle": "Ajouter un nouveau calibre",
       "success": "Ajout d'un nouveau type confirme"

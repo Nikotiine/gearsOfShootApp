@@ -28,11 +28,12 @@ export const useHeadTypeStore = defineStore('headType', () => {
   const getAllHeadTypesQuery = () =>
     useQuery({
       queryKey: [_GET_ALL_FN],
-      queryFn: async () => {
-        const res = await api.api.ammunitionHeadTypeControllerFindAllHeadTypes()
-        headTypes.value = res.data
-        return res
-      }
+      queryFn: async () => _fetchAll(),
+      retry: 0
     })
+  const _fetchAll = async () => {
+    const res = await api.api.ammunitionHeadTypeControllerFindAllHeadTypes()
+    return res.data
+  }
   return { create: headTypeCreateMutation, getAll: getAllHeadTypesQuery, headTypes$: headTypes }
 })

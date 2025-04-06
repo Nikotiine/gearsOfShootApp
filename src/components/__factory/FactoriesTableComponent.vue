@@ -78,6 +78,15 @@
             />
           </template>
         </Column>
+        <Column header="Actions" :showFilterMenu="false" style="min-width: 12rem">
+          <template #body="{ data }">
+            <action-menu-component
+              @on-click-action="onClickAction"
+              type="magazine"
+              :reference="data.reference"
+              :id="data.id"
+          /></template>
+        </Column>
       </DataTable>
     </div>
   </div>
@@ -86,7 +95,6 @@
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import { useFactoryStore } from '@/stores/factory'
-import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 import InputText from 'primevue/inputtext'
 import IconField from 'primevue/iconfield'
@@ -94,6 +102,11 @@ import Select from 'primevue/select'
 import InputIcon from 'primevue/inputicon'
 import { FilterMatchMode } from '@primevue/core/api'
 import { ref } from 'vue'
+import ActionMenuComponent, {
+  type ActionMenuEmit
+} from '@/components/__table/ActionMenuComponent.vue'
+import { RouterEnum } from '@/enum/router.enum'
+import { useRouter } from 'vue-router'
 
 const props = defineProps<{
   type?: string
@@ -101,8 +114,14 @@ const props = defineProps<{
 
 const { t } = useI18n()
 const store = useFactoryStore()
-const { isError, isSuccess, isLoading, error } = store.getAll()
-const { factories$ } = storeToRefs(store)
+const {
+  isError,
+  isSuccess,
+  isLoading,
+  error,
+  data: factories$,
+  refetch
+} = store.getFactoriesByType()
 
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -110,6 +129,21 @@ const filters = ref({
   'type.name': { value: props.type || null, matchMode: FilterMatchMode.EQUALS },
   ref: { value: null, matchMode: FilterMatchMode.STARTS_WITH }
 })
+const router = useRouter()
+const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
+  switch (event) {
+    case 'view':
+      router.push({ name: RouterEnum.AMMUNITION_DETAIL, params: { id: id } })
+      break
+    case 'edit':
+      router.push({ name: RouterEnum.FACTORY_EDIT, params: { id: id } })
+      break
+    case true:
+      store.delete(id)
+      refetch()
+      break
+  }
+}
 </script>
 
 <style scoped></style>

@@ -155,6 +155,12 @@ const router = createRouter({
                   path: 'list',
                   name: RouterEnum.FACTORY_LIST,
                   component: () => import('../views/shared/TableView.vue')
+                },
+                {
+                  path: 'edit/:id',
+                  props: true,
+                  name: RouterEnum.FACTORY_EDIT,
+                  component: () => import('../views/shared/FormView.vue')
                 }
               ]
             },

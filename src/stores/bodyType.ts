@@ -13,6 +13,7 @@ export const useBodyTypeStore = defineStore('bodyType', () => {
   // Refs
   const bodyTypes = ref<AmmunitionBodyTypeDto[]>([])
   // Private Attibute
+  const _I18N_PREFIX = 'ammunition'
   const _SUMMARY = 'bodyType.summary'
   const _GET_ALL_FN = 'getAllBodyType'
 
