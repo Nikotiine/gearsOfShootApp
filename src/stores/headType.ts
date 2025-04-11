@@ -1,28 +1,43 @@
 import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
-import { useToastStore } from '@/stores/toast'
 import { useMutation, useQuery } from '@tanstack/vue-query'
-import type { AmmunitionHeadTypeDto, CreateAmmunitionHeadTypeDto } from '@/api/Api'
+import type {
+  AmmunitionHeadTypeDto,
+  CaliberDto,
+  CreateAmmunitionHeadTypeDto,
+  CreateCaliberDto
+} from '@/api/Api'
 import { ref } from 'vue'
+import { getI18NPrefix } from '@/enum/I18NSuffix.enum'
+import { useFormHandler } from '@/shared/useFormHandler'
+import type { AxiosResponse } from 'axios'
 
 export const useHeadTypeStore = defineStore('headType', () => {
   // Appel API
   const { api } = useApiStore()
-  // TOAST
-  const { successMessage } = useToastStore()
+
   // Refs
-  const headTypes = ref<AmmunitionHeadTypeDto[]>([])
+  const mutationSuccess = ref(false)
   // Private Attibute
-  const _SUMMARY = 'headType.summary'
+  const _I18N_PREFIX = 'headType'
   const _GET_ALL_FN = 'getAllHeadType'
+  const _GET_BY_ID_FN = 'getHeadTypeById'
+
   // *******************Methodes***************
-  const headTypeCreateMutation = useMutation({
+  const _createMutation = useMutation({
     mutationFn: async (headType: CreateAmmunitionHeadTypeDto) => {
       return await api.api.ammunitionHeadTypeControllerCreate(headType)
     },
-    onSuccess(data) {
-      successMessage(_SUMMARY, 'headType.form.success')
-      headTypes.value.push(data.data)
+    onSuccess() {
+      mutationSuccess.value = true
+    }
+  })
+  const _updateMutation = useMutation({
+    mutationFn: async (head: AmmunitionHeadTypeDto) => {
+      return await api.api.ammunitionHeadTypeControllerEdit(head.id, head)
+    },
+    onSuccess() {
+      mutationSuccess.value = true
     }
   })
   const getAllHeadTypesQuery = () =>
@@ -35,5 +50,39 @@ export const useHeadTypeStore = defineStore('headType', () => {
     const res = await api.api.ammunitionHeadTypeControllerFindAllHeadTypes()
     return res.data
   }
-  return { create: headTypeCreateMutation, getAll: getAllHeadTypesQuery, headTypes$: headTypes }
+  const getByIdQuery = (id?: string) =>
+    useQuery({
+      queryKey: [_GET_BY_ID_FN, id],
+      queryFn: () => _fetchById(id),
+      enabled: !!id,
+      retry: 0
+    })
+  const _fetchById = async (id?: string) => {
+    if (!id) return null
+    const res = await api.api.ammunitionHeadTypeControllerFindById(parseInt(id))
+    return res.data
+  }
+  function useHeadTypeForm(id?: string) {
+    const emptyForm: CreateAmmunitionHeadTypeDto = {
+      name: '',
+      reference: ''
+    }
+    return useFormHandler<CreateAmmunitionHeadTypeDto, AxiosResponse<AmmunitionHeadTypeDto>>(
+      emptyForm,
+      getByIdQuery,
+      _createMutation,
+      _updateMutation,
+      _I18N_PREFIX,
+      id,
+      (data) => ({
+        ...data
+      })
+    )
+  }
+  return {
+    getAll: getAllHeadTypesQuery,
+    getI18NPrefix: getI18NPrefix(_I18N_PREFIX),
+    mutationSuccess,
+    formBuilder: useHeadTypeForm
+  }
 })

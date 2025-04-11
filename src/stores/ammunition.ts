@@ -23,13 +23,6 @@ export const useAmmunitionStore = defineStore('ammunition', () => {
   const _PREREQUISITE_FN = 'prerequisite-ammunition'
   // *******************Methodes***************
 
-  const queryPrerequisitesAmmunitionList = useQuery({
-    queryKey: [_PREREQUISITE_FN],
-    queryFn: async () => {
-      return await api.api.ammunitionControllerFindPrerequisitesAmmunitionList()
-    }
-  })
-
   const _createMutation = useMutation({
     mutationFn: async (ammunition: CreateAmmunitionDto) => {
       return await api.api.ammunitionControllerCreate(ammunition)
@@ -117,7 +110,6 @@ export const useAmmunitionStore = defineStore('ammunition', () => {
   }
 
   return {
-    prerequisitesAmmoList: queryPrerequisitesAmmunitionList,
     delete: deleteFunction,
     getByCategory: queryFindAllAmmunitionByCategory,
     getById: getByIdQuery,

@@ -716,10 +716,6 @@ export interface AmmunitionDto {
   caliber: CaliberDto
 }
 
-export interface ListOfPrerequisitesAmmunitionDto {
-  percussionTypes: PercussionTypeDto[]
-}
-
 export interface CreateAmmunitionDto {
   /** @example "Sk Standard" */
   name: string
@@ -1516,6 +1512,21 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
+     * @description Retourne la liste complete des types de percussion
+     *
+     * @name PercussionTypeControllerFindAll
+     * @summary Liste complète
+     * @request GET:/api/percussion-type/all
+     */
+    percussionTypeControllerFindAll: (params: RequestParams = {}) =>
+      this.request<LegislationCategoryDto[], any>({
+        path: `/api/percussion-type/all`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
      * @description Retourne la liste des pre-requis necesssaire a la creation d une arme
      *
      * @tags Weapon
@@ -1984,27 +1995,11 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
-     * @description Retourne la liste des pre-requis necesssaire a la creation d une nouvelle munition
-     *
-     * @tags Ammunition
-     * @name AmmunitionControllerFindPrerequisitesAmmunitionList
-     * @summary Liste des pre-requis
-     * @request GET:/api/ammunition/prerequisites
-     */
-    ammunitionControllerFindPrerequisitesAmmunitionList: (params: RequestParams = {}) =>
-      this.request<ListOfPrerequisitesAmmunitionDto, any>({
-        path: `/api/ammunition/prerequisites`,
-        method: 'GET',
-        format: 'json',
-        ...params
-      }),
-
-    /**
      * @description Creation d une nouvelle munition en base de donnée
      *
      * @tags Ammunition
      * @name AmmunitionControllerCreate
-     * @summary Ajout
+     * @summary Creation
      * @request POST:/api/ammunition
      */
     ammunitionControllerCreate: (data: CreateAmmunitionDto, params: RequestParams = {}) =>
@@ -2040,7 +2035,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags Ammunition
      * @name AmmunitionControllerDelete
-     * @summary Suppression logique
+     * @summary Suppresion logique
      * @request DELETE:/api/ammunition/{id}
      */
     ammunitionControllerDelete: (id: number, params: RequestParams = {}) =>
@@ -2056,12 +2051,28 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags AmmunitionHeadType
      * @name AmmunitionHeadTypeControllerFindAllHeadTypes
-     * @summary Toutes les oviges
-     * @request GET:/api/ammunition-head-type
+     * @summary Liste complète
+     * @request GET:/api/ammunition-head-type/all
      */
     ammunitionHeadTypeControllerFindAllHeadTypes: (params: RequestParams = {}) =>
       this.request<AmmunitionHeadTypeDto[], any>({
-        path: `/api/ammunition-head-type`,
+        path: `/api/ammunition-head-type/all`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne le detail de le l ogive
+     *
+     * @tags AmmunitionHeadType
+     * @name AmmunitionHeadTypeControllerFindById
+     * @summary Filtré par id
+     * @request GET:/api/ammunition-head-type/by/id/{id}
+     */
+    ammunitionHeadTypeControllerFindById: (id: number, params: RequestParams = {}) =>
+      this.request<AmmunitionHeadTypeDto, any>({
+        path: `/api/ammunition-head-type/by/id/${id}`,
         method: 'GET',
         format: 'json',
         ...params
@@ -2164,11 +2175,27 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
-     * @description Editio d un  type de douille pour les munitions
+     * @description Retourne le detail de la douille
+     *
+     * @tags AmmunitionBodyType
+     * @name AmmunitionBodyTypeControllerFindById
+     * @summary Filtré par id
+     * @request GET:/api/ammunition-body-type/by/id/{id}
+     */
+    ammunitionBodyTypeControllerFindById: (id: number, params: RequestParams = {}) =>
+      this.request<AmmunitionBodyTypeDto, any>({
+        path: `/api/ammunition-body-type/by/id/${id}`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Edition d un type de douille
      *
      * @tags AmmunitionBodyType
      * @name AmmunitionBodyTypeControllerEdit
-     * @summary Editio
+     * @summary Edition
      * @request PUT:/api/ammunition-body-type/{id}
      */
     ammunitionBodyTypeControllerEdit: (
@@ -2190,7 +2217,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags AmmunitionBodyType
      * @name AmmunitionBodyTypeControllerDelete
-     * @summary Suppression logique
+     * @summary Suppresion logique
      * @request DELETE:/api/ammunition-body-type/{id}
      */
     ammunitionBodyTypeControllerDelete: (id: number, params: RequestParams = {}) =>

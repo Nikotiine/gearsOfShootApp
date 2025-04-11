@@ -202,6 +202,8 @@
     "summary": "Gestion des douilles"
   },
   "headType": {
+    "name": "Type d'ovige",
+    "placeholder": "Choisir un type",
     "form": {
       "addTitle": "Ajouter un nouveau type d'ogive",
       "success": "Ajout d'un nouveau type confirme"
@@ -307,6 +309,15 @@
     "type": "Type d'armes",
     "summary": "Gestion des type d'arme"
   },
+  "legalisationCategory": {
+    "name": "Categorie",
+    "placeholder": "Choisir une categorie"
+  },
+  "percussionType": {
+    "name": "Type de percussion",
+    "placeholder": "Choisir un type"
+  },
+
   "threadedSize": {
     "form": {
       "addTitle": "Ajouter un nouveau filletage",

@@ -39,10 +39,10 @@ import Button from 'primevue/button'
 import InputGroup from 'primevue/inputgroup'
 import { useCaliberStore } from '@/stores/caliber'
 import { useI18n } from 'vue-i18n'
-import type { CreateAmmunitionBodyTypeDto } from '@/api/Api'
-import { computed, ref, watch, watchEffect } from 'vue'
+import { computed } from 'vue'
 import InputGroupText from '@/components/__form/InputGroupText.vue'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
+
 const store = useCaliberStore()
 const { t } = useI18n()
 const i18Prefix = store.getI18NPrefix

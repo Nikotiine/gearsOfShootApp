@@ -24,12 +24,12 @@
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
 import InputGroup from 'primevue/inputgroup'
-import { useWeaponCategoryStore } from '@/stores/weapon-category'
+import { useLegalisationCategoryStore } from '@/stores/legalisation-category'
 import { ref } from 'vue'
 import Button from 'primevue/button'
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
-const weaponCategoryStore = useWeaponCategoryStore()
+const weaponCategoryStore = useLegalisationCategoryStore()
 const { data: categories$ } = weaponCategoryStore.getAll()
 const emit = defineEmits(['selectCategory'])
 const categoryId = ref<number>(0)

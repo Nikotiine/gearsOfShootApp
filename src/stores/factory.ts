@@ -108,10 +108,8 @@ export const useFactoryStore = defineStore('factory', () => {
       return await api.api.factoryControllerDelete(id)
     },
     onSuccess() {
-      successMessage(
-        getI18NPrefix(_I18N_PREFIX) + I18NSuffix.SUMMARY,
-        getI18NPrefix(_I18N_PREFIX) + I18NSuffix.DELETED
-      )
+      const prefix = getI18NPrefix(_I18N_PREFIX)
+      successMessage(prefix + I18NSuffix.SUMMARY, prefix + I18NSuffix.DELETED)
     }
   })
 
@@ -124,7 +122,8 @@ export const useFactoryStore = defineStore('factory', () => {
     factoryTypes$: factoryTypes,
     getFactoriesByType: getFactoriesByType,
     delete: deleteFunction,
-    mutationSuccess
+    mutationSuccess,
+    getI18NPrefix: getI18NPrefix(_I18N_PREFIX)
   }
 })
 export type FactoryType = 'weapon' | 'ammunition' | 'optic' | 'magazine' | 'accessory'

@@ -49,8 +49,8 @@ import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 import { useWeaponTypeStore } from '@/stores/weaponType'
 import { storeToRefs } from 'pinia'
-import { useWeaponCategoryStore } from '@/stores/weapon-category'
-const weaponCategoryStore = useWeaponCategoryStore()
+import { useLegalisationCategoryStore } from '@/stores/legalisation-category'
+const weaponCategoryStore = useLegalisationCategoryStore()
 const { isSuccess: categoriesQueryIsSuccess, data: categories$ } = weaponCategoryStore.getAll()
 const weaponTypeStore = useWeaponTypeStore()
 const { isSuccess: typeQueryIsSuccess } = weaponTypeStore.getAll()

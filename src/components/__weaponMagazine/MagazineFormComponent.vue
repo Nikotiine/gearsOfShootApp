@@ -170,7 +170,7 @@ import { useHandGunStore } from '@/stores/hand-gun'
 import { useFactoryStore } from '@/stores/factory'
 import { useCaliberStore } from '@/stores/caliber'
 import { useMaterialStore } from '@/stores/material'
-import { useWeaponCategoryStore } from '@/stores/weapon-category'
+import { useLegalisationCategoryStore } from '@/stores/legalisation-category'
 import type { FormStatus } from '@/types/form-status.type'
 import SaveButton from '@/components/__form/SaveButton.vue'
 import { WeaponEnum } from '@/enum/weapon.enum'
@@ -191,7 +191,7 @@ const handGunStore = useHandGunStore()
 const factoryStore = useFactoryStore()
 const weaponTypeStore = useWeaponTypeStore()
 const materialStore = useMaterialStore()
-const categoryStore = useWeaponCategoryStore()
+const categoryStore = useLegalisationCategoryStore()
 const { data: categories$, isSuccess: categoriesQueryIsSuccess } = categoryStore.getAll()
 const { data: calibers$, isSuccess: calibersQueryIsSuccess } = caliberStore.getAll()
 const { data: weaponTypes$, isSuccess: weaponTypesQueryIsSuccess } = weaponTypeStore.getAll()

@@ -3,14 +3,14 @@ import { useApiStore } from '@/stores/api'
 import { useQuery } from '@tanstack/vue-query'
 import { ref } from 'vue'
 import type { LegislationCategoryDto } from '@/api/Api'
+import { getI18NPrefix } from '@/enum/I18NSuffix.enum'
 
-export const useWeaponCategoryStore = defineStore('weapon-category', () => {
+export const useLegalisationCategoryStore = defineStore('weapon-category', () => {
   const { api } = useApiStore()
   // Private Attibute
-
+  const _I18N_PREFIX = 'legalisationCategory'
   const _GET_ALL_FN = 'getAllWeaponCategories'
   // const _GET_BY_ID_FN = 'getSoundNoiseReducerById'
-  const categories = ref<LegislationCategoryDto[]>([])
   const getAllQuery = () =>
     useQuery({
       queryKey: [_GET_ALL_FN],
@@ -24,7 +24,7 @@ export const useWeaponCategoryStore = defineStore('weapon-category', () => {
 
   return {
     getAll: getAllQuery,
-    categories$: categories
+    getI18NPrefix: getI18NPrefix(_I18N_PREFIX)
   }
 })
 export enum LegislationCategory {

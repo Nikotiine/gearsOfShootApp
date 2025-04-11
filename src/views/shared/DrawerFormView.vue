@@ -17,6 +17,7 @@ import { computed, ref, watch } from 'vue'
 import CaliberFormComponent from '@/components/__caliber/CaliberFormComponent.vue'
 import FactoryFormComponent from '@/components/__factory/FactoryFormComponent.vue'
 import type { FactoryType } from '@/stores/factory'
+import HeadTypeFormComponent from '@/components/__ammunition/HeadTypeFormComponent.vue'
 const { visible, type, factoryType } = defineProps<{
   visible: boolean
   type: DrawerType
@@ -42,7 +43,7 @@ const componentMap = {
   ['weaponType']: CaliberFormComponent,
   ['magazine']: CaliberFormComponent,
   ['bodyType']: CaliberFormComponent,
-  ['headType']: CaliberFormComponent
+  ['headType']: HeadTypeFormComponent
 }
 const detailComponent = computed(() => componentMap[type as DrawerType])
 </script>
