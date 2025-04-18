@@ -1,33 +1,18 @@
 <template>
   <form @submit.prevent="submit">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4" v-if="storesAreLoaded">
-      <InputGroup>
-        <input-group-required-icon :is-validate="form.caliberId > 0" />
-        <input-group-select
-          :options="calibers$"
-          label="global.caliber"
-          @option-id="(event) => (form.caliberId = event)"
-          required
-          filter
-          input-id="caliberId"
-          :initial-value="form.caliberId"
-        />
-        <input-group-addon-open-drawer-button type="caliber" />
-      </InputGroup>
+      <caliber-input-select
+        :initial-value="form.caliberId"
+        can-add-new
+        @on-select="(event) => (form.caliberId = event)"
+      />
 
-      <InputGroup>
-        <input-group-required-icon :is-validate="form.factoryId > 0" />
-        <input-group-select
-          :options="factories$"
-          label="global.factory"
-          @option-id="(event) => (form.factoryId = event)"
-          required
-          filter
-          input-id="factoryId"
-          :initial-value="form.factoryId"
-        />
-        <input-group-addon-open-drawer-button type="factory" factory-type="weapon" />
-      </InputGroup>
+      <factory-input-select
+        :initial-value="form.factoryId"
+        can-add-new
+        factory-type="weapon"
+        @on-select="(event) => (form.factoryId = event)"
+      />
 
       <InputGroup>
         <input-group-required-icon :is-validate="form.name.length >= 3" />
@@ -53,19 +38,18 @@
         />
       </InputGroup>
 
-      <InputGroup>
-        <input-group-required-icon :is-validate="form.percussionTypeId > 0" />
-        <input-group-select
-          :options="store.prerequisitesWeaponList.data?.data.percussionTypes"
-          label="global.percussionType"
-          @option-id="(event) => (form.percussionTypeId = event)"
-          required
-          input-id="percussionTypeId"
-          :initial-value="form.percussionTypeId"
-        />
-      </InputGroup>
+      <percussion-type-input-select
+        required
+        :initial-value="form.percussionTypeId"
+        @on-select="(event) => (form.percussionTypeId = event)"
+      />
 
-      <InputGroup>
+      <barrel-type-select
+        required
+        :initial-value="form.barrelTypeId"
+        @on-select="(event) => (form.barrelTypeId = event)"
+      />
+      <!--      <InputGroup>
         <input-group-required-icon :is-validate="form.barrelTypeId > 0" />
         <input-group-select
           :options="store.prerequisitesWeaponList.data?.data.barreTypes"
@@ -75,7 +59,7 @@
           input-id="barrelTypeId"
           :initial-value="form.barrelTypeId"
         />
-      </InputGroup>
+      </InputGroup>-->
 
       <InputGroup>
         <input-group-required-icon :is-validate="form.barrelLength >= 3" />
@@ -340,24 +324,22 @@ import { useFactoryStore } from '@/stores/factory'
 import { useThreadedSizeStore } from '@/stores/threadedSize'
 import { useColorStore } from '@/stores/color'
 import { useMaterialStore } from '@/stores/material'
+import CaliberInputSelect from '@/components/__form/__specific_select/CaliberInputSelect.vue'
+import FactoryInputSelect from '@/components/__form/__specific_select/FactoryInputSelect.vue'
+import PercussionTypeInputSelect from '@/components/__form/__specific_select/PercussionTypeInputSelect.vue'
+import BarrelTypeSelect from '@/components/__form/__specific_select/BarrelTypeSelect.vue'
 
 const store = useWeaponStore()
 const handGunStore = useHandGunStore()
-const caliberStore = useCaliberStore()
-const factoryStore = useFactoryStore()
 const threadedSizeStore = useThreadedSizeStore()
 const colorStore = useColorStore()
 const materialStore = useMaterialStore()
 
-const { isSuccess: calibersQueryIsSuccess } = caliberStore.getAll()
-const { isSuccess: factoriesQueryIsSuccess } = factoryStore.getFactoriesByType('weapon')
 const { isSuccess: threadedSizesQueryIsSuccess } = threadedSizeStore.getAll()
 const { isSuccess: colorsQueryIsSuccess } = colorStore.getAll()
 const { isSuccess: materialsQueryIsSuccess } = materialStore.getAll()
 
 const { triggerTypes$, opticReadyPlates$, weaponTypes$ } = storeToRefs(store)
-const { calibers$ } = storeToRefs(caliberStore)
-const { factories$ } = storeToRefs(factoryStore)
 const { threadedSizes$ } = storeToRefs(threadedSizeStore)
 const { colors$ } = storeToRefs(colorStore)
 const { materials$ } = storeToRefs(materialStore)
@@ -483,9 +465,7 @@ function setEditForm(handgun: HandGunDto) {
 const storesAreLoaded = computed(() => {
   return (
     store.prerequisitesWeaponList.isSuccess &&
-    factoriesQueryIsSuccess &&
     threadedSizesQueryIsSuccess &&
-    calibersQueryIsSuccess &&
     colorsQueryIsSuccess &&
     materialsQueryIsSuccess
   )

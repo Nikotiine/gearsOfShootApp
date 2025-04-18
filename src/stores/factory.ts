@@ -2,7 +2,12 @@ import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
 import { useToastStore } from '@/stores/toast'
 import { useMutation, useQuery } from '@tanstack/vue-query'
-import { type CreateFactoryDto, type FactoryDto, type FactoryTypeDto } from '@/api/Api'
+import {
+  type CreateFactoryDto,
+  type FactoryDto,
+  type FactoryTypeDto,
+  type UpdateFactoryDto
+} from '@/api/Api'
 import { ref } from 'vue'
 import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
@@ -34,8 +39,8 @@ export const useFactoryStore = defineStore('factory', () => {
   })
 
   const _updateMutation = useMutation({
-    mutationFn: async (ammunition: FactoryDto) => {
-      return await api.api.factoryControllerEdit(ammunition.id, ammunition)
+    mutationFn: async (factory: UpdateFactoryDto) => {
+      return await api.api.factoryControllerEdit(factory.id, factory)
     },
     onSuccess() {
       mutationSuccess.value = true

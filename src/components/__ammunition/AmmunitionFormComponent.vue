@@ -19,7 +19,6 @@
         <factory-input-select
           :initial-value="form.factoryId"
           can-add-new
-          type="ammunition"
           factory-type="ammunition"
           @on-select="(event) => (form.factoryId = event)"
         />

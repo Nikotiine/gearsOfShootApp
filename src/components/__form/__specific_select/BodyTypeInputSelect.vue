@@ -4,8 +4,8 @@
     <input-group-select
       :options="bodyTypesList"
       :i18n-prefix="i18nPrefix"
-      placeholder="bodyType"
-      label="bodyType"
+      placeholder="placeholder"
+      label="name"
       @option-id="onSelect($event)"
       required
       input-id="bodyTypeId"

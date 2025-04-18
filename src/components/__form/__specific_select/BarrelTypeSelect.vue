@@ -1,45 +1,39 @@
 <template>
   <InputGroup>
-    <input-group-required-icon :is-validate="categoryId > 0" v-if="required" />
-    <input-group-optional-icon :is-completed="categoryId > 0" v-else />
+    <input-group-required-icon :is-validate="barrelTypeId > 0" v-if="required" />
+    <input-group-optional-icon :is-completed="barrelTypeId > 0" v-else />
     <input-group-select
-      :options="categories$"
+      :options="barrelType$"
       label="name"
       @option-id="onSelect($event)"
       :required="required"
       placeholder="placeholder"
       input-id="categoryId"
-      :initial-value="categoryId"
+      :initial-value="barrelTypeId"
       :i18n-prefix="i18nPrefix"
-      :disabled="disable"
     />
   </InputGroup>
 </template>
+
 <script setup lang="ts">
+import { ref } from 'vue'
+import { useBarrelTypeStore } from '@/stores/barrel-type'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
 import InputGroup from 'primevue/inputgroup'
-
-import { ref } from 'vue'
-import { useLegalisationCategoryStore } from '@/stores/legalisation-category'
 import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.vue'
-const {
-  initialValue = 0,
-  required = false,
-  disable = false
-} = defineProps<{
+const store = useBarrelTypeStore()
+const { initialValue = 0, required = false } = defineProps<{
   initialValue?: number
   required?: boolean
-  disable?: boolean
 }>()
-const emit = defineEmits(['onSelect'])
-const store = useLegalisationCategoryStore()
 const i18nPrefix = store.getI18NPrefix
-const { data: categories$ } = store.getAll()
-const categoryId = ref<number>(initialValue)
+const { data: barrelType$ } = store.getAll()
+const emit = defineEmits(['onSelect'])
+const barrelTypeId = ref<number>(initialValue)
 const onSelect = (id: number) => {
   emit('onSelect', id)
-  categoryId.value = id
+  barrelTypeId.value = id
 }
 </script>
 

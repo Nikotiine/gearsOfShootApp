@@ -38,6 +38,16 @@ export interface CreateFactoryDto {
   reference: string
 }
 
+export interface UpdateFactoryDto {
+  /** @example "Colt" */
+  name: string
+  typeId: number
+  /** @example "Une description de la marque et ses produits" */
+  description: string
+  reference: string
+  id: number
+}
+
 export interface ApiDeleteResponseDto {
   id: number
   isSuccess: boolean
@@ -1233,7 +1243,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @summary Edition
      * @request PUT:/api/factory/{id}
      */
-    factoryControllerEdit: (id: number, data: FactoryDto, params: RequestParams = {}) =>
+    factoryControllerEdit: (id: number, data: UpdateFactoryDto, params: RequestParams = {}) =>
       this.request<FactoryDto, any>({
         path: `/api/factory/${id}`,
         method: 'PUT',
@@ -1547,12 +1557,28 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags Weapon type
      * @name WeaponTypeControllerFindAllWeaponTypes
-     * @summary Liste complete
+     * @summary Liste complète
      * @request GET:/api/weapon-type/all
      */
     weaponTypeControllerFindAllWeaponTypes: (params: RequestParams = {}) =>
       this.request<WeaponTypeDto[], any>({
         path: `/api/weapon-type/all`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne le detail du chargeur
+     *
+     * @tags Weapon type
+     * @name WeaponTypeControllerFindById
+     * @summary Filtré par id
+     * @request GET:/api/weapon-type/by/id/{id}
+     */
+    weaponTypeControllerFindById: (id: number, params: RequestParams = {}) =>
+      this.request<WeaponTypeDto, any>({
+        path: `/api/weapon-type/by/id/${id}`,
         method: 'GET',
         format: 'json',
         ...params
@@ -1579,7 +1605,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags Weapon type
      * @name WeaponTypeControllerCreate
-     * @summary Ajout d un type d arme
+     * @summary Creation
      * @request POST:/api/weapon-type
      */
     weaponTypeControllerCreate: (data: CreateWeaponTypeDto, params: RequestParams = {}) =>
@@ -1615,7 +1641,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags Weapon type
      * @name WeaponTypeControllerDelete
-     * @summary Suppression logique
+     * @summary Suppresion logique
      * @request DELETE:/api/weapon-type/{id}
      */
     weaponTypeControllerDelete: (id: number, params: RequestParams = {}) =>
@@ -1695,7 +1721,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags Magazine
      * @name MagazineControllerCreate
-     * @summary Ajout de chargeur
+     * @summary Creation
      * @request POST:/api/magazine
      */
     magazineControllerCreate: (data: CreateWeaponMagazineDto, params: RequestParams = {}) =>
@@ -1735,7 +1761,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags Magazine
      * @name MagazineControllerDelete
-     * @summary Suppression logique
+     * @summary Suppresion logique
      * @request DELETE:/api/magazine/{id}
      */
     magazineControllerDelete: (id: number, params: RequestParams = {}) =>
@@ -1947,6 +1973,38 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
+     * @description Retourne la liste de toutes les douilles disponible
+     *
+     * @tags BarrelType
+     * @name BarrelTypeControllerFindAll
+     * @summary Liste complète
+     * @request GET:/api/barrel-type
+     */
+    barrelTypeControllerFindAll: (params: RequestParams = {}) =>
+      this.request<WeaponBarrelTypeDto[], any>({
+        path: `/api/barrel-type`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne la liste des diffents type d armes possible
+     *
+     * @tags Reload mode
+     * @name ReloadModeControllerFindAll
+     * @summary Liste complète
+     * @request GET:/api/reload-mode/all
+     */
+    reloadModeControllerFindAll: (params: RequestParams = {}) =>
+      this.request<WeaponReloadModeDto[], any>({
+        path: `/api/reload-mode/all`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
      * @description Retourne la liste des munitions filtre par calibre
      *
      * @tags Ammunition
@@ -2142,7 +2200,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags AmmunitionBodyType
      * @name AmmunitionBodyTypeControllerFindAllBodyTypes
-     * @summary Toutes les douilles
+     * @summary Liste complète
      * @request GET:/api/ammunition-body-type
      */
     ammunitionBodyTypeControllerFindAllBodyTypes: (params: RequestParams = {}) =>

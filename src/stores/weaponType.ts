@@ -1,42 +1,72 @@
 import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
-import { useToastStore } from '@/stores/toast'
 import { ref } from 'vue'
 import { useMutation, useQuery } from '@tanstack/vue-query'
-import type { CreateWeaponTypeDto, WeaponReloadModeDto, WeaponTypeDto } from '@/api/Api'
+import type {
+  CreateWeaponTypeDto,
+  UpdateWeaponTypeDto,
+  WeaponReloadModeDto,
+  WeaponTypeDto
+} from '@/api/Api'
+import { useFormHandler } from '@/shared/useFormHandler'
+import type { AxiosResponse } from 'axios'
+import { getI18NPrefix } from '@/enum/I18NSuffix.enum'
 
 export const useWeaponTypeStore = defineStore('weaponType', () => {
   // Appel API
   const { api } = useApiStore()
   // TOAST
-  const { successMessage } = useToastStore()
+
   // Refs
-  const weaponTypes = ref<WeaponTypeDto[]>([])
+  const mutationSuccess = ref(false)
+
   const modes = ref<WeaponReloadModeDto[]>([])
   // Private Attibute
-  const _SUMMARY = 'weaponType.summary'
+  const _I18N_PREFIX = 'weaponType'
   const _GET_ALL_FN = 'getAllWeaponType'
+  const _GET_BY_ID_FN = 'getWeaponTypeById'
+
   const _PREREQUISITE_FN = 'prerequisite-weaponType'
   // *******************Methodes***************
-  const createWeaponTypeMutate = useMutation({
+  const _createMutation = useMutation({
     mutationFn: async (weaponType: CreateWeaponTypeDto) => {
       return await api.api.weaponTypeControllerCreate(weaponType)
     },
-    onSuccess(data) {
-      successMessage(_SUMMARY, 'weaponType.form.success')
-      weaponTypes.value.push(data.data)
+    onSuccess() {
+      mutationSuccess.value = true
     }
   })
-
-  const getAllQuery = () =>
+  const _updateMutation = useMutation({
+    mutationFn: async (factory: UpdateWeaponTypeDto) => {
+      return await api.api.weaponTypeControllerEdit(factory.id, factory)
+    },
+    onSuccess() {
+      mutationSuccess.value = true
+    }
+  })
+  const _fetchById = async (id?: string) => {
+    if (!id) return null
+    const res = await api.api.weaponTypeControllerFindById(parseInt(id))
+    return res.data
+  }
+  const getByIdQuery = (id?: string) =>
     useQuery({
-      queryKey: [_GET_ALL_FN],
-      queryFn: async () => {
-        const res = await api.api.weaponTypeControllerFindAllWeaponTypes()
-        weaponTypes.value = res.data
-        return res
-      }
+      queryKey: [_GET_BY_ID_FN, id],
+      queryFn: () => _fetchById(id),
+      enabled: !!id,
+      retry: 0
     })
+  const _fetchAll = async () => {
+    const res = await api.api.weaponTypeControllerFindAllWeaponTypes()
+    return res.data
+  }
+  const getAllQuery = () => {
+    return useQuery({
+      queryKey: [_GET_ALL_FN],
+      queryFn: () => _fetchAll(),
+      retry: 0
+    })
+  }
 
   const queryPrerequisitesWeaponTypeQuery = useQuery({
     queryKey: [_PREREQUISITE_FN],
@@ -46,12 +76,31 @@ export const useWeaponTypeStore = defineStore('weaponType', () => {
       return res
     }
   })
-
+  function useWeaponTypeForm(id?: string) {
+    const emptyForm: CreateWeaponTypeDto = {
+      name: '',
+      reference: '',
+      modeId: 0
+    }
+    return useFormHandler<CreateWeaponTypeDto, AxiosResponse<WeaponTypeDto>>(
+      emptyForm,
+      getByIdQuery,
+      _createMutation,
+      _updateMutation,
+      _I18N_PREFIX,
+      id,
+      (data) => ({
+        ...data,
+        modeId: data.mode.id
+      })
+    )
+  }
   return {
-    create: createWeaponTypeMutate,
+    formBuilder: useWeaponTypeForm,
     getAll: getAllQuery,
-    weaponTypes$: weaponTypes,
+    mutationSuccess,
     prerequisiteList: queryPrerequisitesWeaponTypeQuery,
-    modes$: modes
+    modes$: modes,
+    getI18NPrefix: getI18NPrefix(_I18N_PREFIX)
   }
 })

@@ -1,32 +1,18 @@
 <template>
   <div class="mt-4">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 px-4 pt-4" v-if="storeAreLoaded">
-      <InputGroup>
-        <input-group-required-icon :is-validate="isOnContinue" />
-        <input-group-select
-          :options="weaponTypes$"
-          label="global.weaponType"
-          @option-id="(event) => (typeId = event)"
-          required
-          :disabled="isOnContinue"
-          filter
-          input-id="typeId"
-          :initial-value="typeId"
-        />
-        <input-group-addon-open-drawer-button type="weaponType" v-if="!isOnContinue" />
-      </InputGroup>
-      <InputGroup>
-        <input-group-required-icon :is-validate="isOnContinue" />
-        <input-group-select
-          :options="categories$"
-          label="global.legalisationCategory"
-          @option-id="(event) => (categoryId = event)"
-          required
-          :disabled="isOnContinue"
-          input-id="categoryId"
-          :initial-value="categoryId"
-        />
-      </InputGroup>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 px-4 pt-4">
+      <weapon-type-input-select
+        required
+        can-add-new
+        @on-select="(event) => (typeId = event)"
+        :initial-value="typeId"
+      />
+      <legalisation-category-input-select
+        :initial-value="categoryId"
+        required
+        :disabled="isOnContinue"
+        @on-select="(event) => (categoryId = event)"
+      />
     </div>
     <div class="flex justify-center mt-6" v-if="!isOnContinue">
       <Button
@@ -40,21 +26,12 @@
 </template>
 
 <script setup lang="ts">
-import InputGroup from 'primevue/inputgroup'
 import { computed, ref, watch } from 'vue'
 import Button from 'primevue/button'
 import { useI18n } from 'vue-i18n'
-import InputGroupAddonOpenDrawerButton from '@/components/__form/InputGroupAddonOpenDrawerButton.vue'
-import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
-import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
-import { useWeaponTypeStore } from '@/stores/weaponType'
-import { storeToRefs } from 'pinia'
-import { useLegalisationCategoryStore } from '@/stores/legalisation-category'
-const weaponCategoryStore = useLegalisationCategoryStore()
-const { isSuccess: categoriesQueryIsSuccess, data: categories$ } = weaponCategoryStore.getAll()
-const weaponTypeStore = useWeaponTypeStore()
-const { isSuccess: typeQueryIsSuccess } = weaponTypeStore.getAll()
-const { weaponTypes$ } = storeToRefs(weaponTypeStore)
+import LegalisationCategoryInputSelect from '@/components/__form/__specific_select/LegalisationCategoryInputSelect.vue'
+import WeaponTypeInputSelect from '@/components/__form/__specific_select/WeaponTypeInputSelect.vue'
+
 const { t } = useI18n()
 const { reset } = defineProps<{
   reset: boolean
@@ -77,9 +54,7 @@ const canContinue = computed(() => {
   }
   return isContinue
 })
-const storeAreLoaded = computed(() => {
-  return categoriesQueryIsSuccess && typeQueryIsSuccess
-})
+
 watch(
   () => reset,
   (value) => {

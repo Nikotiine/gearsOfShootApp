@@ -193,6 +193,8 @@
     }
   },
   "bodyType": {
+    "name": "Type de douille",
+    "placeholder": "Choisir un type",
     "form": {
       "addTitle": "Ajouter un nouveau type de douille",
       "success": "Ajout d'un nouveau type confirme"
@@ -220,7 +222,9 @@
     "existingList": "Liste des type d'arme existants",
     "type": "Type d'armes",
     "summary": "Gestion des type d'arme",
-    "mode": "Mode de fonctionnement"
+    "mode": "Mode de fonctionnement",
+    "name": "Type d'armes",
+    "placeholder": "Choisir un type"
   },
   "optic": {
     "summary": "Gestion des optiques",
@@ -317,7 +321,14 @@
     "name": "Type de percussion",
     "placeholder": "Choisir un type"
   },
-
+  "barrelType": {
+    "name": "Type de canon",
+    "placeholder": "Choisir un type"
+  },
+  "reloadMode": {
+    "name": "Type de fonctionnement",
+    "placeholder": "Choisir un type"
+  },
   "threadedSize": {
     "form": {
       "addTitle": "Ajouter un nouveau filletage",

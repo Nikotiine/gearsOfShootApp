@@ -18,6 +18,8 @@ import CaliberFormComponent from '@/components/__caliber/CaliberFormComponent.vu
 import FactoryFormComponent from '@/components/__factory/FactoryFormComponent.vue'
 import type { FactoryType } from '@/stores/factory'
 import HeadTypeFormComponent from '@/components/__ammunition/HeadTypeFormComponent.vue'
+import BodyTypeFormComponent from '@/components/__ammunition/BodyTypeFormComponent.vue'
+import WeaponTypeFormComponent from '@/components/__weapon/type/WeaponTypeFormComponent.vue'
 const { visible, type, factoryType } = defineProps<{
   visible: boolean
   type: DrawerType
@@ -40,9 +42,9 @@ const componentMap = {
   ['color']: CaliberFormComponent,
   ['opticRail']: CaliberFormComponent,
   ['threadSize']: CaliberFormComponent,
-  ['weaponType']: CaliberFormComponent,
+  ['weaponType']: WeaponTypeFormComponent,
   ['magazine']: CaliberFormComponent,
-  ['bodyType']: CaliberFormComponent,
+  ['bodyType']: BodyTypeFormComponent,
   ['headType']: HeadTypeFormComponent
 }
 const detailComponent = computed(() => componentMap[type as DrawerType])

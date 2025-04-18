@@ -20,7 +20,6 @@ export const useAmmunitionStore = defineStore('ammunition', () => {
   // const _GET_ALL_FN = 'getAllAmmuntiion'
   const _GET_ALL_BY_CATEGORY_FN = 'getAllAmmunitionByCategory'
   const _GET_BY_ID_FN = 'getAmmunitionById'
-  const _PREREQUISITE_FN = 'prerequisite-ammunition'
   // *******************Methodes***************
 
   const _createMutation = useMutation({
