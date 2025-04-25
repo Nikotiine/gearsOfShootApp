@@ -26,12 +26,6 @@
           :initial-value="form.reference"
         />
       </InputGroup>
-
-      <div class="text-red-500 p-4" v-if="store.create.isError">
-        <p class="text-xl font-bold">
-          {{ t('error.' + store.create.error.response.data.message) }}
-        </p>
-      </div>
     </div>
     <div class="text-center mt-6">
       <Button type="submit" :label="t('global.save')" :disabled="!isValidForm"></Button>
@@ -40,36 +34,20 @@
 </template>
 <script setup lang="ts">
 import { useColorStore } from '@/stores/color'
-import type { CreateColorDto } from '@/api/Api'
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import Button from 'primevue/button'
 import InputGroupText from '@/components/__form/InputGroupText.vue'
 import InputGroup from 'primevue/inputgroup'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 import { useI18n } from 'vue-i18n'
-const emit = defineEmits(['onSave'])
+
 const { t } = useI18n()
 const store = useColorStore()
-const initialForm: CreateColorDto = {
-  name: '',
-  reference: ''
-}
-const form = ref<CreateColorDto>({ ...initialForm })
 
+const { form, submit } = store.formBuilder()
 const isValidForm = computed(() => {
   return !!form.value.name && !!form.value.reference
 })
-
-/**
- * Sousmission du formulaire pour la creation d'une nouvelle couleur
- * Emet un boolean onSave pour le drawer
- * Reinitialise le formulaire apres l'envoie
- */
-const submit = async () => {
-  store.create.mutate(form.value)
-  form.value = { ...initialForm }
-  emit('onSave', true)
-}
 </script>
 
 <style scoped></style>

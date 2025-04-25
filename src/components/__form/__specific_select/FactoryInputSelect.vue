@@ -1,6 +1,7 @@
 <template>
   <InputGroup>
-    <input-group-required-icon :is-validate="factoryId > 0" />
+    <input-group-required-icon :is-validate="factoryId > 0" v-if="required" />
+    <input-group-optional-icon :is-completed="factoryId > 0" v-else />
     <input-group-select
       :options="factories$"
       label="name"
@@ -27,17 +28,20 @@ import { ref, watch } from 'vue'
 import { type FactoryType, useFactoryStore } from '@/stores/factory'
 import InputGroupAddonOpenDrawerButton from '@/components/__form/InputGroupAddonOpenDrawerButton.vue'
 import { storeToRefs } from 'pinia'
+import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.vue'
 const store = useFactoryStore()
 const emit = defineEmits(['onSelect'])
 const { mutationSuccess } = storeToRefs(store)
 const {
   initialValue = 0,
   canAddNew = false,
-  factoryType = undefined
+  factoryType = undefined,
+  required = false
 } = defineProps<{
   initialValue?: number
   canAddNew?: boolean
   factoryType?: FactoryType
+  required?: boolean
 }>()
 const factoryId = ref<number>(initialValue)
 const closeDrawer = ref(false)

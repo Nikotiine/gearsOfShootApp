@@ -113,6 +113,13 @@ export interface RailSizeDto {
   reference: string
 }
 
+export interface OpticReadyPlateDto {
+  id: number
+  name: string
+  description: string
+  reference: string
+}
+
 export interface WeaponReloadModeDto {
   id: number
   name: string
@@ -139,13 +146,6 @@ export interface WeaponBarrelTypeDto {
 export interface WeaponTriggerTypeDto {
   id: number
   name: string
-  reference: string
-}
-
-export interface OpticReadyPlateDto {
-  id: number
-  name: string
-  description: string
   reference: string
 }
 
@@ -1191,11 +1191,11 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @tags Factory
      * @name FactoryControllerFindByType
      * @summary Liste par type
-     * @request GET:/api/factory/by/{type}
+     * @request GET:/api/factory/by/category/{type}
      */
     factoryControllerFindByType: (type: string, params: RequestParams = {}) =>
       this.request<FactoryDto[], any>({
-        path: `/api/factory/by/${type}`,
+        path: `/api/factory/by/category/${type}`,
         method: 'GET',
         format: 'json',
         ...params
@@ -1222,7 +1222,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags Factory
      * @name FactoryControllerCreate
-     * @summary Ajout
+     * @summary Creation
      * @request POST:/api/factory
      */
     factoryControllerCreate: (data: CreateFactoryDto, params: RequestParams = {}) =>
@@ -1358,12 +1358,28 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags Threaded-size
      * @name ThreadedSizeControllerFindAllThreadedSize
-     * @summary Listes des filletages
-     * @request GET:/api/threaded-size
+     * @summary Liste complète
+     * @request GET:/api/threaded-size/all
      */
     threadedSizeControllerFindAllThreadedSize: (params: RequestParams = {}) =>
       this.request<ThreadedSizeDto[], any>({
-        path: `/api/threaded-size`,
+        path: `/api/threaded-size/all`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne le detail du filletage
+     *
+     * @tags Threaded-size
+     * @name ThreadedSizeControllerFindById
+     * @summary Filtré par id
+     * @request GET:/api/threaded-size/by/id/{id}
+     */
+    threadedSizeControllerFindById: (id: number, params: RequestParams = {}) =>
+      this.request<ThreadedSizeDto, any>({
+        path: `/api/threaded-size/by/id/${id}`,
         method: 'GET',
         format: 'json',
         ...params
@@ -1374,7 +1390,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags Threaded-size
      * @name ThreadedSizeControllerCreate
-     * @summary Ajout d un filetage
+     * @summary Creation
      * @request POST:/api/threaded-size
      */
     threadedSizeControllerCreate: (data: CreateThreadedSizeDto, params: RequestParams = {}) =>
@@ -1410,7 +1426,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags Threaded-size
      * @name ThreadedSizeControllerDelete
-     * @summary Suppression logique
+     * @summary Suppresion logique
      * @request DELETE:/api/threaded-size/{id}
      */
     threadedSizeControllerDelete: (id: number, params: RequestParams = {}) =>
@@ -1454,6 +1470,22 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
+     * @description Retourne le detail du chargeur
+     *
+     * @tags Color
+     * @name ColorControllerFindById
+     * @summary Filtré par id
+     * @request GET:/api/color/by/id/{id}
+     */
+    colorControllerFindById: (id: number, params: RequestParams = {}) =>
+      this.request<ColorDto, any>({
+        path: `/api/color/by/id/${id}`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
      * @description Ajoute une nouvelle couleur
      *
      * @tags Color
@@ -1472,6 +1504,40 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
+     * @description Edition d une couleur
+     *
+     * @tags Color
+     * @name ColorControllerEdit
+     * @summary Edition
+     * @request PUT:/api/color/{id}
+     */
+    colorControllerEdit: (id: number, data: ColorDto, params: RequestParams = {}) =>
+      this.request<ColorDto, any>({
+        path: `/api/color/${id}`,
+        method: 'PUT',
+        body: data,
+        type: ContentType.Json,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Sppression logique de la couleur
+     *
+     * @tags Color
+     * @name ColorControllerDelete
+     * @summary Suppression logique
+     * @request DELETE:/api/color/{id}
+     */
+    colorControllerDelete: (id: number, params: RequestParams = {}) =>
+      this.request<ApiDeleteResponseDto, any>({
+        path: `/api/color/${id}`,
+        method: 'DELETE',
+        format: 'json',
+        ...params
+      }),
+
+    /**
      * @description Retourne la listes de toutes les marques sans distinction
      *
      * @tags Material
@@ -1482,6 +1548,22 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
     materialControllerFindAll: (params: RequestParams = {}) =>
       this.request<MaterialDto[], any>({
         path: `/api/material/all`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne le detail du chargeur
+     *
+     * @tags Material
+     * @name MaterialControllerFindById
+     * @summary Filtré par id
+     * @request GET:/api/material/by/id/{id}
+     */
+    materialControllerFindById: (id: number, params: RequestParams = {}) =>
+      this.request<MaterialDto, any>({
+        path: `/api/material/by/id/${id}`,
         method: 'GET',
         format: 'json',
         ...params
@@ -1506,16 +1588,50 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
+     * @description Edition d une matiere
+     *
+     * @tags Material
+     * @name MaterialControllerEdit
+     * @summary Edition
+     * @request PUT:/api/material/{id}
+     */
+    materialControllerEdit: (id: number, data: MaterialDto, params: RequestParams = {}) =>
+      this.request<MaterialDto, any>({
+        path: `/api/material/${id}`,
+        method: 'PUT',
+        body: data,
+        type: ContentType.Json,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Sppression logique du materiau
+     *
+     * @tags Material
+     * @name MaterialControllerDelete
+     * @summary Suppresion logique
+     * @request DELETE:/api/material/{id}
+     */
+    materialControllerDelete: (id: number, params: RequestParams = {}) =>
+      this.request<ApiDeleteResponseDto, any>({
+        path: `/api/material/${id}`,
+        method: 'DELETE',
+        format: 'json',
+        ...params
+      }),
+
+    /**
      * @description Retourne la listes de toutes les taille de rail optique
      *
      * @tags Rail-size
      * @name RailSizeControllerFindAll
      * @summary Liste complète
-     * @request GET:/api/rail-size
+     * @request GET:/api/rail-size/all
      */
     railSizeControllerFindAll: (params: RequestParams = {}) =>
       this.request<RailSizeDto[], any>({
-        path: `/api/rail-size`,
+        path: `/api/rail-size/all`,
         method: 'GET',
         format: 'json',
         ...params
@@ -1531,6 +1647,22 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
     percussionTypeControllerFindAll: (params: RequestParams = {}) =>
       this.request<LegislationCategoryDto[], any>({
         path: `/api/percussion-type/all`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne la liste complete des type de detente d arme
+     *
+     * @tags Optic-ready-plate
+     * @name OpticReadyPlateControllerFindAll
+     * @summary Liste complète
+     * @request GET:/api/optic-ready-plate/all
+     */
+    opticReadyPlateControllerFindAll: (params: RequestParams = {}) =>
+      this.request<OpticReadyPlateDto[], any>({
+        path: `/api/optic-ready-plate/all`,
         method: 'GET',
         format: 'json',
         ...params
@@ -1999,6 +2131,38 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
     reloadModeControllerFindAll: (params: RequestParams = {}) =>
       this.request<WeaponReloadModeDto[], any>({
         path: `/api/reload-mode/all`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne la liste complete des type de detente d arme
+     *
+     * @tags Trigger-type
+     * @name TriggerTypeControllerFindAll
+     * @summary Liste complète
+     * @request GET:/api/trigger-type/all
+     */
+    triggerTypeControllerFindAll: (params: RequestParams = {}) =>
+      this.request<WeaponTriggerTypeDto[], any>({
+        path: `/api/trigger-type/all`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne la listes de toutes les positions MLOCK
+     *
+     * @tags M Lock Options
+     * @name MLockOptionControllerFindAll
+     * @summary Liste complète
+     * @request GET:/api/m-lock-option/all
+     */
+    mLockOptionControllerFindAll: (params: RequestParams = {}) =>
+      this.request<MLockOptionDto[], any>({
+        path: `/api/m-lock-option/all`,
         method: 'GET',
         format: 'json',
         ...params

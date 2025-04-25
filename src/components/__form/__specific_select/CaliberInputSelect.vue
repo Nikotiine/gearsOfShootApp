@@ -1,6 +1,7 @@
 <template>
   <InputGroup>
-    <input-group-required-icon :is-validate="caliberId > 0" />
+    <input-group-required-icon :is-validate="caliberId > 0" v-if="required" />
+    <input-group-optional-icon :is-completed="caliberId > 0" v-else />
     <input-group-select
       :options="calibersList"
       label="name"
@@ -23,10 +24,16 @@ import InputGroupAddonOpenDrawerButton from '@/components/__form/InputGroupAddon
 import { useCaliberStore } from '@/stores/caliber'
 import { computed, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
+import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.vue'
 
-const { initialValue = 0, canAddNew = false } = defineProps<{
+const {
+  initialValue = 0,
+  canAddNew = false,
+  required = false
+} = defineProps<{
   initialValue?: number
   canAddNew?: boolean
+  required?: boolean
 }>()
 const caliberId = ref<number>(initialValue)
 const store = useCaliberStore()

@@ -44,22 +44,11 @@
         @on-select="(event) => (form.percussionTypeId = event)"
       />
 
-      <barrel-type-select
+      <barrel-type-input-select
         required
         :initial-value="form.barrelTypeId"
         @on-select="(event) => (form.barrelTypeId = event)"
       />
-      <!--      <InputGroup>
-        <input-group-required-icon :is-validate="form.barrelTypeId > 0" />
-        <input-group-select
-          :options="store.prerequisitesWeaponList.data?.data.barreTypes"
-          label="weapon.common.barrelType"
-          @option-id="(event) => (form.barrelTypeId = event)"
-          required
-          input-id="barrelTypeId"
-          :initial-value="form.barrelTypeId"
-        />
-      </InputGroup>-->
 
       <InputGroup>
         <input-group-required-icon :is-validate="form.barrelLength >= 3" />
@@ -88,7 +77,13 @@
         <InputGroupAddon><span>mm</span></InputGroupAddon>
       </InputGroup>
 
-      <InputGroup>
+      <color-input-select
+        input-id="barrelColorId"
+        :initial-value="form.barrelColorId ?? 0"
+        can-add-new
+        @on-select="(event) => (form.barrelColorId = event)"
+      />
+      <!--      <InputGroup>
         <input-group-optional-icon :is-completed="form.barrelColorId > 0" />
         <input-group-select
           :options="colors$"
@@ -99,7 +94,7 @@
           :initial-value="form.barrelColorId ?? 0"
         />
         <input-group-addon-open-drawer-button type="color" />
-      </InputGroup>
+      </InputGroup>-->
 
       <InputGroup>
         <input-group-optional-icon :is-completed="form.threadedSizeId > 0" />
@@ -184,7 +179,14 @@
         />
       </InputGroup>
 
-      <InputGroup>
+      <material-input-select
+        @on-select="(event) => (form.slideMaterialId = event)"
+        :initial-value="form.slideMaterialId ?? 0"
+        can-add-new
+        :disabled="isRevolver"
+        input-id="slideMaterialId"
+      />
+      <!--      <InputGroup>
         <input-group-optional-icon :is-completed="form.slideMaterialId > 0" />
         <input-group-select
           :options="materials$"
@@ -195,9 +197,15 @@
           :initial-value="form.slideMaterialId ?? 0"
         />
         <input-group-addon-open-drawer-button type="material" />
-      </InputGroup>
-
-      <InputGroup>
+      </InputGroup>-->
+      <color-input-select
+        input-id="slideColorId"
+        :initial-value="form.slideColorId ?? 0"
+        can-add-new
+        @on-select="(event) => (form.slideColorId = event)"
+        :disabled="isRevolver"
+      />
+      <!--      <InputGroup>
         <input-group-optional-icon :is-completed="form.slideColorId > 0" />
         <input-group-select
           :options="colors$"
@@ -208,9 +216,14 @@
           :initial-value="form.slideColorId ?? 0"
         />
         <input-group-addon-open-drawer-button type="color" />
-      </InputGroup>
-
-      <InputGroup>
+      </InputGroup>-->
+      <material-input-select
+        @on-select="(event) => (form.buttMaterialId = event)"
+        :initial-value="form.buttMaterialId ?? 0"
+        can-add-new
+        input-id="buttMaterialId"
+      />
+      <!--      <InputGroup>
         <input-group-optional-icon :is-completed="form.buttMaterialId > 0" />
         <input-group-select
           :options="materials$"
@@ -220,9 +233,14 @@
           :initial-value="form.buttMaterialId ?? 0"
         />
         <input-group-addon-open-drawer-button type="material" />
-      </InputGroup>
-
-      <InputGroup>
+      </InputGroup>-->
+      <color-input-select
+        input-id="buttColorId"
+        :initial-value="form.buttColorId ?? 0"
+        can-add-new
+        @on-select="(event) => (form.buttColorId = event)"
+      />
+      <!--      <InputGroup>
         <input-group-optional-icon :is-completed="form.buttColorId > 0" />
         <input-group-select
           :options="colors$"
@@ -232,7 +250,7 @@
           :initial-value="form.buttColorId ?? 0"
         />
         <input-group-addon-open-drawer-button type="color" />
-      </InputGroup>
+      </InputGroup>-->
 
       <InputGroup>
         <input-group-optional-icon />
@@ -319,30 +337,22 @@ import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.v
 import InputGroupNumber from '@/components/__form/InputGroupNumber.vue'
 import InputGroupCheckBox from '@/components/__form/InputGroupCheckBox.vue'
 import InputGroupMultiSelect from '@/components/__form/InputGroupMultiSelect.vue'
-import { useCaliberStore } from '@/stores/caliber'
-import { useFactoryStore } from '@/stores/factory'
 import { useThreadedSizeStore } from '@/stores/threadedSize'
-import { useColorStore } from '@/stores/color'
-import { useMaterialStore } from '@/stores/material'
 import CaliberInputSelect from '@/components/__form/__specific_select/CaliberInputSelect.vue'
 import FactoryInputSelect from '@/components/__form/__specific_select/FactoryInputSelect.vue'
 import PercussionTypeInputSelect from '@/components/__form/__specific_select/PercussionTypeInputSelect.vue'
-import BarrelTypeSelect from '@/components/__form/__specific_select/BarrelTypeSelect.vue'
+import BarrelTypeInputSelect from '@/components/__form/__specific_select/BarrelTypeInputSelect.vue'
+import ColorInputSelect from '@/components/__form/__specific_select/ColorInputSelect.vue'
+import MaterialInputSelect from '@/components/__form/__specific_select/MaterialInputSelect.vue'
 
 const store = useWeaponStore()
 const handGunStore = useHandGunStore()
 const threadedSizeStore = useThreadedSizeStore()
-const colorStore = useColorStore()
-const materialStore = useMaterialStore()
 
 const { isSuccess: threadedSizesQueryIsSuccess } = threadedSizeStore.getAll()
-const { isSuccess: colorsQueryIsSuccess } = colorStore.getAll()
-const { isSuccess: materialsQueryIsSuccess } = materialStore.getAll()
 
 const { triggerTypes$, opticReadyPlates$, weaponTypes$ } = storeToRefs(store)
 const { threadedSizes$ } = storeToRefs(threadedSizeStore)
-const { colors$ } = storeToRefs(colorStore)
-const { materials$ } = storeToRefs(materialStore)
 const { selectedOptions, handGun = null } = defineProps<{
   selectedOptions: NewWeapon
   handGun?: HandGunDto
@@ -463,12 +473,7 @@ function setEditForm(handgun: HandGunDto) {
 }
 
 const storesAreLoaded = computed(() => {
-  return (
-    store.prerequisitesWeaponList.isSuccess &&
-    threadedSizesQueryIsSuccess &&
-    colorsQueryIsSuccess &&
-    materialsQueryIsSuccess
-  )
+  return store.prerequisitesWeaponList.isSuccess && threadedSizesQueryIsSuccess
 })
 </script>
 

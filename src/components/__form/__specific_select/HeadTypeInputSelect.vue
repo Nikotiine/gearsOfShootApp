@@ -1,6 +1,7 @@
 <template>
   <InputGroup>
-    <input-group-required-icon :is-validate="headTypeId > 0" />
+    <input-group-required-icon :is-validate="headTypeId > 0" v-if="required" />
+    <input-group-optional-icon :is-completed="headTypeId > 0" v-else />
     <input-group-select
       :options="headTypesList"
       :i18n-prefix="i18nPrefix"
@@ -22,13 +23,19 @@ import InputGroupAddonOpenDrawerButton from '@/components/__form/InputGroupAddon
 import { computed, ref, watch } from 'vue'
 import { useHeadTypeStore } from '@/stores/headType'
 import { storeToRefs } from 'pinia'
+import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.vue'
 const store = useHeadTypeStore()
 const i18nPrefix = store.getI18NPrefix
 const { data: headTypes$, refetch } = store.getAll()
 const { mutationSuccess } = storeToRefs(store)
-const { initialValue = 0, canAddNew = false } = defineProps<{
+const {
+  initialValue = 0,
+  canAddNew = false,
+  required = false
+} = defineProps<{
   initialValue?: number
   canAddNew?: boolean
+  required?: boolean
 }>()
 const emit = defineEmits(['onSelect'])
 const headTypesList = computed(() => headTypes$.value || [])
