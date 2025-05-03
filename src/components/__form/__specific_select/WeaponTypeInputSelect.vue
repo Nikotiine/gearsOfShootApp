@@ -43,7 +43,8 @@ const emit = defineEmits(['onSelect'])
 const weaponTypeList = computed(() => weaponType$.value || [])
 const closeDrawer = ref(false)
 const onSelect = (id: number) => {
-  emit('onSelect', id)
+  const otot = weaponTypeList.value.find((t) => t.id === id)
+  emit('onSelect', otot)
   typeId.value = id
 }
 watch(
@@ -54,6 +55,12 @@ watch(
       mutationSuccess.value = false
       closeDrawer.value = value
     }
+  }
+)
+watch(
+  () => initialValue,
+  (value) => {
+    typeId.value = value
   }
 )
 </script>

@@ -103,6 +103,28 @@
   },
   "weapon": {
     "summary": "Gestion des armes",
+    "model": "Modele de l'arme",
+    "variation": "Variante",
+    "barrelLength": "Longueur du canon",
+    "barrelSize": "Epaisseur du canon",
+    "isProvidedMagazine": "Chargeur fournis ?",
+    "providedMagazineQuantity": "Qunatite",
+    "isAdjustableTrigger": "Detente reglable",
+    "adjustableTriggerMinWeight": "Poids mini",
+    "adjustableTriggerMaxWeight": "Poids max",
+    "isOpticReady": "Optic ready ?",
+    "isPicatinyRailSlop": "Rail picatiny pour accessoires",
+    "decocking": "Decocking",
+    "isExternalHammer": "Chien exterieur",
+    "isThreadedBarrel": "Canon filete",
+    "isAdjustableButt": "Crosse reglable",
+    "isAdjustableBusk": "Busc ajustable",
+    "isOpenAim": "Visee ouverte",
+    "isAdjustableBackSight": "Hausse reglable",
+    "isAdjustableFrontSight": "Guidon reglable",
+    "qcSlot": "Connextion Quick Connect",
+    "grenadierSlot": "Grenadieres",
+    "isMlockCompatibility": "Compatible M-lock",
     "add": {
       "success": "ajouter a la base de donnee",
       "edit": "Arme modifié en base de donnee"
@@ -113,29 +135,19 @@
       "barrelLength": "Longueur du canon",
       "barrelSize": "Epaisseur du canon",
       "barrelColor": "Couleur du canon",
-      "isThreadedBarrel": "Canon filete",
+
       "isAdjustableTrigger": "Detente reglable",
       "buttMaterial": "Matiere de la crosse",
       "buttColor": "Couleur de la crosse",
       "slideMaterial": "Matiere de la culasse",
       "slideColor": "Couleur de la culasse",
-      "isAdjustableButt": "Crosse reglable",
-      "isAdjustableBusk": "Busc ajustable",
+
       "providedMagazineQuantity": "Chargeur fournis",
-      "isOpenAim": "Visee ouverte",
-      "isAdjustableBackSight": "Hausse reglable",
-      "isAdjustableFrontSight": "Guidon reglable",
+
+
       "railSize": "Taille du rail d'optique",
-      "decocking": "Decocking",
       "triggerType": "Type de detente",
-      "isExternalHammer": "Chien exterieur",
-      "isPicatinyRailSlop": "Rail picatiny pour accessoires",
-      "isOpticReady": "Optic ready ?",
       "providedOpticReadyPlates": "Plaques optic ready fournies",
-      "qcSlot": "Connextion Quick Connect",
-      "grenadierSlot": "Grenadieres",
-      "isMlockCompatibility": "Compatible M-lock",
-      "mLockOptions": "Position MLOCK",
       "selectType": "Quel type d'arme ?",
       "handGunButtType": "Matiere de la carcasse",
       "adjustableTriggerMinWeight": "Poids mini",
@@ -290,6 +302,11 @@
   },
   "color": {
     "summary": "Gestion des couleurs",
+    "barrelColor": "Couleur du canon",
+    "slideColor": "Couleur de la glissiere",
+    "buttColor": "Couleur de la crosse",
+    "label": "Couleur",
+    "placeholder": "Choissir",
     "form": {
       "success": "Ajout d'une nouvelle couleur",
       "addTitle": "Ajouter une nouvelle couleur"
@@ -297,6 +314,11 @@
   },
   "material": {
     "summary": "Gestion des matieres",
+    "label": "Couleur",
+    "placeholder": "Choissir",
+    "slideMaterial": "Matiere de la glissiere",
+
+    "buttMaterial": "Matiere de la crosse",
     "form": {
       "success": "Ajout d'une nouvelle matiere",
       "addTitle": "Ajouter une nouvelle matiere"
@@ -321,6 +343,14 @@
     "name": "Type de percussion",
     "placeholder": "Choisir un type"
   },
+  "opticRail": {
+    "name": "Type de rail d'optique",
+    "placeholder": "Choisir un type"
+  },
+  "mLockOption": {
+    "placeholder": "Position MLOCK",
+    "name": "Position"
+  },
   "barrelType": {
     "name": "Type de canon",
     "placeholder": "Choisir un type"
@@ -338,6 +368,12 @@
     "type": "Type d'armes",
     "summary": "Gestion des type d'arme",
     "size": "Taille du pas de vis"
+  },
+  "triggerType": {
+    "name": "Type de detente"
+  },
+  "opticReadyPlate": {
+    "name": "Plaque optique ready"
   },
   "opticCollar": {
     "summary": "Gestion des colliers d'optique",

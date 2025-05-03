@@ -5,6 +5,7 @@ import { useMutation, useQuery } from '@tanstack/vue-query'
 import type { CreateHandGunDto, HandGunDto, UpdateHandGunDto } from '@/api/Api'
 import { type Ref, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { getI18NPrefix } from '@/enum/I18NSuffix.enum'
 
 export const useHandGunStore = defineStore('hand-gun', () => {
   // Appel API
@@ -17,6 +18,7 @@ export const useHandGunStore = defineStore('hand-gun', () => {
   const handguns = ref<HandGunDto[]>([])
   const handgun = ref<HandGunDto | null>(null)
   // Private Attibute
+  const _I18N_PREFIX = 'weapon'
   const _SUMMARY = 'weapon.summary'
   const _GET_ALL_BY_CATEGORY_FN = 'getAllHandGunByCategory'
   const _GET_ALL_FN = 'getAllHandGun'
@@ -101,6 +103,7 @@ export const useHandGunStore = defineStore('hand-gun', () => {
     getHandGunById: getHandGunById,
     handgun$: handgun,
     getAll: getAllFunction,
-    handguns$: handguns
+    handguns$: handguns,
+    getI18NPrefix: getI18NPrefix(_I18N_PREFIX)
   }
 })

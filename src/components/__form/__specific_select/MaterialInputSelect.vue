@@ -1,23 +1,21 @@
 <template>
-  <template>
-    <InputGroup>
-      <input-group-required-icon :is-validate="materialId > 0" v-if="required" />
-      <input-group-optional-icon :is-completed="materialId > 0" v-else />
-      <input-group-select
-        :options="materialsList"
-        label="name"
-        @option-id="onSelect($event)"
-        :required="required"
-        placeholder="name"
-        filter
-        :input-id="inputId"
-        :initial-value="materialId"
-        :i18n-prefix="i18Prefix"
-        :disabled="disabled"
-      />
-      <input-group-addon-open-drawer-button type="material" :close="closeDrawer" v-if="canAddNew" />
-    </InputGroup>
-  </template>
+  <InputGroup>
+    <input-group-required-icon :is-validate="materialId > 0" v-if="required" />
+    <input-group-optional-icon :is-completed="materialId > 0" v-else />
+    <input-group-select
+      :options="materialsList"
+      :label="label"
+      @option-id="onSelect($event)"
+      :required="required"
+      :placeholder="placeholder"
+      filter
+      :input-id="inputId"
+      :initial-value="materialId"
+      :i18n-prefix="i18Prefix"
+      :disabled="disabled"
+    />
+    <input-group-addon-open-drawer-button type="material" :close="closeDrawer" v-if="canAddNew" />
+  </InputGroup>
 </template>
 <script setup lang="ts">
 import InputGroupAddonOpenDrawerButton from '@/components/__form/InputGroupAddonOpenDrawerButton.vue'
@@ -34,13 +32,17 @@ const {
   canAddNew = false,
   inputId = 'materialId',
   disabled = false,
-  required = false
+  required = false,
+  placeholder = 'placeholder',
+  label = 'label'
 } = defineProps<{
   initialValue?: number
   canAddNew?: boolean
   inputId?: string
   disabled?: boolean
   required?: boolean
+  placeholder?: string
+  label?: string
 }>()
 const store = useMaterialStore()
 const i18Prefix = store.getI18NPrefix

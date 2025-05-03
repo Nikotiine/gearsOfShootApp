@@ -22,6 +22,7 @@ import BodyTypeFormComponent from '@/components/__ammunition/BodyTypeFormCompone
 import WeaponTypeFormComponent from '@/components/__weapon/type/WeaponTypeFormComponent.vue'
 import ColorFormComponent from '@/components/__color_and_material/ColorFormComponent.vue'
 import MaterialFormComponent from '@/components/__color_and_material/MaterialFormComponent.vue'
+import ThreadedSizeFormComponent from '@/components/__threaded-size/ThreadedSizeFormComponent.vue'
 const { visible, type, factoryType } = defineProps<{
   visible: boolean
   type: DrawerType
@@ -43,7 +44,7 @@ const componentMap = {
   ['material']: MaterialFormComponent,
   ['color']: ColorFormComponent,
   ['opticRail']: CaliberFormComponent,
-  ['threadSize']: CaliberFormComponent,
+  ['threadSize']: ThreadedSizeFormComponent,
   ['weaponType']: WeaponTypeFormComponent,
   ['magazine']: CaliberFormComponent,
   ['bodyType']: BodyTypeFormComponent,

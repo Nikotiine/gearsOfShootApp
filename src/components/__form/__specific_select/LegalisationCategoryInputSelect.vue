@@ -20,7 +20,7 @@ import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.v
 import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
 import InputGroup from 'primevue/inputgroup'
 
-import { ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useLegalisationCategoryStore } from '@/stores/legalisation-category'
 import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.vue'
 const {
@@ -36,11 +36,20 @@ const emit = defineEmits(['onSelect'])
 const store = useLegalisationCategoryStore()
 const i18nPrefix = store.getI18NPrefix
 const { data: categories$ } = store.getAll()
+const categoriesList = computed(() => categories$.value || [])
 const categoryId = ref<number>(initialValue)
 const onSelect = (id: number) => {
-  emit('onSelect', id)
+  const category = categoriesList.value.find((t) => t.id === id)
+
+  emit('onSelect', category)
   categoryId.value = id
 }
+watch(
+  () => initialValue,
+  (value) => {
+    categoryId.value = value
+  }
+)
 </script>
 
 <style scoped></style>

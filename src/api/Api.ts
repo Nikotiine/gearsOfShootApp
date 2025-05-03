@@ -114,7 +114,13 @@ export interface RailSizeDto {
 }
 
 export interface OpticReadyPlateDto {
+  name: string
+  description: string
+  reference: string
   id: number
+}
+
+export interface CreateOpticReadyPlateDto {
   name: string
   description: string
   reference: string
@@ -1664,6 +1670,78 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       this.request<OpticReadyPlateDto[], any>({
         path: `/api/optic-ready-plate/all`,
         method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne le detail de la plaque optic ready
+     *
+     * @tags Optic-ready-plate
+     * @name OpticReadyPlateControllerFindById
+     * @summary Filtré par id
+     * @request GET:/api/optic-ready-plate/by/id/{id}
+     */
+    opticReadyPlateControllerFindById: (id: number, params: RequestParams = {}) =>
+      this.request<OpticReadyPlateDto, any>({
+        path: `/api/optic-ready-plate/by/id/${id}`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Ajout d une nouvelle plaque optic ready
+     *
+     * @tags Optic-ready-plate
+     * @name OpticReadyPlateControllerCreate
+     * @summary Creation
+     * @request POST:/api/optic-ready-plate
+     */
+    opticReadyPlateControllerCreate: (data: CreateOpticReadyPlateDto, params: RequestParams = {}) =>
+      this.request<OpticReadyPlateDto, any>({
+        path: `/api/optic-ready-plate`,
+        method: 'POST',
+        body: data,
+        type: ContentType.Json,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Edition d une plaque OR
+     *
+     * @tags Optic-ready-plate
+     * @name OpticReadyPlateControllerEdit
+     * @summary Edition
+     * @request PUT:/api/optic-ready-plate/{id}
+     */
+    opticReadyPlateControllerEdit: (
+      id: number,
+      data: OpticReadyPlateDto,
+      params: RequestParams = {}
+    ) =>
+      this.request<OpticReadyPlateDto, any>({
+        path: `/api/optic-ready-plate/${id}`,
+        method: 'PUT',
+        body: data,
+        type: ContentType.Json,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Sppression logique de la marque
+     *
+     * @tags Optic-ready-plate
+     * @name OpticReadyPlateControllerDelete
+     * @summary Suppression logique
+     * @request DELETE:/api/optic-ready-plate/{id}
+     */
+    opticReadyPlateControllerDelete: (id: number, params: RequestParams = {}) =>
+      this.request<ApiDeleteResponseDto, any>({
+        path: `/api/optic-ready-plate/${id}`,
+        method: 'DELETE',
         format: 'json',
         ...params
       }),

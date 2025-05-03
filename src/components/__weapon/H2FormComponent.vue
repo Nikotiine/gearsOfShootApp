@@ -12,15 +12,13 @@
   </h3>
 </template>
 <script setup lang="ts">
-import { type NewWeapon, useWeaponStore } from '@/stores/weapon'
-import { storeToRefs } from 'pinia'
+import { type NewWeapon } from '@/stores/weapon'
 import Button from 'primevue/button'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-const store = useWeaponStore()
 const { t } = useI18n()
-const { weaponTypes$, categories$ } = storeToRefs(store)
+
 const { initialState, selectedOptions } = defineProps<{
   initialState: boolean
   selectedOptions: NewWeapon
@@ -28,9 +26,7 @@ const { initialState, selectedOptions } = defineProps<{
 }>()
 
 const title = computed(() => {
-  const category = categories$.value.find((cat) => cat.id === selectedOptions.category)
-  const type = weaponTypes$.value.find((type) => type.id === selectedOptions.type)
-  return `${type?.name} de ${t('global.category')} ${category?.name}`
+  return `${selectedOptions.type.name} de ${t('global.category')} ${selectedOptions.category.name}`
 })
 </script>
 

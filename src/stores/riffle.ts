@@ -5,6 +5,7 @@ import { useMutation, useQuery } from '@tanstack/vue-query'
 import { useToastStore } from '@/stores/toast'
 import { type Ref, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { getI18NPrefix } from '@/enum/I18NSuffix.enum'
 
 export const useRiffleStore = defineStore('riffle', () => {
   // Appel API
@@ -17,6 +18,7 @@ export const useRiffleStore = defineStore('riffle', () => {
   const riffles = ref<RiffleDto[]>([])
   const riffle = ref<RiffleDto>()
   // Private Attibute
+  const _I18N_PREFIX = 'weapon'
   const _SUMMARY = 'weapon.summary'
   const _GET_ALL_BY_CATEGORY_FN = 'getAllRiffleByCategory'
   const _GET_ALL_FN = 'getAllRiffle'
@@ -101,6 +103,7 @@ export const useRiffleStore = defineStore('riffle', () => {
     getRiffleById: getRiffleById,
     riffles$: riffles,
     riffle$: riffle,
-    getAll: getAllData
+    getAll: getAllData,
+    getI18NPrefix: getI18NPrefix(_I18N_PREFIX)
   }
 })

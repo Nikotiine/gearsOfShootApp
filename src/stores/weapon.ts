@@ -1,6 +1,4 @@
 import { defineStore } from 'pinia'
-import { useApiStore } from '@/stores/api'
-import { useQuery } from '@tanstack/vue-query'
 import type {
   CaliberDto,
   ColorDto,
@@ -20,44 +18,33 @@ import type {
 import { ref } from 'vue'
 
 export const useWeaponStore = defineStore('weapon', () => {
-  const { api } = useApiStore()
-  const categories = ref<LegislationCategoryDto[]>([])
-  const weaponTypes = ref<WeaponTypeDto[]>([])
-  const railSizes = ref<RailSizeDto[]>([])
-  const mLockOptions = ref<MLockOptionDto[]>([])
-  const colors = ref<ColorDto[]>([])
-  const triggerTypes = ref<WeaponTriggerTypeDto[]>([])
-  const opticReadyPlates = ref<OpticReadyPlateDto[]>([])
-
-  const queryPrerequisitesWeaponList = useQuery({
-    queryKey: ['prerequisite-weapon'],
-    queryFn: async () => {
-      const res = await api.api.weaponControllerFindPrerequisitesWeaponList()
-      categories.value = res.data.categories
-      weaponTypes.value = res.data.types
-      railSizes.value = res.data.railSizes
-      mLockOptions.value = res.data.mLockOptions
-      colors.value = res.data.colors
-      triggerTypes.value = res.data.triggerTypes
-      opticReadyPlates.value = res.data.opticReadyPlates
-      return res
+  const initialOptions: NewWeapon = {
+    type: {
+      id: 0,
+      name: '',
+      reference: '',
+      mode: {
+        id: 0,
+        name: ''
+      }
+    },
+    category: {
+      id: 0,
+      name: ''
     }
-  })
-
+  }
+  const options = ref<NewWeapon>({ ...initialOptions })
+  const resetOptions = () => {
+    options.value = { ...initialOptions }
+  }
   return {
-    prerequisitesWeaponList: queryPrerequisitesWeaponList,
-    categories$: categories,
-    weaponTypes$: weaponTypes,
-    railSizes$: railSizes,
-    mLockOptions$: mLockOptions,
-    colors$: colors,
-    triggerTypes$: triggerTypes,
-    opticReadyPlates$: opticReadyPlates
+    resetOptions,
+    options
   }
 })
 export interface NewWeapon {
-  type: number
-  category: number
+  type: WeaponTypeDto
+  category: LegislationCategoryDto
 }
 export interface WeaponViewModel {
   id: number

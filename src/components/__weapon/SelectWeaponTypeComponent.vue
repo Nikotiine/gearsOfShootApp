@@ -4,14 +4,14 @@
       <weapon-type-input-select
         required
         can-add-new
-        @on-select="(event) => (typeId = event)"
-        :initial-value="typeId"
+        @on-select="(event) => (options.type = event)"
+        :initial-value="options.type.id"
       />
       <legalisation-category-input-select
-        :initial-value="categoryId"
         required
         :disabled="isOnContinue"
-        @on-select="(event) => (categoryId = event)"
+        @on-select="(event) => (options.category = event)"
+        :initial-value="options.category.id"
       />
     </div>
     <div class="flex justify-center mt-6" v-if="!isOnContinue">
@@ -32,37 +32,33 @@ import { useI18n } from 'vue-i18n'
 import LegalisationCategoryInputSelect from '@/components/__form/__specific_select/LegalisationCategoryInputSelect.vue'
 import WeaponTypeInputSelect from '@/components/__form/__specific_select/WeaponTypeInputSelect.vue'
 
+import type { NewWeapon } from '@/stores/weapon'
+
 const { t } = useI18n()
-const { reset } = defineProps<{
-  reset: boolean
+const { selectedOptions } = defineProps<{
+  selectedOptions: NewWeapon
 }>()
 const emit = defineEmits(['nextStep'])
-const typeId = ref<number>(0)
-const categoryId = ref<number>(0)
 const isOnContinue = ref<boolean>(false)
+const options = ref<NewWeapon>({ ...selectedOptions })
 const onContinue = () => {
   emit('nextStep', {
-    type: typeId.value,
-    category: categoryId.value
+    type: options.value.type,
+    category: options.value.category
   })
   isOnContinue.value = !isOnContinue.value
 }
 const canContinue = computed(() => {
   let isContinue: boolean = false
-  if (categoryId.value > 0 && typeId.value > 0) {
+  if (options.value.category.id > 0 && options.value.type.id > 0) {
     isContinue = true
   }
   return isContinue
 })
-
 watch(
-  () => reset,
+  () => selectedOptions,
   (value) => {
-    if (value) {
-      isOnContinue.value = false
-      typeId.value = 0
-      categoryId.value = 0
-    }
+    options.value = value
   }
 )
 </script>

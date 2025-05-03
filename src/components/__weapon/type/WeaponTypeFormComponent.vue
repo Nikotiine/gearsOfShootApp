@@ -36,20 +36,6 @@
         :initial-value="form.modeId"
         @on-select="(event) => (form.modeId = event)"
       />
-      <!--      <InputGroup>
-        <input-group-required-icon :is-validate="form.modeId > 0" />
-        <input-group-select
-          :options="store.prerequisiteList.data?.data.modes"
-          label="mode"
-          @option-id="(event) => (form.modeId = event)"
-          required
-          filter
-          i18n-prefix="weaponType."
-          placeholder="placeholder"
-          input-id="modeId"
-          :initial-value="form.modeId"
-        />
-      </InputGroup>-->
     </div>
 
     <div class="text-center mt-2">
@@ -65,10 +51,8 @@ import { useWeaponTypeStore } from '@/stores/weaponType'
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
-import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
 import InputGroupText from '@/components/__form/InputGroupText.vue'
 import WeaponReloadModeInputSelect from '@/components/__form/__specific_select/WeaponReloadModeInputSelect.vue'
-import LegalisationCategoryInputSelect from '@/components/__form/__specific_select/LegalisationCategoryInputSelect.vue'
 
 const { t } = useI18n()
 const store = useWeaponTypeStore()
