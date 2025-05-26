@@ -14,7 +14,7 @@
         :initial-value="options.category.id"
       />
     </div>
-    <div class="flex justify-center mt-6" v-if="!isOnContinue">
+    <div class="flex justify-center mt-6" v-if="showButton">
       <Button
         type="button"
         :label="t('global.continue')"
@@ -32,11 +32,15 @@ import { useI18n } from 'vue-i18n'
 import LegalisationCategoryInputSelect from '@/components/__form/__specific_select/LegalisationCategoryInputSelect.vue'
 import WeaponTypeInputSelect from '@/components/__form/__specific_select/WeaponTypeInputSelect.vue'
 
-import type { NewWeapon } from '@/stores/weapon'
-
+import { type NewWeapon, useWeaponStore } from '@/stores/weapon'
+import { storeToRefs } from 'pinia'
+const store = useWeaponStore()
+const { options: op } = storeToRefs(store)
+console.log('options', op.value)
 const { t } = useI18n()
-const { selectedOptions } = defineProps<{
+const { selectedOptions, showButton = true } = defineProps<{
   selectedOptions: NewWeapon
+  showButton: boolean
 }>()
 const emit = defineEmits(['nextStep'])
 const isOnContinue = ref<boolean>(false)
@@ -58,6 +62,7 @@ const canContinue = computed(() => {
 watch(
   () => selectedOptions,
   (value) => {
+    console.log('selectedOptions2', value.type)
     options.value = value
   }
 )

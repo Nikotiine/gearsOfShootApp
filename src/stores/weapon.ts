@@ -37,9 +37,13 @@ export const useWeaponStore = defineStore('weapon', () => {
   const resetOptions = () => {
     options.value = { ...initialOptions }
   }
+  const setOptions = (data: NewWeapon) => {
+    options.value = { ...data }
+  }
   return {
     resetOptions,
-    options
+    options,
+    setOptions
   }
 })
 export interface NewWeapon {
@@ -61,7 +65,7 @@ export interface WeaponViewModel {
   isThreadedBarrel: boolean
   barrelType: WeaponBarrelTypeDto
   threadedSize: ThreadedSizeDto
-  adjustableTriggerValue: string
+
   percussionType: PercussionTypeDto
   providedMagazineQuantity: number
   barrelSize: number
@@ -86,4 +90,6 @@ export interface WeaponViewModel {
   isExternalHammer?: boolean
   opticReadyPlates?: OpticReadyPlateDto[]
   isPicatinyRailSlop?: boolean
+  adjustableTriggerMaxWeight?: number
+  adjustableTriggerMinWeight?: number
 }

@@ -9,6 +9,7 @@
       :required="required"
       placeholder="size"
       filter
+      option-label="size"
       input-id="threadedSizeId"
       :initial-value="threadedSizeId"
       :i18n-prefix="i18Prefix"
@@ -58,6 +59,12 @@ watch(
       mutationSuccess.value = false
       closeDrawer.value = value
     }
+  }
+)
+watch(
+  () => initialValue,
+  (value) => {
+    threadedSizeId.value = value
   }
 )
 </script>

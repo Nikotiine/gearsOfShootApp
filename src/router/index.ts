@@ -139,7 +139,7 @@ const router = createRouter({
                   path: 'edit/:type/:id',
                   name: RouterEnum.WEAPON_EDIT,
                   props: true,
-                  component: () => import('../views/weapon/AdminWeaponEditView.vue')
+                  component: () => import('../views/weapon/AdminWeaponFormView.vue')
                 }
               ]
             },

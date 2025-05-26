@@ -32,7 +32,7 @@ const {
   required?: boolean
   disable?: boolean
 }>()
-const emit = defineEmits(['onSelect'])
+const emit = defineEmits(['onSelect', 'onlyId'])
 const store = useLegalisationCategoryStore()
 const i18nPrefix = store.getI18NPrefix
 const { data: categories$ } = store.getAll()
@@ -40,8 +40,8 @@ const categoriesList = computed(() => categories$.value || [])
 const categoryId = ref<number>(initialValue)
 const onSelect = (id: number) => {
   const category = categoriesList.value.find((t) => t.id === id)
-
   emit('onSelect', category)
+  emit('onlyId', id)
   categoryId.value = id
 }
 watch(

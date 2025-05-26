@@ -317,8 +317,8 @@
     "label": "Couleur",
     "placeholder": "Choissir",
     "slideMaterial": "Matiere de la glissiere",
-
     "buttMaterial": "Matiere de la crosse",
+    "bodyMaterial": "Matiere du chargeur",
     "form": {
       "success": "Ajout d'une nouvelle matiere",
       "addTitle": "Ajouter une nouvelle matiere"

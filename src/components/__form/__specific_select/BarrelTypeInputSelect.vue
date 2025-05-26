@@ -3,7 +3,7 @@
     <input-group-required-icon :is-validate="barrelTypeId > 0" v-if="required" />
     <input-group-optional-icon :is-completed="barrelTypeId > 0" v-else />
     <input-group-select
-      :options="barrelType$"
+      :options="barrelTypeList"
       label="name"
       @option-id="onSelect($event)"
       :required="required"
@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useBarrelTypeStore } from '@/stores/barrel-type'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
@@ -28,13 +28,22 @@ const { initialValue = 0, required = false } = defineProps<{
   required?: boolean
 }>()
 const i18nPrefix = store.getI18NPrefix
-const { data: barrelType$ } = store.getAll()
+const { data } = store.getAll()
+const barrelTypeList = computed(() => data.value || [])
 const emit = defineEmits(['onSelect'])
+
 const barrelTypeId = ref<number>(initialValue)
 const onSelect = (id: number) => {
-  emit('onSelect', id)
+  const type = barrelTypeList.value.find((item) => item.id === id)
+  emit('onSelect', type)
   barrelTypeId.value = id
 }
+watch(
+  () => initialValue,
+  (value) => {
+    barrelTypeId.value = value
+  }
+)
 </script>
 
 <style scoped></style>

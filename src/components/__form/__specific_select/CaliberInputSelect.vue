@@ -38,13 +38,14 @@ const {
 const caliberId = ref<number>(initialValue)
 const store = useCaliberStore()
 const i18Prefix = store.getI18NPrefix
-const { data: calibers$, refetch } = store.getAll()
+const { data, refetch } = store.getAll()
 const { mutationSuccess } = storeToRefs(store)
 const emit = defineEmits(['onSelect'])
-const calibersList = computed(() => calibers$.value || [])
+const calibersList = computed(() => data.value || [])
 const closeDrawer = ref(false)
 const onSelect = (id: number) => {
-  emit('onSelect', id)
+  const caliber = calibersList.value.find((caliber) => caliber.id === id)
+  emit('onSelect', caliber)
   caliberId.value = id
 }
 watch(
@@ -55,6 +56,12 @@ watch(
       mutationSuccess.value = false
       closeDrawer.value = value
     }
+  }
+)
+watch(
+  () => initialValue,
+  (value) => {
+    caliberId.value = value
   }
 )
 </script>

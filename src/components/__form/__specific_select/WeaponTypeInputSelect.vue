@@ -3,6 +3,7 @@
     <input-group-required-icon :is-validate="typeId > 0" v-if="required" />
     <input-group-optional-icon :is-completed="typeId > 0" v-else />
     <input-group-select
+      v-if="weaponTypeList.length > 0"
       :options="weaponTypeList"
       label="name"
       @option-id="onSelect($event)"
@@ -38,13 +39,14 @@ const typeId = ref<number>(initialValue)
 const store = useWeaponTypeStore()
 const i18Prefix = store.getI18NPrefix
 const { data: weaponType$, refetch } = store.getAll()
+console.log(weaponType$)
 const { mutationSuccess } = storeToRefs(store)
 const emit = defineEmits(['onSelect'])
 const weaponTypeList = computed(() => weaponType$.value || [])
 const closeDrawer = ref(false)
 const onSelect = (id: number) => {
-  const otot = weaponTypeList.value.find((t) => t.id === id)
-  emit('onSelect', otot)
+  const type = weaponTypeList.value.find((t) => t.id === id)
+  emit('onSelect', type)
   typeId.value = id
 }
 watch(
@@ -60,6 +62,7 @@ watch(
 watch(
   () => initialValue,
   (value) => {
+    console.log('initialValue25', initialValue)
     typeId.value = value
   }
 )

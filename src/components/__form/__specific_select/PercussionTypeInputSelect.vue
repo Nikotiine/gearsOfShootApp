@@ -2,7 +2,7 @@
   <InputGroup>
     <input-group-required-icon :is-validate="percussionTypeId > 0" />
     <input-group-select
-      :options="percussionTypes$"
+      :options="percussionTypeList"
       label="name"
       @option-id="onSelect($event)"
       :required="required"
@@ -17,7 +17,7 @@
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
 import InputGroup from 'primevue/inputgroup'
-import { ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { usePercussionTypeStore } from '@/stores/percussion-type'
 const { initialValue = 0, required = false } = defineProps<{
   initialValue?: number
@@ -26,12 +26,20 @@ const { initialValue = 0, required = false } = defineProps<{
 const emit = defineEmits(['onSelect'])
 const store = usePercussionTypeStore()
 const i18nPrefix = store.getI18NPrefix
-const { data: percussionTypes$ } = store.getAll()
+const { data } = store.getAll()
+const percussionTypeList = computed(() => data.value || [])
 const percussionTypeId = ref<number>(initialValue)
 const onSelect = (id: number) => {
-  emit('onSelect', id)
+  const type = percussionTypeList.value.find((item) => item.id === id)
+  emit('onSelect', type)
   percussionTypeId.value = id
 }
+watch(
+  () => initialValue,
+  (value) => {
+    percussionTypeId.value = value
+  }
+)
 </script>
 
 <style scoped></style>

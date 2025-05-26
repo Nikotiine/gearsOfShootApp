@@ -27,9 +27,9 @@ const isRiffle = computed(() => {
   return type === WeaponEnum.RIFFLE
 })
 const riffleId = ref<number>(0)
-const handgunId = ref<number>(0)
+
 const { isSuccess: getRiffleIsSuccess } = riffleStore.getRiffleById(riffleId)
-const { isSuccess: getHandGunIsSuccess } = handGunStore.getHandGunById(handgunId)
+const { isSuccess: getHandGunIsSuccess } = handGunStore.getHandGunById(id)
 const { handgun$ } = storeToRefs(handGunStore)
 const { riffle$ } = storeToRefs(riffleStore)
 watchEffect(() => {
@@ -39,7 +39,6 @@ watchEffect(() => {
       weapon.value = { ...riffle$.value }
     }
   } else {
-    handgunId.value = parseInt(id)
     if (handgun$.value) {
       weapon.value = { ...handgun$.value }
     }

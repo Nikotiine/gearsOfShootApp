@@ -23,7 +23,7 @@ import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.v
 import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
 import InputGroup from 'primevue/inputgroup'
 import { useTriggerTypeStore } from '@/stores/trigger-type'
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 const {
   initialValue = 0,
@@ -42,9 +42,16 @@ const triggerTypeId = ref<number>(initialValue)
 const emit = defineEmits(['onSelect'])
 const triggerTypeList = computed(() => data.value || [])
 const onSelect = (id: number) => {
-  emit('onSelect', id)
+  const type = triggerTypeList.value.find((item) => item.id === id)
+  emit('onSelect', type)
   triggerTypeId.value = id
 }
+watch(
+  () => initialValue,
+  (value) => {
+    triggerTypeId.value = value
+  }
+)
 </script>
 
 <style scoped></style>

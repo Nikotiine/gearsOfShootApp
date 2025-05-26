@@ -270,7 +270,16 @@ export interface HandGunDto {
   /** @example "Lourd" */
   barrelType: WeaponBarrelTypeDto
   threadedSize: ThreadedSizeDto
-  adjustableTriggerValue: string
+  /**
+   * les valeurs de poids depart de la detente
+   * @example "Entre 1 et 2kg"
+   */
+  adjustableTriggerMinWeight: number | null
+  /**
+   * les valeurs de poids depart de la detente
+   * @example "Entre 1 et 2kg"
+   */
+  adjustableTriggerMaxWeight: number | null
   percussionType: PercussionTypeDto
   providedMagazineQuantity: number
   barrelSize: number
@@ -321,16 +330,16 @@ export interface CreateWeaponMagazineDto {
   /** largeur du chargeur */
   width: number
   /** matiere du chargeur */
-  bodyId: number
+  body: MaterialDto
   /** marque du chargeur */
-  factoryId: number
+  factory: FactoryDto
   /** calibre des munitions du chargeur */
-  caliberId: number
+  caliber: CaliberDto
   description: string | null
   /** La categorie de l arme en france */
-  categoryId: number
-  /** La categorie de l arme en france */
-  weaponTypeId: number
+  category: LegislationCategoryDto
+  /** Le type de l arme */
+  weaponType: WeaponTypeDto
   compatibleRiffle: RiffleDto[] | null
   compatibleHandGun: HandGunDto[] | null
 }
@@ -345,16 +354,16 @@ export interface UpdateWeaponMagazineDto {
   /** largeur du chargeur */
   width: number
   /** matiere du chargeur */
-  bodyId: number
+  body: MaterialDto
   /** marque du chargeur */
-  factoryId: number
+  factory: FactoryDto
   /** calibre des munitions du chargeur */
-  caliberId: number
+  caliber: CaliberDto
   description: string | null
   /** La categorie de l arme en france */
-  categoryId: number
-  /** La categorie de l arme en france */
-  weaponTypeId: number
+  category: LegislationCategoryDto
+  /** Le type de l arme */
+  weaponType: WeaponTypeDto
   compatibleRiffle: RiffleDto[] | null
   compatibleHandGun: HandGunDto[] | null
   id: number
@@ -374,16 +383,16 @@ export interface CreateHandGunDto {
    */
   variation: string | null
   /** La categorie de l arme en france */
-  categoryId: number
+  category: LegislationCategoryDto
   /** Le calibre de l arme */
-  caliberId: number
+  caliber: CaliberDto
   /** la marque */
-  factoryId: number
+  factory: FactoryDto
   /**
    * Type d arme
    * @example "Fusil a verrou"
    */
-  typeId: number
+  type: WeaponTypeDto
   /**
    * La longueur du canon en cm
    * @example 51
@@ -400,16 +409,21 @@ export interface CreateHandGunDto {
    */
   isThreadedBarrel: boolean
   /** Le type de canon (lourd/leger...) */
-  barrelTypeId: number
+  barrelType: WeaponBarrelTypeDto
   /** Les dimmension du filletage */
-  threadedSizeId: number | null
+  threadedSize: ThreadedSizeDto | null
   /**
    * les valeurs de poids depart de la detente
    * @example "Entre 1 et 2kg"
    */
-  adjustableTriggerValue: string | null
+  adjustableTriggerMinWeight: number | null
+  /**
+   * les valeurs de poids depart de la detente
+   * @example "Entre 1 et 2kg"
+   */
+  adjustableTriggerMaxWeight: number | null
   /** Le type de percussion ( annulaire ou centrale ) */
-  percussionTypeId: number
+  percussionType: PercussionTypeDto
   /**
    * Le nombre de chargeur fournis
    * @example 1
@@ -421,21 +435,21 @@ export interface CreateHandGunDto {
    */
   barrelSize: number
   /** La matiere de la crosse ou caracasse */
-  buttMaterialId: number | null
+  buttMaterial: MaterialDto | null
   /** Guidon reglable */
   isAdjustableFrontSight: boolean
   /** Hausse reglable */
   isAdjustableBackSight: boolean
   /** la couleur de la crosse */
-  buttColorId: number | null
+  buttColor: ColorDto | null
   /** la couleur du canon  */
-  barrelColorId: number | null
+  barrelColor: ColorDto | null
   /** @example true */
   isOpticReady: boolean
   decocking: boolean
-  triggerTypeId: number | null
-  slideColorId: number | null
-  slideMaterialId: number | null
+  triggerType: WeaponTriggerTypeDto | null
+  slideColor: ColorDto | null
+  slideMaterial: MaterialDto | null
   isExternalHammer: boolean
   providedOpticReadyPlates: OpticReadyPlateDto[] | null
   /** Rail picatiny */
@@ -456,16 +470,16 @@ export interface UpdateHandGunDto {
    */
   variation: string | null
   /** La categorie de l arme en france */
-  categoryId: number
+  category: LegislationCategoryDto
   /** Le calibre de l arme */
-  caliberId: number
+  caliber: CaliberDto
   /** la marque */
-  factoryId: number
+  factory: FactoryDto
   /**
    * Type d arme
    * @example "Fusil a verrou"
    */
-  typeId: number
+  type: WeaponTypeDto
   /**
    * La longueur du canon en cm
    * @example 51
@@ -482,16 +496,21 @@ export interface UpdateHandGunDto {
    */
   isThreadedBarrel: boolean
   /** Le type de canon (lourd/leger...) */
-  barrelTypeId: number
+  barrelType: WeaponBarrelTypeDto
   /** Les dimmension du filletage */
-  threadedSizeId: number | null
+  threadedSize: ThreadedSizeDto | null
   /**
    * les valeurs de poids depart de la detente
    * @example "Entre 1 et 2kg"
    */
-  adjustableTriggerValue: string | null
+  adjustableTriggerMinWeight: number | null
+  /**
+   * les valeurs de poids depart de la detente
+   * @example "Entre 1 et 2kg"
+   */
+  adjustableTriggerMaxWeight: number | null
   /** Le type de percussion ( annulaire ou centrale ) */
-  percussionTypeId: number
+  percussionType: PercussionTypeDto
   /**
    * Le nombre de chargeur fournis
    * @example 1
@@ -503,21 +522,21 @@ export interface UpdateHandGunDto {
    */
   barrelSize: number
   /** La matiere de la crosse ou caracasse */
-  buttMaterialId: number | null
+  buttMaterial: MaterialDto | null
   /** Guidon reglable */
   isAdjustableFrontSight: boolean
   /** Hausse reglable */
   isAdjustableBackSight: boolean
   /** la couleur de la crosse */
-  buttColorId: number | null
+  buttColor: ColorDto | null
   /** la couleur du canon  */
-  barrelColorId: number | null
+  barrelColor: ColorDto | null
   /** @example true */
   isOpticReady: boolean
   decocking: boolean
-  triggerTypeId: number | null
-  slideColorId: number | null
-  slideMaterialId: number | null
+  triggerType: WeaponTriggerTypeDto | null
+  slideColor: ColorDto | null
+  slideMaterial: MaterialDto | null
   isExternalHammer: boolean
   providedOpticReadyPlates: OpticReadyPlateDto[] | null
   /** Rail picatiny */
@@ -539,16 +558,16 @@ export interface CreateRiffleDto {
    */
   variation: string | null
   /** La categorie de l arme en france */
-  categoryId: number
+  category: LegislationCategoryDto
   /** Le calibre de l arme */
-  caliberId: number
+  caliber: CaliberDto
   /** la marque */
-  factoryId: number
+  factory: FactoryDto
   /**
    * Type d arme
    * @example "Fusil a verrou"
    */
-  typeId: number
+  type: WeaponTypeDto
   /**
    * La longueur du canon en cm
    * @example 51
@@ -625,16 +644,16 @@ export interface UpdateRiffleDto {
    */
   variation: string | null
   /** La categorie de l arme en france */
-  categoryId: number
+  category: LegislationCategoryDto
   /** Le calibre de l arme */
-  caliberId: number
+  caliber: CaliberDto
   /** la marque */
-  factoryId: number
+  factory: FactoryDto
   /**
    * Type d arme
    * @example "Fusil a verrou"
    */
-  typeId: number
+  type: WeaponTypeDto
   /**
    * La longueur du canon en cm
    * @example 51

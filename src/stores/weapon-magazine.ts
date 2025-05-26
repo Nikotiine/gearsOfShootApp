@@ -6,6 +6,11 @@ import type { CreateWeaponMagazineDto, UpdateWeaponMagazineDto, WeaponMagazineDt
 import { type Ref, ref } from 'vue'
 import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
+import { getLegalisationCategoryDto } from '@/shared/api-dto/get-legalisation-category.dto'
+import { getWeaponTypeDto } from '@/shared/api-dto/get-weapon-type.dto'
+import { getCaliberDto } from '@/shared/api-dto/get-caliber.dto'
+import { getMaterialDto } from '@/shared/api-dto/get-material.dto'
+import { getFactoryDto } from '@/shared/api-dto/get-factory.dto'
 
 export const useWeaponMagazineStore = defineStore('weaponMagazine', () => {
   // Appel API
@@ -85,15 +90,15 @@ export const useWeaponMagazineStore = defineStore('weaponMagazine', () => {
       description: '',
       width: 0,
       height: 0,
-      bodyId: 0,
-      factoryId: 0,
+      body: getMaterialDto(),
+      factory: getFactoryDto(),
       capacity: 0,
-      caliberId: 0,
+      caliber: getCaliberDto(),
       length: 0,
-      categoryId: 0,
+      category: getLegalisationCategoryDto(),
       compatibleHandGun: [],
       compatibleRiffle: [],
-      weaponTypeId: 0
+      weaponType: getWeaponTypeDto()
     }
     return useFormHandler<CreateWeaponMagazineDto, AxiosResponse<WeaponMagazineDto>>(
       emptyForm,
@@ -104,11 +109,6 @@ export const useWeaponMagazineStore = defineStore('weaponMagazine', () => {
       id,
       (data) => ({
         ...data,
-        factoryId: data.factory.id,
-        caliberId: data.caliber.id,
-        categoryId: data.category.id,
-        weaponTypeId: data.forWeaponType.id,
-        bodyId: data.body.id,
         compatibleRiffle: data.riffles ? data.riffles : [],
         compatibleHandGun: data.handguns ? data.handguns : []
       })

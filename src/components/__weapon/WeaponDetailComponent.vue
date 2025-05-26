@@ -72,7 +72,11 @@
         <span class="field-capitalise">{{ t('weapon.common.isAdjustableTrigger') }}</span>
         :
         {{ weapon.isAdjustableTrigger ? t('global.yes') : t('global.no') }}
-        {{ weapon.isAdjustableTrigger ? `Réglage de ${weapon.adjustableTriggerValue}` : '' }}
+        {{
+          weapon.isAdjustableTrigger
+            ? `Réglage de ${weapon.adjustableTriggerMinWeight} kg à ${weapon.adjustableTriggerMaxWeight} kg`
+            : ''
+        }}
       </p>
 
       <p>

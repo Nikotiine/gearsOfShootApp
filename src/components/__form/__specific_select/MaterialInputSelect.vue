@@ -46,14 +46,15 @@ const {
 }>()
 const store = useMaterialStore()
 const i18Prefix = store.getI18NPrefix
-const { data: material$, refetch } = store.getAll()
+const { data, refetch } = store.getAll()
 const materialId = ref<number>(initialValue)
 const { mutationSuccess } = storeToRefs(store)
 const emit = defineEmits(['onSelect'])
-const materialsList = computed(() => material$.value || [])
+const materialsList = computed(() => data.value || [])
 const closeDrawer = ref(false)
 const onSelect = (id: number) => {
-  emit('onSelect', id)
+  const material = materialsList.value.find((material) => material.id === id)
+  emit('onSelect', material)
   materialId.value = id
 }
 watch(
@@ -64,6 +65,12 @@ watch(
       mutationSuccess.value = false
       closeDrawer.value = value
     }
+  }
+)
+watch(
+  () => initialValue,
+  (value) => {
+    materialId.value = value
   }
 )
 </script>

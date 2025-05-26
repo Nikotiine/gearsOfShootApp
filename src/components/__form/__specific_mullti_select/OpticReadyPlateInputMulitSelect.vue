@@ -14,7 +14,7 @@
 <script setup lang="ts">
 import { useOpticReadyPlateStore } from '@/stores/optic-ready-plate'
 import InputGroupMultiSelect from '@/components/__form/InputGroupMultiSelect.vue'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import type { OpticReadyPlateDto } from '@/api/Api'
 const {
   initialValue = [],
@@ -34,6 +34,13 @@ const onChange = (options: OpticReadyPlateDto[]) => {
   selectedOptions.value = options
   emit('onSelect', selectedOptions.value)
 }
+watch(
+  () => initialValue,
+  (value) => {
+    console.log(value)
+    selectedOptions.value = value
+  }
+)
 </script>
 
 <style scoped></style>

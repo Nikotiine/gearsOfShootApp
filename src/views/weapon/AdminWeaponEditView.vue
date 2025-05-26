@@ -34,7 +34,7 @@ const handGunStore = useHandGunStore()
 const riffleStore = useRiffleStore()
 const riffleId = ref<number>(0)
 const handgunId = ref<number>(0)
-const { data: handgun, isSuccess: getHandGunByIdIsSuccess } = handGunStore.getHandGunById(handgunId)
+//const { data: handgun, isSuccess: getHandGunByIdIsSuccess } = handGunStore.getHandGunById(handgunId)
 const { data: riffle, isSuccess: getriffleByIdIsSuccess } = riffleStore.getRiffleById(riffleId)
 const { id, type } = defineProps<{
   id: string
@@ -46,6 +46,7 @@ const isRiffle = computed(() => {
 })
 watchEffect(() => {
   const weaponId = parseInt(id)
+
   if (type === 'riffle') {
     riffleId.value = weaponId
   } else {

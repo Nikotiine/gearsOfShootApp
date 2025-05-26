@@ -52,7 +52,8 @@ const emit = defineEmits(['onSelect'])
 const colorsList = computed(() => colors$.value || [])
 const closeDrawer = ref(false)
 const onSelect = (id: number) => {
-  emit('onSelect', id)
+  const color = colorsList.value.find((item) => item.id === id)
+  emit('onSelect', color)
   colorId.value = id
 }
 watch(
@@ -63,6 +64,12 @@ watch(
       mutationSuccess.value = false
       closeDrawer.value = value
     }
+  }
+)
+watch(
+  () => initialValue,
+  (value) => {
+    colorId.value = value
   }
 )
 </script>

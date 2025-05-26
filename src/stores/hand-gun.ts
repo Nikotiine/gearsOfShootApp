@@ -6,6 +6,14 @@ import type { CreateHandGunDto, HandGunDto, UpdateHandGunDto } from '@/api/Api'
 import { type Ref, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { getI18NPrefix } from '@/enum/I18NSuffix.enum'
+import { useFormHandler } from '@/shared/useFormHandler'
+import type { AxiosResponse } from 'axios'
+import { getWeaponTypeDto } from '@/shared/api-dto/get-weapon-type.dto'
+import { getCaliberDto } from '@/shared/api-dto/get-caliber.dto'
+import { getFactoryDto } from '@/shared/api-dto/get-factory.dto'
+import { getLegalisationCategoryDto } from '@/shared/api-dto/get-legalisation-category.dto'
+import { getBarrelTypeDto } from '@/shared/api-dto/get-barrel-type.dto'
+import { getPercussionTypeDto } from '@/shared/api-dto/get-percussion-type.dto'
 
 export const useHandGunStore = defineStore('hand-gun', () => {
   // Appel API
@@ -15,6 +23,8 @@ export const useHandGunStore = defineStore('hand-gun', () => {
   // I18N
   const { t } = useI18n()
   // Refs
+  const mutationSuccess = ref(false)
+
   const handguns = ref<HandGunDto[]>([])
   const handgun = ref<HandGunDto | null>(null)
   // Private Attibute
@@ -24,25 +34,21 @@ export const useHandGunStore = defineStore('hand-gun', () => {
   const _GET_ALL_FN = 'getAllHandGun'
   const _GET_BY_ID_FN = 'getHandGunById'
   // *******************Methodes***************
-  const createHandGunMutation = useMutation({
+  const _createMutation = useMutation({
     mutationFn: async (handgun: CreateHandGunDto) => {
       return await api.api.handGunControllerCreate(handgun)
     },
-    onSuccess(data) {
-      handguns.value.push(data.data)
-      successMessage(_SUMMARY, 'weapon.add.success')
+    onSuccess() {
+      mutationSuccess.value = true
     }
   })
 
-  const updateHandGunMutation = useMutation({
+  const _updateMutation = useMutation({
     mutationFn: async (handgun: UpdateHandGunDto) => {
       return await api.api.handGunControllerUpdate(handgun.id, handgun)
     },
-    onSuccess(data) {
-      const index = handguns.value.findIndex((hand) => hand.id === data.data.id)
-      handguns.value.splice(index, 1)
-      handguns.value.push(data.data)
-      successMessage(_SUMMARY, 'weapon.add.edit')
+    onSuccess() {
+      mutationSuccess.value = true
     }
   })
 
@@ -68,17 +74,22 @@ export const useHandGunStore = defineStore('hand-gun', () => {
     return _getAllHandgunQuery.data.value?.data ?? []
   }
 
-  const getHandGunById = (id: Ref<number>) =>
+  const getByIdQuery = (id?: string) =>
     useQuery({
-      queryKey: [_GET_BY_ID_FN, id.value],
-      queryFn: async () => {
-        const res = await api.api.handGunControllerFindById(id.value)
-        handgun.value = res.data
-        return res
-      },
-      enabled: () => id.value > 0
+      queryKey: [_GET_BY_ID_FN, id],
+      queryFn: () => _fetchById(id),
+      enabled: !!id,
+      retry: 0
     })
 
+  const _fetchById = async (id?: string) => {
+    if (!id) return null
+    console.log('_fetchById,', id)
+    const res = await api.api.handGunControllerFindById(parseInt(id))
+    handgun.value = res.data
+    console.log('_fetchById,', res)
+    return res.data
+  }
   const _deleteMutation = useMutation({
     mutationFn: async (opticId: number) => {
       return await api.api.handGunControllerDelete(opticId)
@@ -95,12 +106,59 @@ export const useHandGunStore = defineStore('hand-gun', () => {
   const deleteFunction = (id: number) => {
     _deleteMutation.mutate(id)
   }
+  function useHandGunForm(id?: string) {
+    console.log('useHandGunForm', id)
+    const emptyForm: CreateHandGunDto = {
+      type: getWeaponTypeDto(),
+      caliber: getCaliberDto(),
+      factory: getFactoryDto(),
+      name: '',
+      variation: '',
+      barrelType: getBarrelTypeDto(),
+      isThreadedBarrel: false,
+      barrelLength: 0,
+      threadedSize: null,
+      isAdjustableTrigger: false,
+      adjustableTriggerMaxWeight: null,
+      adjustableTriggerMinWeight: null,
+      description: '',
+      category: getLegalisationCategoryDto(),
+      percussionType: getPercussionTypeDto(),
+      providedMagazineQuantity: 0,
+      barrelSize: 0,
+      buttMaterial: null,
+      barrelColor: null,
+      buttColor: null,
+      decocking: true,
+      isPicatinyRailSlop: false,
+      isAdjustableBackSight: true,
+      isAdjustableFrontSight: true,
+      providedOpticReadyPlates: [],
+      isOpticReady: false,
+      isExternalHammer: false,
+      slideMaterial: null,
+      slideColor: null,
+      triggerType: null
+    }
+    return useFormHandler<CreateHandGunDto, AxiosResponse<HandGunDto>>(
+      emptyForm,
+      getByIdQuery,
+      _createMutation,
+      _updateMutation,
+      _I18N_PREFIX,
+      id,
+      (data) => ({
+        ...data,
+        typeId: data.type.id
+      })
+    )
+  }
+
   return {
-    create: createHandGunMutation,
-    edit: updateHandGunMutation,
+    formBuilder: useHandGunForm,
     delete: deleteFunction,
     getAllByCategory: getAllHandGunByCategoryQuery,
-    getHandGunById: getHandGunById,
+    getHandGunById: getByIdQuery,
     handgun$: handgun,
     getAll: getAllFunction,
     handguns$: handguns,

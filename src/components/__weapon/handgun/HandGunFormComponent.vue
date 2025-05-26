@@ -2,16 +2,18 @@
   <form @submit.prevent="submit">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
       <caliber-input-select
-        :initial-value="form.caliberId"
+        :initial-value="form.caliber.id"
         can-add-new
-        @on-select="(event) => (form.caliberId = event)"
+        required
+        @on-select="(event) => (form.caliber = event)"
       />
 
       <factory-input-select
-        :initial-value="form.factoryId"
+        :initial-value="form.factory.id"
         can-add-new
+        required
         factory-type="weapon"
-        @on-select="(event) => (form.factoryId = event)"
+        @on-select="(event) => (form.factory = event)"
       />
 
       <InputGroup>
@@ -42,14 +44,14 @@
 
       <percussion-type-input-select
         required
-        :initial-value="form.percussionTypeId"
-        @on-select="(event) => (form.percussionTypeId = event)"
+        :initial-value="form.percussionType.id"
+        @on-select="(event) => (form.percussionType = event)"
       />
 
       <barrel-type-input-select
         required
-        :initial-value="form.barrelTypeId"
-        @on-select="(event) => (form.barrelTypeId = event)"
+        :initial-value="form.barrelType.id"
+        @on-select="(event) => (form.barrelType = event)"
       />
 
       <InputGroup>
@@ -83,13 +85,14 @@
 
       <color-input-select
         input-id="barrelColorId"
-        :initial-value="form.barrelColorId ?? 0"
+        :initial-value="form.barrelColor?.id ?? 0"
         placeholder="barrelColor"
+        can-add-new
         label="barrelColor"
-        @on-select="(event) => (form.barrelColorId = event)"
+        @on-select="(event) => (form.barrelColor = event)"
       />
       <InputGroup>
-        <input-group-optional-icon :is-completed="form.threadedSizeId > 0" />
+        <input-group-optional-icon :is-completed="!!form.threadedSize" />
         <input-group-check-box
           input-id="isThreadedBarrel"
           label="isThreadedBarrel"
@@ -99,7 +102,9 @@
         />
         <threaded-size-input-select
           :disabled="!form.isThreadedBarrel"
-          :initial-value="form.threadedSizeId ?? 0"
+          :required="form.isThreadedBarrel"
+          :initial-value="form.threadedSize?.id ?? 0"
+          @on-select="(event) => (form.threadedSize = event)"
           can-add-new
         />
       </InputGroup>
@@ -142,31 +147,31 @@
           label="adjustableTriggerMinWeight"
           :i18n-prefix="i18Prefix"
           :disabled="!form.isAdjustableTrigger"
-          @value="(value) => (adjustableTriggerMinWeight = value)"
+          @value="(value) => (form.adjustableTriggerMinWeight = value)"
           input-id="adjustableTriggerMinWeight"
           :max-width="33"
-          :initial-value="adjustableTriggerMinWeight"
+          :initial-value="form.adjustableTriggerMinWeight ?? 0"
         />
         <input-group-number
-          :min="adjustableTriggerMaxWeight + 0.1"
+          :min="form.adjustableTriggerMaxWeight + 0.1"
           :min-fraction-digits="2"
           label="adjustableTriggerMaxWeight"
           :i18n-prefix="i18Prefix"
           :disabled="!form.isAdjustableTrigger"
-          @value="(value) => (adjustableTriggerMaxWeight = value)"
+          @value="(value) => (form.adjustableTriggerMaxWeight = value)"
           input-id="adjustableTriggerMaxWeight"
           :max-width="33"
-          :initial-value="adjustableTriggerMaxWeight"
+          :initial-value="form.adjustableTriggerMaxWeight ?? 0"
         />
       </InputGroup>
 
       <trigger-type-input-select
-        :initial-value="form.triggerTypeId ?? 0"
-        @on-select="(event) => (form.triggerTypeId = event)"
+        :initial-value="form.triggerType?.id ?? 0"
+        @on-select="(event) => (form.triggerType = event)"
       />
       <material-input-select
-        @on-select="(event) => (form.slideMaterialId = event)"
-        :initial-value="form.slideMaterialId ?? 0"
+        @on-select="(event) => (form.slideMaterial = event)"
+        :initial-value="form.slideMaterial?.id ?? 0"
         can-add-new
         label="slideMaterial"
         placeholder="slideMaterial"
@@ -175,16 +180,16 @@
       />
       <color-input-select
         input-id="slideColorId"
-        :initial-value="form.slideColorId ?? 0"
+        :initial-value="form.slideColor?.id ?? 0"
         can-add-new
         label="slideColor"
         placeholder="slideColor"
-        @on-select="(event) => (form.slideColorId = event)"
+        @on-select="(event) => (form.slideColor = event)"
         :disabled="isRevolver"
       />
       <material-input-select
-        @on-select="(event) => (form.buttMaterialId = event)"
-        :initial-value="form.buttMaterialId ?? 0"
+        @on-select="(event) => (form.buttMaterial = event)"
+        :initial-value="form.buttMaterial?.id ?? 0"
         can-add-new
         label="buttMaterial"
         placeholder="buttMaterial"
@@ -195,9 +200,9 @@
         input-id="buttColorId"
         label="buttColor"
         placeholder="buttColor"
-        :initial-value="form.buttColorId ?? 0"
+        :initial-value="form.buttColor?.id ?? 0"
         can-add-new
-        @on-select="(event) => (form.buttColorId = event)"
+        @on-select="(event) => (form.buttColor = event)"
       />
       <InputGroup>
         <input-group-optional-icon />
@@ -255,11 +260,7 @@
         :placeholder="t('global.description')"
       />
     </div>
-    <div class="text-red-500 p-4" v-if="handGunStore.create.isError">
-      <p class="text-xl font-bold">
-        {{ t('error.' + handGunStore.create.error.response.data.message) }}
-      </p>
-    </div>
+
     <div class="text-center">
       <Button type="submit" :label="t(buttonLabel)"></Button>
     </div>
@@ -268,13 +269,12 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import type { CreateHandGunDto, HandGunDto, UpdateHandGunDto } from '@/api/Api'
 import InputGroup from 'primevue/inputgroup'
 import InputGroupAddon from 'primevue/inputgroupaddon'
 import { computed, ref, watchEffect } from 'vue'
 import Button from 'primevue/button'
 import Textarea from 'primevue/textarea'
-import { type NewWeapon } from '@/stores/weapon'
+import { type NewWeapon, useWeaponStore } from '@/stores/weapon'
 import { useHandGunStore } from '@/stores/hand-gun'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 import InputGroupText from '@/components/__form/InputGroupText.vue'
@@ -292,117 +292,41 @@ import ThreadedSizeInputSelect from '@/components/__form/__specific_select/Threa
 import TriggerTypeInputSelect from '@/components/__form/__specific_select/TriggerTypeInputSelect.vue'
 import { WeaponEnum } from '@/enum/weapon.enum'
 
+const store = useWeaponStore()
 const handGunStore = useHandGunStore()
 const i18Prefix = handGunStore.getI18NPrefix
 
-const { selectedOptions, handGun = null } = defineProps<{
+const { selectedOptions, id } = defineProps<{
   selectedOptions: NewWeapon
-  handGun?: HandGunDto
+  id?: string
 }>()
 const { t } = useI18n()
-const selectedPlates = ref<number[]>([])
 const buttonLabel = ref('global.save')
-const adjustableTriggerMinWeight = ref(0)
-const adjustableTriggerMaxWeight = ref(0)
+
 const isProvidedMagazine = ref(false)
-const initialForm: CreateHandGunDto = {
-  typeId: selectedOptions.type.id,
-  caliberId: 0,
-  factoryId: 0,
-  name: '',
-  variation: '',
-  barrelTypeId: 0,
-  isThreadedBarrel: false,
-  barrelLength: 0,
-  threadedSizeId: null,
-  isAdjustableTrigger: false,
-  adjustableTriggerValue: '',
-  description: '',
-  categoryId: selectedOptions.category.id,
-  percussionTypeId: 0,
-  providedMagazineQuantity: 0,
-  barrelSize: 0,
-  buttMaterialId: null,
-  barrelColorId: null,
-  buttColorId: null,
-  decocking: true,
-  isPicatinyRailSlop: false,
-  isAdjustableBackSight: true,
-  isAdjustableFrontSight: true,
-  providedOpticReadyPlates: [],
-  isOpticReady: false,
-  isExternalHammer: false,
-  slideMaterialId: null,
-  slideColorId: null,
-  triggerTypeId: null
-}
-const form = ref<CreateHandGunDto>({ ...initialForm })
+
 const resetMultiselect = ref(false)
-const submit = () => {
-  form.value.adjustableTriggerValue = form.value.isAdjustableTrigger
-    ? adjustableTriggerValue()
-    : null
 
-  handGun ? edit({ ...form.value, id: handGun.id }) : create(form.value)
-}
+const { form, submit } = handGunStore.formBuilder(id)
 
-const adjustableTriggerValue = () => {
-  return `de ${adjustableTriggerMinWeight.value} kg à ${adjustableTriggerMaxWeight.value} kg`
-}
 const isInvalidMaxTriggerValue = computed(() => {
   return (
     form.value.isAdjustableTrigger &&
-    adjustableTriggerMaxWeight.value <= adjustableTriggerMinWeight.value
+    form.value?.adjustableTriggerMaxWeight <= form.value?.adjustableTriggerMinWeight
   )
 })
 const isRevolver = computed(() => {
   return selectedOptions.type.name === WeaponEnum.REVLOVER
 })
-
-function create(handgun: CreateHandGunDto): void {
-  handGunStore.create.mutate(handgun)
-  resetForm()
-}
-function edit(handgun: UpdateHandGunDto): void {
-  handGunStore.edit.mutate(handgun)
-}
-function resetForm(): void {
-  form.value = { ...initialForm }
-  selectedPlates.value = []
-  resetMultiselect.value = !resetMultiselect.value
-  adjustableTriggerMinWeight.value = 0
-  adjustableTriggerMaxWeight.value = 0
-}
 watchEffect(() => {
-  if (handGun) {
-    setEditForm(handGun)
-    buttonLabel.value = 'global.edit'
-  }
+  //console.log('selectedOptions', form.value)
+  store.setOptions({
+    category: form.value.category,
+    type: form.value.type
+  })
+  form.value.category = selectedOptions.category
+  form.value.type = selectedOptions.type
 })
-function setEditForm(handgun: HandGunDto) {
-  form.value = {
-    ...handgun,
-    caliberId: handgun.caliber.id,
-    barrelColorId: handgun.barrelColor ? handgun.barrelColor.id : null,
-    buttColorId: handgun.buttColor ? handgun.buttColor.id : null,
-    barrelTypeId: handgun.barrelType.id ?? 0,
-    factoryId: handgun.factory.id ?? 0,
-    buttMaterialId: handgun.buttMaterial ? handgun.buttMaterial.id : null,
-    percussionTypeId: handgun.percussionType.id ?? 0,
-    slideColorId: handgun.slideColor ? handgun.slideColor.id : null,
-    triggerTypeId: handgun.triggerType ? handgun.triggerType.id : null,
-    threadedSizeId: handgun.threadedSize ? handgun.threadedSize.id : null,
-    slideMaterialId: handgun.slideMaterial ? handgun.slideMaterial.id : null,
-    providedOpticReadyPlates: handgun.opticReadyPlates.length > 0 ? handgun.opticReadyPlates : [],
-    typeId: handgun.type.id,
-    categoryId: handgun.category.id
-  }
-  if (handgun.opticReadyPlates.length > 0) {
-    selectedPlates.value = handgun.opticReadyPlates.map((or) => or.id)
-  } else {
-    selectedPlates.value = []
-  }
-}
 </script>
 
 <style scoped></style>
