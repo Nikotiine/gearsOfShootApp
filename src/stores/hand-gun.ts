@@ -84,10 +84,8 @@ export const useHandGunStore = defineStore('hand-gun', () => {
 
   const _fetchById = async (id?: string) => {
     if (!id) return null
-    console.log('_fetchById,', id)
     const res = await api.api.handGunControllerFindById(parseInt(id))
     handgun.value = res.data
-    console.log('_fetchById,', res)
     return res.data
   }
   const _deleteMutation = useMutation({

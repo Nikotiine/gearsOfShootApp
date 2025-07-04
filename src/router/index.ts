@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import { RouterEnum } from '@/enum/router.enum'
+import { WeaponEnum } from '@/enum/weapon.enum'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -119,9 +120,14 @@ const router = createRouter({
               path: 'weapon',
               children: [
                 {
-                  path: 'new',
-                  name: RouterEnum.WEAPON_NEW,
-                  component: () => import('../views/weapon/AdminWeaponFormView.vue')
+                  path: 'new/' + WeaponEnum.RIFFLE,
+                  name: RouterEnum.RIFFLE_NEW,
+                  component: () => import('../views/shared/FormView.vue')
+                },
+                {
+                  path: 'new/' + WeaponEnum.HAND_GUN,
+                  name: RouterEnum.HANDGUN_NEW,
+                  component: () => import('../views/shared/FormView.vue')
                 },
                 {
                   path: 'list/:type/:category',
@@ -140,6 +146,12 @@ const router = createRouter({
                   name: RouterEnum.WEAPON_EDIT,
                   props: true,
                   component: () => import('../views/weapon/AdminWeaponFormView.vue')
+                },
+                {
+                  path: `edit/${WeaponEnum.HAND_GUN}/:id`,
+                  name: RouterEnum.HANDGUN_EDIT,
+                  props: true,
+                  component: () => import('../views/shared/FormView.vue')
                 }
               ]
             },

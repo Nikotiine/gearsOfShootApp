@@ -31,9 +31,15 @@ const items = ref([
           label: 'Produits',
           items: [
             {
-              label: 'Arme',
+              label: 'Arme de poing',
               command: () => {
-                push({ name: RouterEnum.WEAPON_NEW })
+                push({ name: RouterEnum.HANDGUN_NEW })
+              }
+            },
+            {
+              label: 'Arme longue',
+              command: () => {
+                push({ name: RouterEnum.RIFFLE_NEW })
               }
             },
             {

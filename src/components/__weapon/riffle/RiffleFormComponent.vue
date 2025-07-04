@@ -367,8 +367,7 @@ const i18Prefix = riffleStore.getI18NPrefix
 
 const { t } = useI18n()
 const buttonLabel = ref('global.save')
-const { selectedOptions, riffle = null } = defineProps<{
-  selectedOptions: NewWeapon
+const { riffle = null } = defineProps<{
   riffle?: RiffleDto
 }>()
 const adjustableTriggerMinWeight = ref(0)
@@ -378,7 +377,7 @@ const selectedMLockOptions = ref<number[]>([])
 const resetMultiselect = ref(false)
 //*******************Init du formulaire*********************
 const initialForm: CreateRiffleDto = {
-  typeId: selectedOptions.type.id,
+  typeId: 0,
   caliberId: 0,
   factoryId: 0,
   name: '',

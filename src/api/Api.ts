@@ -137,6 +137,7 @@ export interface WeaponTypeDto {
   name: string
   mode: WeaponReloadModeDto
   reference: string
+  type: WeaponTypeDtoTypeEnum
 }
 
 export interface PercussionTypeDto {
@@ -181,17 +182,21 @@ export interface ListOfPrerequisitesWeaponTypeDto {
 }
 
 export interface CreateWeaponTypeDto {
-  /** @example "Fusil a verrou" */
+  /** @example "Fusil a verrou titi" */
   name: string
   modeId: number
   reference: string
+  /** @example "handgun ou riffle" */
+  type: string | null
 }
 
 export interface UpdateWeaponTypeDto {
-  /** @example "Fusil a verrou" */
+  /** @example "Fusil a verrou titi" */
   name: string
   modeId: number
   reference: string
+  /** @example "handgun ou riffle" */
+  type: string | null
   id: number
 }
 
@@ -1005,6 +1010,11 @@ export interface UpdateSoundNoiseReducerDto {
   description: string
   isCleanable: boolean
   id: number
+}
+
+export enum WeaponTypeDtoTypeEnum {
+  Handgun = 'handgun',
+  Riffle = 'riffle'
 }
 
 export enum CreateUserDtoRoleEnum {

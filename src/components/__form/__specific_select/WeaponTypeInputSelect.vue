@@ -9,7 +9,7 @@
       @option-id="onSelect($event)"
       required
       placeholder="name"
-      filter
+      :filter="filter"
       input-id="caliberId"
       :initial-value="typeId"
       :i18n-prefix="i18Prefix"
@@ -26,23 +26,50 @@ import InputGroup from 'primevue/inputgroup'
 import { computed, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.vue'
+
+import { type WeaponTypeDto, WeaponTypeDtoTypeEnum } from '@/api/Api'
+import type { WeaponEnum } from '@/enum/weapon.enum'
 const {
   initialValue = 0,
   canAddNew = false,
-  required = false
+  required = false,
+  prefilter = null,
+  filter = false
 } = defineProps<{
+  filter?: boolean
   initialValue?: number
   canAddNew?: boolean
   required?: boolean
+  prefilter?: WeaponEnum
 }>()
 const typeId = ref<number>(initialValue)
 const store = useWeaponTypeStore()
 const i18Prefix = store.getI18NPrefix
 const { data: weaponType$, refetch } = store.getAll()
-console.log(weaponType$)
+
 const { mutationSuccess } = storeToRefs(store)
 const emit = defineEmits(['onSelect'])
-const weaponTypeList = computed(() => weaponType$.value || [])
+const weaponTypeList = computed(() => {
+  let list: WeaponTypeDto[] = []
+  if (!prefilter) {
+    list = weaponType$.value || []
+  }
+  if (prefilter === 'handgun') {
+    list =
+      weaponType$?.value?.filter((item) => {
+        return item.type === WeaponTypeDtoTypeEnum.Handgun
+      }) || []
+  }
+  if (prefilter === 'riffle') {
+    list =
+      weaponType$?.value?.filter((item) => {
+        return item.type === WeaponTypeDtoTypeEnum.Handgun
+      }) || []
+  }
+
+  return list
+})
+console.log(weaponTypeList.value)
 const closeDrawer = ref(false)
 const onSelect = (id: number) => {
   const type = weaponTypeList.value.find((t) => t.id === id)

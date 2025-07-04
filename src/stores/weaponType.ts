@@ -2,11 +2,11 @@ import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
 import { ref } from 'vue'
 import { useMutation, useQuery } from '@tanstack/vue-query'
-import type {
-  CreateWeaponTypeDto,
-  UpdateWeaponTypeDto,
-  WeaponReloadModeDto,
-  WeaponTypeDto
+import {
+  type CreateWeaponTypeDto,
+  type UpdateWeaponTypeDto,
+  type WeaponReloadModeDto,
+  type WeaponTypeDto
 } from '@/api/Api'
 import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
@@ -58,6 +58,7 @@ export const useWeaponTypeStore = defineStore('weaponType', () => {
     })
   const _fetchAll = async () => {
     const res = await api.api.weaponTypeControllerFindAllWeaponTypes()
+    console.log(res.data)
     return res.data
   }
   const getAllQuery = () => {
@@ -80,7 +81,8 @@ export const useWeaponTypeStore = defineStore('weaponType', () => {
     const emptyForm: CreateWeaponTypeDto = {
       name: '',
       reference: '',
-      modeId: 0
+      modeId: 0,
+      type: null
     }
     return useFormHandler<CreateWeaponTypeDto, AxiosResponse<WeaponTypeDto>>(
       emptyForm,

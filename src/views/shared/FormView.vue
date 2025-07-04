@@ -19,6 +19,8 @@ import CaliberFormComponent from '@/components/__caliber/CaliberFormComponent.vu
 import ColorFormComponent from '@/components/__color_and_material/ColorFormComponent.vue'
 import SoundReducerFormComponent from '@/components/__accessory/rds/SoundReducerFormComponent.vue'
 import { RouterEnum } from '@/enum/router.enum'
+import HandGunFormComponent from '@/components/__weapon/handgun/HandGunFormComponent.vue'
+import RiffleFormComponent from '@/components/__weapon/riffle/RiffleFormComponent.vue'
 
 const route = useRoute()
 enum RouterFormEnum {
@@ -40,7 +42,10 @@ enum RouterFormEnum {
   THREADED_SIZE_NEW = RouterEnum.THREADED_SIZE_NEW,
   WEAPON_TYPE_NEW = RouterEnum.WEAPON_TYPE_NEW,
   CALIBER_NEW = RouterEnum.CALIBER_NEW,
-  FACTORY_EDIT = RouterEnum.FACTORY_EDIT
+  FACTORY_EDIT = RouterEnum.FACTORY_EDIT,
+  HANDGUN_NEW = RouterEnum.HANDGUN_NEW,
+  HANDGUN_EDIT = RouterEnum.HANDGUN_EDIT,
+  RIFFLE_NEW = RouterEnum.RIFFLE_NEW
 }
 // Mapping entre les noms de route et les composants
 const componentMap = {
@@ -62,7 +67,10 @@ const componentMap = {
   [RouterFormEnum.CALIBER_NEW]: CaliberFormComponent,
   [RouterFormEnum.RDS_NEW]: SoundReducerFormComponent,
   [RouterFormEnum.RDS_EDIT]: SoundReducerFormComponent,
-  [RouterFormEnum.FACTORY_EDIT]: FactoryFormComponent
+  [RouterFormEnum.FACTORY_EDIT]: FactoryFormComponent,
+  [RouterFormEnum.HANDGUN_NEW]: HandGunFormComponent,
+  [RouterFormEnum.HANDGUN_EDIT]: HandGunFormComponent,
+  [RouterFormEnum.RIFFLE_NEW]: RiffleFormComponent
 }
 
 const formComponent = computed(() => componentMap[route.name as RouterFormEnum])

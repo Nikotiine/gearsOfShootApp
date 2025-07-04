@@ -47,7 +47,6 @@ const chooseType = (ids: NewWeapon) => {
   isReady.value = true
 }
 watchEffect(() => {
-  console.log('toto', id)
   isShowForm.value = !!id
 
   isReady.value = true

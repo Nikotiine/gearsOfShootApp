@@ -171,7 +171,7 @@ const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
       break
     case 'edit':
       onEditAction(id)
-      router.push({ name: RouterEnum.WEAPON_EDIT, params: { id: id, type: WeaponEnum.HAND_GUN } })
+      router.push({ name: RouterEnum.HANDGUN_EDIT, params: { id: id } })
       break
     case true:
       store.delete(id)

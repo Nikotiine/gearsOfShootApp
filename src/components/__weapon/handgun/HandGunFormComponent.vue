@@ -1,6 +1,19 @@
 <template>
+  <h2 class="text-center mt-16 text-xl lg:text-2xl text-blue-500">{{ t('global.handgun') }}</h2>
   <form @submit.prevent="submit">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 mt-10">
+      <weapon-type-input-select
+        required
+        :prefilter="WeaponEnum.HAND_GUN"
+        can-add-new
+        @on-select="(event) => (form.type = event)"
+        :initial-value="form.type.id"
+      />
+      <legalisation-category-input-select
+        required
+        @on-select="(event) => (form.category = event)"
+        :initial-value="form.category.id"
+      />
       <caliber-input-select
         :initial-value="form.caliber.id"
         can-add-new
@@ -271,10 +284,10 @@
 import { useI18n } from 'vue-i18n'
 import InputGroup from 'primevue/inputgroup'
 import InputGroupAddon from 'primevue/inputgroupaddon'
-import { computed, ref, watchEffect } from 'vue'
+import { computed, ref } from 'vue'
 import Button from 'primevue/button'
 import Textarea from 'primevue/textarea'
-import { type NewWeapon, useWeaponStore } from '@/stores/weapon'
+import { useWeaponStore } from '@/stores/weapon'
 import { useHandGunStore } from '@/stores/hand-gun'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 import InputGroupText from '@/components/__form/InputGroupText.vue'
@@ -291,13 +304,14 @@ import OpticReadyPlateInputMulitSelect from '@/components/__form/__specific_mull
 import ThreadedSizeInputSelect from '@/components/__form/__specific_select/ThreadedSizeInputSelect.vue'
 import TriggerTypeInputSelect from '@/components/__form/__specific_select/TriggerTypeInputSelect.vue'
 import { WeaponEnum } from '@/enum/weapon.enum'
+import WeaponTypeInputSelect from '@/components/__form/__specific_select/WeaponTypeInputSelect.vue'
+import LegalisationCategoryInputSelect from '@/components/__form/__specific_select/LegalisationCategoryInputSelect.vue'
 
 const store = useWeaponStore()
 const handGunStore = useHandGunStore()
 const i18Prefix = handGunStore.getI18NPrefix
 
-const { selectedOptions, id } = defineProps<{
-  selectedOptions: NewWeapon
+const { id } = defineProps<{
   id?: string
 }>()
 const { t } = useI18n()
@@ -315,17 +329,9 @@ const isInvalidMaxTriggerValue = computed(() => {
     form.value?.adjustableTriggerMaxWeight <= form.value?.adjustableTriggerMinWeight
   )
 })
+
 const isRevolver = computed(() => {
-  return selectedOptions.type.name === WeaponEnum.REVLOVER
-})
-watchEffect(() => {
-  //console.log('selectedOptions', form.value)
-  store.setOptions({
-    category: form.value.category,
-    type: form.value.type
-  })
-  form.value.category = selectedOptions.category
-  form.value.type = selectedOptions.type
+  return form.value.type.name === WeaponEnum.REVLOVER
 })
 </script>
 
