@@ -1,13 +1,14 @@
 <template>
   <InputGroup>
-    <input-group-required-icon :is-validate="bodyTypeId > 0" />
+    <input-group-required-icon :is-validate="bodyTypeId > 0" v-if="required" />
+    <input-group-optional-icon :is-completed="bodyTypeId > 0" v-else />
     <input-group-select
       :options="bodyTypesList"
       :i18n-prefix="i18nPrefix"
       placeholder="placeholder"
       label="name"
       @option-id="onSelect($event)"
-      required
+      :required="required"
       input-id="bodyTypeId"
       :initial-value="bodyTypeId"
     />
@@ -22,12 +23,18 @@ import InputGroupAddonOpenDrawerButton from '@/components/__form/InputGroupAddon
 import { useBodyTypeStore } from '@/stores/bodyType'
 import { computed, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
+import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.vue'
 const store = useBodyTypeStore()
 const i18nPrefix = store.getI18NPrefix
 const { data: bodyTypes$, refetch } = store.getAll()
-const { initialValue = 0, canAddNew = false } = defineProps<{
+const {
+  initialValue = 0,
+  canAddNew = false,
+  required = false
+} = defineProps<{
   initialValue?: number
   canAddNew?: boolean
+  required?: boolean
 }>()
 const emit = defineEmits(['onSelect'])
 const bodyTypesList = computed(() => bodyTypes$.value || [])
@@ -35,7 +42,8 @@ const bodyTypeId = ref<number>(initialValue)
 const closeDrawer = ref(false)
 const { mutationSuccess } = storeToRefs(store)
 const onSelect = (id: number) => {
-  emit('onSelect', id)
+  const type = bodyTypesList.value.find((type) => type.id === id)
+  emit('onSelect', type)
   bodyTypeId.value = id
 }
 watch(
@@ -46,6 +54,12 @@ watch(
       mutationSuccess.value = false
       closeDrawer.value = value
     }
+  }
+)
+watch(
+  () => initialValue,
+  (value) => {
+    bodyTypeId.value = value
   }
 )
 </script>

@@ -224,7 +224,16 @@ export interface RiffleDto {
   /** @example "Lourd" */
   barrelType: WeaponBarrelTypeDto
   threadedSize: ThreadedSizeDto
-  adjustableTriggerValue: string
+  /**
+   * les valeurs de poids depart de la detente
+   * @example "Entre 1 et 2kg"
+   */
+  adjustableTriggerMinWeight: number | null
+  /**
+   * les valeurs de poids depart de la detente
+   * @example "Entre 1 et 2kg"
+   */
+  adjustableTriggerMaxWeight: number | null
   percussionType: PercussionTypeDto
   providedMagazineQuantity: number
   barrelSize: number
@@ -452,7 +461,7 @@ export interface CreateHandGunDto {
   /** @example true */
   isOpticReady: boolean
   decocking: boolean
-  triggerType: WeaponTriggerTypeDto | null
+  triggerType: WeaponTriggerTypeDto
   slideColor: ColorDto | null
   slideMaterial: MaterialDto | null
   isExternalHammer: boolean
@@ -539,7 +548,7 @@ export interface UpdateHandGunDto {
   /** @example true */
   isOpticReady: boolean
   decocking: boolean
-  triggerType: WeaponTriggerTypeDto | null
+  triggerType: WeaponTriggerTypeDto
   slideColor: ColorDto | null
   slideMaterial: MaterialDto | null
   isExternalHammer: boolean
@@ -589,16 +598,21 @@ export interface CreateRiffleDto {
    */
   isThreadedBarrel: boolean
   /** Le type de canon (lourd/leger...) */
-  barrelTypeId: number
+  barrelType: WeaponBarrelTypeDto
   /** Les dimmension du filletage */
-  threadedSizeId: number | null
+  threadedSize: ThreadedSizeDto | null
   /**
    * les valeurs de poids depart de la detente
    * @example "Entre 1 et 2kg"
    */
-  adjustableTriggerValue: string | null
+  adjustableTriggerMinWeight: number | null
+  /**
+   * les valeurs de poids depart de la detente
+   * @example "Entre 1 et 2kg"
+   */
+  adjustableTriggerMaxWeight: number | null
   /** Le type de percussion ( annulaire ou centrale ) */
-  percussionTypeId: number
+  percussionType: PercussionTypeDto
   /**
    * Le nombre de chargeur fournis
    * @example 1
@@ -610,20 +624,20 @@ export interface CreateRiffleDto {
    */
   barrelSize: number
   /** La matiere de la crosse ou caracasse */
-  buttMaterialId: number | null
+  buttMaterial: MaterialDto | null
   /** Guidon reglable */
   isAdjustableFrontSight: boolean
   /** Hausse reglable */
   isAdjustableBackSight: boolean
   /** la couleur de la crosse */
-  buttColorId: number | null
+  buttColor: ColorDto | null
   /** la couleur du canon  */
-  barrelColorId: number | null
+  barrelColor: ColorDto | null
   /** Crosse ajustable en profondeur */
   isAdjustableButt: boolean
   /** Busc adjutable */
   isAdjustableBusk: boolean
-  railSizeId: number | null
+  railSize: RailSizeDto | null
   /** Grenadiere */
   grenadierSlot: number
   /** Port QC */
@@ -675,16 +689,21 @@ export interface UpdateRiffleDto {
    */
   isThreadedBarrel: boolean
   /** Le type de canon (lourd/leger...) */
-  barrelTypeId: number
+  barrelType: WeaponBarrelTypeDto
   /** Les dimmension du filletage */
-  threadedSizeId: number | null
+  threadedSize: ThreadedSizeDto | null
   /**
    * les valeurs de poids depart de la detente
    * @example "Entre 1 et 2kg"
    */
-  adjustableTriggerValue: string | null
+  adjustableTriggerMinWeight: number | null
+  /**
+   * les valeurs de poids depart de la detente
+   * @example "Entre 1 et 2kg"
+   */
+  adjustableTriggerMaxWeight: number | null
   /** Le type de percussion ( annulaire ou centrale ) */
-  percussionTypeId: number
+  percussionType: PercussionTypeDto
   /**
    * Le nombre de chargeur fournis
    * @example 1
@@ -696,20 +715,20 @@ export interface UpdateRiffleDto {
    */
   barrelSize: number
   /** La matiere de la crosse ou caracasse */
-  buttMaterialId: number | null
+  buttMaterial: MaterialDto | null
   /** Guidon reglable */
   isAdjustableFrontSight: boolean
   /** Hausse reglable */
   isAdjustableBackSight: boolean
   /** la couleur de la crosse */
-  buttColorId: number | null
+  buttColor: ColorDto | null
   /** la couleur du canon  */
-  barrelColorId: number | null
+  barrelColor: ColorDto | null
   /** Crosse ajustable en profondeur */
   isAdjustableButt: boolean
   /** Busc adjutable */
   isAdjustableBusk: boolean
-  railSizeId: number | null
+  railSize: RailSizeDto | null
   /** Grenadiere */
   grenadierSlot: number
   /** Port QC */
@@ -761,16 +780,17 @@ export interface CreateAmmunitionDto {
   name: string
   /** @example "Une description de la munition, qualite / origine / conseil d utilisation" */
   description: string | null
-  categoryId: number
+  /** @example "C" */
+  category: LegislationCategoryDto
   /** @example 320 */
   initialSpeed: number
-  percussionTypeId: number
+  percussionType: PercussionTypeDto
   /** @example 50 */
   packaging: number
-  headTypeId: number
-  bodyTypeId: number
-  factoryId: number
-  caliberId: number
+  headType: AmmunitionHeadTypeDto
+  bodyType: AmmunitionBodyTypeDto
+  caliber: CaliberDto
+  factory: FactoryDto
 }
 
 export interface UpdateAmmunitionDto {
@@ -778,16 +798,17 @@ export interface UpdateAmmunitionDto {
   name: string
   /** @example "Une description de la munition, qualite / origine / conseil d utilisation" */
   description: string | null
-  categoryId: number
+  /** @example "C" */
+  category: LegislationCategoryDto
   /** @example 320 */
   initialSpeed: number
-  percussionTypeId: number
+  percussionType: PercussionTypeDto
   /** @example 50 */
   packaging: number
-  headTypeId: number
-  bodyTypeId: number
-  factoryId: number
-  caliberId: number
+  headType: AmmunitionHeadTypeDto
+  bodyType: AmmunitionBodyTypeDto
+  caliber: CaliberDto
+  factory: FactoryDto
   id: number
 }
 

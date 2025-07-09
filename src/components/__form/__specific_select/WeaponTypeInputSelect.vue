@@ -54,6 +54,7 @@ const weaponTypeList = computed(() => {
   if (!prefilter) {
     list = weaponType$.value || []
   }
+
   if (prefilter === 'handgun') {
     list =
       weaponType$?.value?.filter((item) => {
@@ -63,13 +64,13 @@ const weaponTypeList = computed(() => {
   if (prefilter === 'riffle') {
     list =
       weaponType$?.value?.filter((item) => {
-        return item.type === WeaponTypeDtoTypeEnum.Handgun
+        return item.type === WeaponTypeDtoTypeEnum.Riffle
       }) || []
   }
 
   return list
 })
-console.log(weaponTypeList.value)
+
 const closeDrawer = ref(false)
 const onSelect = (id: number) => {
   const type = weaponTypeList.value.find((t) => t.id === id)

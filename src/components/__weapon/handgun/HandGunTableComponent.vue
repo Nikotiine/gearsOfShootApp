@@ -167,7 +167,7 @@ const weaponStore = useWeaponStore()
 const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
   switch (event) {
     case 'view':
-      router.push({ name: RouterEnum.WEAPON_DETAIL, params: { id: id, type: WeaponEnum.HAND_GUN } })
+      router.push({ name: RouterEnum.HANDGUN_DETAIL, params: { id: id } })
       break
     case 'edit':
       onEditAction(id)

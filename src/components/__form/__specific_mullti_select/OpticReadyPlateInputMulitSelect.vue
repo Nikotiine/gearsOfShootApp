@@ -37,7 +37,6 @@ const onChange = (options: OpticReadyPlateDto[]) => {
 watch(
   () => initialValue,
   (value) => {
-    console.log(value)
     selectedOptions.value = value
   }
 )

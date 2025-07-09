@@ -6,27 +6,30 @@
     <form @submit.prevent="submit">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 p-4">
         <legalisation-category-input-select
-          :initial-value="form.categoryId"
+          :initial-value="form.category.id"
           required
-          @on-select="(event) => (form.categoryId = event)"
+          @on-select="(event) => (form.category = event)"
         />
 
         <caliber-input-select
-          :initial-value="form.caliberId"
+          :initial-value="form.caliber.id"
           can-add-new
-          @on-select="(event) => (form.caliberId = event)"
+          required
+          @on-select="(event) => (form.caliber = event)"
         />
+
         <factory-input-select
-          :initial-value="form.factoryId"
+          :initial-value="form.factory.id"
           can-add-new
+          required
           factory-type="ammunition"
-          @on-select="(event) => (form.factoryId = event)"
+          @on-select="(event) => (form.factory = event)"
         />
 
         <percussion-type-input-select
           required
-          :initial-value="form.percussionTypeId"
-          @on-select="(event) => (form.percussionTypeId = event)"
+          :initial-value="form.percussionType.id"
+          @on-select="(event) => (form.percussionType = event)"
         />
         <InputGroup>
           <input-group-required-icon :is-validate="form.name.length >= 2" />
@@ -56,14 +59,16 @@
         </InputGroup>
 
         <head-type-input-select
-          @on-select="(event) => (form.headTypeId = event)"
-          :initial-value="form.headTypeId"
+          @on-select="(event) => (form.headType = event)"
+          :initial-value="form.headType.id"
           can-add-new
+          required
         />
         <body-type-input-select
-          :initial-value="form.bodyTypeId"
+          :initial-value="form.bodyType.id"
           can-add-new
-          @on-select="(event) => (form.bodyTypeId = event)"
+          required
+          @on-select="(event) => (form.bodyType = event)"
         />
         <InputGroup>
           <input-group-optional-icon :is-completed="form.packaging > 0" />
@@ -130,10 +135,10 @@ const isFormValid = computed(() => {
   let isValid: boolean = false
   if (
     form.value.name &&
-    form.value.factoryId > 0 &&
-    form.value.caliberId > 0 &&
-    form.value.headTypeId > 0 &&
-    form.value.bodyTypeId > 0
+    form.value.factory.id > 0 &&
+    form.value.caliber.id > 0 &&
+    form.value.headType.id > 0 &&
+    form.value.bodyType.id > 0
   ) {
     isValid = true
   }

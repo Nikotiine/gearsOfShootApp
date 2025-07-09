@@ -37,7 +37,6 @@ const {
   i18nPrefix?: string
   inputId: string
   checked?: boolean
-  isWidthHalfSize?: boolean
   disabled?: boolean
   toolTip?: string
   size?: CheckboxSize

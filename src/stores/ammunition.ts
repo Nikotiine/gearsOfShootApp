@@ -7,6 +7,12 @@ import { ref } from 'vue'
 import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
 import { getI18NPrefix, I18NSuffix } from '@/enum/I18NSuffix.enum'
+import { getCaliberDto } from '@/shared/api-dto/get-caliber.dto'
+import { getFactoryDto } from '@/shared/api-dto/get-factory.dto'
+import { getLegalisationCategoryDto } from '@/shared/api-dto/get-legalisation-category.dto'
+import { getBodyTypeDto } from '@/shared/api-dto/get-body-type.dto'
+import { getHeadTypeDto } from '@/shared/api-dto/get-head-type.dto'
+import { getPercussionTypeDto } from '@/shared/api-dto/get-percussion-type.dto'
 
 export const useAmmunitionStore = defineStore('ammunition', () => {
   // Appel API
@@ -45,16 +51,16 @@ export const useAmmunitionStore = defineStore('ammunition', () => {
 
   function useAmmunitionForm(id?: string) {
     const emptyForm: CreateAmmunitionDto = {
-      bodyTypeId: 0,
-      caliberId: 0,
-      factoryId: 0,
+      bodyType: getBodyTypeDto(),
+      caliber: getCaliberDto(),
+      factory: getFactoryDto(),
       name: '',
-      categoryId: 0,
+      category: getLegalisationCategoryDto(),
       initialSpeed: 0,
       description: '',
       packaging: 50,
-      headTypeId: 0,
-      percussionTypeId: 0
+      headType: getHeadTypeDto(),
+      percussionType: getPercussionTypeDto()
     }
     return useFormHandler<CreateAmmunitionDto, AxiosResponse<AmmunitionDto>>(
       emptyForm,

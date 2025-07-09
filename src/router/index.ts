@@ -136,16 +136,22 @@ const router = createRouter({
                   component: () => import('../views/weapon/AdminWeaponListView.vue')
                 },
                 {
-                  path: 'detail/:type/:id',
-                  name: RouterEnum.WEAPON_DETAIL,
+                  path: `detail/${WeaponEnum.HAND_GUN}/:id`,
+                  name: RouterEnum.HANDGUN_DETAIL,
                   props: true,
-                  component: () => import('../views/weapon/AdminWeaponView.vue')
+                  component: () => import('../views/shared/DetailView.vue')
                 },
                 {
-                  path: 'edit/:type/:id',
-                  name: RouterEnum.WEAPON_EDIT,
+                  path: `detail/${WeaponEnum.RIFFLE}/:id`,
+                  name: RouterEnum.RIFFLE_DETAIL,
                   props: true,
-                  component: () => import('../views/weapon/AdminWeaponFormView.vue')
+                  component: () => import('../views/shared/DetailView.vue')
+                },
+                {
+                  path: `edit/${WeaponEnum.RIFFLE}/:id`,
+                  name: RouterEnum.RIFFLE_EDIT,
+                  props: true,
+                  component: () => import('../views/shared/FormView.vue')
                 },
                 {
                   path: `edit/${WeaponEnum.HAND_GUN}/:id`,

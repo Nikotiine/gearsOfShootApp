@@ -7,7 +7,7 @@
       :i18n-prefix="i18nPrefix"
       label="name"
       @option-id="onSelect($event)"
-      required
+      :required="required"
       placeholder="placeholder"
       input-id="headTypeId"
       :initial-value="headTypeId"
@@ -42,7 +42,8 @@ const headTypesList = computed(() => headTypes$.value || [])
 const headTypeId = ref<number>(initialValue)
 const closeDrawer = ref(false)
 const onSelect = (id: number) => {
-  emit('onSelect', id)
+  const type = headTypesList.value.find((type) => type.id === id)
+  emit('onSelect', type)
   headTypeId.value = id
 }
 watch(
@@ -53,6 +54,12 @@ watch(
       mutationSuccess.value = false
       closeDrawer.value = value
     }
+  }
+)
+watch(
+  () => initialValue,
+  (value) => {
+    headTypeId.value = value
   }
 )
 </script>

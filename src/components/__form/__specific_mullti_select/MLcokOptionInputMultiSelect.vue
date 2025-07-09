@@ -16,7 +16,7 @@
 <script setup lang="ts">
 import { useMLockOptionStore } from '@/stores/m-lock-options'
 import InputGroupMultiSelect from '@/components/__form/InputGroupMultiSelect.vue'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import type { MLockOptionDto } from '@/api/Api'
 
 const {
@@ -39,6 +39,12 @@ const onChange = (options: MLockOptionDto[]) => {
   selectedOptions.value = options
   emit('onSelect', selectedOptions.value)
 }
+watch(
+  () => initialValue,
+  (value) => {
+    selectedOptions.value = value
+  }
+)
 </script>
 
 <style scoped></style>

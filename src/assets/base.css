@@ -83,4 +83,11 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  --p-tabs-active-bar-background:rgb(59, 130, 246);
+  --p-tabs-tab-active-color:rgb(59, 130, 246);
+}
+.field-capitalise-underlined-semi-bold{
+  text-decoration: underline;
+  font-weight: 688;
+  text-transform: capitalize
 }

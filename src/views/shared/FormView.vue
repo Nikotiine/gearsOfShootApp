@@ -45,7 +45,8 @@ enum RouterFormEnum {
   FACTORY_EDIT = RouterEnum.FACTORY_EDIT,
   HANDGUN_NEW = RouterEnum.HANDGUN_NEW,
   HANDGUN_EDIT = RouterEnum.HANDGUN_EDIT,
-  RIFFLE_NEW = RouterEnum.RIFFLE_NEW
+  RIFFLE_NEW = RouterEnum.RIFFLE_NEW,
+  RIFFLE_EDIT = RouterEnum.RIFFLE_EDIT
 }
 // Mapping entre les noms de route et les composants
 const componentMap = {
@@ -70,7 +71,8 @@ const componentMap = {
   [RouterFormEnum.FACTORY_EDIT]: FactoryFormComponent,
   [RouterFormEnum.HANDGUN_NEW]: HandGunFormComponent,
   [RouterFormEnum.HANDGUN_EDIT]: HandGunFormComponent,
-  [RouterFormEnum.RIFFLE_NEW]: RiffleFormComponent
+  [RouterFormEnum.RIFFLE_NEW]: RiffleFormComponent,
+  [RouterFormEnum.RIFFLE_EDIT]: RiffleFormComponent
 }
 
 const formComponent = computed(() => componentMap[route.name as RouterFormEnum])

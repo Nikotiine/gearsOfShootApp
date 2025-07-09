@@ -105,7 +105,6 @@ export const useHandGunStore = defineStore('hand-gun', () => {
     _deleteMutation.mutate(id)
   }
   function useHandGunForm(id?: string) {
-    console.log('useHandGunForm', id)
     const emptyForm: CreateHandGunDto = {
       type: getWeaponTypeDto(),
       caliber: getCaliberDto(),
@@ -146,8 +145,7 @@ export const useHandGunStore = defineStore('hand-gun', () => {
       _I18N_PREFIX,
       id,
       (data) => ({
-        ...data,
-        typeId: data.type.id
+        ...data
       })
     )
   }

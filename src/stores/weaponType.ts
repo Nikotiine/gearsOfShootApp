@@ -58,7 +58,6 @@ export const useWeaponTypeStore = defineStore('weaponType', () => {
     })
   const _fetchAll = async () => {
     const res = await api.api.weaponTypeControllerFindAllWeaponTypes()
-    console.log(res.data)
     return res.data
   }
   const getAllQuery = () => {

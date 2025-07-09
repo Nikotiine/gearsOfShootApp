@@ -179,6 +179,7 @@
       </InputGroup>
 
       <trigger-type-input-select
+        required
         :initial-value="form.triggerType?.id ?? 0"
         @on-select="(event) => (form.triggerType = event)"
       />
@@ -262,6 +263,25 @@
           :disabled="isRevolver"
         />
       </InputGroup>
+      <InputGroup class="w-full">
+        <input-group-optional-icon />
+        <input-group-check-box
+          input-id="isAdjustableBackSight"
+          label="isAdjustableBackSight"
+          :i18n-prefix="i18Prefix"
+          @checked="(event) => (form.isAdjustableBackSight = event)"
+          :checked="form.isAdjustableBackSight"
+          size="medium"
+        />
+        <input-group-check-box
+          input-id="isAdjustableFrontSight"
+          label="isAdjustableFrontSight"
+          @checked="(event) => (form.isAdjustableFrontSight = event)"
+          :checked="form.isAdjustableFrontSight"
+          :i18n-prefix="i18Prefix"
+          size="medium"
+        />
+      </InputGroup>
     </div>
     <div class="p-4">
       <Textarea
@@ -275,7 +295,7 @@
     </div>
 
     <div class="text-center">
-      <Button type="submit" :label="t(buttonLabel)"></Button>
+      <Button type="submit" :label="t(buttonLabel)" :disabled="!isValidForm"></Button>
     </div>
   </form>
 </template>
@@ -287,7 +307,6 @@ import InputGroupAddon from 'primevue/inputgroupaddon'
 import { computed, ref } from 'vue'
 import Button from 'primevue/button'
 import Textarea from 'primevue/textarea'
-import { useWeaponStore } from '@/stores/weapon'
 import { useHandGunStore } from '@/stores/hand-gun'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 import InputGroupText from '@/components/__form/InputGroupText.vue'
@@ -306,13 +325,14 @@ import TriggerTypeInputSelect from '@/components/__form/__specific_select/Trigge
 import { WeaponEnum } from '@/enum/weapon.enum'
 import WeaponTypeInputSelect from '@/components/__form/__specific_select/WeaponTypeInputSelect.vue'
 import LegalisationCategoryInputSelect from '@/components/__form/__specific_select/LegalisationCategoryInputSelect.vue'
+import type { FormStatus } from '@/types/form-status.type'
 
-const store = useWeaponStore()
 const handGunStore = useHandGunStore()
 const i18Prefix = handGunStore.getI18NPrefix
 
 const { id } = defineProps<{
   id?: string
+  formStatus: FormStatus
 }>()
 const { t } = useI18n()
 const buttonLabel = ref('global.save')
@@ -332,6 +352,24 @@ const isInvalidMaxTriggerValue = computed(() => {
 
 const isRevolver = computed(() => {
   return form.value.type.name === WeaponEnum.REVLOVER
+})
+/**
+ * Validators du formulaire
+ */
+const isValidForm = computed(() => {
+  let isValid: boolean = false
+  if (
+    form.value.name &&
+    form.value.caliber.id > 0 &&
+    form.value.factory.id > 0 &&
+    form.value.barrelLength > 0 &&
+    form.value.barrelType.id > 0 &&
+    form.value.percussionType.id > 0 &&
+    form.value.triggerType.id > 0
+  ) {
+    isValid = true
+  }
+  return isValid
 })
 </script>
 

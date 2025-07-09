@@ -1,18 +1,19 @@
 import { defineStore } from 'pinia'
-import type {
-  CaliberDto,
-  ColorDto,
-  FactoryDto,
-  LegislationCategoryDto,
-  MaterialDto,
-  MLockOptionDto,
-  OpticReadyPlateDto,
-  PercussionTypeDto,
-  RailSizeDto,
-  ThreadedSizeDto,
-  WeaponBarrelTypeDto,
-  WeaponTriggerTypeDto,
-  WeaponTypeDto
+import {
+  type CaliberDto,
+  type ColorDto,
+  type FactoryDto,
+  type LegislationCategoryDto,
+  type MaterialDto,
+  type MLockOptionDto,
+  type OpticReadyPlateDto,
+  type PercussionTypeDto,
+  type RailSizeDto,
+  type ThreadedSizeDto,
+  type WeaponBarrelTypeDto,
+  type WeaponTriggerTypeDto,
+  type WeaponTypeDto,
+  WeaponTypeDtoTypeEnum
 } from '@/api/Api'
 
 import { ref } from 'vue'
@@ -26,7 +27,8 @@ export const useWeaponStore = defineStore('weapon', () => {
       mode: {
         id: 0,
         name: ''
-      }
+      },
+      type: WeaponTypeDtoTypeEnum.Riffle
     },
     category: {
       id: 0,

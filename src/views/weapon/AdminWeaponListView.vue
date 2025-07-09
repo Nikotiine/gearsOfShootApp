@@ -13,9 +13,9 @@
 import RiffleListComponent from '@/components/__weapon/riffle/RiffleTableComponent.vue'
 import { computed } from 'vue'
 import HandGunListComponent from '@/components/__weapon/handgun/HandGunTableComponent.vue'
-import type { WeaponViewType } from '@/views/weapon/AdminWeaponView.vue'
-import { WeaponEnum } from '@/enum/weapon.enum'
 
+import { WeaponEnum } from '@/enum/weapon.enum'
+export type WeaponViewType = 'riffle' | 'handgun'
 const { category, type } = defineProps<{
   category: string
   type: WeaponViewType
