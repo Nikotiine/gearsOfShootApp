@@ -1,6 +1,7 @@
 import { useI18n } from 'vue-i18n'
+import type { FocalPlaneDto } from '@/api/Api'
 
-export type NumberFormatterType = 'mm' | 'cm' | 'pcs' | 'cps' | 'speed' | 'moa'
+export type NumberFormatterType = 'mm' | 'cm' | 'pcs' | 'cps' | 'speed' | 'moa' | 'yrd'
 export function NumberFormatter(value: number, format: NumberFormatterType): string {
   const { t } = useI18n()
   if (value === 0) {
@@ -38,4 +39,22 @@ export function VerifyFieldIsNotNull(value: string | number | null): string {
 
 export function ZoomFormatter(min: number, max: number, lensDiameter: number): string {
   return `${min}-${max} X ${lensDiameter}`
+}
+
+export function FocalPlaneFormatter(focalPlane: FocalPlaneDto): string {
+  const { t } = useI18n()
+  return `${t('formatter.' + focalPlane.name)} (${focalPlane.name})`
+}
+
+export function ParallaxFormatter(
+  isAdjustable: boolean,
+  min: number | null,
+  max: number | null
+): string {
+  const { t } = useI18n()
+  if (!isAdjustable || min === null || max === null || min === 0) {
+    return t('global.no')
+  } else {
+    return `${t('global.yes')} ${t('formatter.setup')} ${NumberFormatter(min, 'yrd')} ${t('formatter.to')} ${NumberFormatter(max, 'yrd')}`
+  }
 }

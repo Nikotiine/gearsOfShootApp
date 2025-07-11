@@ -9,14 +9,18 @@
       <Tabs value="0">
         <TabList>
           <Tab value="0">{{ t('global.importantInformation') }}</Tab>
-          <Tab value="1">{{ t('global.description') }}</Tab>
-          <Tab value="2">{{ t('global.associatedProducts') }}</Tab>
+          <Tab value="1">{{ t('global.otherInformation') }}</Tab>
+          <Tab value="2">{{ t('global.description') }}</Tab>
+          <Tab value="3">{{ t('global.associatedProducts') }}</Tab>
         </TabList>
         <TabPanels>
           <TabPanel value="0">
             <TabCardComponent :props="importantInfo" v-if="importantInfo" />
           </TabPanel>
           <TabPanel value="1">
+            <TabCardComponent :props="otherInformation" v-if="otherInformation" />
+          </TabPanel>
+          <TabPanel value="2">
             <p>
               {{
                 optic.description && optic.description.length > 0
@@ -25,80 +29,11 @@
               }}
             </p>
           </TabPanel>
-          <TabPanel value="2">
+          <TabPanel value="3">
             <p>// Feature</p>
           </TabPanel>
         </TabPanels>
       </Tabs>
-      <!--      <div class="space-y-4">
-        <p>
-          <span class="field-capitalise">{{ t('global.category') }}</span> : {{ data.minZoom }} -
-          {{ data.maxZoom }} X {{ data.lensDiameter }}
-        </p>
-
-        <p>
-          <span class="field-capitalise">{{ t('optic.bodyDiameter') }}</span> :
-
-          {{ data.bodyDiameter }}
-        </p>
-
-        <p>
-          <span class="field-capitalise">{{ t('global.factory') }}</span> :
-          {{ data.factory.name }}
-        </p>
-
-        <p>
-          <span class="field-capitalise">{{ t('global.model') }}</span> :
-          {{ data.name }}
-        </p>
-
-        <p>
-          <span class="field-capitalise">{{ t('optic.focalPlane') }}</span>
-          :
-          {{ data.focalPlane.name }}
-        </p>
-        <p>
-          <span class="field-capitalise">{{ t('global.length') }}</span>
-          :
-          {{ data.length }}
-        </p>
-        <p>
-          <span class="field-capitalise">{{ t('optic.maxElevation') }}</span>
-          :
-          {{ data.maxElevation }}
-        </p>
-        <p>
-          <span class="field-capitalise">{{ t('optic.maxDrift') }}</span>
-          :
-          {{ data.maxDrift }}
-        </p>
-
-        <p>
-          <span class="field-capitalise">{{ t('optic.opticUnit') }}</span>
-          :
-          {{ data.opticUnit.name }}
-        </p>
-        <p>
-          <span class="field-capitalise">{{ t('optic.clickValue') }}</span>
-          :
-          {{ data.valueOfOneClick }}
-        </p>
-        <p>
-          <span class="field-capitalise">{{ t('optic.eyeRelief') }}</span>
-          :
-          {{ data.eyeRelief }}
-        </p>
-
-        <p>
-          <span class="field-capitalise">{{ t('global.reference') }}</span>
-          {{ data.reference }}
-        </p>
-
-        <p v-if="data.description">
-          <span class="field-capitalise">{{ t('global.description') }}</span>
-          :{{ data.description }}
-        </p>
-      </div>-->
     </div>
   </div>
 </template>
@@ -106,7 +41,13 @@
 import { useOpticStore } from '@/stores/optic'
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
-import { NumberFormatter, ZoomFormatter } from '@/shared/utils/formatter.utils'
+import {
+  BooleanFormatter,
+  FocalPlaneFormatter,
+  NumberFormatter,
+  ParallaxFormatter,
+  ZoomFormatter
+} from '@/shared/utils/formatter.utils'
 import TabPanels from 'primevue/tabpanels'
 import Tab from 'primevue/tab'
 import TabCardComponent from '@/components/__tabs/TabCardComponent.vue'
@@ -120,7 +61,7 @@ const { id } = defineProps<{
   id: string
 }>()
 
-const { data: optic, isSuccess } = store.getById(id)
+const { data: optic } = store.getById(id)
 const importantInfo = computed(() => {
   if (!optic.value) return undefined
   return [
@@ -134,12 +75,25 @@ const importantInfo = computed(() => {
     },
     {
       label: t('optic.focalPlane'),
-      title: optic.value.focalPlane.name
+      title: FocalPlaneFormatter(optic.value.focalPlane)
     },
     {
       label: t('optic.denomination'),
       title: ZoomFormatter(optic.value.minZoom, optic.value.maxZoom, optic.value.lensDiameter)
     },
+    {
+      label: t('optic.opticType'),
+      title: optic.value.opticType.name
+    },
+    {
+      label: t('global.reference'),
+      title: optic.value.reference
+    }
+  ]
+})
+const otherInformation = computed(() => {
+  if (!optic.value) return undefined
+  return [
     {
       label: t('optic.opticUnit'),
       title: optic.value.opticUnit.name
@@ -148,10 +102,17 @@ const importantInfo = computed(() => {
       label: t('optic.clickValue'),
       title: optic.value.valueOfOneClick
     },
-
     {
       label: t('global.length'),
       title: NumberFormatter(optic.value.length, 'cm')
+    },
+    {
+      label: t('optic.bodyDiameter'),
+      title: NumberFormatter(optic.value.bodyDiameter, 'mm')
+    },
+    {
+      label: t('optic.lensDiameter'),
+      title: NumberFormatter(optic.value.lensDiameter, 'mm')
     },
     {
       label: t('optic.maxElevation'),
@@ -161,7 +122,6 @@ const importantInfo = computed(() => {
       label: t('optic.maxDrift'),
       title: NumberFormatter(optic.value.maxDrift, 'moa')
     },
-
     {
       label: t('optic.minZoom'),
       title: optic.value.minZoom
@@ -169,6 +129,22 @@ const importantInfo = computed(() => {
     {
       label: t('optic.maxZoom'),
       title: optic.value.maxZoom
+    },
+    {
+      label: t('optic.isParallax'),
+      title: ParallaxFormatter(
+        optic.value.isParallax,
+        optic.value.minParallax,
+        optic.value.maxParallax
+      )
+    },
+    {
+      label: t('optic.eyeRelief'),
+      title: NumberFormatter(optic.value.eyeRelief, 'cm')
+    },
+    {
+      label: t('optic.isCollarsProvided'),
+      title: BooleanFormatter(optic.value.isCollarsProvided)
     }
   ]
 })
