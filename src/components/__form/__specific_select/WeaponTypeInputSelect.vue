@@ -90,7 +90,6 @@ watch(
 watch(
   () => initialValue,
   (value) => {
-    console.log('initialValue25', initialValue)
     typeId.value = value
   }
 )

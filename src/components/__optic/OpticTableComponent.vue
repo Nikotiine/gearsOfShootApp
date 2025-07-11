@@ -1,5 +1,5 @@
 <template>
-  <div class="card p-4" v-if="store.prerequisiteOpticQuery.isSuccess">
+  <div class="card p-4">
     <h2 class="text-center mt-2 text-2xl">{{ t('optic.list') }}</h2>
     <div class="text-red-500 text-center" v-if="isError">{{ t('global.isLoadingError') }}</div>
     <DataTable
@@ -9,7 +9,7 @@
       :rows="10"
       dataKey="id"
       filterDisplay="row"
-      :loading="storeAreLoading.value"
+      :loading="isLoading"
       :globalFilterFields="['name', 'factory.name', 'type.name', 'reference']"
     >
       <template #header>
@@ -52,7 +52,7 @@
           <Select
             v-model="filterModel.value"
             @change="filterCallback()"
-            :options="factories$?.data"
+            :options="factories$"
             optionLabel="name"
             optionValue="name"
             placeholder="Marque"
@@ -69,13 +69,13 @@
         style="min-width: 14rem"
       >
         <template #body="{ data }">
-          {{ data.type.name }}
+          {{ data.opticType.name }}
         </template>
         <template #filter="{ filterModel, filterCallback }">
           <Select
             v-model="filterModel.value"
             @change="filterCallback()"
-            :options="types$"
+            :options="opticTypes$"
             placeholder="Type"
             optionLabel="name"
             optionValue="name"
@@ -145,8 +145,7 @@ import InputIcon from 'primevue/inputicon'
 import Select from 'primevue/select'
 import { useI18n } from 'vue-i18n'
 import { FilterMatchMode } from '@primevue/core/api'
-import { computed, ref } from 'vue'
-import { storeToRefs } from 'pinia'
+import { ref } from 'vue'
 import { useFactoryStore } from '@/stores/factory'
 
 import ActionMenuComponent, {
@@ -154,16 +153,20 @@ import ActionMenuComponent, {
 } from '@/components/__table/ActionMenuComponent.vue'
 import { RouterEnum } from '@/enum/router.enum'
 import { useRouter } from 'vue-router'
+import { useOpticTypeStore } from '@/stores/optic-type.store'
+import { storeToRefs } from 'pinia'
 
 const { t } = useI18n()
 const router = useRouter()
 const store = useOpticStore()
 const factoryStore = useFactoryStore()
-const { data: factories$, isLoading: getFactoriesIsSuccess } =
-  factoryStore.getFactoriesByType('optic')
-const { types$ } = storeToRefs(store)
+const opticTypeStore = useOpticTypeStore()
+factoryStore.getFactoriesByType('optic')
 
+opticTypeStore.getAll()
 const { data: optics$, isError, isLoading, refetch } = store.getAll()
+const { factories$ } = storeToRefs(factoryStore)
+const { opticTypes$ } = storeToRefs(opticTypeStore)
 
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -174,16 +177,13 @@ const filters = ref({
   reference: { value: null, matchMode: FilterMatchMode.STARTS_WITH }
 })
 
-const storeAreLoading = computed(() => {
-  return getFactoriesIsSuccess && isLoading
-})
-
 const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
   switch (event) {
     case 'view':
       router.push({ name: RouterEnum.OPTIC_DETAIL, params: { id: id } })
       break
     case 'edit':
+      console.log(id)
       router.push({ name: RouterEnum.OPTIC_EDIT, params: { id: id } })
       break
     case true:

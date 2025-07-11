@@ -1,12 +1,14 @@
 <template>
-  <h2 class="text-2xl font-bold mb-4 text-blue-500 text-center mt-10" v-if="handgun">
-    <span class="field-capitalise-underlined-semi-bold text-white">{{ t('global.handgun') }}</span>
+  <h2 class="text-2xl font-bold mb-4 text-center mt-10" v-if="handgun">
+    <span class="field-capitalise-underlined-semi-bold text-blue-500">{{
+      t('global.handgun')
+    }}</span>
     :
     {{ handgun.factory.name }}
     {{ handgun.name }}
   </h2>
 
-  <div class="p-6 shadow-md rounded-lg max-w-md mt-6" v-if="handgun">
+  <div class="p-6 max-w-md mt-6" v-if="handgun">
     <Tabs value="0">
       <TabList>
         <Tab value="0">{{ t('global.importantInformation') }}</Tab>
@@ -40,7 +42,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { useHandGunStore } from '@/stores/hand-gun'
-import TabCardComponent from '@/components/__weapon/shared/TabCardComponent.vue'
+import TabCardComponent from '@/components/__tabs/TabCardComponent.vue'
 import Tabs from 'primevue/tabs'
 import Tab from 'primevue/tab'
 import TabList from 'primevue/tablist'
@@ -160,7 +162,7 @@ const otherProps = computed(() => {
       label: t('weapon.buttColor'),
       title: VerifyFieldIsNotNull(handgun.value.buttColor?.name)
     },
-    /* TODO: Mettre vidée ouverte en bdd
+    /* TODO: Mettre visée ouverte en bdd
  {
       label: t('weapon.isOpenAim'),
       title: BooleanFormatter(handgun.value.isOpenAim)

@@ -52,7 +52,7 @@
           <Select
             v-model="filterModel.value"
             @change="filterCallback()"
-            :options="factories$?.data"
+            :options="factories$"
             optionLabel="name"
             optionValue="name"
             placeholder="Marque"
@@ -75,7 +75,7 @@
           <Select
             v-model="filterModel.value"
             @change="filterCallback()"
-            :options="calibers$?.data"
+            :options="calibers$"
             placeholder="Calibre"
             optionLabel="name"
             optionValue="name"
@@ -121,7 +121,7 @@ import DataTable from 'primevue/datatable'
 import { useAmmunitionStore } from '@/stores/ammunition'
 import { useCaliberStore } from '@/stores/caliber'
 import { useFactoryStore } from '@/stores/factory'
-import { computed, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import { FilterMatchMode } from '@primevue/core/api'
 import { useI18n } from 'vue-i18n'
 import { RouterEnum } from '@/enum/router.enum'

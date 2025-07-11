@@ -14,6 +14,7 @@ import { getFactoryDto } from '@/shared/api-dto/get-factory.dto'
 import { getLegalisationCategoryDto } from '@/shared/api-dto/get-legalisation-category.dto'
 import { getBarrelTypeDto } from '@/shared/api-dto/get-barrel-type.dto'
 import { getPercussionTypeDto } from '@/shared/api-dto/get-percussion-type.dto'
+import { getTriggerTypeDto } from '@/shared/api-dto/get-trigger-type.dto'
 
 export const useHandGunStore = defineStore('hand-gun', () => {
   // Appel API
@@ -135,7 +136,7 @@ export const useHandGunStore = defineStore('hand-gun', () => {
       isExternalHammer: false,
       slideMaterial: null,
       slideColor: null,
-      triggerType: null
+      triggerType: getTriggerTypeDto()
     }
     return useFormHandler<CreateHandGunDto, AxiosResponse<HandGunDto>>(
       emptyForm,

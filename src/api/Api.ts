@@ -876,14 +876,11 @@ export interface OpticTypeDto {
 }
 
 export interface OpticDto {
-  id: number
   name: string
   factory: FactoryDto
   /** @example "Une description de l optique ..." */
   description: string | null
-  isCollarsProvided: boolean
   maxZoom: number
-  length: number
   minZoom: number
   maxDrift: number
   maxElevation: number
@@ -895,20 +892,17 @@ export interface OpticDto {
   isParallax: boolean
   opticUnit: OpticUnitDto
   focalPlane: FocalPlaneDto
-  type: OpticTypeDto
-  reference: string
+  opticType: OpticTypeDto
+  length: number
   eyeRelief: number
-}
-
-export interface ListOfPrerequisitesOpticDto {
-  types: OpticTypeDto[]
-  units: OpticUnitDto[]
-  focalPlanes: FocalPlaneDto[]
+  isCollarsProvided: boolean
+  id: number
+  reference: string
 }
 
 export interface CreateOpticDto {
   name: string
-  factoryId: number
+  factory: FactoryDto
   /** @example "Une description de l optique ..." */
   description: string | null
   maxZoom: number
@@ -921,9 +915,9 @@ export interface CreateOpticDto {
   minParallax: number
   maxParallax: number
   isParallax: boolean
-  opticUnitId: number
-  focalPlaneId: number
-  opticTypeId: number
+  opticUnit: OpticUnitDto
+  focalPlane: FocalPlaneDto
+  opticType: OpticTypeDto
   length: number
   eyeRelief: number
   isCollarsProvided: boolean
@@ -931,7 +925,7 @@ export interface CreateOpticDto {
 
 export interface UpdateOpticDto {
   name: string
-  factoryId: number
+  factory: FactoryDto
   /** @example "Une description de l optique ..." */
   description: string | null
   maxZoom: number
@@ -944,9 +938,9 @@ export interface UpdateOpticDto {
   minParallax: number
   maxParallax: number
   isParallax: boolean
-  opticUnitId: number
-  focalPlaneId: number
-  opticTypeId: number
+  opticUnit: OpticUnitDto
+  focalPlane: FocalPlaneDto
+  opticType: OpticTypeDto
   length: number
   eyeRelief: number
   isCollarsProvided: boolean
@@ -2665,22 +2659,6 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
-     * @description Retourne la liste des pre-requis necesssaire a la creation d une optique
-     *
-     * @tags Optic
-     * @name OpticControllerFindPrerequisitesOpticList
-     * @summary Liste des pre-requis
-     * @request GET:/api/optic/prerequisites
-     */
-    opticControllerFindPrerequisitesOpticList: (params: RequestParams = {}) =>
-      this.request<ListOfPrerequisitesOpticDto, any>({
-        path: `/api/optic/prerequisites`,
-        method: 'GET',
-        format: 'json',
-        ...params
-      }),
-
-    /**
      * @description Creer une nouvelle optique et retourne son dto en reponse
      *
      * @tags Optic
@@ -2737,12 +2715,12 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags OpticType
      * @name OpticTypeControllerFindAll
-     * @summary Liste complete
-     * @request GET:/api/optic-type
+     * @summary Liste complète
+     * @request GET:/api/optic-type/all
      */
     opticTypeControllerFindAll: (params: RequestParams = {}) =>
       this.request<OpticTypeDto[], any>({
-        path: `/api/optic-type`,
+        path: `/api/optic-type/all`,
         method: 'GET',
         format: 'json',
         ...params
@@ -2789,7 +2767,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags OpticType
      * @name OpticTypeControllerDelete
-     * @summary Suppression logique
+     * @summary Suppresion logique
      * @request DELETE:/api/optic-type/{id}
      */
     opticTypeControllerDelete: (id: number, params: RequestParams = {}) =>
@@ -2884,6 +2862,38 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       this.request<ApiDeleteResponseDto, any>({
         path: `/api/optic-collar/${id}`,
         method: 'DELETE',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne la liste complete des plans focal
+     *
+     * @tags OpticFocalPlane
+     * @name OpticFocalPlaneControllerFindAll
+     * @summary Liste complète
+     * @request GET:/api/optic-focal-plane/all
+     */
+    opticFocalPlaneControllerFindAll: (params: RequestParams = {}) =>
+      this.request<FocalPlaneDto[], any>({
+        path: `/api/optic-focal-plane/all`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne la liste complete des plans focal
+     *
+     * @tags OpticUnit
+     * @name OpticUnitControllerFindAll
+     * @summary Liste complète
+     * @request GET:/api/optic-unit/all
+     */
+    opticUnitControllerFindAll: (params: RequestParams = {}) =>
+      this.request<OpticUnitDto[], any>({
+        path: `/api/optic-unit/all`,
+        method: 'GET',
         format: 'json',
         ...params
       }),

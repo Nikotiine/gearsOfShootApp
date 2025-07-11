@@ -1,11 +1,14 @@
 <template>
-  <h2 class="text-2xl font-bold mb-4 text-blue-500 text-center mt-10" v-if="riffle">
-    <span class="field-capitalise-underlined-semi-bold text-white">{{ t('global.riffle') }}</span> :
+  <h2 class="text-2xl font-bold mb-4 text-center mt-10" v-if="riffle">
+    <span class="field-capitalise-underlined-semi-bold text-blue-500">{{
+      t('global.riffle')
+    }}</span>
+    :
     {{ riffle.factory.name }}
     {{ riffle.name }}
   </h2>
 
-  <div class="p-6 shadow-md rounded-lg max-w-md mt-6" v-if="riffle">
+  <div class="p-6 max-w-md mt-6" v-if="riffle">
     <Tabs value="0">
       <TabList>
         <Tab value="0">{{ t('global.importantInformation') }}</Tab>
@@ -46,7 +49,7 @@ import TabList from 'primevue/tablist'
 import Tab from 'primevue/tab'
 import TabPanels from 'primevue/tabpanels'
 import TabPanel from 'primevue/tabpanel'
-import TabCardComponent from '@/components/__weapon/shared/TabCardComponent.vue'
+import TabCardComponent from '@/components/__tabs/TabCardComponent.vue'
 import {
   BooleanFormatter,
   NumberFormatter,

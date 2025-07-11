@@ -19,7 +19,7 @@ export const useFactoryStore = defineStore('factory', () => {
   // TOAST
   const { successMessage } = useToastStore()
   // Refs
-
+  const factories = ref<FactoryDto[]>([])
   const factoryTypes = ref<FactoryTypeDto[]>([])
 
   const mutationSuccess = ref(false)
@@ -81,10 +81,12 @@ export const useFactoryStore = defineStore('factory', () => {
       return _fetchAll()
     }
     const res = await api.api.factoryControllerFindByType(type)
+    factories.value = res.data
     return res.data
   }
   const _fetchAll = async () => {
     const res = await api.api.factoryControllerFindAll()
+    factories.value = res.data
     return res.data
   }
 
@@ -128,7 +130,8 @@ export const useFactoryStore = defineStore('factory', () => {
     getFactoriesByType: getFactoriesByType,
     delete: deleteFunction,
     mutationSuccess,
-    getI18NPrefix: getI18NPrefix(_I18N_PREFIX)
+    getI18NPrefix: getI18NPrefix(_I18N_PREFIX),
+    factories$: factories
   }
 })
 export type FactoryType = 'weapon' | 'ammunition' | 'optic' | 'magazine' | 'accessory'

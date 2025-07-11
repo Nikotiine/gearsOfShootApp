@@ -1,50 +1,27 @@
 <template>
   <div class="card">
-    <h2 class="text-center mt-2 text-2xl">{{ t('optic.save') }}</h2>
+    <h2 class="text-center mt-2 text-2xl">{{ t(i18nPrefix + formStatus) }}</h2>
     <form @submit.prevent="submit">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4" v-if="storesAreLoaded">
-        <InputGroup>
-          <input-group-required-icon :is-validate="form.factoryId > 0" />
-          <input-group-select
-            :options="factories$"
-            label="factory"
-            @option-id="(event) => (form.factoryId = event)"
-            required
-            filter
-            input-id="factoryId"
-            :initial-value="form.factoryId"
-          />
-          <input-group-addon-open-drawer-button type="factory" factory-type="optic" />
-        </InputGroup>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
+        <factory-input-select
+          :initial-value="form.factory.id"
+          can-add-new
+          required
+          factory-type="optic"
+          @on-select="(event) => (form.factory = event)"
+        />
 
-        <InputGroup>
-          <input-group-required-icon :is-validate="form.opticTypeId > 0" />
-          <input-group-select
-            :options="store.prerequisiteOpticQuery.data?.data.types"
-            label="opticType"
-            :i18n-prefix="i18nPrefix"
-            @option-id="(event) => (form.opticTypeId = event)"
-            required
-            placeholder="opticType"
-            filter
-            input-id="opticTypeId"
-            :initial-value="form.opticTypeId"
-          />
-          <!--          <input-group-addon-open-drawer-button type="factory" :open-drawer="openDrawer" />-->
-        </InputGroup>
-        <InputGroup>
-          <input-group-required-icon :is-validate="form.focalPlaneId > 0" />
-          <input-group-select
-            :options="store.prerequisiteOpticQuery.data?.data.focalPlanes"
-            label="focalPlane"
-            :i18n-prefix="i18nPrefix"
-            placeholder="focalPlane"
-            @option-id="(event) => (form.focalPlaneId = event)"
-            required
-            input-id="focalPlaneId"
-            :initial-value="form.focalPlaneId"
-          />
-        </InputGroup>
+        <optic-type-input-select
+          required
+          :initial-value="form.opticType.id"
+          @on-select="(event) => (form.opticType = event)"
+        />
+
+        <focal-plane-input-select
+          required
+          :initial-value="form.focalPlane.id"
+          @on-select="(event) => (form.focalPlane = event)"
+        />
 
         <InputGroup>
           <input-group-required-icon :is-validate="form.name.length >= 3" />
@@ -60,19 +37,11 @@
           />
         </InputGroup>
 
-        <InputGroup>
-          <input-group-required-icon :is-validate="form.opticUnitId > 0" />
-          <input-group-select
-            :options="store.prerequisiteOpticQuery.data?.data.units"
-            label="opticUnit"
-            @option-id="(event) => (form.opticUnitId = event)"
-            required
-            placeholder="opticUnit"
-            :i18n-prefix="i18nPrefix"
-            input-id="opticUnitId"
-            :initial-value="form.opticUnitId"
-          />
-        </InputGroup>
+        <optic-unit-input-select
+          required
+          :initial-value="form.opticUnit.id"
+          @on-select="(event) => (form.opticUnit = event)"
+        />
 
         <InputGroup>
           <input-group-required-icon :is-validate="form.valueOfOneClick > 0" />
@@ -85,7 +54,7 @@
             required
             input-id="valueOfOneClick"
             :initial-value="form.valueOfOneClick"
-            :disabled="form.opticUnitId === 0"
+            :disabled="form.opticUnit.id === 0"
           />
         </InputGroup>
         <InputGroup>
@@ -275,24 +244,23 @@ import InputGroup from 'primevue/inputgroup'
 import Textarea from 'primevue/textarea'
 import InputGroupAddon from 'primevue/inputgroupaddon'
 import { useI18n } from 'vue-i18n'
-import { storeToRefs } from 'pinia'
 import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
-import InputGroupAddonOpenDrawerButton from '@/components/__form/InputGroupAddonOpenDrawerButton.vue'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 import InputGroupText from '@/components/__form/InputGroupText.vue'
 import InputGroupNumber from '@/components/__form/InputGroupNumber.vue'
 import InputGroupCheckBox from '@/components/__form/InputGroupCheckBox.vue'
 import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.vue'
-import { useFactoryStore } from '@/stores/factory'
 import type { FormStatus } from '@/types/form-status.type'
 import SaveButton from '@/components/__form/SaveButton.vue'
+import FactoryInputSelect from '@/components/__form/__specific_select/FactoryInputSelect.vue'
+import OpticTypeInputSelect from '@/components/__form/__specific_select/OpticTypeInputSelect.vue'
+import FocalPlaneInputSelect from '@/components/__form/__specific_select/FocalPlaneInputSelect.vue'
+import OpticUnitInputSelect from '@/components/__form/__specific_select/OpticUnitInputSelect.vue'
 
 const store = useOpticStore()
-const factoryStore = useFactoryStore()
+
 const i18nPrefix = store.getI18nPrefix()
-const { isSuccess: factoriesQueryIsSuccess } = factoryStore.getFactoriesByType('optic')
-const { factories$ } = storeToRefs(factoryStore)
-const { units$ } = storeToRefs(store)
+
 const { t } = useI18n()
 
 const { id } = defineProps<{
@@ -304,9 +272,9 @@ const isFormValid = computed(() => {
   let isValid: boolean = false
   if (
     form.value.name &&
-    form.value.factoryId > 0 &&
-    form.value.opticTypeId > 0 &&
-    form.value.focalPlaneId > 0 &&
+    form.value.factory.id > 0 &&
+    form.value.opticType.id > 0 &&
+    form.value.focalPlane.id > 0 &&
     form.value.bodyDiameter > 0 &&
     form.value.lensDiameter > 0 &&
     form.value.valueOfOneClick > 0
@@ -323,15 +291,12 @@ const clickValueOption = computed(() => {
     { id: 3, name: '1/2' }
   ]
   const mradOptions = [{ id: 1, name: '1/10' }]
-  const opticUnit = units$.value.find((u) => u.id === form.value.opticUnitId)
-  if (opticUnit && opticUnit.name === 'MOA') {
+
+  if (form.value.opticUnit.name === 'MOA') {
     return moaOptions
   } else {
     return mradOptions
   }
-})
-const storesAreLoaded = computed(() => {
-  return store.prerequisiteOpticQuery.isSuccess && factoriesQueryIsSuccess
 })
 </script>
 

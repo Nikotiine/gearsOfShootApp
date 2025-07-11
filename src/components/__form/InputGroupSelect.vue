@@ -74,7 +74,6 @@ const isRequiredSelect = computed(() => {
 watch(
   () => initialValue,
   (newValue) => {
-    console.log('newValue', newValue)
     value.value = newValue
     hasFocused.value = false
   }

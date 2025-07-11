@@ -18,6 +18,7 @@ export const useWeaponMagazineStore = defineStore('weaponMagazine', () => {
   // TOAST
   const { successMessage } = useToastStore()
   // Refs
+  const weapons = ref<any>([])
   const magazines = ref<WeaponMagazineDto[]>([])
   const magazine = ref<WeaponMagazineDto>()
   // Private Attibute
@@ -60,7 +61,7 @@ export const useWeaponMagazineStore = defineStore('weaponMagazine', () => {
     useQuery({
       queryKey: [_GET_ALL_BY_CATEGORY_FN, categoryId],
       queryFn: async () => {
-        await _fetchAllByCategoryId(categoryId)
+        return await _fetchAllByCategoryId(categoryId)
       },
       enabled: !!categoryId
     })
@@ -136,16 +137,36 @@ export const useWeaponMagazineStore = defineStore('weaponMagazine', () => {
   const deleteFunction = (id: number) => {
     _deleteMagazineMutation.mutate(id)
   }
+
+  const fetchCompatibleWeapons = async (category: string, type?: string) => {
+    if (!type) return null
+
+    if (type === 'handgun') {
+      weapons.value = await _fetchHandgun(category)
+    }
+    if (type === 'riffle') {
+      weapons.value = await _fetchRiffle(category)
+    }
+  }
+  const _fetchRiffle = async (category: string) => {
+    const res = await api.api.riffleControllerFindAllByCategory(category)
+    return res.data
+  }
+  const _fetchHandgun = async (category: string) => {
+    const res = await api.api.handGunControllerFindAllByCategory(category)
+    return res.data
+  }
+
   return {
     getAll: getAllQuery,
     getById: getByIdQuery,
-    create: _createMutation,
     getByFactoryId: getMagazineByFactory,
     getByCategory: getAllByCategoryQuery,
     magazines$: magazines,
     magazine$: magazine,
-    edit: _updateMutation,
     delete: deleteFunction,
-    builder: useWeaponForm
+    builder: useWeaponForm,
+    fetchCompatibleWeapons,
+    compatibleWeapons$: weapons
   }
 })

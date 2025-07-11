@@ -12,6 +12,7 @@ import OpticCollarDetailComponent from '@/components/__optic/OpticCollarDetailCo
 import OpticDetailComponent from '@/components/__optic/OpticDetailComponent.vue'
 import RiffleDetailComponent from '@/components/__weapon/riffle/RiffleDetailComponent.vue'
 import HandGunDetailComponent from '@/components/__weapon/handgun/HandGunDetailComponent.vue'
+import MagazineDetailComponent from '@/components/__weaponMagazine/MagazineDetailComponent.vue'
 const route = useRoute()
 const id = ref<string | undefined>(route.params.id ? (route.params.id as string) : undefined)
 enum DetailRoute {
@@ -20,7 +21,8 @@ enum DetailRoute {
   OPTIC_COLLAR_DETAIL = RouterEnum.OPTIC_COLLAR_DETAIL,
   OPTIC_DETAIL = RouterEnum.OPTIC_DETAIL,
   RIFFLE_DETAIL = RouterEnum.RIFFLE_DETAIL,
-  HANDGUN_DETAIL = RouterEnum.HANDGUN_DETAIL
+  HANDGUN_DETAIL = RouterEnum.HANDGUN_DETAIL,
+  MAGAZINE_DETAIL = RouterEnum.MAGAZINE_DETAIL
 }
 const componentMap = {
   [DetailRoute.RDS_DETAIL]: SoundReducerDetailComponent,
@@ -28,7 +30,8 @@ const componentMap = {
   [DetailRoute.OPTIC_COLLAR_DETAIL]: OpticCollarDetailComponent,
   [DetailRoute.OPTIC_DETAIL]: OpticDetailComponent,
   [DetailRoute.RIFFLE_DETAIL]: RiffleDetailComponent,
-  [DetailRoute.HANDGUN_DETAIL]: HandGunDetailComponent
+  [DetailRoute.HANDGUN_DETAIL]: HandGunDetailComponent,
+  [DetailRoute.MAGAZINE_DETAIL]: MagazineDetailComponent
 }
 const detailComponent = computed(() => componentMap[route.name as DetailRoute])
 </script>

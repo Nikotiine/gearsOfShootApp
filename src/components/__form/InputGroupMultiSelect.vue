@@ -59,6 +59,7 @@ const selectedOptions = ref(initialValue)
 
 const onChange = () => {
   emit('selectedOptions', selectedOptions.value)
+  console.log(selectedOptions.value)
 }
 watch(
   () => clear,

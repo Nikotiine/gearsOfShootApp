@@ -107,9 +107,9 @@ import InputGroup from 'primevue/inputgroup'
 import { useAmmunitionStore } from '@/stores/ammunition'
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
-import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
+
 import InputGroupText from '@/components/__form/InputGroupText.vue'
-import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.vue'
+
 import InputGroupNumber from '@/components/__form/InputGroupNumber.vue'
 
 import type { FormStatus } from '@/types/form-status.type'
@@ -120,6 +120,8 @@ import LegalisationCategoryInputSelect from '@/components/__form/__specific_sele
 import PercussionTypeInputSelect from '@/components/__form/__specific_select/PercussionTypeInputSelect.vue'
 import HeadTypeInputSelect from '@/components/__form/__specific_select/HeadTypeInputSelect.vue'
 import BodyTypeInputSelect from '@/components/__form/__specific_select/BodyTypeInputSelect.vue'
+import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.vue'
+import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 
 const { id } = defineProps<{
   id?: string

@@ -85,10 +85,11 @@
           <input-group-optional-icon :is-completed="selectedCompatibleWeapon.length > 0" />
           <input-group-multi-select
             input-id="compatibleWeaponOptions"
-            label="magazine.compatibleWeaponOptions"
+            label="compatibleWeaponOptions"
+            i18n-prefix="magazine."
             :options="options"
-            :disabled="true"
-            @selected-options="(event) => (selectedCompatibleWeapon = event)"
+            :disabled="options.length < 1"
+            @selected-options="(event) => onSelectCompatibleWeapons(event)"
             :initial-value="selectedCompatibleWeapon"
           />
         </InputGroup>
@@ -113,7 +114,7 @@
 </template>
 <script setup lang="ts">
 import { useWeaponMagazineStore } from '@/stores/weapon-magazine'
-import type { HandGunDto, RiffleDto } from '@/api/Api'
+
 import { computed, ref, watch } from 'vue'
 import InputGroup from 'primevue/inputgroup'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
@@ -129,12 +130,8 @@ import WeaponTypeInputSelect from '@/components/__form/__specific_select/WeaponT
 import LegalisationCategoryInputSelect from '@/components/__form/__specific_select/LegalisationCategoryInputSelect.vue'
 import CaliberInputSelect from '@/components/__form/__specific_select/CaliberInputSelect.vue'
 import MaterialInputSelect from '@/components/__form/__specific_select/MaterialInputSelect.vue'
+import { storeToRefs } from 'pinia'
 
-interface VM {
-  name: string
-  id: number
-  caliberId: number
-}
 const { id, formStatus } = defineProps<{
   id?: string
   formStatus: FormStatus
@@ -142,12 +139,11 @@ const { id, formStatus } = defineProps<{
 const store = useWeaponMagazineStore()
 
 const { form, submit } = store.builder(id)
-const riffles$ = ref<RiffleDto[]>([])
-const handguns$ = ref<HandGunDto[]>([])
-const { t } = useI18n()
 
-const selectedCompatibleWeapon = ref<number[]>([])
-const compatibleWeaponOptions = ref<VM[]>([])
+const { t } = useI18n()
+const { compatibleWeapons$ } = storeToRefs(store)
+const selectedCompatibleWeapon = ref<any>([])
+
 const isFormValid = computed(() => {
   let isValid: boolean = false
   if (
@@ -165,36 +161,30 @@ const isFormValid = computed(() => {
 })
 
 const options = computed(() => {
-  let options = compatibleWeaponOptions.value
+  let options = compatibleWeapons$.value
   if (form.value.caliber.id > 0) {
-    options = options.filter((option) => option.caliberId === form.value.caliber.id)
+    options = options.filter((option: any) => option.caliber.id === form.value.caliber.id)
   }
-
   return options
 })
 
-watch(
-  () => riffles$.value,
-  (value) => {
-    compatibleWeaponOptions.value = value.map((riffle) => {
-      return {
-        id: riffle.id,
-        name: riffle.name,
-        caliberId: riffle.caliber.id
-      }
-    })
+const onSelectCompatibleWeapons = (weapons: any) => {
+  if (form.value.weaponType.type === 'handgun') {
+    form.value.compatibleHandGun = weapons
   }
-)
+  if (form.value.weaponType.type === 'riffle') {
+    form.value.compatibleRiffle = weapons
+  }
+}
+
 watch(
-  () => handguns$.value,
+  () => [form.value.weaponType.type, form.value.category.name],
   (value) => {
-    compatibleWeaponOptions.value = value.map((handgun) => {
-      return {
-        id: handgun.id,
-        name: handgun.name,
-        caliberId: handgun.caliber.id
-      }
-    })
+    const type = value[0]
+    const category = value[1]
+    if (type && category) {
+      store.fetchCompatibleWeapons(category, type)
+    }
   }
 )
 </script>

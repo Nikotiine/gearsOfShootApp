@@ -15,6 +15,10 @@ import { RouterEnum } from '@/enum/router.enum'
 import { useRouter } from 'vue-router'
 import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
+import { getFactoryDto } from '@/shared/api-dto/get-factory.dto'
+import { getFocalPlaneDto } from '@/shared/api-dto/get-focal-plane.dto'
+import { getOpticUnitDto } from '@/shared/api-dto/get-optic-unit.dto'
+import { getOpticTypeDto } from '@/shared/api-dto/get-optic-type.dto'
 
 export const useOpticStore = defineStore('optic', () => {
   // Appel API
@@ -36,18 +40,8 @@ export const useOpticStore = defineStore('optic', () => {
   const _SUMMARY = _I18N_PREFIX + '.summary'
   const _GET_ALL_FN = 'getAllOptic'
   const _GET_BY_ID_FN = 'getOpticById'
-  const _PREREQUISITE_FN = 'prerequisite-optic'
+
   // *******************Methodes***************
-  const queryPrerequisitesOpticList = useQuery({
-    queryKey: [_PREREQUISITE_FN],
-    queryFn: async () => {
-      const res = await api.api.opticControllerFindPrerequisitesOpticList()
-      opticType.value = res.data.types
-      opticUnits.value = res.data.units
-      focalPlanes.value = res.data.focalPlanes
-      return res
-    }
-  })
 
   const getAllOpticsQuery = () =>
     useQuery({
@@ -104,11 +98,12 @@ export const useOpticStore = defineStore('optic', () => {
     })
 
   function useOpticForm(id?: string) {
+    console.log('useOpticForm', id)
     const emptyForm: CreateOpticDto = {
       name: '',
       bodyDiameter: 0,
       description: '',
-      factoryId: 0,
+      factory: getFactoryDto(),
       maxDrift: 0,
       maxElevation: 0,
       isParallax: false,
@@ -118,9 +113,9 @@ export const useOpticStore = defineStore('optic', () => {
       maxParallax: 0,
       lensDiameter: 0,
       valueOfOneClick: 0,
-      focalPlaneId: 0,
-      opticUnitId: 0,
-      opticTypeId: 0,
+      focalPlane: getFocalPlaneDto(),
+      opticUnit: getOpticUnitDto(),
+      opticType: getOpticTypeDto(),
       eyeRelief: 0,
       isCollarsProvided: false,
       length: 0
@@ -133,11 +128,7 @@ export const useOpticStore = defineStore('optic', () => {
       _I18N_PREFIX,
       id,
       (data) => ({
-        ...data,
-        factoryId: data.factory.id,
-        focalPlaneId: data.focalPlane.id,
-        opticUnitId: data.opticUnit.id,
-        opticTypeId: data.type.id
+        ...data
       })
     )
   }
@@ -146,7 +137,6 @@ export const useOpticStore = defineStore('optic', () => {
     return _I18N_PREFIX
   }
   return {
-    prerequisiteOpticQuery: queryPrerequisitesOpticList,
     delete: deleteFunction,
     units$: opticUnits,
     types$: opticType,

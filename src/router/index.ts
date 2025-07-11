@@ -69,7 +69,7 @@ const router = createRouter({
                   path: 'detail/:id',
                   props: true,
                   name: RouterEnum.MAGAZINE_DETAIL,
-                  component: () => import('../views/magazine/AdminMagazineDetailView.vue')
+                  component: () => import('../views/shared/DetailView.vue')
                 },
                 {
                   path: 'list',

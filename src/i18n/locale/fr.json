@@ -103,7 +103,8 @@
     "importantInformation": "Informations importantes",
     "barrelInformation": "Information action canonée",
     "otherInformation": "Autre informations",
-    "associatedProducts": "Produits associés"
+    "associatedProducts": "Produits associés",
+    "associatedWeapons": "Armes associés"
   },
   "weapon": {
     "summary": "Gestion des armes",
@@ -258,7 +259,8 @@
     "bodyDiameter": "Diametre du corps",
     "eyeRelief": "Degagement occulaire",
     "minParallax": "Parallax mini",
-    "maxParallax": "Parallax maxi"
+    "maxParallax": "Parallax maxi",
+    "denomination": "Denomination du zoom"
   },
   "soundNoiseReducer": {
     "save": "Ajouter un nouveau RDS",
@@ -338,6 +340,18 @@
     "name": "Type de percussion",
     "placeholder": "Choisir un type"
   },
+  "opticType": {
+    "name": "Type d'optique",
+    "placeholder": "Choisir un type"
+  },
+  "focalPlane": {
+    "name": "Plan focal",
+    "placeholder": "Choisir un type"
+  },
+  "opticUnit": {
+    "name": "Unite de graduation",
+    "placeholder": "Choisir l'unite"
+  },
   "opticRail": {
     "name": "Type de rail d'optique",
     "placeholder": "Choisir un type"
@@ -383,8 +397,13 @@
   },
   "formatter": {
     "setup": "Réglage de ",
-    "to": "à"
-
+    "to": "à",
+    "cm": "cm",
+    "mm": "mm",
+    "cps": "coups",
+    "pcs": "pieces",
+    "speed": "m/s",
+    "moa": "moa"
   },
   "error": {
     "0001": "Email deja utilisé",
