@@ -1,85 +1,102 @@
 <template>
-  <div class="" v-if="data && isSuccess">
+  <div class="" v-if="rds">
     <h2 class="text-2xl font-bold mb-4 text-blue-500 text-center mt-10">
-      <span class="text-white">{{ t(i18nPrefix + 'detailTitle') }}</span> :
-      {{ data.factory.name }} -
-      {{ data.name }}
+      <span class="text-white">{{ t(i18nPrefix + 'detailTitle') }}</span> : {{ rds.factory.name }} -
+      {{ rds.name }}
     </h2>
 
-    <div class="p-6 shadow-md rounded-lg max-w-md mt-6">
-      <div class="space-y-4">
-        <p>
-          <span class="field-capitalise">{{ t(i18nPrefix + 'caliber') }}</span> :
-
-          {{ data.caliber.name }}
-        </p>
-
-        <p>
-          <span class="field-capitalise">{{ t(i18nPrefix + 'factory') }}</span> :
-          {{ data.factory.name }}
-        </p>
-
-        <p>
-          <span class="field-capitalise">{{ t(i18nPrefix + 'name') }}</span> :
-          {{ data.name }}
-        </p>
-
-        <p>
-          <span class="field-capitalise">{{ t(i18nPrefix + 'threadedSize') }}</span>
-          :
-          {{ data.threadedSize.size }}
-        </p>
-
-        <p>
-          <span class="field-capitalise">{{ t(i18nPrefix + 'diameter') }}</span>
-          :
-          {{ data.diameter }}
-        </p>
-        <p>
-          <span class="field-capitalise">{{ t(i18nPrefix + 'chicane') }}</span>
-          :
-          {{ data.chicane }}
-        </p>
-
-        <p>
-          <span class="field-capitalise">{{ t(i18nPrefix + 'length') }}</span>
-          :
-          {{ data.length }} m/s
-        </p>
-        <p>
-          <span class="field-capitalise">{{ t(i18nPrefix + 'estimatedNoiseReduction') }}</span>
-          :
-          {{ data.estimatedNoiseReduction }} db
-        </p>
-        <p>
-          <span class="field-capitalise">{{ t(i18nPrefix + 'isCleanable') }}</span>
-          :
-          {{ data.isCleanable ? t(i18nPrefix + 'cleanable') : t(i18nPrefix + 'isNotCleanable') }}
-        </p>
-        <p>
-          <span class="field-capitalise">{{ t('global.reference') }}</span>
-          :
-          {{ data.reference }}
-        </p>
-
-        <p v-if="data.description">
-          <span class="field-capitalise">{{ t('global.description') }}</span>
-          :{{ data.description }}
-        </p>
-      </div>
+    <div class="p-6 max-w-md mt-6" v-if="rds">
+      <Tabs value="0">
+        <TabList>
+          <Tab value="0">{{ t('global.importantInformation') }}</Tab>
+          <Tab value="1">{{ t('global.description') }}</Tab>
+          <Tab value="2">{{ t('global.associatedProducts') }}</Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel value="0">
+            <TabCardComponent :props="importantInfo" v-if="importantInfo" />
+          </TabPanel>
+          <TabPanel value="1">
+            <p>
+              {{
+                rds.description && rds.description.length > 0
+                  ? rds.description
+                  : t('global.notRegistered')
+              }}
+            </p>
+          </TabPanel>
+          <TabPanel value="2">
+            <p>// Feature</p>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </div>
   </div>
 </template>
 <script setup lang="ts">
 import { useSoundReducerStore } from '@/stores/sound-noise-reducer'
 import { useI18n } from 'vue-i18n'
+import { computed } from 'vue'
+import {
+  BooleanFormatter,
+  NumberFormatter,
+  VerifyFieldIsNotNull
+} from '@/shared/utils/formatter.utils'
+import TabPanels from 'primevue/tabpanels'
+import Tab from 'primevue/tab'
+import TabCardComponent from '@/components/__tabs/TabCardComponent.vue'
+import TabList from 'primevue/tablist'
+import Tabs from 'primevue/tabs'
+import TabPanel from 'primevue/tabpanel'
 const { t } = useI18n()
 const { id } = defineProps<{
   id: string
 }>()
 const store = useSoundReducerStore()
-const { data, isSuccess } = store.getById(id)
+const { data: rds, isSuccess } = store.getById(id)
 const i18nPrefix = store.getI18NPrefix()
+const importantInfo = computed(() => {
+  if (!rds.value) return undefined
+  return [
+    {
+      label: t(i18nPrefix + 'caliber'),
+      title: rds.value.caliber.name
+    },
+    {
+      label: t(i18nPrefix + 'factory'),
+      title: rds.value.factory.name
+    },
+    {
+      label: t(i18nPrefix + 'threadedSize'),
+      title: rds.value.threadedSize.size
+    },
+    {
+      label: t(i18nPrefix + 'name'),
+      title: rds.value.name
+    },
+
+    {
+      label: t(i18nPrefix + 'diameter'),
+      title: NumberFormatter(rds.value.diameter, 'mm')
+    },
+    {
+      label: t(i18nPrefix + 'estimatedNoiseReduction'),
+      title: NumberFormatter(rds.value.estimatedNoiseReduction, 'db')
+    },
+    {
+      label: t(i18nPrefix + 'chicane'),
+      title: VerifyFieldIsNotNull(rds.value.chicane)
+    },
+    {
+      label: t(i18nPrefix + 'isCleanable'),
+      title: BooleanFormatter(rds.value.isCleanable)
+    },
+    {
+      label: t('global.reference'),
+      title: rds.value.reference
+    }
+  ]
+})
 </script>
 
 <style scoped></style>

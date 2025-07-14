@@ -12,6 +12,9 @@ import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
 import { RouterEnum } from '@/enum/router.enum'
 import { useToastStore } from '@/stores/toast'
+import { getCaliberDto } from '@/shared/api-dto/get-caliber.dto'
+import { getFactoryDto } from '@/shared/api-dto/get-factory.dto'
+import { getThreadedSizeDto } from '@/shared/api-dto/get-threaded-size.dto'
 
 export const useSoundReducerStore = defineStore('sound-noise-reducer', () => {
   // Appel API
@@ -84,11 +87,11 @@ export const useSoundReducerStore = defineStore('sound-noise-reducer', () => {
       diameter: 0,
       name: '',
       description: '',
-      caliberId: 0,
-      factoryId: 0,
+      caliber: getCaliberDto(),
+      factory: getFactoryDto(),
       length: 0,
       isCleanable: false,
-      threadedSizeId: 0,
+      threadedSize: getThreadedSizeDto(),
       chicane: 0,
       estimatedNoiseReduction: 0
     }
@@ -100,10 +103,7 @@ export const useSoundReducerStore = defineStore('sound-noise-reducer', () => {
       _I18N_PREFIX,
       id,
       (data) => ({
-        ...data,
-        factoryId: data.factory.id,
-        caliberId: data.caliber.id,
-        threadedSizeId: data.threadedSize.id
+        ...data
       })
     )
   }

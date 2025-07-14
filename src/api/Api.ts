@@ -986,43 +986,61 @@ export interface UpdateOpticCollarDto {
 }
 
 export interface SoundNoiseReducerDto {
-  id: number
   caliber: CaliberDto
   factory: FactoryDto
   threadedSize: ThreadedSizeDto
+  /** Diametre exterieur */
   diameter: number
+  /** Longueur */
   length: number
+  /** Nombre de chicane */
+  chicane: number
+  /** Decibel attenue selon constructeur  */
+  estimatedNoiseReduction: number
+  /** Nom du modele */
   name: string
   description: string
-  reference: string
+  /** Demontable pour nettoyage */
   isCleanable: boolean
-  chicane: number
-  estimatedNoiseReduction: number
+  id: number
+  reference: string
 }
 
 export interface CreateSoundNoiseReducerDto {
-  caliberId: number
-  factoryId: number
-  threadedSizeId: number
+  caliber: CaliberDto
+  factory: FactoryDto
+  threadedSize: ThreadedSizeDto
+  /** Diametre exterieur */
   diameter: number
+  /** Longueur */
   length: number
+  /** Nombre de chicane */
   chicane: number
+  /** Decibel attenue selon constructeur  */
   estimatedNoiseReduction: number
+  /** Nom du modele */
   name: string
   description: string
+  /** Demontable pour nettoyage */
   isCleanable: boolean
 }
 
 export interface UpdateSoundNoiseReducerDto {
-  caliberId: number
-  factoryId: number
-  threadedSizeId: number
+  caliber: CaliberDto
+  factory: FactoryDto
+  threadedSize: ThreadedSizeDto
+  /** Diametre exterieur */
   diameter: number
+  /** Longueur */
   length: number
+  /** Nombre de chicane */
   chicane: number
+  /** Decibel attenue selon constructeur  */
   estimatedNoiseReduction: number
+  /** Nom du modele */
   name: string
   description: string
+  /** Demontable pour nettoyage */
   isCleanable: boolean
   id: number
 }

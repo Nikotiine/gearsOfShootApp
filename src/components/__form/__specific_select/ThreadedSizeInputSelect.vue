@@ -48,7 +48,8 @@ const emit = defineEmits(['onSelect'])
 const threadedSizesList = computed(() => data.value || [])
 const closeDrawer = ref(false)
 const onSelect = (id: number) => {
-  emit('onSelect', id)
+  const threadedSize = threadedSizesList.value.find((size) => size.id === id)
+  emit('onSelect', threadedSize)
   threadedSizeId.value = id
 }
 watch(
