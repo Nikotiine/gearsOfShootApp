@@ -133,6 +133,7 @@ import { RouterEnum } from '@/enum/router.enum'
 import { useRouter } from 'vue-router'
 
 const store = useOpticCollarStore()
+const i18nPrefix = store.getI18NPrefix()
 const { data: collar$, isSuccess, isError, isLoading, refetch } = store.getAll()
 const { t } = useI18n()
 const factoryStore = useFactoryStore()

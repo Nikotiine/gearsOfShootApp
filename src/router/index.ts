@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import { RouterEnum } from '@/enum/router.enum'
+import { WeaponEnum } from '@/enum/weapon.enum'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -43,16 +44,15 @@ const router = createRouter({
                   component: () => import('../views/shared/FormView.vue')
                 },
                 {
-                  path: 'list/:category',
+                  path: 'list',
                   name: RouterEnum.AMMUNITION_LIST,
-                  props: true,
-                  component: () => import('../views/ammunition/AdminAmmunitionListView.vue')
+                  component: () => import('../views/shared/TableWithSelectCategoryView.vue')
                 },
                 {
                   path: 'detail/:id',
                   name: RouterEnum.AMMUNITION_DETAIL,
                   props: true,
-                  component: () => import('../views/ammunition/AdminAmmunitionDetailView.vue')
+                  component: () => import('../views/shared/DetailView.vue')
                 },
                 {
                   path: 'edit/:id',
@@ -69,13 +69,12 @@ const router = createRouter({
                   path: 'detail/:id',
                   props: true,
                   name: RouterEnum.MAGAZINE_DETAIL,
-                  component: () => import('../views/magazine/AdminMagazineDetailView.vue')
+                  component: () => import('../views/shared/DetailView.vue')
                 },
                 {
-                  path: 'list/:category',
-                  props: true,
+                  path: 'list',
                   name: RouterEnum.MAGAZINE_LIST,
-                  component: () => import('../views/magazine/AdminMagazineListView.vue')
+                  component: () => import('../views/shared/TableWithSelectCategoryView.vue')
                 },
                 {
                   path: 'new',
@@ -101,13 +100,13 @@ const router = createRouter({
                 {
                   path: 'list',
                   name: RouterEnum.OPTIC_LIST,
-                  component: () => import('../views/optic/AdminOpticListView.vue')
+                  component: () => import('../views/shared/TableView.vue')
                 },
                 {
                   path: 'detail/:id',
                   props: true,
                   name: RouterEnum.OPTIC_DETAIL,
-                  component: () => import('../views/optic/AdminOpticDetailView.vue')
+                  component: () => import('../views/shared/DetailView.vue')
                 },
                 {
                   path: 'edit/:id',
@@ -121,9 +120,14 @@ const router = createRouter({
               path: 'weapon',
               children: [
                 {
-                  path: 'new',
-                  name: RouterEnum.WEAPON_NEW,
-                  component: () => import('../views/weapon/AdminWeaponFormView.vue')
+                  path: 'new/' + WeaponEnum.RIFFLE,
+                  name: RouterEnum.RIFFLE_NEW,
+                  component: () => import('../views/shared/FormView.vue')
+                },
+                {
+                  path: 'new/' + WeaponEnum.HAND_GUN,
+                  name: RouterEnum.HANDGUN_NEW,
+                  component: () => import('../views/shared/FormView.vue')
                 },
                 {
                   path: 'list/:type/:category',
@@ -132,16 +136,28 @@ const router = createRouter({
                   component: () => import('../views/weapon/AdminWeaponListView.vue')
                 },
                 {
-                  path: 'detail/:type/:id',
-                  name: RouterEnum.WEAPON_DETAIL,
+                  path: `detail/${WeaponEnum.HAND_GUN}/:id`,
+                  name: RouterEnum.HANDGUN_DETAIL,
                   props: true,
-                  component: () => import('../views/weapon/AdminWeaponView.vue')
+                  component: () => import('../views/shared/DetailView.vue')
                 },
                 {
-                  path: 'edit/:type/:id',
-                  name: RouterEnum.WEAPON_EDIT,
+                  path: `detail/${WeaponEnum.RIFFLE}/:id`,
+                  name: RouterEnum.RIFFLE_DETAIL,
                   props: true,
-                  component: () => import('../views/weapon/AdminWeaponEditView.vue')
+                  component: () => import('../views/shared/DetailView.vue')
+                },
+                {
+                  path: `edit/${WeaponEnum.RIFFLE}/:id`,
+                  name: RouterEnum.RIFFLE_EDIT,
+                  props: true,
+                  component: () => import('../views/shared/FormView.vue')
+                },
+                {
+                  path: `edit/${WeaponEnum.HAND_GUN}/:id`,
+                  name: RouterEnum.HANDGUN_EDIT,
+                  props: true,
+                  component: () => import('../views/shared/FormView.vue')
                 }
               ]
             },
@@ -157,6 +173,12 @@ const router = createRouter({
                   path: 'list',
                   name: RouterEnum.FACTORY_LIST,
                   component: () => import('../views/shared/TableView.vue')
+                },
+                {
+                  path: 'edit/:id',
+                  props: true,
+                  name: RouterEnum.FACTORY_EDIT,
+                  component: () => import('../views/shared/FormView.vue')
                 }
               ]
             },
@@ -253,7 +275,7 @@ const router = createRouter({
                   path: 'detail/:id',
                   props: true,
                   name: RouterEnum.OPTIC_COLLAR_DETAIL,
-                  component: () => import('../views/optic/AdminOpticCollarDetailView.vue')
+                  component: () => import('../views/shared/DetailView.vue')
                 }
               ]
             },

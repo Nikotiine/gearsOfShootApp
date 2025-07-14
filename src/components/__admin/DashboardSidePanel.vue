@@ -5,7 +5,7 @@
 import MegaMenu from 'primevue/megamenu'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
-import { LegislationCategory } from '@/stores/weapon-category'
+import { LegislationCategory } from '@/stores/legalisation-category'
 import { RouterEnum } from '@/enum/router.enum'
 import { WeaponEnum } from '@/enum/weapon.enum'
 import { useI18n } from 'vue-i18n'
@@ -31,9 +31,15 @@ const items = ref([
           label: 'Produits',
           items: [
             {
-              label: 'Arme',
+              label: 'Arme de poing',
               command: () => {
-                push({ name: RouterEnum.WEAPON_NEW })
+                push({ name: RouterEnum.HANDGUN_NEW })
+              }
+            },
+            {
+              label: 'Arme longue',
+              command: () => {
+                push({ name: RouterEnum.RIFFLE_NEW })
               }
             },
             {
@@ -171,8 +177,7 @@ const items = ref([
               label: 'Chargeur',
               command: () => {
                 push({
-                  name: RouterEnum.MAGAZINE_LIST,
-                  params: { category: LegislationCategory.B }
+                  name: RouterEnum.MAGAZINE_LIST
                 })
               }
             },
@@ -180,8 +185,7 @@ const items = ref([
               label: 'Munition',
               command: () => {
                 push({
-                  name: RouterEnum.AMMUNITION_LIST,
-                  params: { category: LegislationCategory.B }
+                  name: RouterEnum.AMMUNITION_LIST
                 })
               }
             }
@@ -198,16 +202,6 @@ const items = ref([
                 push({
                   name: RouterEnum.WEAPON_LIST,
                   params: { type: WeaponEnum.RIFFLE, category: LegislationCategory.C }
-                })
-              }
-            },
-            { label: 'rds' },
-            {
-              label: 'Munition',
-              command: () => {
-                push({
-                  name: RouterEnum.AMMUNITION_LIST,
-                  params: { category: LegislationCategory.C }
                 })
               }
             },
@@ -243,15 +237,6 @@ const items = ref([
                 push({
                   name: RouterEnum.WEAPON_LIST,
                   params: { type: WeaponEnum.RIFFLE, category: LegislationCategory.D }
-                })
-              }
-            },
-            {
-              label: 'Munition',
-              command: () => {
-                push({
-                  name: RouterEnum.AMMUNITION_LIST,
-                  params: { category: LegislationCategory.D }
                 })
               }
             },

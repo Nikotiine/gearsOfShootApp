@@ -129,6 +129,7 @@ import ActionMenuComponent, {
 import { RouterEnum } from '@/enum/router.enum'
 import { useRouter } from 'vue-router'
 import { WeaponEnum } from '@/enum/weapon.enum'
+import { type NewWeapon, useWeaponStore } from '@/stores/weapon'
 const { category } = defineProps<{
   category: string
 }>()
@@ -162,19 +163,30 @@ watch(
     }
   }
 )
-
+const weaponStore = useWeaponStore()
 const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
   switch (event) {
     case 'view':
-      router.push({ name: RouterEnum.WEAPON_DETAIL, params: { id: id, type: WeaponEnum.HAND_GUN } })
+      router.push({ name: RouterEnum.HANDGUN_DETAIL, params: { id: id } })
       break
     case 'edit':
-      router.push({ name: RouterEnum.WEAPON_EDIT, params: { id: id, type: WeaponEnum.HAND_GUN } })
+      onEditAction(id)
+      router.push({ name: RouterEnum.HANDGUN_EDIT, params: { id: id } })
       break
     case true:
       store.delete(id)
       refetch()
       break
+  }
+}
+const onEditAction = (id: number) => {
+  const currentWeapon = handgun$.value?.data.find((h) => h.id === id)
+  if (currentWeapon) {
+    const data: NewWeapon = {
+      category: currentWeapon.category,
+      type: currentWeapon.type
+    }
+    weaponStore.setOptions(data)
   }
 }
 </script>

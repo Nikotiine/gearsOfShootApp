@@ -1,10 +1,10 @@
 <template>
   <div class="card p-4">
-    <h2 class="text-center mt-2 text-2xl">{{ t('magazine.list') }} {{ category }}</h2>
+    <h2 class="text-center mt-2 text-2xl">{{ t('magazine.list') }} {{ categoryId }}</h2>
     <div class="text-red-500 text-center" v-if="isError">Error</div>
     <DataTable
       v-model:filters="filters"
-      :value="magazines$?.data"
+      :value="magazines$"
       paginator
       :rows="10"
       dataKey="id"
@@ -134,17 +134,17 @@ import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
 const router = useRouter()
-const { category } = defineProps<{
-  category: string
+const { categoryId } = defineProps<{
+  categoryId: number
 }>()
 const { t } = useI18n()
 const factoryStore = useFactoryStore()
 const { data: magazineFactory$ } = factoryStore.getFactoriesByType('magazine')
 const caliberStore = useCaliberStore()
 const { data: calibers$ } = caliberStore.getAll()
-const currentCategory = ref<string>(category)
+
 const store = useWeaponMagazineStore()
-const { data: magazines$, isError, isLoading, refetch } = store.getByCategory(currentCategory)
+const { data: magazines$, isError, isLoading, refetch } = store.getByCategory(categoryId)
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   reference: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
@@ -152,15 +152,7 @@ const filters = ref({
   'caliber.name': { value: null, matchMode: FilterMatchMode.EQUALS },
   capacity: { value: null, matchMode: FilterMatchMode.STARTS_WITH }
 })
-watch(
-  () => category,
-  (newCategory) => {
-    if (newCategory !== currentCategory.value) {
-      currentCategory.value = newCategory
-      refetch()
-    }
-  }
-)
+
 const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
   switch (event) {
     case 'view':

@@ -7,9 +7,10 @@
         <input-group-text
           @value="(value) => (form.name = value)"
           :min-length="3"
-          placeholder="global.name"
-          label="global.name"
+          placeholder="name"
+          label="name"
           required
+          :i18n-prefix="i18Prefix"
           input-id="name"
           :initial-value="form.name"
         />
@@ -19,19 +20,14 @@
         <input-group-text
           @value="(value) => (form.reference = value)"
           :min-length="3"
-          placeholder="global.ref"
-          label="global.ref"
+          placeholder="reference"
+          label="reference"
+          :i18n-prefix="i18Prefix"
           required
           input-id="reference"
           :initial-value="form.reference"
         />
       </InputGroup>
-
-      <div class="text-red-500 p-4" v-if="store.create.isError">
-        <p class="text-xl font-bold">
-          {{ t('error.' + store.create.error.response.data.message) }}
-        </p>
-      </div>
     </div>
     <div class="text-center mt-6">
       <Button type="submit" :label="t('global.save')" :disabled="!isValidForm"></Button>
@@ -43,36 +39,20 @@ import Button from 'primevue/button'
 import InputGroup from 'primevue/inputgroup'
 import { useCaliberStore } from '@/stores/caliber'
 import { useI18n } from 'vue-i18n'
-import type { CreateAmmunitionBodyTypeDto } from '@/api/Api'
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import InputGroupText from '@/components/__form/InputGroupText.vue'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
+
 const store = useCaliberStore()
 const { t } = useI18n()
-const emit = defineEmits(['onSave'])
-
+const i18Prefix = store.getI18NPrefix
 //*******************Init du formulaire*********************
-const initialForm: CreateAmmunitionBodyTypeDto = {
-  name: '',
-  reference: ''
-}
-const form = ref<CreateAmmunitionBodyTypeDto>({ ...initialForm })
+const { form, submit } = store.formBuilder()
 
 //***********************Validateur*************************
 const isValidForm = computed(() => {
   return !!form.value.name && !!form.value.reference
 })
-
-/**
- * Sousmission du formulaire pour la creation d'un nouveau calibre
- * Emet un boolean onSave pour le drawer
- * Reinitialise le formulaire apres l'envoie
- */
-const submit = async () => {
-  store.create.mutate(form.value)
-  form.value = { ...initialForm }
-  emit('onSave', true)
-}
 </script>
 
 <style scoped></style>

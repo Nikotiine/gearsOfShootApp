@@ -1,25 +1,26 @@
 import { ref, watch } from 'vue'
 import { type UseMutationReturnType, useQuery } from '@tanstack/vue-query'
 import { useToastStore } from '@/stores/toast'
+import { getI18NPrefix, I18NSuffix } from '@/enum/I18NSuffix.enum'
 
 export function useFormHandler<TForm extends object, TMutationResponse, TError = Error>(
   emptyForm: TForm,
   getByIdQuery: (id?: string) => ReturnType<typeof useQuery>,
   createMutation: UseMutationReturnType<TMutationResponse, TError, TForm, unknown>,
   updateMutation: UseMutationReturnType<TMutationResponse, TError, TForm & { id: number }, unknown>,
-  i18nPrefix: string,
+  storeName: string,
   id?: string,
   formatData?: (data: any) => TForm // Optionnel : Transformer les données avant de les injecter dans le formulaire
 ) {
   const form = ref<TForm>({ ...emptyForm })
-  const { successMessage } = useToastStore()
+  const prefix = getI18NPrefix(storeName)
+  const { successMessage, errorMessage } = useToastStore()
   const resetForm = () => {
     form.value = { ...emptyForm }
   }
 
   // Récupération des données en mode édition
   const { data, isSuccess } = getByIdQuery(id)
-
   watch(
     () => data.value,
     (newData) => {
@@ -37,15 +38,21 @@ export function useFormHandler<TForm extends object, TMutationResponse, TError =
         { ...form.value, id: parseInt(id) },
         {
           onSuccess: () => {
-            successMessage(i18nPrefix + 'summary', i18nPrefix + 'update')
+            successMessage(prefix + I18NSuffix.SUMMARY, prefix + I18NSuffix.UPDATED)
+          },
+          onError(error: any) {
+            errorMessage(prefix + I18NSuffix.SUMMARY, 'error.' + error.response.data.message)
           }
         }
       )
     } else {
       createMutation.mutate(form.value, {
         onSuccess: () => {
-          successMessage(i18nPrefix + 'summary', i18nPrefix + 'success')
+          successMessage(prefix + I18NSuffix.SUMMARY, prefix + I18NSuffix.CREATED)
           resetForm()
+        },
+        onError(error: any) {
+          errorMessage(prefix + I18NSuffix.SUMMARY, 'error.' + error.response.data.message)
         }
       })
     }

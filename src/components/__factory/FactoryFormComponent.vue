@@ -1,7 +1,7 @@
 <template>
   <h2 class="text-center mt-2 text-2xl">
     {{ t('factory.form.addTitle') }}
-    <span class="text-blue-500">{{ t('factory.types.' + factoryType?.name) }}</span>
+    <span class="text-blue-500">{{ t('factory.types.' + factoryType) }}</span>
   </h2>
   <form @submit.prevent="submit">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
@@ -37,9 +37,8 @@
           :options="factoryTypeViewModel"
           option-label="label"
           label="factory.type"
-          @option-id="(event) => onChangeType(event)"
           required
-          :disabled="isComeFormDrawer"
+          :disabled="disabledSelectFactoryType"
           input-id="typeId"
           :initial-value="form.typeId"
         />
@@ -55,75 +54,44 @@
         placeholder="Description"
       />
     </div>
-    <div class="text-red-500 p-4" v-if="store.create.isError">
-      <p class="text-xl font-bold">
-        {{ t('error.' + store.create.error.response.data.message) }}
-      </p>
-    </div>
 
-    <div class="text-center mt-2">
-      <Button type="submit" :label="t('global.save')" :disabled="!isFormValid"></Button>
+    <div class="text-center">
+      <save-button :status="formStatus" :disabled="!isFormValid" />
     </div>
   </form>
 </template>
 
 <script setup lang="ts">
 import Textarea from 'primevue/textarea'
-import Button from 'primevue/button'
+
 import InputGroup from 'primevue/inputgroup'
 import { type FactoryType, useFactoryStore } from '@/stores/factory'
-import type { CreateFactoryDto } from '@/api/Api'
 import { computed, ref, watch, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
 import InputGroupText from '@/components/__form/InputGroupText.vue'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
 import { storeToRefs } from 'pinia'
+import type { FormStatus } from '@/types/form-status.type'
+import SaveButton from '@/components/__form/SaveButton.vue'
 const store = useFactoryStore()
+
 const { factoryTypes$ } = storeToRefs(store)
-const emit = defineEmits(['onSave', 'changeType'])
+
 const { t, locale } = useI18n()
 const localeValue = ref(locale.value)
-const { factory } = defineProps<{
-  factory?: FactoryType
+
+const { id, factoryType, formStatus } = defineProps<{
+  id?: string
+  formStatus: FormStatus
+  factoryType?: FactoryType
 }>()
-
+const { form, submit } = store.formBuilder(id)
 //*******************Init du formulaire*********************
-const initialFactoryFormObject: CreateFactoryDto = {
-  name: '',
-  description: '',
-  typeId: 1,
-  reference: ''
-}
-const form = ref<CreateFactoryDto>({ ...initialFactoryFormObject })
 
-/**
- * Lors du changement de type de marque, met a jour le formulaire et emet le nouveau label pour l'affichage du parent
- * @param id
- */
-const onChangeType = (id: number) => {
-  form.value.typeId = id
-  emit('changeType', factoryType.value?.name)
-}
 //***********************Validateur*************************
 const isFormValid = computed(() => {
   return !!form.value.name
-})
-
-/**
- * Sousmission du formulaire pour la creation d'une nouvelle marque
- * Emet un boolean onSave pour le drawer
- * Reinitialise le formulaire apres l'envoie
- */
-const submit = () => {
-  store.create.mutate(form.value)
-  form.value = { ...initialFactoryFormObject }
-  emit('onSave', true)
-}
-
-// Retourne le type courant selectionner (necessaire pour l'afiichage pre filtre de la liste complete des marque )
-const factoryType = computed(() => {
-  return factoryTypes$.value.find((f) => f.id === form.value.typeId)
 })
 
 /**
@@ -148,12 +116,12 @@ watch(
   }
 )
 
-const isComeFormDrawer = ref(false)
+const disabledSelectFactoryType = ref(false)
 watchEffect(() => {
-  const type = factoryTypes$.value.find((f) => f.name === factory)
+  const type = factoryTypes$.value.find((f) => f.name === factoryType)
   if (type) {
     form.value.typeId = type.id
-    isComeFormDrawer.value = true
+    disabledSelectFactoryType.value = true
   }
 })
 </script>

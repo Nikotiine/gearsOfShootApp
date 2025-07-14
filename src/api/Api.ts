@@ -113,6 +113,19 @@ export interface RailSizeDto {
   reference: string
 }
 
+export interface OpticReadyPlateDto {
+  name: string
+  description: string
+  reference: string
+  id: number
+}
+
+export interface CreateOpticReadyPlateDto {
+  name: string
+  description: string
+  reference: string
+}
+
 export interface WeaponReloadModeDto {
   id: number
   name: string
@@ -124,6 +137,7 @@ export interface WeaponTypeDto {
   name: string
   mode: WeaponReloadModeDto
   reference: string
+  type: WeaponTypeDtoTypeEnum
 }
 
 export interface PercussionTypeDto {
@@ -139,13 +153,6 @@ export interface WeaponBarrelTypeDto {
 export interface WeaponTriggerTypeDto {
   id: number
   name: string
-  reference: string
-}
-
-export interface OpticReadyPlateDto {
-  id: number
-  name: string
-  description: string
   reference: string
 }
 
@@ -175,17 +182,21 @@ export interface ListOfPrerequisitesWeaponTypeDto {
 }
 
 export interface CreateWeaponTypeDto {
-  /** @example "Fusil a verrou" */
+  /** @example "Fusil a verrou titi" */
   name: string
   modeId: number
   reference: string
+  /** @example "handgun ou riffle" */
+  type: string | null
 }
 
 export interface UpdateWeaponTypeDto {
-  /** @example "Fusil a verrou" */
+  /** @example "Fusil a verrou titi" */
   name: string
   modeId: number
   reference: string
+  /** @example "handgun ou riffle" */
+  type: string | null
   id: number
 }
 
@@ -213,7 +224,16 @@ export interface RiffleDto {
   /** @example "Lourd" */
   barrelType: WeaponBarrelTypeDto
   threadedSize: ThreadedSizeDto
-  adjustableTriggerValue: string
+  /**
+   * les valeurs de poids depart de la detente
+   * @example "Entre 1 et 2kg"
+   */
+  adjustableTriggerMinWeight: number | null
+  /**
+   * les valeurs de poids depart de la detente
+   * @example "Entre 1 et 2kg"
+   */
+  adjustableTriggerMaxWeight: number | null
   percussionType: PercussionTypeDto
   providedMagazineQuantity: number
   barrelSize: number
@@ -264,7 +284,16 @@ export interface HandGunDto {
   /** @example "Lourd" */
   barrelType: WeaponBarrelTypeDto
   threadedSize: ThreadedSizeDto
-  adjustableTriggerValue: string
+  /**
+   * les valeurs de poids depart de la detente
+   * @example "Entre 1 et 2kg"
+   */
+  adjustableTriggerMinWeight: number | null
+  /**
+   * les valeurs de poids depart de la detente
+   * @example "Entre 1 et 2kg"
+   */
+  adjustableTriggerMaxWeight: number | null
   percussionType: PercussionTypeDto
   providedMagazineQuantity: number
   barrelSize: number
@@ -315,16 +344,16 @@ export interface CreateWeaponMagazineDto {
   /** largeur du chargeur */
   width: number
   /** matiere du chargeur */
-  bodyId: number
+  body: MaterialDto
   /** marque du chargeur */
-  factoryId: number
+  factory: FactoryDto
   /** calibre des munitions du chargeur */
-  caliberId: number
+  caliber: CaliberDto
   description: string | null
   /** La categorie de l arme en france */
-  categoryId: number
-  /** La categorie de l arme en france */
-  weaponTypeId: number
+  category: LegislationCategoryDto
+  /** Le type de l arme */
+  weaponType: WeaponTypeDto
   compatibleRiffle: RiffleDto[] | null
   compatibleHandGun: HandGunDto[] | null
 }
@@ -339,16 +368,16 @@ export interface UpdateWeaponMagazineDto {
   /** largeur du chargeur */
   width: number
   /** matiere du chargeur */
-  bodyId: number
+  body: MaterialDto
   /** marque du chargeur */
-  factoryId: number
+  factory: FactoryDto
   /** calibre des munitions du chargeur */
-  caliberId: number
+  caliber: CaliberDto
   description: string | null
   /** La categorie de l arme en france */
-  categoryId: number
-  /** La categorie de l arme en france */
-  weaponTypeId: number
+  category: LegislationCategoryDto
+  /** Le type de l arme */
+  weaponType: WeaponTypeDto
   compatibleRiffle: RiffleDto[] | null
   compatibleHandGun: HandGunDto[] | null
   id: number
@@ -368,16 +397,16 @@ export interface CreateHandGunDto {
    */
   variation: string | null
   /** La categorie de l arme en france */
-  categoryId: number
+  category: LegislationCategoryDto
   /** Le calibre de l arme */
-  caliberId: number
+  caliber: CaliberDto
   /** la marque */
-  factoryId: number
+  factory: FactoryDto
   /**
    * Type d arme
    * @example "Fusil a verrou"
    */
-  typeId: number
+  type: WeaponTypeDto
   /**
    * La longueur du canon en cm
    * @example 51
@@ -394,16 +423,21 @@ export interface CreateHandGunDto {
    */
   isThreadedBarrel: boolean
   /** Le type de canon (lourd/leger...) */
-  barrelTypeId: number
+  barrelType: WeaponBarrelTypeDto
   /** Les dimmension du filletage */
-  threadedSizeId: number | null
+  threadedSize: ThreadedSizeDto | null
   /**
    * les valeurs de poids depart de la detente
    * @example "Entre 1 et 2kg"
    */
-  adjustableTriggerValue: string | null
+  adjustableTriggerMinWeight: number | null
+  /**
+   * les valeurs de poids depart de la detente
+   * @example "Entre 1 et 2kg"
+   */
+  adjustableTriggerMaxWeight: number | null
   /** Le type de percussion ( annulaire ou centrale ) */
-  percussionTypeId: number
+  percussionType: PercussionTypeDto
   /**
    * Le nombre de chargeur fournis
    * @example 1
@@ -415,21 +449,21 @@ export interface CreateHandGunDto {
    */
   barrelSize: number
   /** La matiere de la crosse ou caracasse */
-  buttMaterialId: number | null
+  buttMaterial: MaterialDto | null
   /** Guidon reglable */
   isAdjustableFrontSight: boolean
   /** Hausse reglable */
   isAdjustableBackSight: boolean
   /** la couleur de la crosse */
-  buttColorId: number | null
+  buttColor: ColorDto | null
   /** la couleur du canon  */
-  barrelColorId: number | null
+  barrelColor: ColorDto | null
   /** @example true */
   isOpticReady: boolean
   decocking: boolean
-  triggerTypeId: number | null
-  slideColorId: number | null
-  slideMaterialId: number | null
+  triggerType: WeaponTriggerTypeDto
+  slideColor: ColorDto | null
+  slideMaterial: MaterialDto | null
   isExternalHammer: boolean
   providedOpticReadyPlates: OpticReadyPlateDto[] | null
   /** Rail picatiny */
@@ -450,16 +484,16 @@ export interface UpdateHandGunDto {
    */
   variation: string | null
   /** La categorie de l arme en france */
-  categoryId: number
+  category: LegislationCategoryDto
   /** Le calibre de l arme */
-  caliberId: number
+  caliber: CaliberDto
   /** la marque */
-  factoryId: number
+  factory: FactoryDto
   /**
    * Type d arme
    * @example "Fusil a verrou"
    */
-  typeId: number
+  type: WeaponTypeDto
   /**
    * La longueur du canon en cm
    * @example 51
@@ -476,16 +510,21 @@ export interface UpdateHandGunDto {
    */
   isThreadedBarrel: boolean
   /** Le type de canon (lourd/leger...) */
-  barrelTypeId: number
+  barrelType: WeaponBarrelTypeDto
   /** Les dimmension du filletage */
-  threadedSizeId: number | null
+  threadedSize: ThreadedSizeDto | null
   /**
    * les valeurs de poids depart de la detente
    * @example "Entre 1 et 2kg"
    */
-  adjustableTriggerValue: string | null
+  adjustableTriggerMinWeight: number | null
+  /**
+   * les valeurs de poids depart de la detente
+   * @example "Entre 1 et 2kg"
+   */
+  adjustableTriggerMaxWeight: number | null
   /** Le type de percussion ( annulaire ou centrale ) */
-  percussionTypeId: number
+  percussionType: PercussionTypeDto
   /**
    * Le nombre de chargeur fournis
    * @example 1
@@ -497,21 +536,21 @@ export interface UpdateHandGunDto {
    */
   barrelSize: number
   /** La matiere de la crosse ou caracasse */
-  buttMaterialId: number | null
+  buttMaterial: MaterialDto | null
   /** Guidon reglable */
   isAdjustableFrontSight: boolean
   /** Hausse reglable */
   isAdjustableBackSight: boolean
   /** la couleur de la crosse */
-  buttColorId: number | null
+  buttColor: ColorDto | null
   /** la couleur du canon  */
-  barrelColorId: number | null
+  barrelColor: ColorDto | null
   /** @example true */
   isOpticReady: boolean
   decocking: boolean
-  triggerTypeId: number | null
-  slideColorId: number | null
-  slideMaterialId: number | null
+  triggerType: WeaponTriggerTypeDto
+  slideColor: ColorDto | null
+  slideMaterial: MaterialDto | null
   isExternalHammer: boolean
   providedOpticReadyPlates: OpticReadyPlateDto[] | null
   /** Rail picatiny */
@@ -533,16 +572,16 @@ export interface CreateRiffleDto {
    */
   variation: string | null
   /** La categorie de l arme en france */
-  categoryId: number
+  category: LegislationCategoryDto
   /** Le calibre de l arme */
-  caliberId: number
+  caliber: CaliberDto
   /** la marque */
-  factoryId: number
+  factory: FactoryDto
   /**
    * Type d arme
    * @example "Fusil a verrou"
    */
-  typeId: number
+  type: WeaponTypeDto
   /**
    * La longueur du canon en cm
    * @example 51
@@ -559,16 +598,21 @@ export interface CreateRiffleDto {
    */
   isThreadedBarrel: boolean
   /** Le type de canon (lourd/leger...) */
-  barrelTypeId: number
+  barrelType: WeaponBarrelTypeDto
   /** Les dimmension du filletage */
-  threadedSizeId: number | null
+  threadedSize: ThreadedSizeDto | null
   /**
    * les valeurs de poids depart de la detente
    * @example "Entre 1 et 2kg"
    */
-  adjustableTriggerValue: string | null
+  adjustableTriggerMinWeight: number | null
+  /**
+   * les valeurs de poids depart de la detente
+   * @example "Entre 1 et 2kg"
+   */
+  adjustableTriggerMaxWeight: number | null
   /** Le type de percussion ( annulaire ou centrale ) */
-  percussionTypeId: number
+  percussionType: PercussionTypeDto
   /**
    * Le nombre de chargeur fournis
    * @example 1
@@ -580,20 +624,20 @@ export interface CreateRiffleDto {
    */
   barrelSize: number
   /** La matiere de la crosse ou caracasse */
-  buttMaterialId: number | null
+  buttMaterial: MaterialDto | null
   /** Guidon reglable */
   isAdjustableFrontSight: boolean
   /** Hausse reglable */
   isAdjustableBackSight: boolean
   /** la couleur de la crosse */
-  buttColorId: number | null
+  buttColor: ColorDto | null
   /** la couleur du canon  */
-  barrelColorId: number | null
+  barrelColor: ColorDto | null
   /** Crosse ajustable en profondeur */
   isAdjustableButt: boolean
   /** Busc adjutable */
   isAdjustableBusk: boolean
-  railSizeId: number | null
+  railSize: RailSizeDto | null
   /** Grenadiere */
   grenadierSlot: number
   /** Port QC */
@@ -619,16 +663,16 @@ export interface UpdateRiffleDto {
    */
   variation: string | null
   /** La categorie de l arme en france */
-  categoryId: number
+  category: LegislationCategoryDto
   /** Le calibre de l arme */
-  caliberId: number
+  caliber: CaliberDto
   /** la marque */
-  factoryId: number
+  factory: FactoryDto
   /**
    * Type d arme
    * @example "Fusil a verrou"
    */
-  typeId: number
+  type: WeaponTypeDto
   /**
    * La longueur du canon en cm
    * @example 51
@@ -645,16 +689,21 @@ export interface UpdateRiffleDto {
    */
   isThreadedBarrel: boolean
   /** Le type de canon (lourd/leger...) */
-  barrelTypeId: number
+  barrelType: WeaponBarrelTypeDto
   /** Les dimmension du filletage */
-  threadedSizeId: number | null
+  threadedSize: ThreadedSizeDto | null
   /**
    * les valeurs de poids depart de la detente
    * @example "Entre 1 et 2kg"
    */
-  adjustableTriggerValue: string | null
+  adjustableTriggerMinWeight: number | null
+  /**
+   * les valeurs de poids depart de la detente
+   * @example "Entre 1 et 2kg"
+   */
+  adjustableTriggerMaxWeight: number | null
   /** Le type de percussion ( annulaire ou centrale ) */
-  percussionTypeId: number
+  percussionType: PercussionTypeDto
   /**
    * Le nombre de chargeur fournis
    * @example 1
@@ -666,20 +715,20 @@ export interface UpdateRiffleDto {
    */
   barrelSize: number
   /** La matiere de la crosse ou caracasse */
-  buttMaterialId: number | null
+  buttMaterial: MaterialDto | null
   /** Guidon reglable */
   isAdjustableFrontSight: boolean
   /** Hausse reglable */
   isAdjustableBackSight: boolean
   /** la couleur de la crosse */
-  buttColorId: number | null
+  buttColor: ColorDto | null
   /** la couleur du canon  */
-  barrelColorId: number | null
+  barrelColor: ColorDto | null
   /** Crosse ajustable en profondeur */
   isAdjustableButt: boolean
   /** Busc adjutable */
   isAdjustableBusk: boolean
-  railSizeId: number | null
+  railSize: RailSizeDto | null
   /** Grenadiere */
   grenadierSlot: number
   /** Port QC */
@@ -726,25 +775,22 @@ export interface AmmunitionDto {
   caliber: CaliberDto
 }
 
-export interface ListOfPrerequisitesAmmunitionDto {
-  percussionTypes: PercussionTypeDto[]
-}
-
 export interface CreateAmmunitionDto {
   /** @example "Sk Standard" */
   name: string
   /** @example "Une description de la munition, qualite / origine / conseil d utilisation" */
   description: string | null
-  categoryId: number
+  /** @example "C" */
+  category: LegislationCategoryDto
   /** @example 320 */
   initialSpeed: number
-  percussionTypeId: number
+  percussionType: PercussionTypeDto
   /** @example 50 */
   packaging: number
-  headTypeId: number
-  bodyTypeId: number
-  factoryId: number
-  caliberId: number
+  headType: AmmunitionHeadTypeDto
+  bodyType: AmmunitionBodyTypeDto
+  caliber: CaliberDto
+  factory: FactoryDto
 }
 
 export interface UpdateAmmunitionDto {
@@ -752,16 +798,17 @@ export interface UpdateAmmunitionDto {
   name: string
   /** @example "Une description de la munition, qualite / origine / conseil d utilisation" */
   description: string | null
-  categoryId: number
+  /** @example "C" */
+  category: LegislationCategoryDto
   /** @example 320 */
   initialSpeed: number
-  percussionTypeId: number
+  percussionType: PercussionTypeDto
   /** @example 50 */
   packaging: number
-  headTypeId: number
-  bodyTypeId: number
-  factoryId: number
-  caliberId: number
+  headType: AmmunitionHeadTypeDto
+  bodyType: AmmunitionBodyTypeDto
+  caliber: CaliberDto
+  factory: FactoryDto
   id: number
 }
 
@@ -829,14 +876,11 @@ export interface OpticTypeDto {
 }
 
 export interface OpticDto {
-  id: number
   name: string
   factory: FactoryDto
   /** @example "Une description de l optique ..." */
   description: string | null
-  isCollarsProvided: boolean
   maxZoom: number
-  length: number
   minZoom: number
   maxDrift: number
   maxElevation: number
@@ -848,20 +892,17 @@ export interface OpticDto {
   isParallax: boolean
   opticUnit: OpticUnitDto
   focalPlane: FocalPlaneDto
-  type: OpticTypeDto
-  reference: string
+  opticType: OpticTypeDto
+  length: number
   eyeRelief: number
-}
-
-export interface ListOfPrerequisitesOpticDto {
-  types: OpticTypeDto[]
-  units: OpticUnitDto[]
-  focalPlanes: FocalPlaneDto[]
+  isCollarsProvided: boolean
+  id: number
+  reference: string
 }
 
 export interface CreateOpticDto {
   name: string
-  factoryId: number
+  factory: FactoryDto
   /** @example "Une description de l optique ..." */
   description: string | null
   maxZoom: number
@@ -874,9 +915,9 @@ export interface CreateOpticDto {
   minParallax: number
   maxParallax: number
   isParallax: boolean
-  opticUnitId: number
-  focalPlaneId: number
-  opticTypeId: number
+  opticUnit: OpticUnitDto
+  focalPlane: FocalPlaneDto
+  opticType: OpticTypeDto
   length: number
   eyeRelief: number
   isCollarsProvided: boolean
@@ -884,7 +925,7 @@ export interface CreateOpticDto {
 
 export interface UpdateOpticDto {
   name: string
-  factoryId: number
+  factory: FactoryDto
   /** @example "Une description de l optique ..." */
   description: string | null
   maxZoom: number
@@ -897,9 +938,9 @@ export interface UpdateOpticDto {
   minParallax: number
   maxParallax: number
   isParallax: boolean
-  opticUnitId: number
-  focalPlaneId: number
-  opticTypeId: number
+  opticUnit: OpticUnitDto
+  focalPlane: FocalPlaneDto
+  opticType: OpticTypeDto
   length: number
   eyeRelief: number
   isCollarsProvided: boolean
@@ -945,45 +986,68 @@ export interface UpdateOpticCollarDto {
 }
 
 export interface SoundNoiseReducerDto {
-  id: number
   caliber: CaliberDto
   factory: FactoryDto
   threadedSize: ThreadedSizeDto
+  /** Diametre exterieur */
   diameter: number
+  /** Longueur */
   length: number
+  /** Nombre de chicane */
+  chicane: number
+  /** Decibel attenue selon constructeur  */
+  estimatedNoiseReduction: number
+  /** Nom du modele */
   name: string
   description: string
-  reference: string
+  /** Demontable pour nettoyage */
   isCleanable: boolean
-  chicane: number
-  estimatedNoiseReduction: number
+  id: number
+  reference: string
 }
 
 export interface CreateSoundNoiseReducerDto {
-  caliberId: number
-  factoryId: number
-  threadedSizeId: number
+  caliber: CaliberDto
+  factory: FactoryDto
+  threadedSize: ThreadedSizeDto
+  /** Diametre exterieur */
   diameter: number
+  /** Longueur */
   length: number
+  /** Nombre de chicane */
   chicane: number
+  /** Decibel attenue selon constructeur  */
   estimatedNoiseReduction: number
+  /** Nom du modele */
   name: string
   description: string
+  /** Demontable pour nettoyage */
   isCleanable: boolean
 }
 
 export interface UpdateSoundNoiseReducerDto {
-  caliberId: number
-  factoryId: number
-  threadedSizeId: number
+  caliber: CaliberDto
+  factory: FactoryDto
+  threadedSize: ThreadedSizeDto
+  /** Diametre exterieur */
   diameter: number
+  /** Longueur */
   length: number
+  /** Nombre de chicane */
   chicane: number
+  /** Decibel attenue selon constructeur  */
   estimatedNoiseReduction: number
+  /** Nom du modele */
   name: string
   description: string
+  /** Demontable pour nettoyage */
   isCleanable: boolean
   id: number
+}
+
+export enum WeaponTypeDtoTypeEnum {
+  Handgun = 'handgun',
+  Riffle = 'riffle'
 }
 
 export enum CreateUserDtoRoleEnum {
@@ -1162,7 +1226,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags Factory
      * @name FactoryControllerFindAll
-     * @summary Liste complete
+     * @summary Liste complète
      * @request GET:/api/factory/all
      */
     factoryControllerFindAll: (params: RequestParams = {}) =>
@@ -1174,16 +1238,32 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
+     * @description Retourne le detail de la marque
+     *
+     * @tags Factory
+     * @name FactoryControllerFindById
+     * @summary Filtré par id
+     * @request GET:/api/factory/by/id/{id}
+     */
+    factoryControllerFindById: (id: number, params: RequestParams = {}) =>
+      this.request<FactoryDto, any>({
+        path: `/api/factory/by/id/${id}`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
      * @description Retourne la liste des marques suivant leur type
      *
      * @tags Factory
      * @name FactoryControllerFindByType
      * @summary Liste par type
-     * @request GET:/api/factory/by/{type}
+     * @request GET:/api/factory/by/category/{type}
      */
     factoryControllerFindByType: (type: string, params: RequestParams = {}) =>
       this.request<FactoryDto[], any>({
-        path: `/api/factory/by/${type}`,
+        path: `/api/factory/by/category/${type}`,
         method: 'GET',
         format: 'json',
         ...params
@@ -1210,7 +1290,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags Factory
      * @name FactoryControllerCreate
-     * @summary Ajout
+     * @summary Creation
      * @request POST:/api/factory
      */
     factoryControllerCreate: (data: CreateFactoryDto, params: RequestParams = {}) =>
@@ -1262,12 +1342,28 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags Caliber
      * @name CaliberControllerFindAllCalibers
-     * @summary Liste complete
-     * @request GET:/api/caliber
+     * @summary Liste complète
+     * @request GET:/api/caliber/all
      */
     caliberControllerFindAllCalibers: (params: RequestParams = {}) =>
       this.request<CaliberDto[], any>({
-        path: `/api/caliber`,
+        path: `/api/caliber/all`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne le detail de l optique
+     *
+     * @tags Caliber
+     * @name CaliberControllerFindById
+     * @summary Filtré par id
+     * @request GET:/api/caliber/by/id/{id}
+     */
+    caliberControllerFindById: (id: number, params: RequestParams = {}) =>
+      this.request<CaliberDto, any>({
+        path: `/api/caliber/by/id/${id}`,
         method: 'GET',
         format: 'json',
         ...params
@@ -1330,12 +1426,28 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags Threaded-size
      * @name ThreadedSizeControllerFindAllThreadedSize
-     * @summary Listes des filletages
-     * @request GET:/api/threaded-size
+     * @summary Liste complète
+     * @request GET:/api/threaded-size/all
      */
     threadedSizeControllerFindAllThreadedSize: (params: RequestParams = {}) =>
       this.request<ThreadedSizeDto[], any>({
-        path: `/api/threaded-size`,
+        path: `/api/threaded-size/all`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne le detail du filletage
+     *
+     * @tags Threaded-size
+     * @name ThreadedSizeControllerFindById
+     * @summary Filtré par id
+     * @request GET:/api/threaded-size/by/id/{id}
+     */
+    threadedSizeControllerFindById: (id: number, params: RequestParams = {}) =>
+      this.request<ThreadedSizeDto, any>({
+        path: `/api/threaded-size/by/id/${id}`,
         method: 'GET',
         format: 'json',
         ...params
@@ -1346,7 +1458,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags Threaded-size
      * @name ThreadedSizeControllerCreate
-     * @summary Ajout d un filetage
+     * @summary Creation
      * @request POST:/api/threaded-size
      */
     threadedSizeControllerCreate: (data: CreateThreadedSizeDto, params: RequestParams = {}) =>
@@ -1382,7 +1494,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags Threaded-size
      * @name ThreadedSizeControllerDelete
-     * @summary Suppression logique
+     * @summary Suppresion logique
      * @request DELETE:/api/threaded-size/{id}
      */
     threadedSizeControllerDelete: (id: number, params: RequestParams = {}) =>
@@ -1426,6 +1538,22 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
+     * @description Retourne le detail du chargeur
+     *
+     * @tags Color
+     * @name ColorControllerFindById
+     * @summary Filtré par id
+     * @request GET:/api/color/by/id/{id}
+     */
+    colorControllerFindById: (id: number, params: RequestParams = {}) =>
+      this.request<ColorDto, any>({
+        path: `/api/color/by/id/${id}`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
      * @description Ajoute une nouvelle couleur
      *
      * @tags Color
@@ -1444,6 +1572,40 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
+     * @description Edition d une couleur
+     *
+     * @tags Color
+     * @name ColorControllerEdit
+     * @summary Edition
+     * @request PUT:/api/color/{id}
+     */
+    colorControllerEdit: (id: number, data: ColorDto, params: RequestParams = {}) =>
+      this.request<ColorDto, any>({
+        path: `/api/color/${id}`,
+        method: 'PUT',
+        body: data,
+        type: ContentType.Json,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Sppression logique de la couleur
+     *
+     * @tags Color
+     * @name ColorControllerDelete
+     * @summary Suppression logique
+     * @request DELETE:/api/color/{id}
+     */
+    colorControllerDelete: (id: number, params: RequestParams = {}) =>
+      this.request<ApiDeleteResponseDto, any>({
+        path: `/api/color/${id}`,
+        method: 'DELETE',
+        format: 'json',
+        ...params
+      }),
+
+    /**
      * @description Retourne la listes de toutes les marques sans distinction
      *
      * @tags Material
@@ -1454,6 +1616,22 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
     materialControllerFindAll: (params: RequestParams = {}) =>
       this.request<MaterialDto[], any>({
         path: `/api/material/all`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne le detail du chargeur
+     *
+     * @tags Material
+     * @name MaterialControllerFindById
+     * @summary Filtré par id
+     * @request GET:/api/material/by/id/{id}
+     */
+    materialControllerFindById: (id: number, params: RequestParams = {}) =>
+      this.request<MaterialDto, any>({
+        path: `/api/material/by/id/${id}`,
         method: 'GET',
         format: 'json',
         ...params
@@ -1478,17 +1656,154 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
+     * @description Edition d une matiere
+     *
+     * @tags Material
+     * @name MaterialControllerEdit
+     * @summary Edition
+     * @request PUT:/api/material/{id}
+     */
+    materialControllerEdit: (id: number, data: MaterialDto, params: RequestParams = {}) =>
+      this.request<MaterialDto, any>({
+        path: `/api/material/${id}`,
+        method: 'PUT',
+        body: data,
+        type: ContentType.Json,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Sppression logique du materiau
+     *
+     * @tags Material
+     * @name MaterialControllerDelete
+     * @summary Suppresion logique
+     * @request DELETE:/api/material/{id}
+     */
+    materialControllerDelete: (id: number, params: RequestParams = {}) =>
+      this.request<ApiDeleteResponseDto, any>({
+        path: `/api/material/${id}`,
+        method: 'DELETE',
+        format: 'json',
+        ...params
+      }),
+
+    /**
      * @description Retourne la listes de toutes les taille de rail optique
      *
      * @tags Rail-size
      * @name RailSizeControllerFindAll
      * @summary Liste complète
-     * @request GET:/api/rail-size
+     * @request GET:/api/rail-size/all
      */
     railSizeControllerFindAll: (params: RequestParams = {}) =>
       this.request<RailSizeDto[], any>({
-        path: `/api/rail-size`,
+        path: `/api/rail-size/all`,
         method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne la liste complete des types de percussion
+     *
+     * @name PercussionTypeControllerFindAll
+     * @summary Liste complète
+     * @request GET:/api/percussion-type/all
+     */
+    percussionTypeControllerFindAll: (params: RequestParams = {}) =>
+      this.request<LegislationCategoryDto[], any>({
+        path: `/api/percussion-type/all`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne la liste complete des type de detente d arme
+     *
+     * @tags Optic-ready-plate
+     * @name OpticReadyPlateControllerFindAll
+     * @summary Liste complète
+     * @request GET:/api/optic-ready-plate/all
+     */
+    opticReadyPlateControllerFindAll: (params: RequestParams = {}) =>
+      this.request<OpticReadyPlateDto[], any>({
+        path: `/api/optic-ready-plate/all`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne le detail de la plaque optic ready
+     *
+     * @tags Optic-ready-plate
+     * @name OpticReadyPlateControllerFindById
+     * @summary Filtré par id
+     * @request GET:/api/optic-ready-plate/by/id/{id}
+     */
+    opticReadyPlateControllerFindById: (id: number, params: RequestParams = {}) =>
+      this.request<OpticReadyPlateDto, any>({
+        path: `/api/optic-ready-plate/by/id/${id}`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Ajout d une nouvelle plaque optic ready
+     *
+     * @tags Optic-ready-plate
+     * @name OpticReadyPlateControllerCreate
+     * @summary Creation
+     * @request POST:/api/optic-ready-plate
+     */
+    opticReadyPlateControllerCreate: (data: CreateOpticReadyPlateDto, params: RequestParams = {}) =>
+      this.request<OpticReadyPlateDto, any>({
+        path: `/api/optic-ready-plate`,
+        method: 'POST',
+        body: data,
+        type: ContentType.Json,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Edition d une plaque OR
+     *
+     * @tags Optic-ready-plate
+     * @name OpticReadyPlateControllerEdit
+     * @summary Edition
+     * @request PUT:/api/optic-ready-plate/{id}
+     */
+    opticReadyPlateControllerEdit: (
+      id: number,
+      data: OpticReadyPlateDto,
+      params: RequestParams = {}
+    ) =>
+      this.request<OpticReadyPlateDto, any>({
+        path: `/api/optic-ready-plate/${id}`,
+        method: 'PUT',
+        body: data,
+        type: ContentType.Json,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Sppression logique de la marque
+     *
+     * @tags Optic-ready-plate
+     * @name OpticReadyPlateControllerDelete
+     * @summary Suppression logique
+     * @request DELETE:/api/optic-ready-plate/{id}
+     */
+    opticReadyPlateControllerDelete: (id: number, params: RequestParams = {}) =>
+      this.request<ApiDeleteResponseDto, any>({
+        path: `/api/optic-ready-plate/${id}`,
+        method: 'DELETE',
         format: 'json',
         ...params
       }),
@@ -1514,12 +1829,28 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags Weapon type
      * @name WeaponTypeControllerFindAllWeaponTypes
-     * @summary Liste complete
+     * @summary Liste complète
      * @request GET:/api/weapon-type/all
      */
     weaponTypeControllerFindAllWeaponTypes: (params: RequestParams = {}) =>
       this.request<WeaponTypeDto[], any>({
         path: `/api/weapon-type/all`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne le detail du chargeur
+     *
+     * @tags Weapon type
+     * @name WeaponTypeControllerFindById
+     * @summary Filtré par id
+     * @request GET:/api/weapon-type/by/id/{id}
+     */
+    weaponTypeControllerFindById: (id: number, params: RequestParams = {}) =>
+      this.request<WeaponTypeDto, any>({
+        path: `/api/weapon-type/by/id/${id}`,
         method: 'GET',
         format: 'json',
         ...params
@@ -1546,7 +1877,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags Weapon type
      * @name WeaponTypeControllerCreate
-     * @summary Ajout d un type d arme
+     * @summary Creation
      * @request POST:/api/weapon-type
      */
     weaponTypeControllerCreate: (data: CreateWeaponTypeDto, params: RequestParams = {}) =>
@@ -1582,7 +1913,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags Weapon type
      * @name WeaponTypeControllerDelete
-     * @summary Suppression logique
+     * @summary Suppresion logique
      * @request DELETE:/api/weapon-type/{id}
      */
     weaponTypeControllerDelete: (id: number, params: RequestParams = {}) =>
@@ -1649,7 +1980,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @summary Filtré par categorie
      * @request GET:/api/magazine/by/category/{category}
      */
-    magazineControllerFindByCategory: (category: string, params: RequestParams = {}) =>
+    magazineControllerFindByCategory: (category: number, params: RequestParams = {}) =>
       this.request<WeaponMagazineDto[], any>({
         path: `/api/magazine/by/category/${category}`,
         method: 'GET',
@@ -1662,7 +1993,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags Magazine
      * @name MagazineControllerCreate
-     * @summary Ajout de chargeur
+     * @summary Creation
      * @request POST:/api/magazine
      */
     magazineControllerCreate: (data: CreateWeaponMagazineDto, params: RequestParams = {}) =>
@@ -1702,7 +2033,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags Magazine
      * @name MagazineControllerDelete
-     * @summary Suppression logique
+     * @summary Suppresion logique
      * @request DELETE:/api/magazine/{id}
      */
     magazineControllerDelete: (id: number, params: RequestParams = {}) =>
@@ -1914,6 +2245,70 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
+     * @description Retourne la liste de toutes les douilles disponible
+     *
+     * @tags BarrelType
+     * @name BarrelTypeControllerFindAll
+     * @summary Liste complète
+     * @request GET:/api/barrel-type
+     */
+    barrelTypeControllerFindAll: (params: RequestParams = {}) =>
+      this.request<WeaponBarrelTypeDto[], any>({
+        path: `/api/barrel-type`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne la liste des diffents type d armes possible
+     *
+     * @tags Reload mode
+     * @name ReloadModeControllerFindAll
+     * @summary Liste complète
+     * @request GET:/api/reload-mode/all
+     */
+    reloadModeControllerFindAll: (params: RequestParams = {}) =>
+      this.request<WeaponReloadModeDto[], any>({
+        path: `/api/reload-mode/all`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne la liste complete des type de detente d arme
+     *
+     * @tags Trigger-type
+     * @name TriggerTypeControllerFindAll
+     * @summary Liste complète
+     * @request GET:/api/trigger-type/all
+     */
+    triggerTypeControllerFindAll: (params: RequestParams = {}) =>
+      this.request<WeaponTriggerTypeDto[], any>({
+        path: `/api/trigger-type/all`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne la listes de toutes les positions MLOCK
+     *
+     * @tags M Lock Options
+     * @name MLockOptionControllerFindAll
+     * @summary Liste complète
+     * @request GET:/api/m-lock-option/all
+     */
+    mLockOptionControllerFindAll: (params: RequestParams = {}) =>
+      this.request<MLockOptionDto[], any>({
+        path: `/api/m-lock-option/all`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
      * @description Retourne la liste des munitions filtre par calibre
      *
      * @tags Ammunition
@@ -1953,25 +2348,9 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @summary Filtré par categorie
      * @request GET:/api/ammunition/by/category/{category}
      */
-    ammunitionControllerFindByCategory: (category: string, params: RequestParams = {}) =>
+    ammunitionControllerFindByCategory: (category: number, params: RequestParams = {}) =>
       this.request<AmmunitionDto[], any>({
         path: `/api/ammunition/by/category/${category}`,
-        method: 'GET',
-        format: 'json',
-        ...params
-      }),
-
-    /**
-     * @description Retourne la liste des pre-requis necesssaire a la creation d une nouvelle munition
-     *
-     * @tags Ammunition
-     * @name AmmunitionControllerFindPrerequisitesAmmunitionList
-     * @summary Liste des pre-requis
-     * @request GET:/api/ammunition/prerequisites
-     */
-    ammunitionControllerFindPrerequisitesAmmunitionList: (params: RequestParams = {}) =>
-      this.request<ListOfPrerequisitesAmmunitionDto, any>({
-        path: `/api/ammunition/prerequisites`,
         method: 'GET',
         format: 'json',
         ...params
@@ -1982,7 +2361,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags Ammunition
      * @name AmmunitionControllerCreate
-     * @summary Ajout
+     * @summary Creation
      * @request POST:/api/ammunition
      */
     ammunitionControllerCreate: (data: CreateAmmunitionDto, params: RequestParams = {}) =>
@@ -2018,7 +2397,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags Ammunition
      * @name AmmunitionControllerDelete
-     * @summary Suppression logique
+     * @summary Suppresion logique
      * @request DELETE:/api/ammunition/{id}
      */
     ammunitionControllerDelete: (id: number, params: RequestParams = {}) =>
@@ -2034,12 +2413,28 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags AmmunitionHeadType
      * @name AmmunitionHeadTypeControllerFindAllHeadTypes
-     * @summary Toutes les oviges
-     * @request GET:/api/ammunition-head-type
+     * @summary Liste complète
+     * @request GET:/api/ammunition-head-type/all
      */
     ammunitionHeadTypeControllerFindAllHeadTypes: (params: RequestParams = {}) =>
       this.request<AmmunitionHeadTypeDto[], any>({
-        path: `/api/ammunition-head-type`,
+        path: `/api/ammunition-head-type/all`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne le detail de le l ogive
+     *
+     * @tags AmmunitionHeadType
+     * @name AmmunitionHeadTypeControllerFindById
+     * @summary Filtré par id
+     * @request GET:/api/ammunition-head-type/by/id/{id}
+     */
+    ammunitionHeadTypeControllerFindById: (id: number, params: RequestParams = {}) =>
+      this.request<AmmunitionHeadTypeDto, any>({
+        path: `/api/ammunition-head-type/by/id/${id}`,
         method: 'GET',
         format: 'json',
         ...params
@@ -2109,7 +2504,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags AmmunitionBodyType
      * @name AmmunitionBodyTypeControllerFindAllBodyTypes
-     * @summary Toutes les douilles
+     * @summary Liste complète
      * @request GET:/api/ammunition-body-type
      */
     ammunitionBodyTypeControllerFindAllBodyTypes: (params: RequestParams = {}) =>
@@ -2142,11 +2537,27 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
-     * @description Editio d un  type de douille pour les munitions
+     * @description Retourne le detail de la douille
+     *
+     * @tags AmmunitionBodyType
+     * @name AmmunitionBodyTypeControllerFindById
+     * @summary Filtré par id
+     * @request GET:/api/ammunition-body-type/by/id/{id}
+     */
+    ammunitionBodyTypeControllerFindById: (id: number, params: RequestParams = {}) =>
+      this.request<AmmunitionBodyTypeDto, any>({
+        path: `/api/ammunition-body-type/by/id/${id}`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Edition d un type de douille
      *
      * @tags AmmunitionBodyType
      * @name AmmunitionBodyTypeControllerEdit
-     * @summary Editio
+     * @summary Edition
      * @request PUT:/api/ammunition-body-type/{id}
      */
     ammunitionBodyTypeControllerEdit: (
@@ -2168,7 +2579,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags AmmunitionBodyType
      * @name AmmunitionBodyTypeControllerDelete
-     * @summary Suppression logique
+     * @summary Suppresion logique
      * @request DELETE:/api/ammunition-body-type/{id}
      */
     ammunitionBodyTypeControllerDelete: (id: number, params: RequestParams = {}) =>
@@ -2266,22 +2677,6 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
-     * @description Retourne la liste des pre-requis necesssaire a la creation d une optique
-     *
-     * @tags Optic
-     * @name OpticControllerFindPrerequisitesOpticList
-     * @summary Liste des pre-requis
-     * @request GET:/api/optic/prerequisites
-     */
-    opticControllerFindPrerequisitesOpticList: (params: RequestParams = {}) =>
-      this.request<ListOfPrerequisitesOpticDto, any>({
-        path: `/api/optic/prerequisites`,
-        method: 'GET',
-        format: 'json',
-        ...params
-      }),
-
-    /**
      * @description Creer une nouvelle optique et retourne son dto en reponse
      *
      * @tags Optic
@@ -2338,12 +2733,12 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags OpticType
      * @name OpticTypeControllerFindAll
-     * @summary Liste complete
-     * @request GET:/api/optic-type
+     * @summary Liste complète
+     * @request GET:/api/optic-type/all
      */
     opticTypeControllerFindAll: (params: RequestParams = {}) =>
       this.request<OpticTypeDto[], any>({
-        path: `/api/optic-type`,
+        path: `/api/optic-type/all`,
         method: 'GET',
         format: 'json',
         ...params
@@ -2390,7 +2785,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags OpticType
      * @name OpticTypeControllerDelete
-     * @summary Suppression logique
+     * @summary Suppresion logique
      * @request DELETE:/api/optic-type/{id}
      */
     opticTypeControllerDelete: (id: number, params: RequestParams = {}) =>
@@ -2485,6 +2880,38 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       this.request<ApiDeleteResponseDto, any>({
         path: `/api/optic-collar/${id}`,
         method: 'DELETE',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne la liste complete des plans focal
+     *
+     * @tags OpticFocalPlane
+     * @name OpticFocalPlaneControllerFindAll
+     * @summary Liste complète
+     * @request GET:/api/optic-focal-plane/all
+     */
+    opticFocalPlaneControllerFindAll: (params: RequestParams = {}) =>
+      this.request<FocalPlaneDto[], any>({
+        path: `/api/optic-focal-plane/all`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne la liste complete des plans focal
+     *
+     * @tags OpticUnit
+     * @name OpticUnitControllerFindAll
+     * @summary Liste complète
+     * @request GET:/api/optic-unit/all
+     */
+    opticUnitControllerFindAll: (params: RequestParams = {}) =>
+      this.request<OpticUnitDto[], any>({
+        path: `/api/optic-unit/all`,
+        method: 'GET',
         format: 'json',
         ...params
       }),

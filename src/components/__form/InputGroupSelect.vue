@@ -38,7 +38,7 @@ const {
   optionValue = 'id',
   maxWidth = 100,
   placeholder = 'defaultPlaceHolder',
-  i18nPrefix = 'global',
+  i18nPrefix = 'global.',
   initialValue = 0
 } = defineProps<{
   i18nPrefix?: string

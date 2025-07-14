@@ -99,47 +99,55 @@
     "opticRail": "Rail d'optique",
     "diameter": "Diametre",
     "collar": "Collier d'optique",
-    "material": "Matiere"
+    "material": "Matiere",
+    "importantInformation": "Informations importantes",
+    "barrelInformation": "Information action canonée",
+    "otherInformation": "Autre informations",
+    "associatedProducts": "Produits associés",
+    "associatedWeapons": "Armes associés"
   },
   "weapon": {
     "summary": "Gestion des armes",
+    "model": "Modele de l'arme",
+    "variation": "Variante",
+    "barrelLength": "Longueur du canon",
+    "barrelSize": "Epaisseur du canon",
+    "isProvidedMagazine": "Chargeur fournis ?",
+    "providedMagazineQuantity": "Nombre de chargeurs fournis",
+    "isAdjustableTrigger": "Detente reglable",
+    "adjustableTriggerMinWeight": "Poids mini",
+    "adjustableTriggerMaxWeight": "Poids max",
+    "isOpticReady": "Optic ready ?",
+    "isPicatinyRailSlop": "Rail picatiny pour accessoires",
+    "decocking": "Decocking",
+    "isExternalHammer": "Chien exterieur",
+    "isThreadedBarrel": "Canon filete",
+    "isAdjustableButt": "Crosse reglable",
+    "isAdjustableBusk": "Busc ajustable",
+    "isOpenAim": "Visee ouverte",
+    "isAdjustableBackSight": "Hausse reglable",
+    "isAdjustableFrontSight": "Guidon reglable",
+    "qcSlot": "Connextion Quick Connect",
+    "grenadierSlot": "Grenadieres",
+    "isMlockCompatibility": "Compatible M-lock",
+    "triggerType": "Type de detente",
+    "percussionType": "Type de percussion",
+    "barrelType": "Type de canon",
+    "barrelColor": "Couleur du canon",
+    "buttMaterial": "Matiere de la crosse",
+    "buttColor": "Couleur de la crosse",
+    "slideMaterial": "Matiere de la culasse",
+    "slideColor": "Couleur de la culasse",
+    "railSize": "Taille du rail d'optique",
+    "providedOpticReadyPlates": "Plaques optic ready fournies",
+    "selectType": "Quel type d'arme ?",
+    "handGunButtType": "Matiere de la carcasse",
+    "mLockOptions": "Position MLOCK",
+    "weaponType": "Type d'arme",
+    "weaponTypeMode": "Fonctionement",
     "add": {
       "success": "ajouter a la base de donnee",
       "edit": "Arme modifié en base de donnee"
-    },
-    "common": {
-      "percussionType": "Type de percussion",
-      "barrelType": "Type de canon",
-      "barrelLength": "Longueur du canon",
-      "barrelSize": "Epaisseur du canon",
-      "barrelColor": "Couleur du canon",
-      "isThreadedBarrel": "Canon filete",
-      "isAdjustableTrigger": "Detente reglable",
-      "buttMaterial": "Matiere de la crosse",
-      "buttColor": "Couleur de la crosse",
-      "slideMaterial": "Matiere de la culasse",
-      "slideColor": "Couleur de la culasse",
-      "isAdjustableButt": "Crosse reglable",
-      "isAdjustableBusk": "Busc ajustable",
-      "providedMagazineQuantity": "Chargeur fournis",
-      "isOpenAim": "Visee ouverte",
-      "isAdjustableBackSight": "Hausse reglable",
-      "isAdjustableFrontSight": "Guidon reglable",
-      "railSize": "Taille du rail d'optique",
-      "decocking": "Decocking",
-      "triggerType": "Type de detente",
-      "isExternalHammer": "Chien exterieur",
-      "isPicatinyRailSlop": "Rail picatiny pour accessoires",
-      "isOpticReady": "Optic ready ?",
-      "providedOpticReadyPlates": "Plaques optic ready fournies",
-      "qcSlot": "Connextion Quick Connect",
-      "grenadierSlot": "Grenadieres",
-      "isMlockCompatibility": "Compatible M-lock",
-      "mLockOptions": "Position MLOCK",
-      "selectType": "Quel type d'arme ?",
-      "handGunButtType": "Matiere de la carcasse",
-      "adjustableTriggerMinWeight": "Poids mini",
-      "adjustableTriggerMaxWeight": "Poids max"
     },
     "form": {
       "add": "Ajouter une arme de categorie",
@@ -176,15 +184,13 @@
     "summary": "Gestion des munition",
     "save": "Ajouter une munition de categorie",
     "edit": "Modifier une munition de categorie",
-    "nameLabel": "Modele de munition",
+    "name": "Modele de munition",
     "initialSpeed": "Vitesse initiale",
     "headType": "Type d'ovige",
     "bodyType": "Type de douille",
     "packaging": "Packaging",
-    "add": {
-      "success": "Ajouter a la base de donnee",
-      "update": "Munition modifié"
-    },
+    "success": "Ajouter a la base de donnee",
+    "update": "Munition modifié",
     "list":"Liste des munitions de categorie",
     "notFound": "Aucune munition trouvée",
     "loading": "Chargement des muntions en cours"
@@ -195,6 +201,8 @@
     }
   },
   "bodyType": {
+    "name": "Type de douille",
+    "placeholder": "Choisir un type",
     "form": {
       "addTitle": "Ajouter un nouveau type de douille",
       "success": "Ajout d'un nouveau type confirme"
@@ -204,6 +212,8 @@
     "summary": "Gestion des douilles"
   },
   "headType": {
+    "name": "Type d'ovige",
+    "placeholder": "Choisir un type",
     "form": {
       "addTitle": "Ajouter un nouveau type d'ogive",
       "success": "Ajout d'un nouveau type confirme"
@@ -220,7 +230,9 @@
     "existingList": "Liste des type d'arme existants",
     "type": "Type d'armes",
     "summary": "Gestion des type d'arme",
-    "mode": "Mode de fonctionnement"
+    "mode": "Mode de fonctionnement",
+    "name": "Type d'armes",
+    "placeholder": "Choisir un type"
   },
   "optic": {
     "summary": "Gestion des optiques",
@@ -247,7 +259,9 @@
     "bodyDiameter": "Diametre du corps",
     "eyeRelief": "Degagement occulaire",
     "minParallax": "Parallax mini",
-    "maxParallax": "Parallax maxi"
+    "maxParallax": "Parallax maxi",
+    "denomination": "Denomination du zoom"
+
   },
   "soundNoiseReducer": {
     "save": "Ajouter un nouveau RDS",
@@ -286,6 +300,11 @@
   },
   "color": {
     "summary": "Gestion des couleurs",
+    "barrelColor": "Couleur du canon",
+    "slideColor": "Couleur de la glissiere",
+    "buttColor": "Couleur de la crosse",
+    "label": "Couleur",
+    "placeholder": "Choissir",
     "form": {
       "success": "Ajout d'une nouvelle couleur",
       "addTitle": "Ajouter une nouvelle couleur"
@@ -293,12 +312,19 @@
   },
   "material": {
     "summary": "Gestion des matieres",
+    "label": "Couleur",
+    "placeholder": "Choissir",
+    "slideMaterial": "Matiere de la glissiere",
+    "buttMaterial": "Matiere de la crosse",
+    "bodyMaterial": "Matiere du chargeur",
     "form": {
       "success": "Ajout d'une nouvelle matiere",
       "addTitle": "Ajouter une nouvelle matiere"
     }
   },
   "caliber": {
+    "name": "Nom du calibre",
+    "reference": "Reference",
     "form": {
       "addTitle": "Ajouter un nouveau calibre",
       "success": "Ajout d'un nouveau type confirme"
@@ -306,6 +332,42 @@
     "existingList": "Liste des calibres existantes",
     "type": "Type d'armes",
     "summary": "Gestion des type d'arme"
+  },
+  "legalisationCategory": {
+    "name": "Categorie",
+    "placeholder": "Choisir une categorie"
+  },
+  "percussionType": {
+    "name": "Type de percussion",
+    "placeholder": "Choisir un type"
+  },
+  "opticType": {
+    "name": "Type d'optique",
+    "placeholder": "Choisir un type"
+  },
+  "focalPlane": {
+    "name": "Plan focal",
+    "placeholder": "Choisir un type"
+  },
+  "opticUnit": {
+    "name": "Unite de graduation",
+    "placeholder": "Choisir l'unite"
+  },
+  "opticRail": {
+    "name": "Type de rail d'optique",
+    "placeholder": "Choisir un type"
+  },
+  "mLockOption": {
+    "placeholder": "Position MLOCK",
+    "name": "Position"
+  },
+  "barrelType": {
+    "name": "Type de canon",
+    "placeholder": "Choisir un type"
+  },
+  "reloadMode": {
+    "name": "Type de fonctionnement",
+    "placeholder": "Choisir un type"
   },
   "threadedSize": {
     "form": {
@@ -317,6 +379,12 @@
     "summary": "Gestion des type d'arme",
     "size": "Taille du pas de vis"
   },
+  "triggerType": {
+    "name": "Type de detente"
+  },
+  "opticReadyPlate": {
+    "name": "Plaque optique ready"
+  },
   "opticCollar": {
     "summary": "Gestion des colliers d'optique",
     "save": "Ajouter un nouveau collier",
@@ -327,6 +395,20 @@
     "deleted": "Collier supprimé",
     "notFound": "Aucun collier trouvé",
     "loading": "Chargement des colliers en cours"
+  },
+  "formatter": {
+    "setup": "Réglage de ",
+    "to": "à",
+    "cm": "cm",
+    "mm": "mm",
+    "cps": "coups",
+    "pcs": "pieces",
+    "speed": "m/s",
+    "moa": "moa",
+    "SFP":"Second plan focal",
+    "FFP": "Premier plan focal",
+    "yrd": "yards",
+    "db": "DB"
   },
   "error": {
     "0001": "Email deja utilisé",

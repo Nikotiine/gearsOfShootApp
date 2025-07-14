@@ -101,31 +101,12 @@
       </Column>
       <Column header="Actions" :showFilterMenu="false" style="min-width: 12rem">
         <template #body="{ data }">
-          <div class="flex justify-between">
-            <Button
-              icon="pi pi-eye"
-              rounded
-              aria-label="Filter"
-              as="router-link"
-              :to="'/admin/gestion/detail/weapon/riffle/' + data.id"
-            />
-            <Button
-              icon="pi pi-pencil"
-              rounded
-              aria-label="Filter"
-              severity="warn"
-              as="router-link"
-              :to="'/admin/gestion/edit/weapon/riffle/' + data.id"
-            />
-
-            <Button
-              icon="pi pi-trash"
-              rounded
-              aria-label="delete"
-              severity="danger"
-              @click="confirmDelete(data.id)"
-            /></div
-        ></template>
+          <action-menu-component
+            @on-click-action="onClickAction"
+            type="handgun"
+            :reference="data.reference"
+            :id="data.id"
+        /></template>
       </Column>
     </DataTable>
   </div>
@@ -145,6 +126,13 @@ import IconField from 'primevue/iconfield'
 import { useFactoryStore } from '@/stores/factory'
 import { useCaliberStore } from '@/stores/caliber'
 import { useConfirmationStore } from '@/stores/confirmation'
+import ActionMenuComponent, {
+  type ActionMenuEmit
+} from '@/components/__table/ActionMenuComponent.vue'
+import { RouterEnum } from '@/enum/router.enum'
+import { WeaponEnum } from '@/enum/weapon.enum'
+import { type NewWeapon, useWeaponStore } from '@/stores/weapon'
+import { useRouter } from 'vue-router'
 const { category } = defineProps<{
   category: string
 }>()
@@ -177,12 +165,32 @@ watch(
     }
   }
 )
-const confirmationStore = useConfirmationStore()
-const confirmDelete = async (id: number) => {
-  const res = await confirmationStore.confirmDelete()
-  if (res) {
-    store.delete(id)
-    refetch()
+const router = useRouter()
+
+const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
+  switch (event) {
+    case 'view':
+      router.push({ name: RouterEnum.RIFFLE_DETAIL, params: { id: id } })
+      break
+    case 'edit':
+      onEditAction(id)
+      router.push({ name: RouterEnum.RIFFLE_EDIT, params: { id: id } })
+      break
+    case true:
+      store.delete(id)
+      refetch()
+      break
+  }
+}
+const weaponStore = useWeaponStore()
+const onEditAction = (id: number) => {
+  const currentWeapon = riffles$.value?.data.find((r) => r.id === id)
+  if (currentWeapon) {
+    const data: NewWeapon = {
+      category: currentWeapon.category,
+      type: currentWeapon.type
+    }
+    weaponStore.setOptions(data)
   }
 }
 </script>

@@ -27,11 +27,6 @@
           :initial-value="form.reference"
         />
       </InputGroup>
-      <div class="text-red-500 p-4" v-if="store.create.isError">
-        <p class="text-xl font-bold">
-          {{ t('error.' + store.create.error.response.data.message) }}
-        </p>
-      </div>
     </div>
     <div class="text-center mt-6">
       <Button type="submit" :label="t('global.save')" :disabled="!isFormValid"></Button>
@@ -43,35 +38,18 @@ import Button from 'primevue/button'
 import InputGroup from 'primevue/inputgroup'
 import { useI18n } from 'vue-i18n'
 import { useThreadedSizeStore } from '@/stores/threadedSize'
-import { computed, ref } from 'vue'
-import type { CreateThreadedSizeDto } from '@/api/Api'
+import { computed } from 'vue'
 import InputGroupText from '@/components/__form/InputGroupText.vue'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
+
 const { t } = useI18n()
 const store = useThreadedSizeStore()
-const emit = defineEmits(['onSave'])
-//*******************Init du formulaire*********************
-const initialFormObject: CreateThreadedSizeDto = {
-  size: '',
-  reference: ''
-}
-const form = ref<CreateThreadedSizeDto>({ ...initialFormObject })
+const { form, submit } = store.formBuilder()
 
 //***********************Validateur*************************
 const isFormValid = computed(() => {
   return !!form.value.size
 })
-
-/**
- * Sousmission du formulaire pour la creation d'un nouveau filetage
- * Emet un boolean onSave pour le drawer
- * Reinitialise le formulaire apres l'envoie
- */
-const submit = async () => {
-  store.create.mutate(form.value)
-  form.value = { ...initialFormObject }
-  emit('onSave', true)
-}
 </script>
 
 <style scoped></style>

@@ -24,6 +24,7 @@ export type ActionMenuType =
   | 'riffle'
   | 'handgun'
   | 'accessory'
+  | 'factory'
 export type ActionMenuEmit = 'view' | 'edit'
 const confirmationStore = useConfirmationStore()
 const { type, reference, id } = defineProps<{
@@ -42,21 +43,21 @@ const items = ref<MenuItem[]>([
     items: [
       {
         label: 'View',
-        icon: 'pi pi-refresh',
+        icon: 'pi pi-eye',
         command: () => {
           emit('onClickAction', 'view', id)
         }
       },
       {
         label: 'Edit',
-        icon: 'pi pi-upload',
+        icon: 'pi pi-pencil',
         command: () => {
           emit('onClickAction', 'edit', id)
         }
       },
       {
         label: 'Delete',
-        icon: 'pi pi-upload',
+        icon: 'pi pi-trash',
         command: async () => {
           const confirmation = await confirmationStore.confirmDelete(type, reference)
           emit('onClickAction', confirmation, id)

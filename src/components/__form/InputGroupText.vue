@@ -23,7 +23,7 @@ const {
   label = 'label',
   required = false,
   initialValue = '',
-  i18nPrefix = 'global',
+  i18nPrefix = 'global.',
   placeholder = 'defaultPlaceHolder'
 } = defineProps<{
   i18nPrefix?: string

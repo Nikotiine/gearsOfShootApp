@@ -2,8 +2,16 @@ import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
 import { useToastStore } from '@/stores/toast'
 import { useMutation, useQuery } from '@tanstack/vue-query'
-import { type CreateFactoryDto, type FactoryDto, type FactoryTypeDto } from '@/api/Api'
+import {
+  type CreateFactoryDto,
+  type FactoryDto,
+  type FactoryTypeDto,
+  type UpdateFactoryDto
+} from '@/api/Api'
 import { ref } from 'vue'
+import { useFormHandler } from '@/shared/useFormHandler'
+import type { AxiosResponse } from 'axios'
+import { getI18NPrefix, I18NSuffix } from '@/enum/I18NSuffix.enum'
 
 export const useFactoryStore = defineStore('factory', () => {
   // Appel API
@@ -12,39 +20,44 @@ export const useFactoryStore = defineStore('factory', () => {
   const { successMessage } = useToastStore()
   // Refs
   const factories = ref<FactoryDto[]>([])
-  const isEnabledQueryByType = ref<boolean>(false)
   const factoryTypes = ref<FactoryTypeDto[]>([])
-  const factoryType = ref<FactoryType>('weapon')
-  // Private Attibute
-  const _SUMMARY = 'factory.summary'
-  const _GET_ALL_FN = 'getAllFactory'
+
+  const mutationSuccess = ref(false)
+
+  const _I18N_PREFIX = 'factory'
   const _GET_ALL_BY_TYPE_FN = 'getAllByTypeFactory'
   const _PREREQUISITE_FN = 'prerequisite-factory'
+  const _GET_BY_ID_FN = 'getFactoryById'
   // *******************Methodes***************
-  const createFactoryMutation = useMutation({
+  const _createMutation = useMutation({
     mutationFn: async (factory: CreateFactoryDto) => {
       return await api.api.factoryControllerCreate(factory)
     },
-    onSuccess: (data) => {
-      successMessage(_SUMMARY, 'factory.form.success')
-      factories.value.push(data.data)
+    onSuccess() {
+      mutationSuccess.value = true
     }
   })
-  function changeFactoryType(type: any): void {
-    factoryType.value = type
-    isEnabledQueryByType.value = type !== factoryType.value
-  }
 
-  const getAllQuery = () =>
+  const _updateMutation = useMutation({
+    mutationFn: async (factory: UpdateFactoryDto) => {
+      return await api.api.factoryControllerEdit(factory.id, factory)
+    },
+    onSuccess() {
+      mutationSuccess.value = true
+    }
+  })
+  const getByIdQuery = (id?: string) =>
     useQuery({
-      queryKey: [_GET_ALL_FN],
-      queryFn: async () => {
-        const res = await api.api.factoryControllerFindAll()
-        factories.value = res.data
-        return res
-      }
+      queryKey: [_GET_BY_ID_FN, id],
+      queryFn: () => _fetchById(id),
+      enabled: !!id,
+      retry: 0
     })
-
+  const _fetchById = async (id?: string) => {
+    if (!id) return null
+    const res = await api.api.factoryControllerFindById(parseInt(id))
+    return res.data
+  }
   const getPrerequisitesFactoryList = useQuery({
     queryKey: [_PREREQUISITE_FN],
     queryFn: async () => {
@@ -54,33 +67,71 @@ export const useFactoryStore = defineStore('factory', () => {
     }
   })
 
-  const getFactoriesByType = (type: FactoryType) => {
+  const getFactoriesByType = (type?: FactoryType) => {
     return useQuery({
       queryKey: [_GET_ALL_BY_TYPE_FN, type],
       queryFn: async () => {
-        const res = await api.api.factoryControllerFindByType(type)
-        factories.value = res.data
-        return res
+        return _fetchByType(type)
       }
     })
   }
 
-  const selectTypeOfQuery = (type: FactoryType) => {
-    if (type === 'all') {
-      return getAllQuery()
-    } else {
-      return getFactoriesByType(type)
+  const _fetchByType = async (type?: FactoryType) => {
+    if (!type) {
+      return _fetchAll()
     }
+    const res = await api.api.factoryControllerFindByType(type)
+    factories.value = res.data
+    return res.data
+  }
+  const _fetchAll = async () => {
+    const res = await api.api.factoryControllerFindAll()
+    factories.value = res.data
+    return res.data
   }
 
+  function useFactoryForm(id?: string) {
+    const emptyForm: CreateFactoryDto = {
+      name: '',
+      description: '',
+      typeId: 1,
+      reference: ''
+    }
+    return useFormHandler<CreateFactoryDto, AxiosResponse<FactoryDto>>(
+      emptyForm,
+      getByIdQuery,
+      _createMutation,
+      _updateMutation,
+      _I18N_PREFIX,
+      id,
+      (data) => ({
+        ...data,
+        typeId: data.type.id
+      })
+    )
+  }
+  const _deleteFactoryMutation = useMutation({
+    mutationFn: async (id: number) => {
+      return await api.api.factoryControllerDelete(id)
+    },
+    onSuccess() {
+      const prefix = getI18NPrefix(_I18N_PREFIX)
+      successMessage(prefix + I18NSuffix.SUMMARY, prefix + I18NSuffix.DELETED)
+    }
+  })
+
+  const deleteFunction = (id: number) => {
+    _deleteFactoryMutation.mutate(id)
+  }
   return {
-    create: createFactoryMutation,
-    selectFactoryType: changeFactoryType,
-    factories$: factories,
-    getAll: getAllQuery,
+    formBuilder: useFactoryForm,
     getFactoryTypes: getPrerequisitesFactoryList,
     factoryTypes$: factoryTypes,
-    getFactoriesByType: selectTypeOfQuery
+    getFactoriesByType: getFactoriesByType,
+    delete: deleteFunction,
+    mutationSuccess,
+    getI18NPrefix: getI18NPrefix(_I18N_PREFIX),
+    factories$: factories
   }
 })
-export type FactoryType = 'weapon' | 'ammunition' | 'optic' | 'magazine' | 'all' | 'accessory'
+export type FactoryType = 'weapon' | 'ammunition' | 'optic' | 'magazine' | 'accessory'

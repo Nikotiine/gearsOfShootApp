@@ -3,8 +3,16 @@ import { useApiStore } from '@/stores/api'
 import { useToastStore } from '@/stores/toast'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import type { AmmunitionDto, CreateAmmunitionDto, UpdateAmmunitionDto } from '@/api/Api'
-import { type Ref, ref, watch } from 'vue'
-import { useI18n } from 'vue-i18n'
+import { ref } from 'vue'
+import { useFormHandler } from '@/shared/useFormHandler'
+import type { AxiosResponse } from 'axios'
+import { getI18NPrefix, I18NSuffix } from '@/enum/I18NSuffix.enum'
+import { getCaliberDto } from '@/shared/api-dto/get-caliber.dto'
+import { getFactoryDto } from '@/shared/api-dto/get-factory.dto'
+import { getLegalisationCategoryDto } from '@/shared/api-dto/get-legalisation-category.dto'
+import { getBodyTypeDto } from '@/shared/api-dto/get-body-type.dto'
+import { getHeadTypeDto } from '@/shared/api-dto/get-head-type.dto'
+import { getPercussionTypeDto } from '@/shared/api-dto/get-percussion-type.dto'
 
 export const useAmmunitionStore = defineStore('ammunition', () => {
   // Appel API
@@ -12,96 +20,65 @@ export const useAmmunitionStore = defineStore('ammunition', () => {
   // TOAST
   const { successMessage } = useToastStore()
   // I18N
-  const { t } = useI18n()
-  // Refs
-  const ammunitions = ref<AmmunitionDto[]>([])
   const ammunition = ref<AmmunitionDto>()
   // Private Attibute
-  const I18N_PREFIX = 'opticCollar'
-  const _SUMMARY = I18N_PREFIX + '.summary'
+  const _I18N_PREFIX = 'ammunition'
   // const _GET_ALL_FN = 'getAllAmmuntiion'
   const _GET_ALL_BY_CATEGORY_FN = 'getAllAmmunitionByCategory'
   const _GET_BY_ID_FN = 'getAmmunitionById'
-  const _PREREQUISITE_FN = 'prerequisite-ammunition'
   // *******************Methodes***************
-  const queryPrerequisitesAmmunitionList = useQuery({
-    queryKey: [_PREREQUISITE_FN],
-    queryFn: async () => {
-      return await api.api.ammunitionControllerFindPrerequisitesAmmunitionList()
-    }
-  })
 
-  const createAmmunitionMutation = useMutation({
+  const _createMutation = useMutation({
     mutationFn: async (ammunition: CreateAmmunitionDto) => {
       return await api.api.ammunitionControllerCreate(ammunition)
-    },
-    onSuccess(data) {
-      ammunitions.value.push(data.data)
-      successMessage(_SUMMARY, 'ammunition.add.success')
     }
   })
 
-  const updateAmmunitionMutation = useMutation({
+  const _updateMutation = useMutation({
     mutationFn: async (ammunition: UpdateAmmunitionDto) => {
       return await api.api.ammunitionControllerEdit(ammunition.id, ammunition)
-    },
-    onSuccess(data) {
-      const index = ammunitions.value.findIndex((ammunition) => ammunition.id === data.data.id)
-      ammunitions.value.splice(index, 1)
-      ammunitions.value.push(data.data)
-      successMessage(_SUMMARY, 'ammunition.add.update')
     }
   })
 
-  const queryFindAllAmmunitionByCategory = (category: Ref<string>) =>
+  const queryFindAllAmmunitionByCategory = (categoryId: number) =>
     useQuery({
-      queryKey: [_GET_ALL_BY_CATEGORY_FN, category.value],
+      queryKey: [_GET_ALL_BY_CATEGORY_FN, categoryId],
       queryFn: async () => {
-        console.log(category.value)
-        return await api.api.ammunitionControllerFindByCategory(category.value)
+        return await _fetchAllByCategoryId(categoryId)
       },
-      enabled: !!category.value
+      enabled: !!categoryId
     })
 
   function useAmmunitionForm(id?: string) {
     const emptyForm: CreateAmmunitionDto = {
-      bodyTypeId: 0,
-      caliberId: 0,
-      factoryId: 0,
+      bodyType: getBodyTypeDto(),
+      caliber: getCaliberDto(),
+      factory: getFactoryDto(),
       name: '',
-      categoryId: 0,
+      category: getLegalisationCategoryDto(),
       initialSpeed: 0,
       description: '',
       packaging: 50,
-      headTypeId: 0,
-      percussionTypeId: 0
+      headType: getHeadTypeDto(),
+      percussionType: getPercussionTypeDto()
     }
-    const form = ref<CreateAmmunitionDto>({
-      ...emptyForm
-    })
-    const resetForm = () => {
-      form.value = emptyForm
-    }
-    const { data, isSuccess } = getByIdQuery(id)
-    watch(
-      () => data.value,
-      (newData) => {
-        if (isSuccess.value && newData) {
-          form.value = {
-            ...newData,
-            factoryId: newData.factory.id,
-            percussionTypeId: newData.percussionType.id,
-            bodyTypeId: newData.bodyType.id,
-            caliberId: newData.caliber.id,
-            categoryId: newData.category.id,
-            headTypeId: newData.headType.id
-          }
-        }
-      },
-      { immediate: true }
+    return useFormHandler<CreateAmmunitionDto, AxiosResponse<AmmunitionDto>>(
+      emptyForm,
+      getByIdQuery,
+      _createMutation,
+      _updateMutation,
+      _I18N_PREFIX,
+      id,
+      (data) => ({
+        ...data,
+        factoryId: data.factory.id,
+        caliberId: data.caliber.id,
+        percussionTypeId: data.percussionType.id,
+        bodyTypeId: data.bodyType.id,
+        headTypeId: data.headType.id,
+        categoryId: data.category.id
+      })
     )
-
-    return { form, isSuccess, resetForm }
   }
 
   const getByIdQuery = (id?: string) =>
@@ -116,14 +93,20 @@ export const useAmmunitionStore = defineStore('ammunition', () => {
     const res = await api.api.ammunitionControllerFindById(parseInt(id))
     return res.data
   }
+  const _fetchAllByCategoryId = async (categoryId: number) => {
+    if (!categoryId) return null
+    const res = await api.api.ammunitionControllerFindByCategory(categoryId)
+    return res.data
+  }
   const _deleteAmmunitionMutation = useMutation({
     mutationFn: async (id: number) => {
       return await api.api.ammunitionControllerDelete(id)
     },
-    onSuccess(data) {
-      const index = ammunitions.value.findIndex((optic) => optic.id === data.data.id)
-      ammunitions.value.splice(index, 1)
-      successMessage(_SUMMARY, t(data.data.message))
+    onSuccess() {
+      successMessage(
+        getI18NPrefix(_I18N_PREFIX) + I18NSuffix.SUMMARY,
+        getI18NPrefix(_I18N_PREFIX) + I18NSuffix.DELETED
+      )
     }
   })
 
@@ -132,13 +115,11 @@ export const useAmmunitionStore = defineStore('ammunition', () => {
   }
 
   return {
-    prerequisitesAmmoList: queryPrerequisitesAmmunitionList,
-    create: createAmmunitionMutation,
-    edit: updateAmmunitionMutation,
     delete: deleteFunction,
     getByCategory: queryFindAllAmmunitionByCategory,
     getById: getByIdQuery,
     ammunition$: ammunition,
-    formBuilder: useAmmunitionForm
+    formBuilder: useAmmunitionForm,
+    getI18NPrefix: getI18NPrefix(_I18N_PREFIX)
   }
 })
