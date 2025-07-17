@@ -48,6 +48,7 @@
   },
   "global": {
     "password": "Mot de passe",
+    "price": "Prix",
     "yes": "Oui",
     "no": "Non",
     "cancel": "Annuler",
@@ -104,7 +105,10 @@
     "barrelInformation": "Information action canonée",
     "otherInformation": "Autre informations",
     "associatedProducts": "Produits associés",
-    "associatedWeapons": "Armes associés"
+    "associatedWeapons": "Armes associés",
+    "detail": "Detail",
+    "action": "Options"
+
   },
   "weapon": {
     "summary": "Gestion des armes",
@@ -181,16 +185,16 @@
     "loading": "Chargement des chargeurs en cours"
   },
   "ammunition": {
-    "summary": "Gestion des munition",
-    "save": "Ajouter une munition de categorie",
-    "edit": "Modifier une munition de categorie",
+    "summary": "Gestion des munitions",
+    "save": "Ajouter une nouvelle munition",
+    "edit": "Modifier une munition",
     "name": "Modele de munition",
+    "created": "Ajout de la muntion",
+    "updated": "Modification de la muntion",
     "initialSpeed": "Vitesse initiale",
     "headType": "Type d'ovige",
     "bodyType": "Type de douille",
     "packaging": "Packaging",
-    "success": "Ajouter a la base de donnee",
-    "update": "Munition modifié",
     "list":"Liste des munitions de categorie",
     "notFound": "Aucune munition trouvée",
     "loading": "Chargement des muntions en cours"
@@ -323,7 +327,8 @@
     }
   },
   "caliber": {
-    "name": "Nom du calibre",
+    "name": "Calibre",
+    "defaultPlaceHolder": "Choix du calibre",
     "reference": "Reference",
     "form": {
       "addTitle": "Ajouter un nouveau calibre",
@@ -399,7 +404,8 @@
   "priceHistory": {
     "currentSalePrice": "Prix de vente actuel",
     "supplierPrice": "Prix fournisseur",
-    "recommendedSalePrice": "Prix de vente recommandé"
+    "recommendedSalePrice": "Prix de vente recommandé",
+    "title": "Prix d'achat et de revente"
   },
   "formatter": {
     "setup": "Réglage de ",
@@ -413,7 +419,8 @@
     "SFP":"Second plan focal",
     "FFP": "Premier plan focal",
     "yrd": "yards",
-    "db": "DB"
+    "db": "DB",
+    "euro": "€"
   },
   "error": {
     "0001": "Email deja utilisé",

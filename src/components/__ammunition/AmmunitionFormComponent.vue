@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <h2 class="text-center mt-2 text-2xl">
+    <h2 class="text-center mt-2 text-2xl text-blue-500">
       {{ t(i18nPrefix + formStatus) }}
     </h2>
     <form @submit.prevent="submit">
@@ -45,18 +45,15 @@
           />
         </InputGroup>
 
-        <InputGroup>
-          <input-group-optional-icon :is-completed="form.initialSpeed > 0" />
-          <input-group-number
-            :i18n-prefix="i18nPrefix"
-            label="initialSpeed"
-            placeholder="initialSpeed"
-            @value="(value) => (form.initialSpeed = value)"
-            input-id="initialSpeed"
-            :initial-value="form.initialSpeed"
-          />
-          <InputGroupAddon> m/s </InputGroupAddon>
-        </InputGroup>
+        <input-group-number
+          :i18n-prefix="i18nPrefix"
+          label="initialSpeed"
+          placeholder="initialSpeed"
+          @value="(value) => (form.initialSpeed = value)"
+          input-id="initialSpeed"
+          :initial-value="form.initialSpeed"
+          add-on="m/s"
+        />
 
         <head-type-input-select
           @on-select="(event) => (form.headType = event)"
@@ -70,17 +67,16 @@
           required
           @on-select="(event) => (form.bodyType = event)"
         />
-        <InputGroup>
-          <input-group-optional-icon :is-completed="form.packaging > 0" />
-          <input-group-number
-            :i18n-prefix="i18nPrefix"
-            placeholder="packaging"
-            label="packaging"
-            @value="(value) => (form.packaging = value)"
-            input-id="packaging"
-            :initial-value="form.packaging"
-          />
-        </InputGroup>
+
+        <input-group-number
+          :i18n-prefix="i18nPrefix"
+          placeholder="packaging"
+          label="packaging"
+          @value="(value) => (form.packaging = value)"
+          input-id="packaging"
+          :initial-value="form.packaging"
+          add-on="pcs"
+        />
       </div>
 
       <div class="p-4">
@@ -107,7 +103,6 @@
 </template>
 <script setup lang="ts">
 import Textarea from 'primevue/textarea'
-import InputGroupAddon from 'primevue/inputgroupaddon'
 import InputGroup from 'primevue/inputgroup'
 import { useAmmunitionStore } from '@/stores/ammunition.store'
 import { useI18n } from 'vue-i18n'
@@ -125,7 +120,6 @@ import LegalisationCategoryInputSelect from '@/components/__form/__specific_sele
 import PercussionTypeInputSelect from '@/components/__form/__specific_select/PercussionTypeInputSelect.vue'
 import HeadTypeInputSelect from '@/components/__form/__specific_select/HeadTypeInputSelect.vue'
 import BodyTypeInputSelect from '@/components/__form/__specific_select/BodyTypeInputSelect.vue'
-import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.vue'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 import PriceHistoryForm from '@/components/__form/PriceHistoryForm.vue'
 
@@ -146,7 +140,8 @@ const isFormValid = computed(() => {
     form.value.factory.id > 0 &&
     form.value.caliber.id > 0 &&
     form.value.headType.id > 0 &&
-    form.value.bodyType.id > 0
+    form.value.bodyType.id > 0 &&
+    form.value.priceHistory.supplierPrice > 0
   ) {
     isValid = true
   }

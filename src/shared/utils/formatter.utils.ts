@@ -1,7 +1,16 @@
 import { useI18n } from 'vue-i18n'
 import type { FocalPlaneDto } from '@/api/Api'
 
-export type NumberFormatterType = 'mm' | 'cm' | 'pcs' | 'cps' | 'speed' | 'moa' | 'yrd' | 'db'
+export type NumberFormatterType =
+  | 'mm'
+  | 'cm'
+  | 'pcs'
+  | 'cps'
+  | 'speed'
+  | 'moa'
+  | 'yrd'
+  | 'db'
+  | 'euro'
 export function NumberFormatter(value: number, format: NumberFormatterType): string {
   const { t } = useI18n()
   if (value === 0) {

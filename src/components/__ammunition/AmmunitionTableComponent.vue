@@ -24,7 +24,12 @@
       </template>
       <template #empty> {{ t(i18nPrefix + 'notFound') }} </template>
       <template #loading> {{ t(i18nPrefix + 'loading') }} {{ t('global.pleaseWait') }} </template>
-      <Column field="name" header="Nom" style="min-width: 12rem" :showFilterMenu="false">
+      <Column
+        field="name"
+        :header="t('global.model')"
+        style="min-width: 12rem"
+        :showFilterMenu="false"
+      >
         <template #body="{ data }">
           {{ data.name }}
         </template>
@@ -38,7 +43,7 @@
         </template>
       </Column>
       <Column
-        header="Marque"
+        :header="t('global.factory')"
         field="factory.name"
         filterField="factory.name"
         style="min-width: 12rem"
@@ -63,7 +68,7 @@
         </template>
       </Column>
       <Column
-        header="Calibre"
+        :header="t('global.caliber')"
         filterField="caliber.name"
         :showFilterMenu="false"
         style="min-width: 14rem"
@@ -85,7 +90,12 @@
           </Select>
         </template>
       </Column>
-      <Column field="reference" header="Reference" :showFilterMenu="false" style="min-width: 12rem">
+      <Column
+        field="reference"
+        :header="t('global.reference')"
+        :showFilterMenu="false"
+        style="min-width: 12rem"
+      >
         <template #body="{ data }">
           {{ data.reference }}
         </template>

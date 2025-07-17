@@ -17,6 +17,7 @@ import Menu from 'primevue/menu'
 import { ref } from 'vue'
 import type { MenuItem } from 'primevue/menuitem'
 import { useConfirmationStore } from '@/stores/confirmation'
+import { useI18n } from 'vue-i18n'
 export type ActionMenuType =
   | 'optic'
   | 'magazine'
@@ -26,6 +27,7 @@ export type ActionMenuType =
   | 'accessory'
   | 'factory'
 export type ActionMenuEmit = 'view' | 'edit'
+const { t } = useI18n()
 const confirmationStore = useConfirmationStore()
 const { type, reference, id } = defineProps<{
   type: ActionMenuType
@@ -39,24 +41,24 @@ const emit = defineEmits<{
 const menu = ref()
 const items = ref<MenuItem[]>([
   {
-    label: 'Action',
+    label: t('global.action'),
     items: [
       {
-        label: 'View',
+        label: t('global.detail'),
         icon: 'pi pi-eye',
         command: () => {
           emit('onClickAction', 'view', id)
         }
       },
       {
-        label: 'Edit',
+        label: t('global.edit'),
         icon: 'pi pi-pencil',
         command: () => {
           emit('onClickAction', 'edit', id)
         }
       },
       {
-        label: 'Delete',
+        label: t('global.delete'),
         icon: 'pi pi-trash',
         command: async () => {
           const confirmation = await confirmationStore.confirmDelete(type, reference)

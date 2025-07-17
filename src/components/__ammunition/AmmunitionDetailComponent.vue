@@ -9,14 +9,18 @@
       <Tabs value="0">
         <TabList>
           <Tab value="0">{{ t('global.importantInformation') }}</Tab>
-          <Tab value="1">{{ t('global.description') }}</Tab>
-          <Tab value="2">{{ t('global.associatedProducts') }}</Tab>
+          <Tab value="1">{{ t('global.price') }}</Tab>
+          <Tab value="2">{{ t('global.description') }}</Tab>
+          <Tab value="3">{{ t('global.associatedProducts') }}</Tab>
         </TabList>
         <TabPanels>
           <TabPanel value="0">
             <TabCardComponent :props="importantInfo" v-if="importantInfo" />
           </TabPanel>
           <TabPanel value="1">
+            <TabCardComponent :props="priceInfo" v-if="priceInfo" />
+          </TabPanel>
+          <TabPanel value="2">
             <p>
               {{
                 ammo.description && ammo.description.length > 0
@@ -25,7 +29,7 @@
               }}
             </p>
           </TabPanel>
-          <TabPanel value="2">
+          <TabPanel value="3">
             <p>// Feature</p>
           </TabPanel>
         </TabPanels>
@@ -96,6 +100,23 @@ const importantInfo = computed(() => {
     {
       label: t('global.reference'),
       title: ammo.value.reference
+    }
+  ]
+})
+const priceInfo = computed(() => {
+  if (!ammo.value || !ammo.value.priceHistory) return undefined
+  return [
+    {
+      label: t('priceHistory.supplierPrice'),
+      title: NumberFormatter(ammo.value.priceHistory.supplierPrice, 'euro')
+    },
+    {
+      label: t('priceHistory.recommendedSalePrice'),
+      title: NumberFormatter(ammo.value.priceHistory.recommendedSalePrice, 'euro')
+    },
+    {
+      label: t('priceHistory.currentSalePrice'),
+      title: NumberFormatter(ammo.value.priceHistory.currentSalePrice, 'euro')
     }
   ]
 })

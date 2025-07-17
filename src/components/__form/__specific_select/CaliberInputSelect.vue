@@ -7,7 +7,6 @@
       label="name"
       @option-id="onSelect($event)"
       required
-      placeholder="name"
       filter
       input-id="caliberId"
       :initial-value="caliberId"

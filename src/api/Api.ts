@@ -757,7 +757,7 @@ export interface AmmunitionBodyTypeDto {
 
 export interface CreatePriceHistoryDto {
   supplierPrice: number
-  recommendedSalePrice: number | null
+  recommendedSalePrice: number
   currentSalePrice: number
 }
 
