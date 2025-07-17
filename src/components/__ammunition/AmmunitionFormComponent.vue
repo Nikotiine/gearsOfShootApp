@@ -94,6 +94,11 @@
         />
       </div>
 
+      <price-history-form
+        :price-history-form="form.priceHistory"
+        @update:price-history-form="(value) => (form.priceHistory = value)"
+      />
+
       <div class="text-center">
         <save-button :status="formStatus" :disabled="!isFormValid" />
       </div>
@@ -104,7 +109,7 @@
 import Textarea from 'primevue/textarea'
 import InputGroupAddon from 'primevue/inputgroupaddon'
 import InputGroup from 'primevue/inputgroup'
-import { useAmmunitionStore } from '@/stores/ammunition'
+import { useAmmunitionStore } from '@/stores/ammunition.store'
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
 
@@ -122,6 +127,7 @@ import HeadTypeInputSelect from '@/components/__form/__specific_select/HeadTypeI
 import BodyTypeInputSelect from '@/components/__form/__specific_select/BodyTypeInputSelect.vue'
 import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.vue'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
+import PriceHistoryForm from '@/components/__form/PriceHistoryForm.vue'
 
 const { id } = defineProps<{
   id?: string

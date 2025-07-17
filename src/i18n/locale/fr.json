@@ -396,6 +396,11 @@
     "notFound": "Aucun collier trouvé",
     "loading": "Chargement des colliers en cours"
   },
+  "priceHistory": {
+    "currentSalePrice": "Prix de vente actuel",
+    "supplierPrice": "Prix fournisseur",
+    "recommendedSalePrice": "Prix de vente recommandé"
+  },
   "formatter": {
     "setup": "Réglage de ",
     "to": "à",

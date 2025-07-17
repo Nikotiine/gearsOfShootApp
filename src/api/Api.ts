@@ -755,9 +755,13 @@ export interface AmmunitionBodyTypeDto {
   id: number
 }
 
+export interface CreatePriceHistoryDto {
+  supplierPrice: number
+  recommendedSalePrice: number | null
+  currentSalePrice: number
+}
+
 export interface AmmunitionDto {
-  id: number
-  reference: string
   /** @example "Sk Standard" */
   name: string
   /** @example "Une description de la munition, qualite / origine / conseil d utilisation" */
@@ -771,8 +775,11 @@ export interface AmmunitionDto {
   packaging: number
   headType: AmmunitionHeadTypeDto
   bodyType: AmmunitionBodyTypeDto
-  factory: FactoryDto
   caliber: CaliberDto
+  factory: FactoryDto
+  priceHistory: CreatePriceHistoryDto
+  id: number
+  reference: string
 }
 
 export interface CreateAmmunitionDto {
@@ -791,6 +798,7 @@ export interface CreateAmmunitionDto {
   bodyType: AmmunitionBodyTypeDto
   caliber: CaliberDto
   factory: FactoryDto
+  priceHistory: CreatePriceHistoryDto
 }
 
 export interface UpdateAmmunitionDto {
@@ -809,6 +817,7 @@ export interface UpdateAmmunitionDto {
   bodyType: AmmunitionBodyTypeDto
   caliber: CaliberDto
   factory: FactoryDto
+  priceHistory: CreatePriceHistoryDto
   id: number
 }
 

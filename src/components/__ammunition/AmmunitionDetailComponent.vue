@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import { useAmmunitionStore } from '@/stores/ammunition'
+import { useAmmunitionStore } from '@/stores/ammunition.store'
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
 import { NumberFormatter } from '@/shared/utils/formatter.utils'

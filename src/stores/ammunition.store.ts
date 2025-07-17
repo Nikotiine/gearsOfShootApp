@@ -13,8 +13,9 @@ import { getLegalisationCategoryDto } from '@/shared/api-dto/get-legalisation-ca
 import { getBodyTypeDto } from '@/shared/api-dto/get-body-type.dto'
 import { getHeadTypeDto } from '@/shared/api-dto/get-head-type.dto'
 import { getPercussionTypeDto } from '@/shared/api-dto/get-percussion-type.dto'
+import { getPriceHistoryDto } from '@/shared/api-dto/get-price-history.dto'
 
-export const useAmmunitionStore = defineStore('ammunition', () => {
+export const useAmmunitionStore = defineStore('ammunition-store', () => {
   // Appel API
   const { api } = useApiStore()
   // TOAST
@@ -60,7 +61,8 @@ export const useAmmunitionStore = defineStore('ammunition', () => {
       description: '',
       packaging: 50,
       headType: getHeadTypeDto(),
-      percussionType: getPercussionTypeDto()
+      percussionType: getPercussionTypeDto(),
+      priceHistory: getPriceHistoryDto()
     }
     return useFormHandler<CreateAmmunitionDto, AxiosResponse<AmmunitionDto>>(
       emptyForm,
