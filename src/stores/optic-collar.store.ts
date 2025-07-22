@@ -8,8 +8,12 @@ import { useRouter } from 'vue-router'
 import { RouterEnum } from '@/enum/router.enum'
 import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
+import { getFactoryDto } from '@/shared/api-dto/get-factory.dto'
+import { getOpticRailSizeDto } from '@/shared/api-dto/get-optic-rail-size.dto'
+import { getPriceHistoryDto } from '@/shared/api-dto/get-price-history.dto'
+import { getI18NPrefix, I18NSuffix } from '@/enum/I18NSuffix.enum'
 
-export const useOpticCollarStore = defineStore('optic-collar', () => {
+export const useOpticCollarStore = defineStore('optic-collar-store', () => {
   // Appel API
   const { api } = useApiStore()
   // TOAST
@@ -20,13 +24,10 @@ export const useOpticCollarStore = defineStore('optic-collar', () => {
   const collars = ref<OpticCollarDto[]>([])
   const collar = ref<OpticCollarDto>()
   // Private Attibute
-  const I18N_PREFIX = 'opticCollar'
-  const _SUMMARY = I18N_PREFIX + '.summary'
+  const _I18N_PREFIX = 'opticCollar'
   const _GET_ALL_FN = 'getAllOpticCollar'
   const _GET_BY_ID_FN = 'getOpticCollarById'
-  function getI18nPrefix(): string {
-    return I18N_PREFIX + '.'
-  }
+
   // *******************Methodes***************
   const _createMutation = useMutation({
     mutationFn: async (optic: CreateOpticCollarDto) => {
@@ -38,7 +39,7 @@ export const useOpticCollarStore = defineStore('optic-collar', () => {
     mutationFn: async (collar: UpdateOpticCollarDto) => {
       return await api.api.opticCollarControllerEdit(collar.id, collar)
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       push({ name: RouterEnum.OPTIC_COLLAR_LIST })
     }
   })
@@ -54,15 +55,14 @@ export const useOpticCollarStore = defineStore('optic-collar', () => {
     })
 
   const _deleteMutation = useMutation({
-    mutationFn: async (opticId: number) => {
-      return await api.api.opticCollarControllerDelete(opticId)
+    mutationFn: async (collarId: number) => {
+      return await api.api.opticCollarControllerDelete(collarId)
     },
-    onSuccess(data) {
-      if (data.data.isSuccess) {
-        const index = collars.value.findIndex((optic) => optic.id === data.data.id)
-        collars.value.splice(index, 1)
-        successMessage(_SUMMARY, I18N_PREFIX + '.deleted')
-      }
+    onSuccess() {
+      successMessage(
+        getI18NPrefix(_I18N_PREFIX) + I18NSuffix.SUMMARY,
+        getI18NPrefix(_I18N_PREFIX) + I18NSuffix.DELETED
+      )
     }
   })
 
@@ -87,23 +87,22 @@ export const useOpticCollarStore = defineStore('optic-collar', () => {
   function useOpticCollarForm(id?: string) {
     const emptyForm: CreateOpticCollarDto = {
       diameter: 0,
-      factoryId: 0,
+      factory: getFactoryDto(),
       height: 0,
       name: '',
-      railSizeId: 0,
-      description: ''
+      railSize: getOpticRailSizeDto(),
+      description: '',
+      priceHistory: getPriceHistoryDto()
     }
     return useFormHandler<CreateOpticCollarDto, AxiosResponse<OpticCollarDto>>(
       emptyForm,
       getByIdQuery,
       _createMutation,
       _updateMutation,
-      getI18nPrefix(),
+      _I18N_PREFIX,
       id,
       (data) => ({
-        ...data,
-        factoryId: data.factory.id,
-        railSizeId: data.railSize.id
+        ...data
       })
     )
   }
@@ -113,6 +112,7 @@ export const useOpticCollarStore = defineStore('optic-collar', () => {
     getById: getByIdQuery,
     delete: deleteFunction,
     collar$: collar,
-    formBuilder: useOpticCollarForm
+    formBuilder: useOpticCollarForm,
+    getI18NPrefix: getI18NPrefix(_I18N_PREFIX)
   }
 })

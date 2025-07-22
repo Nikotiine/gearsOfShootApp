@@ -9,14 +9,18 @@
       <Tabs value="0">
         <TabList>
           <Tab value="0">{{ t('global.importantInformation') }}</Tab>
-          <Tab value="1">{{ t('global.description') }}</Tab>
-          <Tab value="2">{{ t('global.associatedProducts') }}</Tab>
+          <Tab value="1">{{ t('global.price') }}</Tab>
+          <Tab value="2">{{ t('global.description') }}</Tab>
+          <Tab value="3">{{ t('global.associatedProducts') }}</Tab>
         </TabList>
         <TabPanels>
           <TabPanel value="0">
             <TabCardComponent :props="importantInfo" v-if="importantInfo" />
           </TabPanel>
           <TabPanel value="1">
+            <TabCardComponent :props="priceInfo" v-if="priceInfo" />
+          </TabPanel>
+          <TabPanel value="2">
             <p>
               {{
                 rds.description && rds.description.length > 0
@@ -25,7 +29,7 @@
               }}
             </p>
           </TabPanel>
-          <TabPanel value="2">
+          <TabPanel value="3">
             <p>// Feature</p>
           </TabPanel>
         </TabPanels>
@@ -34,7 +38,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useSoundReducerStore } from '@/stores/sound-noise-reducer'
+import { useSoundReducerStore } from '@/stores/sound-noise-reducer.store'
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
 import {
@@ -52,9 +56,11 @@ const { t } = useI18n()
 const { id } = defineProps<{
   id: string
 }>()
+
 const store = useSoundReducerStore()
+
 const { data: rds, isSuccess } = store.getById(id)
-const i18nPrefix = store.getI18NPrefix()
+const i18nPrefix = store.getI18NPrefix
 const importantInfo = computed(() => {
   if (!rds.value) return undefined
   return [
@@ -94,6 +100,23 @@ const importantInfo = computed(() => {
     {
       label: t('global.reference'),
       title: rds.value.reference
+    }
+  ]
+})
+const priceInfo = computed(() => {
+  if (!rds.value || !rds.value.priceHistory) return undefined
+  return [
+    {
+      label: t('priceHistory.supplierPrice'),
+      title: NumberFormatter(rds.value.priceHistory.supplierPrice, 'euro')
+    },
+    {
+      label: t('priceHistory.recommendedSalePrice'),
+      title: NumberFormatter(rds.value.priceHistory.recommendedSalePrice, 'euro')
+    },
+    {
+      label: t('priceHistory.currentSalePrice'),
+      title: NumberFormatter(rds.value.priceHistory.currentSalePrice, 'euro')
     }
   ]
 })

@@ -113,7 +113,7 @@
 </template>
 
 <script setup lang="ts">
-import { useRiffleStore } from '@/stores/riffle'
+import { useRiffleStore } from '@/stores/riffle.store'
 import { FilterMatchMode } from '@primevue/core/api'
 import { ref, watch } from 'vue'
 import DataTable from 'primevue/datatable'

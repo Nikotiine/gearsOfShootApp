@@ -1,6 +1,6 @@
 <template>
   <div class="card p-4">
-    <h2 class="text-center mt-2 text-2xl">{{ t(i18nPrefix + 'list') }} {{ categoryId }}</h2>
+    <table-title-component :i18n-prefix="i18nPrefix" />
     <div class="text-red-500 text-center" v-if="isError">{{ t('global.isLoadingError') }}</div>
     <DataTable
       v-model:filters="filters"
@@ -18,7 +18,7 @@
             <InputIcon>
               <i class="pi pi-search" />
             </InputIcon>
-            <InputText v-model="filters['global'].value" placeholder="Recherche globale" />
+            <InputText v-model="filters['global'].value" :placeholder="t('global.globalSearch')" />
           </IconField>
         </div>
       </template>
@@ -38,7 +38,7 @@
             v-model="filterModel.value"
             type="text"
             @input="filterCallback()"
-            placeholder="Recherche par nom"
+            :placeholder="t(i18nPrefix + 'findByName')"
           />
         </template>
       </Column>
@@ -60,7 +60,7 @@
             :options="factories$"
             optionLabel="name"
             optionValue="name"
-            placeholder="Marque"
+            :placeholder="t('global.findByFactory')"
             style="min-width: 12rem"
             :showClear="true"
           >
@@ -109,11 +109,11 @@
           />
         </template>
       </Column>
-      <Column header="Actions" :showFilterMenu="false" style="min-width: 12rem">
+      <Column :header="t('global.action')" :showFilterMenu="false" style="min-width: 12rem">
         <template #body="{ data }">
           <action-menu-component
             @on-click-action="onClickAction"
-            type="magazine"
+            type="ammunition"
             :reference="data.reference"
             :id="data.id"
         /></template>
@@ -139,6 +139,7 @@ import { useRouter } from 'vue-router'
 import ActionMenuComponent, {
   type ActionMenuEmit
 } from '@/components/__table/ActionMenuComponent.vue'
+import TableTitleComponent from '@/components/__table/TableTitleComponent.vue'
 
 const { categoryId } = defineProps<{
   categoryId: number

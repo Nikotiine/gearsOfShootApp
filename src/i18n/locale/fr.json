@@ -107,7 +107,11 @@
     "associatedProducts": "Produits associés",
     "associatedWeapons": "Armes associés",
     "detail": "Detail",
-    "action": "Options"
+    "action": "Options",
+    "findByFactory": "Recherche par marque",
+    "findByCaliber": "Recherche par calibre",
+    "findByReference": "Recherche par reference",
+    "globalSearch": "Recherche globale"
 
   },
   "weapon": {
@@ -149,10 +153,9 @@
     "mLockOptions": "Position MLOCK",
     "weaponType": "Type d'arme",
     "weaponTypeMode": "Fonctionement",
-    "add": {
-      "success": "ajouter a la base de donnee",
-      "edit": "Arme modifié en base de donnee"
-    },
+    "created": "Nouvelle arme enregister",
+    "updated": "Arme modifié avec succes",
+    "deleted": "Arme supprimée",
     "form": {
       "add": "Ajouter une arme de categorie",
       "isThreadedBarrel": "Filetage",
@@ -195,9 +198,10 @@
     "headType": "Type d'ovige",
     "bodyType": "Type de douille",
     "packaging": "Packaging",
-    "list":"Liste des munitions de categorie",
+    "list":"Liste des munitions",
     "notFound": "Aucune munition trouvée",
-    "loading": "Chargement des muntions en cours"
+    "loading": "Chargement des muntions en cours",
+    "findByName": "Recherche par modele"
   },
   "admin": {
     "dashboard": {
@@ -242,8 +246,8 @@
     "summary": "Gestion des optiques",
     "save": "Ajouter une nouvelle optique",
     "edit": "Modifier une optique",
-    "success": "Ajout d'une nouvelle optique confirmé",
-    "update": "Optique correctement modifiée",
+    "created": "Ajout d'une nouvelle optique confirmé",
+    "updated": "Optique correctement modifiée",
     "opticUnit": "Unite de graduation",
     "isParallax": "Parallaxe",
     "list": "Liste des optiques",
@@ -264,7 +268,10 @@
     "eyeRelief": "Degagement occulaire",
     "minParallax": "Parallax mini",
     "maxParallax": "Parallax maxi",
-    "denomination": "Denomination du zoom"
+    "denomination": "Denomination du zoom",
+    "findByName": "Recherhe par modele",
+    "findByType": "Recherche par type",
+    "noCollarsProvided": "Pas de colliers fournis"
 
   },
   "soundNoiseReducer": {
@@ -272,8 +279,10 @@
     "summary": "Gestion des accessoires / RDS",
     "edit": "Modifier un RDS",
     "detailTitle": "Reducteur de son",
-    "success": "Ajout d'un nouveau RDS",
-    "update": "RDS correctement modifié",
+    "created": "Ajout d'un nouveau RDS",
+    "list": "Liste des reducteurs de son",
+    "deleted": "RDS supprimé",
+    "updated": "RDS correctement modifié",
     "name": "Nom du model de RDS",
     "factory": "Marque",
     "threadedSize": "Filetage compatible",
@@ -284,7 +293,9 @@
     "isNotCleanable": "Non demontable",
     "length": "Longeur",
     "chicane": "Nombre de chicanes",
-    "estimatedNoiseReduction": "Reduction de bruit estimé"
+    "estimatedNoiseReduction": "Reduction de bruit estimé",
+    "findByName": "Recherche par modele",
+    "notFound": "Aucun reducteur de son trouvé"
   },
   "factory": {
     "form": {
@@ -394,12 +405,15 @@
     "summary": "Gestion des colliers d'optique",
     "save": "Ajouter un nouveau collier",
     "edit": "Modifier un collier",
-    "success": "Ajout d'un nouveau collier confirmé",
-    "update": "Collier correctement modifié",
+    "created": "Ajout d'un nouveau collier confirmé",
+    "updated": "Collier correctement modifié",
     "list":  "Liste des colliers d'optique",
     "deleted": "Collier supprimé",
     "notFound": "Aucun collier trouvé",
-    "loading": "Chargement des colliers en cours"
+    "loading": "Chargement des colliers en cours",
+    "findByName": "Recherche par modele",
+    "rail": "Taille du rail",
+    "findByRail": "Recherche par taille"
   },
   "priceHistory": {
     "currentSalePrice": "Prix de vente actuel",

@@ -114,7 +114,7 @@
 </template>
 <script setup lang="ts">
 import { useWeaponMagazineStore } from '@/stores/weapon-magazine'
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import IconField from 'primevue/iconfield'
 
 import DataTable from 'primevue/datatable'

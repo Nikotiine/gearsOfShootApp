@@ -19,8 +19,11 @@ import { getFactoryDto } from '@/shared/api-dto/get-factory.dto'
 import { getFocalPlaneDto } from '@/shared/api-dto/get-focal-plane.dto'
 import { getOpticUnitDto } from '@/shared/api-dto/get-optic-unit.dto'
 import { getOpticTypeDto } from '@/shared/api-dto/get-optic-type.dto'
+import { getPriceHistoryDto } from '@/shared/api-dto/get-price-history.dto'
+import { getOpticRailSizeDto } from '@/shared/api-dto/get-optic-rail-size.dto'
+import { getI18NPrefix, I18NSuffix } from '@/enum/I18NSuffix.enum'
 
-export const useOpticStore = defineStore('optic', () => {
+export const useOpticStore = defineStore('optic-store', () => {
   // Appel API
   const { api } = useApiStore()
   // TOAST
@@ -36,8 +39,8 @@ export const useOpticStore = defineStore('optic', () => {
   const optic = ref<OpticDto>()
 
   // Private Attibute
-  const _I18N_PREFIX = 'optic.'
-  const _SUMMARY = _I18N_PREFIX + '.summary'
+  const _I18N_PREFIX = 'optic'
+
   const _GET_ALL_FN = 'getAllOptic'
   const _GET_BY_ID_FN = 'getOpticById'
 
@@ -72,10 +75,11 @@ export const useOpticStore = defineStore('optic', () => {
     mutationFn: async (opticId: number) => {
       return await api.api.opticControllerDelete(opticId)
     },
-    onSuccess(data) {
-      if (data.data.isSuccess) {
-        successMessage(_SUMMARY, _I18N_PREFIX + '.deleted')
-      }
+    onSuccess() {
+      successMessage(
+        getI18NPrefix(_I18N_PREFIX) + I18NSuffix.SUMMARY,
+        getI18NPrefix(_I18N_PREFIX) + I18NSuffix.DELETED
+      )
     }
   })
 
@@ -98,7 +102,6 @@ export const useOpticStore = defineStore('optic', () => {
     })
 
   function useOpticForm(id?: string) {
-    console.log('useOpticForm', id)
     const emptyForm: CreateOpticDto = {
       name: '',
       bodyDiameter: 0,
@@ -118,7 +121,9 @@ export const useOpticStore = defineStore('optic', () => {
       opticType: getOpticTypeDto(),
       eyeRelief: 0,
       isCollarsProvided: false,
-      length: 0
+      length: 0,
+      priceHistory: getPriceHistoryDto(),
+      providedOpticCollarSize: getOpticRailSizeDto()
     }
     return useFormHandler<CreateOpticDto, AxiosResponse<OpticDto>>(
       emptyForm,
@@ -133,9 +138,6 @@ export const useOpticStore = defineStore('optic', () => {
     )
   }
 
-  function getI18nPrefix(): string {
-    return _I18N_PREFIX
-  }
   return {
     delete: deleteFunction,
     units$: opticUnits,
@@ -146,6 +148,6 @@ export const useOpticStore = defineStore('optic', () => {
     optic$: optic,
     optics$: optics,
     formBuilder: useOpticForm,
-    getI18nPrefix
+    getI18NPrefix: getI18NPrefix(_I18N_PREFIX)
   }
 })

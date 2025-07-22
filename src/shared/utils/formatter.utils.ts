@@ -37,7 +37,7 @@ export function TriggerValueFormatter(
   return `${t('formatter.setup')}${min} kg ${t('formatter.to')} ${max} kg`
 }
 
-export function VerifyFieldIsNotNull(value: string | number | null): string {
+export function VerifyFieldIsNotNull(value: string | number | null | undefined): string {
   const { t } = useI18n()
   if (!value) {
     return t('global.notRegistered')

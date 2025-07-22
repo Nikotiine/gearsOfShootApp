@@ -1,40 +1,38 @@
 <template>
-  <div class="" v-if="ammo">
-    <h2 class="text-2xl font-bold mb-4 text-center mt-10">
-      <span class="text-blue-500">{{ t('global.ammunition') }}</span> : {{ ammo.factory.name }} -
-      {{ ammo.name }}
-    </h2>
+  <h2 class="text-2xl font-bold mb-4 text-center mt-10" v-if="ammo">
+    <span class="text-blue-500">{{ t('global.ammunition') }}</span> : {{ ammo.factory.name }} -
+    {{ ammo.name }}
+  </h2>
 
-    <div class="p-6 max-w-md mt-6" v-if="ammo">
-      <Tabs value="0">
-        <TabList>
-          <Tab value="0">{{ t('global.importantInformation') }}</Tab>
-          <Tab value="1">{{ t('global.price') }}</Tab>
-          <Tab value="2">{{ t('global.description') }}</Tab>
-          <Tab value="3">{{ t('global.associatedProducts') }}</Tab>
-        </TabList>
-        <TabPanels>
-          <TabPanel value="0">
-            <TabCardComponent :props="importantInfo" v-if="importantInfo" />
-          </TabPanel>
-          <TabPanel value="1">
-            <TabCardComponent :props="priceInfo" v-if="priceInfo" />
-          </TabPanel>
-          <TabPanel value="2">
-            <p>
-              {{
-                ammo.description && ammo.description.length > 0
-                  ? ammo.description
-                  : t('global.notRegistered')
-              }}
-            </p>
-          </TabPanel>
-          <TabPanel value="3">
-            <p>// Feature</p>
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
-    </div>
+  <div class="p-6 max-w-md mt-6" v-if="ammo">
+    <Tabs value="0">
+      <TabList>
+        <Tab value="0">{{ t('global.importantInformation') }}</Tab>
+        <Tab value="1">{{ t('global.price') }}</Tab>
+        <Tab value="2">{{ t('global.description') }}</Tab>
+        <Tab value="3">{{ t('global.associatedProducts') }}</Tab>
+      </TabList>
+      <TabPanels>
+        <TabPanel value="0">
+          <TabCardComponent :props="importantInfo" v-if="importantInfo" />
+        </TabPanel>
+        <TabPanel value="1">
+          <TabCardComponent :props="priceInfo" v-if="priceInfo" />
+        </TabPanel>
+        <TabPanel value="2">
+          <p>
+            {{
+              ammo.description && ammo.description.length > 0
+                ? ammo.description
+                : t('global.notRegistered')
+            }}
+          </p>
+        </TabPanel>
+        <TabPanel value="3">
+          <p>// Feature</p>
+        </TabPanel>
+      </TabPanels>
+    </Tabs>
   </div>
 </template>
 

@@ -14,8 +14,9 @@
         <Tab value="0">{{ t('global.importantInformation') }}</Tab>
         <Tab value="1">{{ t('global.barrelInformation') }}</Tab>
         <Tab value="2">{{ t('global.otherInformation') }}</Tab>
-        <Tab value="3">{{ t('global.description') }}</Tab>
-        <Tab value="4">{{ t('global.associatedProducts') }}</Tab>
+        <Tab value="3">{{ t('global.price') }}</Tab>
+        <Tab value="4">{{ t('global.description') }}</Tab>
+        <Tab value="5">{{ t('global.associatedProducts') }}</Tab>
       </TabList>
       <TabPanels>
         <TabPanel value="0">
@@ -28,11 +29,14 @@
           <TabCardComponent :props="otherProps" v-if="otherProps" />
         </TabPanel>
         <TabPanel value="3">
+          <TabCardComponent :props="priceInfo" v-if="priceInfo" />
+        </TabPanel>
+        <TabPanel value="4">
           <p>
             {{ riffle.description.length > 0 ? riffle.description : t('global.notRegistered') }}
           </p>
         </TabPanel>
-        <TabPanel value="4">
+        <TabPanel value="5">
           <p>// Feature</p>
         </TabPanel>
       </TabPanels>
@@ -42,7 +46,7 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { useRiffleStore } from '@/stores/riffle'
+import { useRiffleStore } from '@/stores/riffle.store'
 import { computed } from 'vue'
 import Tabs from 'primevue/tabs'
 import TabList from 'primevue/tablist'
@@ -81,7 +85,11 @@ const importantInfo = computed(() => {
     },
     {
       label: t('global.model'),
-      title: riffle.value.factory.name
+      title: riffle.value.name
+    },
+    {
+      label: t('global.variation'),
+      title: VerifyFieldIsNotNull(riffle.value.variation)
     },
     {
       label: t('weapon.weaponType'),
@@ -187,6 +195,23 @@ const otherProps = computed(() => {
     {
       label: t('weapon.isMlockCompatibility'),
       title: BooleanFormatter(riffle.value.isMlockCompatibility)
+    }
+  ]
+})
+const priceInfo = computed(() => {
+  if (!riffle.value || !riffle.value.priceHistory) return undefined
+  return [
+    {
+      label: t('priceHistory.supplierPrice'),
+      title: NumberFormatter(riffle.value.priceHistory.supplierPrice, 'euro')
+    },
+    {
+      label: t('priceHistory.recommendedSalePrice'),
+      title: NumberFormatter(riffle.value.priceHistory.recommendedSalePrice, 'euro')
+    },
+    {
+      label: t('priceHistory.currentSalePrice'),
+      title: NumberFormatter(riffle.value.priceHistory.currentSalePrice, 'euro')
     }
   ]
 })

@@ -40,38 +40,32 @@
         @on-select="(event) => (form.caliber = event)"
       />
 
-      <InputGroup>
-        <input-group-optional-icon :is-completed="form.diameter > 0" />
-        <input-group-number
-          label="diameter"
-          :i18n-prefix="i18nPrefix"
-          @value="(value) => (form.diameter = value)"
-          input-id="diameter"
-          :initial-value="form.diameter"
-        />
-        <InputGroupAddon> mm </InputGroupAddon>
-      </InputGroup>
-      <InputGroup>
-        <input-group-optional-icon :is-completed="form.length > 0" />
-        <input-group-number
-          label="length"
-          :i18n-prefix="i18nPrefix"
-          @value="(value) => (form.length = value)"
-          input-id="length"
-          :initial-value="form.length"
-        />
-        <InputGroupAddon> mm </InputGroupAddon>
-      </InputGroup>
-      <InputGroup>
-        <input-group-optional-icon :is-completed="form.chicane > 0" />
-        <input-group-number
-          label="chicane"
-          :i18n-prefix="i18nPrefix"
-          @value="(value) => (form.chicane = value)"
-          input-id="chicane"
-          :initial-value="form.chicane"
-        />
-      </InputGroup>
+      <input-group-number
+        label="diameter"
+        :i18n-prefix="i18nPrefix"
+        @value="(value) => (form.diameter = value)"
+        input-id="diameter"
+        :initial-value="form.diameter"
+        add-on="mm"
+      />
+
+      <input-group-number
+        label="length"
+        :i18n-prefix="i18nPrefix"
+        @value="(value) => (form.length = value)"
+        input-id="length"
+        :initial-value="form.length"
+        add-on="mm"
+      />
+
+      <input-group-number
+        label="chicane"
+        :i18n-prefix="i18nPrefix"
+        @value="(value) => (form.chicane = value)"
+        input-id="chicane"
+        :initial-value="form.chicane"
+      />
+
       <InputGroup>
         <input-group-optional-icon />
         <input-group-check-box
@@ -83,17 +77,15 @@
           :checked="form.isCleanable"
         />
       </InputGroup>
-      <InputGroup>
-        <input-group-optional-icon :is-completed="form.estimatedNoiseReduction > 0" />
-        <input-group-number
-          label="estimatedNoiseReduction"
-          :i18n-prefix="i18nPrefix"
-          @value="(value) => (form.estimatedNoiseReduction = value)"
-          input-id="estimatedNoiseReduction"
-          :initial-value="form.estimatedNoiseReduction"
-        />
-        <InputGroupAddon> db </InputGroupAddon>
-      </InputGroup>
+
+      <input-group-number
+        label="estimatedNoiseReduction"
+        :i18n-prefix="i18nPrefix"
+        @value="(value) => (form.estimatedNoiseReduction = value)"
+        input-id="estimatedNoiseReduction"
+        :initial-value="form.estimatedNoiseReduction"
+        add-on="db"
+      />
     </div>
     <div class="px-4">
       <Textarea
@@ -105,18 +97,22 @@
         placeholder="Description"
       />
     </div>
+    <price-history-form
+      :price-history-form="form.priceHistory"
+      @update:price-history-form="(value) => (form.priceHistory = value)"
+    />
+
     <save-button :status="formStatus" :disabled="!isFormValid" />
   </form>
 </template>
 <script setup lang="ts">
-import { useSoundReducerStore } from '@/stores/sound-noise-reducer'
+import { useSoundReducerStore } from '@/stores/sound-noise-reducer.store'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 import InputGroup from 'primevue/inputgroup'
 import InputGroupText from '@/components/__form/InputGroupText.vue'
 import Textarea from 'primevue/textarea'
 import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.vue'
 import InputGroupNumber from '@/components/__form/InputGroupNumber.vue'
-import InputGroupAddon from 'primevue/inputgroupaddon'
 import SaveButton from '@/components/__form/SaveButton.vue'
 import type { FormStatus } from '@/types/form-status.type'
 import { useI18n } from 'vue-i18n'
@@ -125,6 +121,7 @@ import { computed } from 'vue'
 import FactoryInputSelect from '@/components/__form/__specific_select/FactoryInputSelect.vue'
 import CaliberInputSelect from '@/components/__form/__specific_select/CaliberInputSelect.vue'
 import ThreadedSizeInputSelect from '@/components/__form/__specific_select/ThreadedSizeInputSelect.vue'
+import PriceHistoryForm from '@/components/__form/PriceHistoryForm.vue'
 
 const { t } = useI18n()
 const store = useSoundReducerStore()
@@ -135,7 +132,7 @@ const { id } = defineProps<{
 }>()
 const { form, submit } = store.formBuilder(id)
 
-const i18nPrefix = store.getI18NPrefix()
+const i18nPrefix = store.getI18NPrefix
 
 const isFormValid = computed(() => {
   let isValid: boolean = false
@@ -143,7 +140,8 @@ const isFormValid = computed(() => {
     form.value.name &&
     form.value.factory.id > 0 &&
     form.value.caliber.id > 0 &&
-    form.value.threadedSize.id > 0
+    form.value.threadedSize.id > 0 &&
+    form.value.priceHistory.supplierPrice > 0
   ) {
     isValid = true
   }

@@ -26,6 +26,8 @@ export type ActionMenuType =
   | 'handgun'
   | 'accessory'
   | 'factory'
+  | 'rds'
+  | 'collar'
 export type ActionMenuEmit = 'view' | 'edit'
 const { t } = useI18n()
 const confirmationStore = useConfirmationStore()

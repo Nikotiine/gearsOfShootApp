@@ -1,6 +1,6 @@
 <template>
   <div class="card p-4" v-if="isSuccess">
-    <h2 class="text-center mt-2 text-2xl">{{ t('opticCollar.list') }}</h2>
+    <table-title-component :i18n-prefix="i18nPrefix" />
     <div class="text-red-500 text-center" v-if="isError">{{ t('global.isLoadingError') }}</div>
     <DataTable
       v-model:filters="filters"
@@ -18,15 +18,20 @@
             <InputIcon>
               <i class="pi pi-search" />
             </InputIcon>
-            <InputText v-model="filters['global'].value" placeholder="Recherche globale" />
+            <InputText v-model="filters['global'].value" :placeholder="t('global.globalSearch')" />
           </IconField>
         </div>
       </template>
-      <template #empty> {{ t('opticCollar.notFound') }} </template>
+      <template #empty> {{ t(i18nPrefix + 'notFound') }} </template>
       <template #loading>
-        {{ t('opticCollar.loading') }} {{ t('opticCollar.pleaseWait') }}
+        {{ t(i18nPrefix + 'loading') }} {{ t(i18nPrefix + 'pleaseWait') }}
       </template>
-      <Column field="name" header="Nom" style="min-width: 12rem" :showFilterMenu="false">
+      <Column
+        field="name"
+        :header="t('global.model')"
+        style="min-width: 12rem"
+        :showFilterMenu="false"
+      >
         <template #body="{ data }">
           {{ data.name }}
         </template>
@@ -35,12 +40,12 @@
             v-model="filterModel.value"
             type="text"
             @input="filterCallback()"
-            placeholder="Recherche par nom"
+            :placeholder="t(i18nPrefix + 'findByName')"
           />
         </template>
       </Column>
       <Column
-        header="Marque"
+        :header="t('global.factory')"
         field="factory.name"
         filterField="factory.name"
         style="min-width: 12rem"
@@ -54,10 +59,10 @@
           <Select
             v-model="filterModel.value"
             @change="filterCallback()"
-            :options="factories$?.data"
+            :options="factories$"
             optionLabel="name"
             optionValue="name"
-            placeholder="Marque"
+            :placeholder="t('global.findByFactory')"
             style="min-width: 12rem"
             :showClear="true"
           >
@@ -65,7 +70,7 @@
         </template>
       </Column>
       <Column
-        header="Rail"
+        :header="t(i18nPrefix + 'rail')"
         filterField="railSize.name"
         :showFilterMenu="false"
         style="min-width: 14rem"
@@ -78,7 +83,7 @@
             v-model="filterModel.value"
             @change="filterCallback()"
             :options="railSize$?.data"
-            placeholder="Rail"
+            :placeholder="t(i18nPrefix + 'findByRail')"
             optionLabel="name"
             optionValue="name"
             style="min-width: 12rem"
@@ -87,7 +92,12 @@
           </Select>
         </template>
       </Column>
-      <Column field="reference" header="Reference" :showFilterMenu="false" style="min-width: 12rem">
+      <Column
+        field="reference"
+        :header="t('global.reference')"
+        :showFilterMenu="false"
+        style="min-width: 12rem"
+      >
         <template #body="{ data }">
           {{ data.reference }}
         </template>
@@ -97,15 +107,15 @@
             v-model="filterModel.value"
             type="text"
             @input="filterCallback()"
-            placeholder="Recherche par reference"
+            :placeholder="t('global.findByReference')"
           />
         </template>
       </Column>
-      <Column header="Actions" :showFilterMenu="false" style="min-width: 12rem">
+      <Column :header="t('global.action')" :showFilterMenu="false" style="min-width: 12rem">
         <template #body="{ data }">
           <action-menu-component
             @on-click-action="onClickAction"
-            type="optic"
+            type="collar"
             :reference="data.reference"
             :id="data.id"
         /></template>
@@ -114,7 +124,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useOpticCollarStore } from '@/stores/optic-collar'
+import { useOpticCollarStore } from '@/stores/optic-collar.store'
 import ActionMenuComponent, {
   type ActionMenuEmit
 } from '@/components/__table/ActionMenuComponent.vue'
@@ -131,9 +141,10 @@ import { ref } from 'vue'
 import { FilterMatchMode } from '@primevue/core/api'
 import { RouterEnum } from '@/enum/router.enum'
 import { useRouter } from 'vue-router'
+import TableTitleComponent from '@/components/__table/TableTitleComponent.vue'
 
 const store = useOpticCollarStore()
-const i18nPrefix = store.getI18NPrefix()
+const i18nPrefix = store.getI18NPrefix
 const { data: collar$, isSuccess, isError, isLoading, refetch } = store.getAll()
 const { t } = useI18n()
 const factoryStore = useFactoryStore()

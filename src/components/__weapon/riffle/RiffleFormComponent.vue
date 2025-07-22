@@ -64,34 +64,28 @@
         @on-select="(event) => (form.barrelType = event)"
       />
 
-      <InputGroup>
-        <input-group-required-icon :is-validate="form.barrelLength >= 3" />
-        <input-group-number
-          :min="3"
-          :min-fraction-digits="2"
-          placeholder="barrelLength"
-          label="barrelLength"
-          :i18n-prefix="i18Prefix"
-          required
-          @value="(value) => (form.barrelLength = value)"
-          input-id="barrelLength"
-          :initial-value="form.barrelLength"
-        />
-        <InputGroupAddon><span>cm</span></InputGroupAddon>
-      </InputGroup>
+      <input-group-number
+        :min="3"
+        :min-fraction-digits="2"
+        placeholder="barrelLength"
+        label="barrelLength"
+        :i18n-prefix="i18Prefix"
+        required
+        @value="(value) => (form.barrelLength = value)"
+        input-id="barrelLength"
+        :initial-value="form.barrelLength"
+        add-on="cm"
+      />
 
-      <InputGroup>
-        <input-group-optional-icon :is-completed="form.barrelSize > 0" />
-        <input-group-number
-          placeholder="barrelSize"
-          label="barrelSize"
-          :i18n-prefix="i18Prefix"
-          @value="(value) => (form.barrelSize = value)"
-          input-id="barrelSize"
-          :initial-value="form.barrelSize"
-        />
-        <InputGroupAddon><span>mm</span></InputGroupAddon>
-      </InputGroup>
+      <input-group-number
+        placeholder="barrelSize"
+        label="barrelSize"
+        :i18n-prefix="i18Prefix"
+        @value="(value) => (form.barrelSize = value)"
+        input-id="barrelSize"
+        :initial-value="form.barrelSize"
+        add-on="mm"
+      />
 
       <color-input-select
         input-id="barrelColorId"
@@ -136,6 +130,7 @@
           :i18n-prefix="i18Prefix"
           :disabled="!isProvidedMagazine"
           :initial-value="form.providedMagazineQuantity"
+          hide-icon
         />
       </InputGroup>
 
@@ -149,6 +144,7 @@
           :i18n-prefix="i18Prefix"
           @checked="(event) => (form.isAdjustableTrigger = event)"
           :checked="form.isAdjustableTrigger"
+          class="width-20rem"
         />
         <input-group-number
           :min="0.1"
@@ -158,8 +154,8 @@
           :disabled="!form.isAdjustableTrigger"
           @value="(value) => (adjustableTriggerMinWeight = value)"
           input-id="adjustableTriggerMinWeight"
-          :max-width="33"
           :initial-value="adjustableTriggerMinWeight"
+          hide-icon
         />
         <input-group-number
           :min="adjustableTriggerMaxWeight + 0.1"
@@ -169,8 +165,8 @@
           :disabled="!form.isAdjustableTrigger"
           @value="(value) => (adjustableTriggerMaxWeight = value)"
           input-id="adjustableTriggerMaxWeight"
-          :max-width="33"
           :initial-value="adjustableTriggerMaxWeight"
+          hide-icon
         />
       </InputGroup>
 
@@ -248,23 +244,20 @@
         />
       </InputGroup>
 
-      <InputGroup>
-        <input-group-optional-icon />
-        <input-group-number
-          label="qcSlot"
-          @value="(value) => (form.qcSlot = value)"
-          input-id="qcSlot"
-          :initial-value="form.qcSlot"
-          :i18n-prefix="i18Prefix"
-        />
-        <input-group-number
-          label="grenadierSlot"
-          @value="(value) => (form.grenadierSlot = value)"
-          input-id="grenadierSlot"
-          :initial-value="form.grenadierSlot"
-          :i18n-prefix="i18Prefix"
-        />
-      </InputGroup>
+      <input-group-number
+        label="qcSlot"
+        @value="(value) => (form.qcSlot = value)"
+        input-id="qcSlot"
+        :initial-value="form.qcSlot"
+        :i18n-prefix="i18Prefix"
+      />
+      <input-group-number
+        label="grenadierSlot"
+        @value="(value) => (form.grenadierSlot = value)"
+        input-id="grenadierSlot"
+        :initial-value="form.grenadierSlot"
+        :i18n-prefix="i18Prefix"
+      />
 
       <InputGroup>
         <input-group-optional-icon :is-completed="selectedMLockOptions.length > 0" />
@@ -294,7 +287,10 @@
         :placeholder="t('global.description')"
       />
     </div>
-
+    <price-history-form
+      :price-history-form="form.priceHistory"
+      @update:price-history-form="(value) => (form.priceHistory = value)"
+    />
     <div class="text-center">
       <Button type="submit" :label="t(buttonLabel)" :disabled="!isValidForm"></Button>
     </div>
@@ -302,19 +298,17 @@
 </template>
 `
 <script setup lang="ts">
-import InputGroupAddon from 'primevue/inputgroupaddon'
 import Button from 'primevue/button'
 import { computed, ref } from 'vue'
 import InputGroup from 'primevue/inputgroup'
 import { useI18n } from 'vue-i18n'
 import Textarea from 'primevue/textarea'
-import { useRiffleStore } from '@/stores/riffle'
+import { useRiffleStore } from '@/stores/riffle.store'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.vue'
 import InputGroupText from '@/components/__form/InputGroupText.vue'
 import InputGroupNumber from '@/components/__form/InputGroupNumber.vue'
 import InputGroupCheckBox from '@/components/__form/InputGroupCheckBox.vue'
-
 import CaliberInputSelect from '@/components/__form/__specific_select/CaliberInputSelect.vue'
 import FactoryInputSelect from '@/components/__form/__specific_select/FactoryInputSelect.vue'
 import PercussionTypeInputSelect from '@/components/__form/__specific_select/PercussionTypeInputSelect.vue'
@@ -328,6 +322,7 @@ import { WeaponEnum } from '@/enum/weapon.enum'
 import WeaponTypeInputSelect from '@/components/__form/__specific_select/WeaponTypeInputSelect.vue'
 import LegalisationCategoryInputSelect from '@/components/__form/__specific_select/LegalisationCategoryInputSelect.vue'
 import type { FormStatus } from '@/types/form-status.type'
+import PriceHistoryForm from '@/components/__form/PriceHistoryForm.vue'
 
 // Store
 const riffleStore = useRiffleStore()
@@ -381,4 +376,8 @@ const isInvalidMaxTriggerValue = computed(() => {
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+.width-20rem {
+  width: 20rem;
+}
+</style>

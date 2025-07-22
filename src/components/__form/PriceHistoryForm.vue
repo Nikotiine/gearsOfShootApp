@@ -11,7 +11,7 @@
         :min-fraction-digits="2"
         :initial-value="value"
         @value="(val) => updateField(key, val)"
-        add-on="€"
+        add-on="euro"
       />
     </template>
   </div>

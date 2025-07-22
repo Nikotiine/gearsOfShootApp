@@ -1,48 +1,106 @@
 <template>
-  <div class="" v-if="isSuccess && collar">
-    <h2 class="text-2xl font-bold mb-4 text-blue-500 text-center mt-10">
-      <span class="text-white">{{ t('global.collar') }}</span> : {{ collar.factory.name }}
-      {{ collar.reference }}
+  <div class="" v-if="collar">
+    <h2 class="text-2xl font-bold mb-4 text-center mt-10">
+      <span class="text-blue-500">{{ t('global.collar') }}</span> : {{ collar.factory.name }} -
+      {{ collar.name }}
     </h2>
-    <div class="p-6 shadow-md rounded-lg max-w-md mt-6">
-      <div class="space-y-4">
-        <p>
-          <span class="field-capitalise">{{ t('global.name') }}</span> :
-          {{ collar.name }}
-        </p>
-        <p>
-          <span class="field-capitalise">{{ t('global.diameter') }}</span> :
-          {{ collar.diameter }}
-        </p>
-        <p>
-          <span class="field-capitalise">{{ t('global.factory') }}</span> :
-          {{ collar.factory.name }}
-        </p>
-        <p>
-          <span class="field-capitalise">{{ t('global.height') }}</span> :
-          {{ collar.height }}
-        </p>
-        <p>
-          <span class="field-capitalise">{{ t('global.opticRail') }}</span> :
-          {{ collar.railSize.name }}
-        </p>
-        <p v-if="collar.description.length > 0">
-          <span class="field-capitalise">{{ t('global.description') }}</span>
-          :{{ collar.description }}
-        </p>
-      </div>
+    <div class="p-6 max-w-md mt-6" v-if="collar">
+      <Tabs value="0">
+        <TabList>
+          <Tab value="0">{{ t('global.importantInformation') }}</Tab>
+          <Tab value="1">{{ t('global.price') }}</Tab>
+          <Tab value="2">{{ t('global.description') }}</Tab>
+          <Tab value="3">{{ t('global.associatedProducts') }}</Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel value="0">
+            <TabCardComponent :props="importantInfo" v-if="importantInfo" />
+          </TabPanel>
+          <TabPanel value="1">
+            <TabCardComponent :props="priceInfo" v-if="priceInfo" />
+          </TabPanel>
+          <TabPanel value="2">
+            <p>
+              {{
+                collar.description && collar.description.length > 0
+                  ? collar.description
+                  : t('global.notRegistered')
+              }}
+            </p>
+          </TabPanel>
+          <TabPanel value="4">
+            <p>// Feature</p>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </div>
   </div>
 </template>
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { useOpticCollarStore } from '@/stores/optic-collar'
+import { useOpticCollarStore } from '@/stores/optic-collar.store'
+import { computed } from 'vue'
+import { NumberFormatter } from '@/shared/utils/formatter.utils'
+import TabCardComponent from '@/components/__tabs/TabCardComponent.vue'
+import TabPanels from 'primevue/tabpanels'
+import Tab from 'primevue/tab'
+
+import TabList from 'primevue/tablist'
+import Tabs from 'primevue/tabs'
+import TabPanel from 'primevue/tabpanel'
 const { t } = useI18n()
 const { id } = defineProps<{
   id: string
 }>()
 const store = useOpticCollarStore()
-const { data: collar, isSuccess } = store.getById(id)
+const i18nPrefix = store.getI18NPrefix
+const { data: collar } = store.getById(id)
+const importantInfo = computed(() => {
+  if (!collar.value) return undefined
+  return [
+    {
+      label: t('global.factory'),
+      title: collar.value.factory.name
+    },
+    {
+      label: t('global.model'),
+      title: collar.value.name
+    },
+    {
+      label: t('global.diameter'),
+      title: NumberFormatter(collar.value.diameter, 'mm')
+    },
+    {
+      label: t('global.height'),
+      title: NumberFormatter(collar.value.height, 'mm')
+    },
+    {
+      label: t(i18nPrefix + 'rail'),
+      title: collar.value.railSize.name
+    },
+    {
+      label: t('global.reference'),
+      title: collar.value.reference
+    }
+  ]
+})
+const priceInfo = computed(() => {
+  if (!collar.value || !collar.value.priceHistory) return undefined
+  return [
+    {
+      label: t('priceHistory.supplierPrice'),
+      title: NumberFormatter(collar.value.priceHistory.supplierPrice, 'euro')
+    },
+    {
+      label: t('priceHistory.recommendedSalePrice'),
+      title: NumberFormatter(collar.value.priceHistory.recommendedSalePrice, 'euro')
+    },
+    {
+      label: t('priceHistory.currentSalePrice'),
+      title: NumberFormatter(collar.value.priceHistory.currentSalePrice, 'euro')
+    }
+  ]
+})
 </script>
 
 <style scoped></style>

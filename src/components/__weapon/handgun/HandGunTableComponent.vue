@@ -112,7 +112,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useHandGunStore } from '@/stores/hand-gun'
+import { useHandGunStore } from '@/stores/hand-gun.store'
 import { useFactoryStore } from '@/stores/factory'
 import { useCaliberStore } from '@/stores/caliber'
 import { ref, watch } from 'vue'

@@ -14,8 +14,9 @@
         <Tab value="0">{{ t('global.importantInformation') }}</Tab>
         <Tab value="1">{{ t('global.barrelInformation') }}</Tab>
         <Tab value="2">{{ t('global.otherInformation') }}</Tab>
-        <Tab value="3">{{ t('global.description') }}</Tab>
-        <Tab value="4">{{ t('global.associatedProducts') }}</Tab>
+        <Tab value="3">{{ t('global.price') }}</Tab>
+        <Tab value="4">{{ t('global.description') }}</Tab>
+        <Tab value="5">{{ t('global.associatedProducts') }}</Tab>
       </TabList>
       <TabPanels>
         <TabPanel value="0">
@@ -28,11 +29,14 @@
           <TabCardComponent :props="otherProps" v-if="otherProps" />
         </TabPanel>
         <TabPanel value="3">
+          <TabCardComponent :props="priceInfo" v-if="priceInfo" />
+        </TabPanel>
+        <TabPanel value="4">
           <p>
             {{ handgun.description.length > 0 ? handgun.description : t('global.notRegistered') }}
           </p>
         </TabPanel>
-        <TabPanel value="4">
+        <TabPanel value="5">
           <p>// Feature</p>
         </TabPanel>
       </TabPanels>
@@ -41,7 +45,7 @@
 </template>
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { useHandGunStore } from '@/stores/hand-gun'
+import { useHandGunStore } from '@/stores/hand-gun.store'
 import TabCardComponent from '@/components/__tabs/TabCardComponent.vue'
 import Tabs from 'primevue/tabs'
 import Tab from 'primevue/tab'
@@ -79,6 +83,10 @@ const importantInfo = computed(() => {
     {
       label: t('global.model'),
       title: handgun.value.factory.name
+    },
+    {
+      label: t('global.variation'),
+      title: VerifyFieldIsNotNull(handgun.value.variation)
     },
     {
       label: t('weapon.weaponType'),
@@ -190,6 +198,23 @@ const otherProps = computed(() => {
     {
       label: t('weapon.isExternalHammer'),
       title: BooleanFormatter(handgun.value.isExternalHammer)
+    }
+  ]
+})
+const priceInfo = computed(() => {
+  if (!handgun.value || !handgun.value.priceHistory) return undefined
+  return [
+    {
+      label: t('priceHistory.supplierPrice'),
+      title: NumberFormatter(handgun.value.priceHistory.supplierPrice, 'euro')
+    },
+    {
+      label: t('priceHistory.recommendedSalePrice'),
+      title: NumberFormatter(handgun.value.priceHistory.recommendedSalePrice, 'euro')
+    },
+    {
+      label: t('priceHistory.currentSalePrice'),
+      title: NumberFormatter(handgun.value.priceHistory.currentSalePrice, 'euro')
     }
   ]
 })
