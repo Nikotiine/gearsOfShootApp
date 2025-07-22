@@ -126,6 +126,17 @@ export interface CreateOpticReadyPlateDto {
   reference: string
 }
 
+export interface PriceHistoryDto {
+  supplierPrice: number
+  recommendedSalePrice: number
+  currentSalePrice: number
+  objectId: number
+  object: string
+  id: number
+  /** @format date-time */
+  createdAt: string
+}
+
 export interface WeaponReloadModeDto {
   id: number
   name: string
@@ -1790,6 +1801,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
     /**
      * @description Retourne la liste complete des types de percussion
      *
+     * @tags Percussion-type
      * @name PercussionTypeControllerFindAll
      * @summary Liste complète
      * @request GET:/api/percussion-type/all
@@ -1886,6 +1898,26 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       this.request<ApiDeleteResponseDto, any>({
         path: `/api/optic-ready-plate/${id}`,
         method: 'DELETE',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne la liste des historiques de prix disponible
+     *
+     * @tags Price-history
+     * @name PriceHistoryControllerFindByTypeAndObject
+     * @summary Liste complète
+     * @request GET:/api/price-history/{type}/{objectId}
+     */
+    priceHistoryControllerFindByTypeAndObject: (
+      type: string,
+      objectId: number,
+      params: RequestParams = {}
+    ) =>
+      this.request<PriceHistoryDto[], any>({
+        path: `/api/price-history/${type}/${objectId}`,
+        method: 'GET',
         format: 'json',
         ...params
       }),

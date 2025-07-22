@@ -419,7 +419,9 @@
     "currentSalePrice": "Prix de vente actuel",
     "supplierPrice": "Prix fournisseur",
     "recommendedSalePrice": "Prix de vente recommandé",
-    "title": "Prix d'achat et de revente"
+    "title": "Prix d'achat et de revente",
+    "showHistoryButtonLabel": "Voir l historique complet",
+    "priceHistoryModalHeader": "Historique complet"
   },
   "formatter": {
     "setup": "Réglage de ",

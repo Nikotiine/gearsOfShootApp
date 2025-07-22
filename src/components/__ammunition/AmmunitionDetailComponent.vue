@@ -17,7 +17,7 @@
           <TabCardComponent :props="importantInfo" v-if="importantInfo" />
         </TabPanel>
         <TabPanel value="1">
-          <TabCardComponent :props="priceInfo" v-if="priceInfo" />
+          <TabCardComponent :props="priceInfo" v-if="priceInfo" :button-props="propsPriceButton" />
         </TabPanel>
         <TabPanel value="2">
           <p>
@@ -34,25 +34,31 @@
       </TabPanels>
     </Tabs>
   </div>
+  <price-history-modal ref="priceHistoryModalRef" />
 </template>
 
 <script setup lang="ts">
 import { useAmmunitionStore } from '@/stores/ammunition.store'
 import { useI18n } from 'vue-i18n'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { NumberFormatter } from '@/shared/utils/formatter.utils'
 import TabPanels from 'primevue/tabpanels'
 import Tab from 'primevue/tab'
-import TabCardComponent from '@/components/__tabs/TabCardComponent.vue'
+import TabCardComponent, { type TabCardButtonProps } from '@/components/__tabs/TabCardComponent.vue'
 import TabList from 'primevue/tablist'
 import Tabs from 'primevue/tabs'
 import TabPanel from 'primevue/tabpanel'
+import PriceHistoryModal, {
+  type PriceHistoryModalExposed
+} from '@/components/__modal/PriceHistoryModal.vue'
+import { usePriceHistoryStore } from '@/stores/price-history.store'
 
 const { id } = defineProps<{
   id: string
 }>()
 const store = useAmmunitionStore()
-
+const priceHistoryStore = usePriceHistoryStore()
+const priceHistoryModalRef = ref<PriceHistoryModalExposed | null>(null)
 const { t } = useI18n()
 
 const { data: ammo } = store.getById(id)
@@ -118,6 +124,15 @@ const priceInfo = computed(() => {
     }
   ]
 })
+const propsPriceButton: TabCardButtonProps = {
+  label: t('priceHistory.showHistoryButtonLabel'),
+  severity: 'info',
+  onClickAction: () => {
+    console.log('onClickAction')
+    priceHistoryModalRef.value?.show()
+    priceHistoryStore.findAll(parseInt(id), 'AMMUNITION')
+  }
+}
 </script>
 
 <style scoped></style>
