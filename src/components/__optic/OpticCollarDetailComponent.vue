@@ -17,7 +17,11 @@
             <TabCardComponent :props="importantInfo" v-if="importantInfo" />
           </TabPanel>
           <TabPanel value="1">
-            <TabCardComponent :props="priceInfo" v-if="priceInfo" />
+            <TabCardComponent :props="priceInfo" v-if="priceInfo">
+              <template v-slot:button>
+                <show-price-history-button :id="id" type="OPTIC_COLLAR" />
+              </template>
+            </TabCardComponent>
           </TabPanel>
           <TabPanel value="2">
             <p>
@@ -48,6 +52,7 @@ import Tab from 'primevue/tab'
 import TabList from 'primevue/tablist'
 import Tabs from 'primevue/tabs'
 import TabPanel from 'primevue/tabpanel'
+import ShowPriceHistoryButton from '@/components/__layout/ShowPriceHistoryButton.vue'
 const { t } = useI18n()
 const { id } = defineProps<{
   id: string

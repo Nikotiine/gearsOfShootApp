@@ -7,7 +7,7 @@ import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
 import { getI18NPrefix } from '@/enum/I18NSuffix.enum'
 
-export const useCaliberStore = defineStore('caliber', () => {
+export const useCaliberStore = defineStore('caliber-store', () => {
   // Appel API
   const { api } = useApiStore()
   // Refs

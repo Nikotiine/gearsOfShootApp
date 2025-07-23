@@ -140,7 +140,7 @@ import { RouterEnum } from '@/enum/router.enum'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useFactoryStore } from '@/stores/factory'
-import { useCaliberStore } from '@/stores/caliber'
+import { useCaliberStore } from '@/stores/caliber.store'
 import TableTitleComponent from '@/components/__table/TableTitleComponent.vue'
 
 const store = useSoundReducerStore()

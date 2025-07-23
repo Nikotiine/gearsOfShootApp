@@ -388,21 +388,31 @@ export interface HandGunDto {
 }
 
 export interface WeaponMagazineDto {
-  id: number
+  /** Capacite en munition */
   capacity: number
+  /** longeur du chargeur */
   length: number
+  /** hauteur du chargeur */
   height: number
+  /** largeur du chargeur */
   width: number
-  reference: string
+  /** matiere du chargeur */
   body: MaterialDto
+  /** marque du chargeur */
   factory: FactoryDto
+  /** calibre des munitions du chargeur */
   caliber: CaliberDto
-  /** @example "C" */
+  description: string | null
+  /** La categorie de l arme en france */
   category: LegislationCategoryDto
-  riffles: RiffleDto[]
-  handguns: HandGunDto[]
-  forWeaponType: WeaponTypeDto
-  description: string
+  /** Le type de l arme */
+  weaponType: WeaponTypeDto
+  compatibleRiffle: RiffleDto[] | null
+  compatibleHandGun: HandGunDto[] | null
+  /** Historique des prix */
+  priceHistory: CreatePriceHistoryDto
+  id: number
+  reference: string
 }
 
 export interface CreateWeaponMagazineDto {
@@ -427,6 +437,8 @@ export interface CreateWeaponMagazineDto {
   weaponType: WeaponTypeDto
   compatibleRiffle: RiffleDto[] | null
   compatibleHandGun: HandGunDto[] | null
+  /** Historique des prix */
+  priceHistory: CreatePriceHistoryDto
 }
 
 export interface UpdateWeaponMagazineDto {
@@ -451,6 +463,8 @@ export interface UpdateWeaponMagazineDto {
   weaponType: WeaponTypeDto
   compatibleRiffle: RiffleDto[] | null
   compatibleHandGun: HandGunDto[] | null
+  /** Historique des prix */
+  priceHistory: CreatePriceHistoryDto
   id: number
 }
 

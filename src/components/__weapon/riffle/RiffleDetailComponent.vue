@@ -29,7 +29,11 @@
           <TabCardComponent :props="otherProps" v-if="otherProps" />
         </TabPanel>
         <TabPanel value="3">
-          <TabCardComponent :props="priceInfo" v-if="priceInfo" />
+          <TabCardComponent :props="priceInfo" v-if="priceInfo">
+            <template v-slot:button>
+              <show-price-history-button :id="id" type="RIFFLE" />
+            </template>
+          </TabCardComponent>
         </TabPanel>
         <TabPanel value="4">
           <p>
@@ -60,6 +64,7 @@ import {
   TriggerValueFormatter,
   VerifyFieldIsNotNull
 } from '@/shared/utils/formatter.utils'
+import ShowPriceHistoryButton from '@/components/__layout/ShowPriceHistoryButton.vue'
 
 const { t } = useI18n()
 const store = useRiffleStore()

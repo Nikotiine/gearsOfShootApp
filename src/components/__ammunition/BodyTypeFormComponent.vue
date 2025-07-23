@@ -37,7 +37,7 @@
 import Button from 'primevue/button'
 import InputGroup from 'primevue/inputgroup'
 import { computed } from 'vue'
-import { useBodyTypeStore } from '@/stores/bodyType'
+import { useBodyTypeStore } from '@/stores/body-type.store'
 import { useI18n } from 'vue-i18n'
 import InputGroupText from '@/components/__form/InputGroupText.vue'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'

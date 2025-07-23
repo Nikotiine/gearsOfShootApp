@@ -1,6 +1,6 @@
 <template>
   <div class="card p-4">
-    <!--    <h2 class="text-center mt-2 text-2xl">Liste des armes de Categorie {{ category }}</h2>-->
+    <table-title-component :i18n-prefix="i18nPrefix" />
     <div class="text-red-500 text-center" v-if="isError">Error</div>
     <DataTable
       v-model:filters="filters"
@@ -114,7 +114,7 @@
 <script setup lang="ts">
 import { useHandGunStore } from '@/stores/hand-gun.store'
 import { useFactoryStore } from '@/stores/factory'
-import { useCaliberStore } from '@/stores/caliber'
+import { useCaliberStore } from '@/stores/caliber.store'
 import { ref, watch } from 'vue'
 import { FilterMatchMode } from '@primevue/core/api'
 import DataTable from 'primevue/datatable'
@@ -128,13 +128,15 @@ import ActionMenuComponent, {
 } from '@/components/__table/ActionMenuComponent.vue'
 import { RouterEnum } from '@/enum/router.enum'
 import { useRouter } from 'vue-router'
-import { WeaponEnum } from '@/enum/weapon.enum'
 import { type NewWeapon, useWeaponStore } from '@/stores/weapon'
+import TableTitleComponent from '@/components/__table/TableTitleComponent.vue'
+
 const { category } = defineProps<{
   category: string
 }>()
 const router = useRouter()
 const store = useHandGunStore()
+const i18nPrefix = store.getI18NPrefix
 const factoryStore = useFactoryStore()
 const { data: weaponFactory$ } = factoryStore.getFactoriesByType('weapon')
 const caliberStore = useCaliberStore()

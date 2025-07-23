@@ -1,6 +1,6 @@
 <template>
   <div class="card p-4">
-    <h2 class="text-center mt-2 text-2xl">{{ t('magazine.list') }} {{ categoryId }}</h2>
+    <table-title-component :i18n-prefix="i18nPrefix" />
     <div class="text-red-500 text-center" v-if="isError">Error</div>
     <DataTable
       v-model:filters="filters"
@@ -124,7 +124,7 @@ import InputIcon from 'primevue/inputicon'
 import Select from 'primevue/select'
 import { FilterMatchMode } from '@primevue/core/api'
 import { useFactoryStore } from '@/stores/factory'
-import { useCaliberStore } from '@/stores/caliber'
+import { useCaliberStore } from '@/stores/caliber.store'
 
 import { RouterEnum } from '@/enum/router.enum'
 import ActionMenuComponent, {
@@ -132,6 +132,7 @@ import ActionMenuComponent, {
 } from '@/components/__table/ActionMenuComponent.vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import TableTitleComponent from '@/components/__table/TableTitleComponent.vue'
 
 const router = useRouter()
 const { categoryId } = defineProps<{
@@ -144,6 +145,7 @@ const caliberStore = useCaliberStore()
 const { data: calibers$ } = caliberStore.getAll()
 
 const store = useWeaponMagazineStore()
+const i18nPrefix = store.getI18NPrefix
 const { data: magazines$, isError, isLoading, refetch } = store.getByCategory(categoryId)
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },

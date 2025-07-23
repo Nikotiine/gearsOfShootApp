@@ -5,30 +5,17 @@
       :
       {{ item.title }}
     </p>
-    <Button
-      :label="buttonProps.label"
-      :severity="buttonProps.severity"
-      v-if="buttonProps"
-      @click="buttonProps.onClickAction()"
-      text
-    />
+
+    <slot name="button"></slot>
   </div>
 </template>
 <script setup lang="ts">
-import Button from 'primevue/button'
-
-export interface TabCardButtonProps {
-  label: string
-  onClickAction: Function
-  severity: 'secondary' | 'success' | 'info' | 'warn' | 'help' | 'danger' | 'contrast' | undefined
-}
 export interface TabCardProps {
   label: string
   title: string | number
 }
 const { props } = defineProps<{
   props: TabCardProps[]
-  buttonProps?: TabCardButtonProps
 }>()
 </script>
 

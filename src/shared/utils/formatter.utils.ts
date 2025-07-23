@@ -67,3 +67,11 @@ export function ParallaxFormatter(
     return `${t('global.yes')} ${t('formatter.setup')} ${NumberFormatter(min, 'yrd')} ${t('formatter.to')} ${NumberFormatter(max, 'yrd')}`
   }
 }
+export function DateFormatter(date: Date | string, format: 'short' | 'medium' | 'long' = 'medium') {
+  const options: Intl.DateTimeFormatOptions = {
+    dateStyle: format,
+    timeStyle: format === 'short' ? undefined : 'short'
+  }
+
+  return new Intl.DateTimeFormat('fr-FR', options).format(new Date(date))
+}

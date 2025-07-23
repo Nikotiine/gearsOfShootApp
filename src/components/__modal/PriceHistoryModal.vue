@@ -7,26 +7,55 @@
     :style="{ width: '50rem' }"
     :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
   >
-    <span class="text-surface-500 dark:text-surface-400 block mb-8">Update your information.</span>
-    <div class="flex items-center gap-4 mb-4">
-      <label for="username" class="font-semibold w-24">Username</label>
-    </div>
-    <div class="flex items-center gap-4 mb-8">
-      <label for="email" class="font-semibold w-24">Email</label>
+    <div class="card">
+      <DataTable :value="data">
+        <Column :header="t('priceHistory.createdAt')">
+          <template #body="{ data }">
+            {{ DateFormatter(data.createdAt, 'short') }}
+          </template>
+        </Column>
+        <Column :header="t('priceHistory.supplierPrice')">
+          <template #body="{ data }">
+            {{ NumberFormatter(data.supplierPrice, 'euro') }}
+          </template>
+        </Column>
+        <Column :header="t('priceHistory.recommendedSalePrice')">
+          <template #body="{ data }">
+            {{ NumberFormatter(data.recommendedSalePrice, 'euro') }}
+          </template>
+        </Column>
+        <Column :header="t('priceHistory.currentSalePrice')">
+          <template #body="{ data }">
+            {{ NumberFormatter(data.currentSalePrice, 'euro') }}
+          </template>
+        </Column>
+      </DataTable>
     </div>
   </Dialog>
 </template>
 <script setup lang="ts">
 import Dialog from 'primevue/dialog'
-
+import DataTable from 'primevue/datatable'
+import Column from 'primevue/column'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-const { t } = useI18n()
+import type { PriceableObjectType } from '@/types/priceable-object.type'
+import { usePriceHistoryStore } from '@/stores/price-history.store'
+import { DateFormatter, NumberFormatter } from '@/shared/utils/formatter.utils'
+
 export interface PriceHistoryModalExposed {
   show: () => void
   hide: () => void
 }
+const { t } = useI18n()
+const store = usePriceHistoryStore()
+const { id, type } = defineProps<{
+  id?: string
+  type?: PriceableObjectType
+}>()
 const visible = ref<boolean>(false)
+const { data } = store.findAll(id, type)
+
 function show() {
   visible.value = true
 }

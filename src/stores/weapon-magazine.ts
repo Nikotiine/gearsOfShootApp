@@ -11,6 +11,8 @@ import { getWeaponTypeDto } from '@/shared/api-dto/get-weapon-type.dto'
 import { getCaliberDto } from '@/shared/api-dto/get-caliber.dto'
 import { getMaterialDto } from '@/shared/api-dto/get-material.dto'
 import { getFactoryDto } from '@/shared/api-dto/get-factory.dto'
+import { getPriceHistoryDto } from '@/shared/api-dto/get-price-history.dto'
+import { getI18NPrefix, I18NSuffix } from '@/enum/I18NSuffix.enum'
 
 export const useWeaponMagazineStore = defineStore('weaponMagazine', () => {
   // Appel API
@@ -22,8 +24,7 @@ export const useWeaponMagazineStore = defineStore('weaponMagazine', () => {
   const magazines = ref<WeaponMagazineDto[]>([])
   const magazine = ref<WeaponMagazineDto>()
   // Private Attibute
-  const I18N_PREFIX = 'magazine'
-  const _SUMMARY = I18N_PREFIX + '.summary'
+  const _I18N_PREFIX = 'magazine'
   const _GET_ALL_BY_CATEGORY_FN = 'getAllMagazineByCategory'
   const _GET_ALL_BY_FACTORY_FN = 'getAllMagazineByFactory'
   const _GET_ALL_FN = 'getAllMagazine'
@@ -99,14 +100,15 @@ export const useWeaponMagazineStore = defineStore('weaponMagazine', () => {
       category: getLegalisationCategoryDto(),
       compatibleHandGun: [],
       compatibleRiffle: [],
-      weaponType: getWeaponTypeDto()
+      weaponType: getWeaponTypeDto(),
+      priceHistory: getPriceHistoryDto()
     }
     return useFormHandler<CreateWeaponMagazineDto, AxiosResponse<WeaponMagazineDto>>(
       emptyForm,
       getByIdQuery,
       _createMutation,
       _updateMutation,
-      I18N_PREFIX,
+      _I18N_PREFIX,
       id,
       (data) => ({
         ...data,
@@ -126,12 +128,11 @@ export const useWeaponMagazineStore = defineStore('weaponMagazine', () => {
     mutationFn: async (id: number) => {
       return await api.api.magazineControllerDelete(id)
     },
-    onSuccess(data) {
-      if (data.data.isSuccess) {
-        const index = magazines.value.findIndex((magazine) => magazine.id === data.data.id)
-        magazines.value.splice(index, 1)
-        successMessage(_SUMMARY, I18N_PREFIX + '.deleted')
-      }
+    onSuccess() {
+      successMessage(
+        getI18NPrefix(_I18N_PREFIX) + I18NSuffix.SUMMARY,
+        getI18NPrefix(_I18N_PREFIX) + I18NSuffix.DELETED
+      )
     }
   })
   const deleteFunction = (id: number) => {
@@ -167,6 +168,7 @@ export const useWeaponMagazineStore = defineStore('weaponMagazine', () => {
     delete: deleteFunction,
     builder: useWeaponForm,
     fetchCompatibleWeapons,
-    compatibleWeapons$: weapons
+    compatibleWeapons$: weapons,
+    getI18NPrefix: getI18NPrefix(_I18N_PREFIX)
   }
 })

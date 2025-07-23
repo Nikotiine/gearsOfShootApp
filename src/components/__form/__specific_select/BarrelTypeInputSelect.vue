@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { useBarrelTypeStore } from '@/stores/barrel-type'
+import { useBarrelTypeStore } from '@/stores/barrel-type.store'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
 import InputGroup from 'primevue/inputgroup'

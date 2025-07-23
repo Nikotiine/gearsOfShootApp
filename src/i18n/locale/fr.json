@@ -180,12 +180,13 @@
     "bodyMaterial": "Matiere du chargeur",
     "capacity": "Capacité",
     "compatibleWeaponOptions": "Arme compatible",
-    "success": "ajouter a la base de donnee",
+    "created": "Chargeur ajouté",
     "compatibleWeapons": "Armes compatibles",
     "updated": "Chargeur correctement modifié",
     "list":"Liste des chargeurs de categorie",
     "notFound": "Aucun chargeur trouvé",
-    "loading": "Chargement des chargeurs en cours"
+    "loading": "Chargement des chargeurs en cours",
+    "deleted": "Chargeur supprimé"
   },
   "ammunition": {
     "summary": "Gestion des munitions",
@@ -194,6 +195,7 @@
     "name": "Modele de munition",
     "created": "Ajout de la muntion",
     "updated": "Modification de la muntion",
+    "deleted": "Munition supprimée",
     "initialSpeed": "Vitesse initiale",
     "headType": "Type d'ovige",
     "bodyType": "Type de douille",
@@ -421,7 +423,8 @@
     "recommendedSalePrice": "Prix de vente recommandé",
     "title": "Prix d'achat et de revente",
     "showHistoryButtonLabel": "Voir l historique complet",
-    "priceHistoryModalHeader": "Historique complet"
+    "priceHistoryModalHeader": "Historique complet",
+    "createdAt": "Date de mise a jour"
   },
   "formatter": {
     "setup": "Réglage de ",
