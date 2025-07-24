@@ -25,7 +25,7 @@ import InputGroupAddonOpenDrawerButton from '@/components/__form/InputGroupAddon
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
 import InputGroup from 'primevue/inputgroup'
-import { useThreadedSizeStore } from '@/stores/threadedSize'
+import { useThreadedSizeStore } from '@/stores/threaded-size.store'
 import { computed, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 const {

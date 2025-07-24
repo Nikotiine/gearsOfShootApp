@@ -14,7 +14,7 @@ import { getFactoryDto } from '@/shared/api-dto/get-factory.dto'
 import { getPriceHistoryDto } from '@/shared/api-dto/get-price-history.dto'
 import { getI18NPrefix, I18NSuffix } from '@/enum/I18NSuffix.enum'
 
-export const useWeaponMagazineStore = defineStore('weaponMagazine', () => {
+export const useWeaponMagazineStore = defineStore('weapon-magazine-store', () => {
   // Appel API
   const { api } = useApiStore()
   // TOAST
@@ -141,7 +141,7 @@ export const useWeaponMagazineStore = defineStore('weaponMagazine', () => {
 
   const fetchCompatibleWeapons = async (category: string, type?: string) => {
     if (!type) return null
-
+    // TODO: constantes
     if (type === 'handgun') {
       weapons.value = await _fetchHandgun(category)
     }

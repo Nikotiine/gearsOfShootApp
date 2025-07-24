@@ -10,9 +10,9 @@ import SplitButton from 'primevue/splitbutton'
 import type { MenuItem } from 'primevue/menuitem'
 import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
-import { useSecurityStore } from '@/stores/security'
+import { useSecurityStore } from '@/stores/security.store'
 import { useRouter } from 'vue-router'
-import { useUserStore } from '@/stores/user'
+import { useUserStore } from '@/stores/user.store'
 const { t, locale } = useI18n()
 const { push } = useRouter()
 const { logout } = useSecurityStore()

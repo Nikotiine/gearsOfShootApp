@@ -47,7 +47,7 @@
 import InputGroup from 'primevue/inputgroup'
 import Button from 'primevue/button'
 import { useI18n } from 'vue-i18n'
-import { useWeaponTypeStore } from '@/stores/weaponType'
+import { useWeaponTypeStore } from '@/stores/weapon-type.store'
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'

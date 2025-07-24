@@ -24,7 +24,7 @@
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
 import InputGroup from 'primevue/inputgroup'
-import { useLegalisationCategoryStore } from '@/stores/legalisation-category'
+import { useLegalisationCategoryStore } from '@/stores/legalisation-category.store'
 import { ref } from 'vue'
 import Button from 'primevue/button'
 import { useI18n } from 'vue-i18n'

@@ -77,7 +77,7 @@ import { useI18n } from 'vue-i18n'
 
 import RegisterDialog from '@/components/__dialog/RegisterDialog.vue'
 
-import { useSecurityStore } from '@/stores/security'
+import { useSecurityStore } from '@/stores/security.store'
 import ConnexionSplitButton from '@/components/__layout/ConnexionSplitButton.vue'
 import ConnectedSplitButton from '@/components/__layout/ConnectedSplitButton.vue'
 import { useRouter } from 'vue-router'

@@ -34,7 +34,7 @@ import WeaponTypeFormComponent from '@/components/__weapon/type/WeaponTypeFormCo
 import ColorFormComponent from '@/components/__color_and_material/ColorFormComponent.vue'
 import ThreadedSizeFormComponent from '@/components/__threaded-size/ThreadedSizeFormComponent.vue'
 import MaterialFormComponent from '@/components/__color_and_material/MaterialFormComponent.vue'
-import type { FactoryType } from '@/stores/factory'
+import type { FactoryType } from '@/stores/factory.store'
 import HeadTypeFormComponent from '@/components/__ammunition/HeadTypeFormComponent.vue'
 import BodyTypeFormComponent from '@/components/__ammunition/BodyTypeFormComponent.vue'
 

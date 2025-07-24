@@ -94,7 +94,7 @@
 <script setup lang="ts">
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
-import { useFactoryStore } from '@/stores/factory'
+import { useFactoryStore } from '@/stores/factory.store'
 import { useI18n } from 'vue-i18n'
 import InputText from 'primevue/inputtext'
 import IconField from 'primevue/iconfield'

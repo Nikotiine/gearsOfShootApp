@@ -21,7 +21,7 @@
 import InputGroupAddonOpenDrawerButton from '@/components/__form/InputGroupAddonOpenDrawerButton.vue'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
-import { useWeaponTypeStore } from '@/stores/weaponType'
+import { useWeaponTypeStore } from '@/stores/weapon-type.store'
 import InputGroup from 'primevue/inputgroup'
 import { computed, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'

@@ -16,7 +16,7 @@ import Button from 'primevue/button'
 import Menu from 'primevue/menu'
 import { ref } from 'vue'
 import type { MenuItem } from 'primevue/menuitem'
-import { useConfirmationStore } from '@/stores/confirmation'
+import { useConfirmationStore } from '@/stores/confirmation.store'
 import { useI18n } from 'vue-i18n'
 export type ActionMenuType =
   | 'optic'

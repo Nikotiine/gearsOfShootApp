@@ -13,7 +13,7 @@ import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
 import { getI18NPrefix, I18NSuffix } from '@/enum/I18NSuffix.enum'
 
-export const useFactoryStore = defineStore('factory', () => {
+export const useFactoryStore = defineStore('factory-store', () => {
   // Appel API
   const { api } = useApiStore()
   // TOAST

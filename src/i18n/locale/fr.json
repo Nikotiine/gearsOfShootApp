@@ -424,7 +424,8 @@
     "title": "Prix d'achat et de revente",
     "showHistoryButtonLabel": "Voir l historique complet",
     "priceHistoryModalHeader": "Historique complet",
-    "createdAt": "Date de mise a jour"
+    "createdAt": "Date de mise a jour",
+    "notFound": "Aucun prix enregistré"
   },
   "formatter": {
     "setup": "Réglage de ",

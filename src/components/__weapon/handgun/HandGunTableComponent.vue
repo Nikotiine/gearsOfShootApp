@@ -113,7 +113,7 @@
 </template>
 <script setup lang="ts">
 import { useHandGunStore } from '@/stores/hand-gun.store'
-import { useFactoryStore } from '@/stores/factory'
+import { useFactoryStore } from '@/stores/factory.store'
 import { useCaliberStore } from '@/stores/caliber.store'
 import { ref, watch } from 'vue'
 import { FilterMatchMode } from '@primevue/core/api'

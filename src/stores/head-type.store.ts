@@ -1,48 +1,48 @@
 import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
-import { ref } from 'vue'
-import type { CreateMaterialDto, MaterialDto } from '@/api/Api'
 import { useMutation, useQuery } from '@tanstack/vue-query'
+import type { AmmunitionHeadTypeDto, CreateAmmunitionHeadTypeDto } from '@/api/Api'
+import { ref } from 'vue'
+import { getI18NPrefix } from '@/enum/I18NSuffix.enum'
 import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
-import { getI18NPrefix } from '@/enum/I18NSuffix.enum'
 
-export const useMaterialStore = defineStore('material', () => {
+export const useHeadTypeStore = defineStore('head-type-store', () => {
   // Appel API
   const { api } = useApiStore()
 
   // Refs
   const mutationSuccess = ref(false)
   // Private Attibute
-  const _I18N_PREFIX = 'material'
-  const _GET_ALL_FN = 'getAllMaterial'
-  const _GET_BY_ID_FN = 'getMaterialById'
+  const _I18N_PREFIX = 'headType'
+  const _GET_ALL_FN = 'getAllHeadType'
+  const _GET_BY_ID_FN = 'getHeadTypeById'
 
   // *******************Methodes***************
   const _createMutation = useMutation({
-    mutationFn: async (materialDto: CreateMaterialDto) => {
-      return await api.api.materialControllerCreate(materialDto)
+    mutationFn: async (headType: CreateAmmunitionHeadTypeDto) => {
+      return await api.api.ammunitionHeadTypeControllerCreate(headType)
     },
     onSuccess() {
       mutationSuccess.value = true
     }
   })
   const _updateMutation = useMutation({
-    mutationFn: async (material: MaterialDto) => {
-      return await api.api.materialControllerEdit(material.id, material)
+    mutationFn: async (head: AmmunitionHeadTypeDto) => {
+      return await api.api.ammunitionHeadTypeControllerEdit(head.id, head)
     },
     onSuccess() {
       mutationSuccess.value = true
     }
   })
-  const getAllQuery = () =>
+  const getAllHeadTypesQuery = () =>
     useQuery({
       queryKey: [_GET_ALL_FN],
       queryFn: async () => _fetchAll(),
       retry: 0
     })
   const _fetchAll = async () => {
-    const res = await api.api.materialControllerFindAll()
+    const res = await api.api.ammunitionHeadTypeControllerFindAllHeadTypes()
     return res.data
   }
   const getByIdQuery = (id?: string) =>
@@ -54,15 +54,15 @@ export const useMaterialStore = defineStore('material', () => {
     })
   const _fetchById = async (id?: string) => {
     if (!id) return null
-    const res = await api.api.materialControllerFindById(parseInt(id))
+    const res = await api.api.ammunitionHeadTypeControllerFindById(parseInt(id))
     return res.data
   }
-  function useMaterialForm(id?: string) {
-    const emptyForm: CreateMaterialDto = {
+  function useHeadTypeForm(id?: string) {
+    const emptyForm: CreateAmmunitionHeadTypeDto = {
       name: '',
       reference: ''
     }
-    return useFormHandler<CreateMaterialDto, AxiosResponse<MaterialDto>>(
+    return useFormHandler<CreateAmmunitionHeadTypeDto, AxiosResponse<AmmunitionHeadTypeDto>>(
       emptyForm,
       getByIdQuery,
       _createMutation,
@@ -75,9 +75,9 @@ export const useMaterialStore = defineStore('material', () => {
     )
   }
   return {
-    formBuilder: useMaterialForm,
-    getAll: getAllQuery,
+    getAll: getAllHeadTypesQuery,
+    getI18NPrefix: getI18NPrefix(_I18N_PREFIX),
     mutationSuccess,
-    getI18NPrefix: getI18NPrefix(_I18N_PREFIX)
+    formBuilder: useHeadTypeForm
   }
 })

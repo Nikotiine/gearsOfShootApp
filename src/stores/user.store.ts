@@ -4,7 +4,7 @@ import { computed, ref } from 'vue'
 import { type UserDto, UserDtoRoleEnum } from '@/api/Api'
 import { useApiStore } from '@/stores/api'
 
-export const useUserStore = defineStore('user', () => {
+export const useUserStore = defineStore('user-store', () => {
   const { api } = useApiStore()
   const _user = ref<UserDto | null>(null)
   const _isAdmin = ref(false)

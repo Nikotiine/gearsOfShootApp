@@ -33,7 +33,7 @@
   </form>
 </template>
 <script setup lang="ts">
-import { useColorStore } from '@/stores/color'
+import { useColorStore } from '@/stores/color.store'
 import { computed } from 'vue'
 import Button from 'primevue/button'
 import InputGroupText from '@/components/__form/InputGroupText.vue'

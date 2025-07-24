@@ -7,7 +7,7 @@ import { useToastStore } from '@/stores/toast'
 
 export const useRegisterStore = defineStore('register', () => {
   const _isVisible = ref(false)
-
+  //TODO: utliser form handler
   const { api } = useApiStore()
   const { successMessage } = useToastStore()
   const isVisible = computed(() => _isVisible)

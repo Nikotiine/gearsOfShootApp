@@ -9,6 +9,7 @@
   >
     <div class="card">
       <DataTable :value="data">
+        <template #empty> {{ t('priceHistory.notFound') }} </template>
         <Column :header="t('priceHistory.createdAt')">
           <template #body="{ data }">
             {{ DateFormatter(data.createdAt, 'short') }}

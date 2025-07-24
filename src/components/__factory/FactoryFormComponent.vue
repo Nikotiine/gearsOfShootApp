@@ -65,7 +65,7 @@
 import Textarea from 'primevue/textarea'
 
 import InputGroup from 'primevue/inputgroup'
-import { type FactoryType, useFactoryStore } from '@/stores/factory'
+import { type FactoryType, useFactoryStore } from '@/stores/factory.store'
 import { computed, ref, watch, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
 import InputGroupText from '@/components/__form/InputGroupText.vue'

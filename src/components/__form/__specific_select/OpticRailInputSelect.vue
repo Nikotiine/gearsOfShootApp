@@ -21,7 +21,7 @@ import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.v
 import InputGroup from 'primevue/inputgroup'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
-import { useOpticRailStore } from '@/stores/optic-rail'
+import { useOpticRailStore } from '@/stores/optic-rail.store'
 import { computed, ref, watch } from 'vue'
 const {
   initialValue = 0,

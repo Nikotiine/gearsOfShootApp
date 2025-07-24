@@ -34,7 +34,7 @@
 </template>
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { useMaterialStore } from '@/stores/material'
+import { useMaterialStore } from '@/stores/material.store'
 import { computed } from 'vue'
 import Button from 'primevue/button'
 import InputGroupText from '@/components/__form/InputGroupText.vue'

@@ -24,7 +24,7 @@ import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
 import InputGroup from 'primevue/inputgroup'
 import { computed, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useMaterialStore } from '@/stores/material'
+import { useMaterialStore } from '@/stores/material.store'
 import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.vue'
 
 const {

@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { useMutation } from '@tanstack/vue-query'
 import type { UserCredentialDto } from '@/api/Api'
 import { useApiStore } from '@/stores/api'
-import { useSecurityStore } from '@/stores/security'
+import { useSecurityStore } from '@/stores/security.store'
 import { useToastStore } from '@/stores/toast'
 
 export const useConnexionStore = defineStore('connexion', () => {

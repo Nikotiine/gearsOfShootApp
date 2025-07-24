@@ -1,35 +1,35 @@
 import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
-import { useMutation, useQuery } from '@tanstack/vue-query'
-import type { ColorDto, CreateColorDto } from '@/api/Api'
 import { ref } from 'vue'
+import type { CreateMaterialDto, MaterialDto } from '@/api/Api'
+import { useMutation, useQuery } from '@tanstack/vue-query'
 import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
 import { getI18NPrefix } from '@/enum/I18NSuffix.enum'
 
-export const useColorStore = defineStore('color', () => {
+export const useMaterialStore = defineStore('material-store', () => {
   // Appel API
   const { api } = useApiStore()
-  // TOAST
 
   // Refs
   const mutationSuccess = ref(false)
   // Private Attibute
-  const _I18N_PREFIX = 'color'
-  const _GET_ALL_FN = 'getAllColor'
-  const _GET_BY_ID_FN = 'getColorById'
+  const _I18N_PREFIX = 'material'
+  const _GET_ALL_FN = 'getAllMaterial'
+  const _GET_BY_ID_FN = 'getMaterialById'
+
   // *******************Methodes***************
   const _createMutation = useMutation({
-    mutationFn: async (color: CreateColorDto) => {
-      return await api.api.colorControllerCreate(color)
+    mutationFn: async (materialDto: CreateMaterialDto) => {
+      return await api.api.materialControllerCreate(materialDto)
     },
     onSuccess() {
       mutationSuccess.value = true
     }
   })
   const _updateMutation = useMutation({
-    mutationFn: async (color: ColorDto) => {
-      return await api.api.colorControllerEdit(color.id, color)
+    mutationFn: async (material: MaterialDto) => {
+      return await api.api.materialControllerEdit(material.id, material)
     },
     onSuccess() {
       mutationSuccess.value = true
@@ -42,7 +42,7 @@ export const useColorStore = defineStore('color', () => {
       retry: 0
     })
   const _fetchAll = async () => {
-    const res = await api.api.colorControllerFindAll()
+    const res = await api.api.materialControllerFindAll()
     return res.data
   }
   const getByIdQuery = (id?: string) =>
@@ -54,16 +54,15 @@ export const useColorStore = defineStore('color', () => {
     })
   const _fetchById = async (id?: string) => {
     if (!id) return null
-    const res = await api.api.colorControllerFindById(parseInt(id))
+    const res = await api.api.materialControllerFindById(parseInt(id))
     return res.data
   }
-
-  function useColorForm(id?: string) {
-    const emptyForm: CreateColorDto = {
+  function useMaterialForm(id?: string) {
+    const emptyForm: CreateMaterialDto = {
       name: '',
       reference: ''
     }
-    return useFormHandler<CreateColorDto, AxiosResponse<ColorDto>>(
+    return useFormHandler<CreateMaterialDto, AxiosResponse<MaterialDto>>(
       emptyForm,
       getByIdQuery,
       _createMutation,
@@ -76,7 +75,7 @@ export const useColorStore = defineStore('color', () => {
     )
   }
   return {
-    formBuilder: useColorForm,
+    formBuilder: useMaterialForm,
     getAll: getAllQuery,
     mutationSuccess,
     getI18NPrefix: getI18NPrefix(_I18N_PREFIX)

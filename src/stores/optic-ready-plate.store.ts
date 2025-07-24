@@ -1,23 +1,19 @@
 import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
 import { ref } from 'vue'
-import type { CreateThreadedSizeDto, ThreadedSizeDto } from '@/api/Api'
 import { useMutation, useQuery } from '@tanstack/vue-query'
-import { getI18NPrefix } from '@/enum/I18NSuffix.enum'
+import type { CreateOpticReadyPlateDto, OpticReadyPlateDto } from '@/api/Api'
 import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
+import { getI18NPrefix } from '@/enum/I18NSuffix.enum'
 
-export const useThreadedSizeStore = defineStore('threadedSize', () => {
-  // Appel API
+export const useOpticReadyPlateStore = defineStore('optic-ready-plate-store', () => {
   const { api } = useApiStore()
-
   // Refs
   const mutationSuccess = ref(false)
-  // Private Attibute
-  const _I18N_PREFIX = 'threadedSize'
-  const _GET_ALL_FN = 'getAllThreadedSizes'
-  const _GET_BY_ID_FN = 'getThreadedSizeById'
-
+  const _I18N_PREFIX = 'opticReadyPlate'
+  const _GET_ALL_FN = 'getAllOpticReadyPlate'
+  const _GET_BY_ID_FN = 'getOpticReadyPlateById'
   // *******************Methodes***************
   const getAllQuery = () =>
     useQuery({
@@ -26,7 +22,7 @@ export const useThreadedSizeStore = defineStore('threadedSize', () => {
       retry: 0
     })
   const _fetchAll = async () => {
-    const res = await api.api.threadedSizeControllerFindAllThreadedSize()
+    const res = await api.api.opticReadyPlateControllerFindAll()
     return res.data
   }
   const getByIdQuery = (id?: string) =>
@@ -38,31 +34,34 @@ export const useThreadedSizeStore = defineStore('threadedSize', () => {
     })
   const _fetchById = async (id?: string) => {
     if (!id) return null
-    const res = await api.api.threadedSizeControllerFindById(parseInt(id))
+    const res = await api.api.opticReadyPlateControllerFindById(parseInt(id))
     return res.data
   }
+
   const _createMutation = useMutation({
-    mutationFn: async (threadedSize: CreateThreadedSizeDto) => {
-      return api.api.threadedSizeControllerCreate(threadedSize)
+    mutationFn: async (plate: CreateOpticReadyPlateDto) => {
+      return api.api.opticReadyPlateControllerCreate(plate)
     },
     onSuccess() {
       mutationSuccess.value = true
     }
   })
   const _updateMutation = useMutation({
-    mutationFn: async (threadedSize: ThreadedSizeDto) => {
-      return api.api.threadedSizeControllerEdit(threadedSize.id, threadedSize)
+    mutationFn: async (plate: OpticReadyPlateDto) => {
+      return api.api.opticReadyPlateControllerEdit(plate.id, plate)
     },
     onSuccess() {
       mutationSuccess.value = true
     }
   })
-  function useThreadedSizeForm(id?: string) {
-    const emptyForm: CreateThreadedSizeDto = {
-      size: '',
-      reference: ''
+
+  function useOpticReadyPlateForm(id?: string) {
+    const emptyForm: CreateOpticReadyPlateDto = {
+      name: '',
+      reference: '',
+      description: ''
     }
-    return useFormHandler<CreateThreadedSizeDto, AxiosResponse<ThreadedSizeDto>>(
+    return useFormHandler<CreateOpticReadyPlateDto, AxiosResponse<OpticReadyPlateDto>>(
       emptyForm,
       getByIdQuery,
       _createMutation,
@@ -75,7 +74,7 @@ export const useThreadedSizeStore = defineStore('threadedSize', () => {
     )
   }
   return {
-    formBuilder: useThreadedSizeForm,
+    formBuilder: useOpticReadyPlateForm,
     getAll: getAllQuery,
     mutationSuccess,
     getI18NPrefix: getI18NPrefix(_I18N_PREFIX)

@@ -112,7 +112,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useWeaponMagazineStore } from '@/stores/weapon-magazine'
+import { useWeaponMagazineStore } from '@/stores/weapon-magazine.store'
 
 import { computed, ref, watch } from 'vue'
 import InputGroup from 'primevue/inputgroup'

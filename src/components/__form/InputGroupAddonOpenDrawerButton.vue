@@ -22,7 +22,7 @@ import Button from 'primevue/button'
 import { useI18n } from 'vue-i18n'
 import type { DrawerType } from '@/types/form-type'
 import { ref, watch } from 'vue'
-import type { FactoryType } from '@/stores/factory'
+import type { FactoryType } from '@/stores/factory.store'
 import DrawerFormView from '@/views/shared/DrawerFormView.vue'
 
 const { t } = useI18n()

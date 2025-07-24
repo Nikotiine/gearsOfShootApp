@@ -122,7 +122,7 @@ import InputText from 'primevue/inputtext'
 import InputIcon from 'primevue/inputicon'
 import Select from 'primevue/select'
 import IconField from 'primevue/iconfield'
-import { useFactoryStore } from '@/stores/factory'
+import { useFactoryStore } from '@/stores/factory.store'
 import { useCaliberStore } from '@/stores/caliber.store'
 import ActionMenuComponent, {
   type ActionMenuEmit

@@ -156,7 +156,7 @@ import Select from 'primevue/select'
 import { useI18n } from 'vue-i18n'
 import { FilterMatchMode } from '@primevue/core/api'
 import { ref } from 'vue'
-import { useFactoryStore } from '@/stores/factory'
+import { useFactoryStore } from '@/stores/factory.store'
 
 import ActionMenuComponent, {
   type ActionMenuEmit

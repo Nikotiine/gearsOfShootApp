@@ -22,7 +22,7 @@ import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.v
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
 import InputGroup from 'primevue/inputgroup'
-import { useTriggerTypeStore } from '@/stores/trigger-type'
+import { useTriggerTypeStore } from '@/stores/trigger-type.store'
 import { computed, ref, watch } from 'vue'
 
 const {

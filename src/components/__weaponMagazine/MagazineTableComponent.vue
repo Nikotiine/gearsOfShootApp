@@ -113,7 +113,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useWeaponMagazineStore } from '@/stores/weapon-magazine'
+import { useWeaponMagazineStore } from '@/stores/weapon-magazine.store'
 import { ref } from 'vue'
 import IconField from 'primevue/iconfield'
 
@@ -123,7 +123,7 @@ import Column from 'primevue/column'
 import InputIcon from 'primevue/inputicon'
 import Select from 'primevue/select'
 import { FilterMatchMode } from '@primevue/core/api'
-import { useFactoryStore } from '@/stores/factory'
+import { useFactoryStore } from '@/stores/factory.store'
 import { useCaliberStore } from '@/stores/caliber.store'
 
 import { RouterEnum } from '@/enum/router.enum'
