@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
-import { useUserStore } from '@/stores/user'
+import { useUserStore } from '@/stores/user.store'
 
-export const useSecurityStore = defineStore('security', () => {
+export const useSecurityStore = defineStore('security-store', () => {
   const _key = 'token'
   const _isLogged = ref(false)
   const getToken = computed(() => sessionStorage.getItem(_key))

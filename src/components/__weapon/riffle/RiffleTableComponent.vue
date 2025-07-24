@@ -1,6 +1,6 @@
 <template>
   <div class="card p-4">
-    <!--    <h2 class="text-center mt-2 text-2xl">Liste des armes de Categorie {{ category }}</h2>-->
+    <table-title-component :i18n-prefix="i18nPrefix" />
     <div class="text-red-500 text-center" v-if="isError">Error</div>
     <DataTable
       v-model:filters="filters"
@@ -113,7 +113,7 @@
 </template>
 
 <script setup lang="ts">
-import { useRiffleStore } from '@/stores/riffle'
+import { useRiffleStore } from '@/stores/riffle.store'
 import { FilterMatchMode } from '@primevue/core/api'
 import { ref, watch } from 'vue'
 import DataTable from 'primevue/datatable'
@@ -121,22 +121,22 @@ import Column from 'primevue/column'
 import InputText from 'primevue/inputtext'
 import InputIcon from 'primevue/inputicon'
 import Select from 'primevue/select'
-import Button from 'primevue/button'
 import IconField from 'primevue/iconfield'
-import { useFactoryStore } from '@/stores/factory'
-import { useCaliberStore } from '@/stores/caliber'
-import { useConfirmationStore } from '@/stores/confirmation'
+import { useFactoryStore } from '@/stores/factory.store'
+import { useCaliberStore } from '@/stores/caliber.store'
 import ActionMenuComponent, {
   type ActionMenuEmit
 } from '@/components/__table/ActionMenuComponent.vue'
 import { RouterEnum } from '@/enum/router.enum'
-import { WeaponEnum } from '@/enum/weapon.enum'
 import { type NewWeapon, useWeaponStore } from '@/stores/weapon'
 import { useRouter } from 'vue-router'
+import TableTitleComponent from '@/components/__table/TableTitleComponent.vue'
+
 const { category } = defineProps<{
   category: string
 }>()
 const store = useRiffleStore()
+const i18nPrefix = store.getI18NPrefix
 const factoryStore = useFactoryStore()
 const { data: weaponFoctory$ } = factoryStore.getFactoriesByType('weapon')
 const caliberStore = useCaliberStore()

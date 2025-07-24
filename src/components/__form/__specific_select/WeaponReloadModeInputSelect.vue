@@ -20,7 +20,7 @@ import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.v
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
 import InputGroup from 'primevue/inputgroup'
-import { useWeaponReloadModeStore } from '@/stores/weaponReloadMode'
+import { useWeaponReloadModeStore } from '@/stores/weapon-reload-mode.store'
 import { ref } from 'vue'
 const {
   initialValue = 0,

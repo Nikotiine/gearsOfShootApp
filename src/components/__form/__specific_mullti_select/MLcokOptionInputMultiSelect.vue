@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { useMLockOptionStore } from '@/stores/m-lock-options'
+import { useMLockOptionStore } from '@/stores/m-lock-options.store'
 import InputGroupMultiSelect from '@/components/__form/InputGroupMultiSelect.vue'
 import { ref, watch } from 'vue'
 import type { MLockOptionDto } from '@/api/Api'

@@ -57,10 +57,8 @@
             :disabled="form.opticUnit.id === 0"
           />
         </InputGroup>
+
         <InputGroup>
-          <input-group-required-icon
-            :is-validate="form.minZoom > 0 && form.maxZoom > form.minZoom"
-          />
           <input-group-number
             :min="0"
             label="minZoom"
@@ -83,9 +81,7 @@
             :initial-value="form.maxZoom"
           />
         </InputGroup>
-
         <InputGroup>
-          <input-group-required-icon :is-validate="form.maxDrift > 0 && form.maxElevation > 0" />
           <input-group-number
             :min="0"
             label="maxDrift"
@@ -95,6 +91,7 @@
             @value="(value) => (form.maxDrift = value)"
             input-id="maxDrift"
             :initial-value="form.maxDrift"
+            add-on="moa"
           />
 
           <input-group-number
@@ -106,14 +103,11 @@
             @value="(value) => (form.maxElevation = value)"
             input-id="maxElevation"
             :initial-value="form.maxElevation"
+            add-on="moa"
           />
-          <InputGroupAddon>moa</InputGroupAddon>
         </InputGroup>
 
         <InputGroup>
-          <input-group-required-icon
-            :is-validate="form.lensDiameter > 0 && form.bodyDiameter > 0"
-          />
           <input-group-number
             :min="0"
             label="lensDiameter"
@@ -123,8 +117,9 @@
             @value="(value) => (form.lensDiameter = value)"
             input-id="lensDiameter"
             :initial-value="form.lensDiameter"
+            add-on="mm"
           />
-          <InputGroupAddon>mm</InputGroupAddon>
+
           <input-group-number
             :min="0"
             label="bodyDiameter"
@@ -134,24 +129,20 @@
             @value="(value) => (form.bodyDiameter = value)"
             input-id="bodyDiameter"
             :initial-value="form.bodyDiameter"
+            add-on="mm"
           />
-          <InputGroupAddon>mm</InputGroupAddon>
         </InputGroup>
 
         <InputGroup>
-          <input-group-required-icon :is-validate="form.length > 0" />
           <input-group-number
             label="length"
             placeholder="length"
+            required
             @value="(value) => (form.length = value)"
             input-id="length"
             :initial-value="form.length"
+            add-on="cm"
           />
-          <InputGroupAddon><span>cm</span></InputGroupAddon>
-        </InputGroup>
-
-        <InputGroup>
-          <input-group-required-icon :is-validate="form.eyeRelief > 0" />
           <input-group-number
             label="eyeRelief"
             placeholder="eyeRelief"
@@ -159,12 +150,30 @@
             @value="(value) => (form.eyeRelief = value)"
             input-id="eyeRelief"
             :initial-value="form.eyeRelief"
+            add-on="cm"
           />
-          <InputGroupAddon><span>cm</span></InputGroupAddon>
         </InputGroup>
 
         <InputGroup>
           <input-group-optional-icon />
+          <input-group-check-box
+            input-id="isCollarsProvided"
+            :i18n-prefix="i18nPrefix"
+            label="isCollarsProvided"
+            tool-tip="isCollarsProvided"
+            @checked="(event) => (form.isCollarsProvided = event)"
+            :checked="form.isCollarsProvided"
+          />
+          <optic-rail-input-select
+            :required="form.isCollarsProvided"
+            :disabled="!form.isCollarsProvided"
+            @on-select="(event) => (form.providedOpticCollarSize = event)"
+            :initial-value="form.providedOpticCollarSize?.id"
+          />
+        </InputGroup>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-1 gap-4 p-4">
+        <InputGroup>
           <input-group-check-box
             input-id="isParallax"
             :i18n-prefix="i18nPrefix"
@@ -175,7 +184,7 @@
             :checked="form.isParallax"
             is-width-half-size
           />
-          <InputGroupAddon>{{ t('global.from') }}</InputGroupAddon>
+
           <input-group-number
             :min="0"
             label="minParallax"
@@ -187,7 +196,7 @@
             :initial-value="form.minParallax"
             :disabled="!form.isParallax"
           />
-          <InputGroupAddon>{{ t('global.to') }}</InputGroupAddon>
+
           <input-group-number
             :min="0"
             label="maxParallax"
@@ -198,19 +207,7 @@
             input-id="maxParallax"
             :disabled="!form.isParallax"
             :initial-value="form.maxParallax"
-          />
-          <InputGroupAddon>yard</InputGroupAddon>
-        </InputGroup>
-
-        <InputGroup class="h-14">
-          <input-group-optional-icon />
-          <input-group-check-box
-            input-id="isCollarsProvided"
-            :i18n-prefix="i18nPrefix"
-            label="isCollarsProvided"
-            tool-tip="isCollarsProvided"
-            @checked="(event) => (form.isCollarsProvided = event)"
-            :checked="form.isCollarsProvided"
+            add-on="yrd"
           />
         </InputGroup>
       </div>
@@ -225,11 +222,11 @@
           :placeholder="t('global.description')"
         />
       </div>
-      <!--      <div class="text-red-500 p-4" v-if="store.create.isError">
-        <p class="text-xl font-bold">
-          {{ t('error.' + store.create.error.response.data.message) }}
-        </p>
-      </div>-->
+
+      <price-history-form
+        :price-history-form="form.priceHistory"
+        @update:price-history-form="(value) => (form.priceHistory = value)"
+      />
 
       <div class="text-center">
         <save-button :status="formStatus" :disabled="!isFormValid" />
@@ -238,11 +235,11 @@
   </div>
 </template>
 <script setup lang="ts">
+//TODO: Refacto les input specifiques
 import { computed } from 'vue'
-import { useOpticStore } from '@/stores/optic'
+import { useOpticStore } from '@/stores/optic.store'
 import InputGroup from 'primevue/inputgroup'
 import Textarea from 'primevue/textarea'
-import InputGroupAddon from 'primevue/inputgroupaddon'
 import { useI18n } from 'vue-i18n'
 import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
@@ -256,10 +253,12 @@ import FactoryInputSelect from '@/components/__form/__specific_select/FactoryInp
 import OpticTypeInputSelect from '@/components/__form/__specific_select/OpticTypeInputSelect.vue'
 import FocalPlaneInputSelect from '@/components/__form/__specific_select/FocalPlaneInputSelect.vue'
 import OpticUnitInputSelect from '@/components/__form/__specific_select/OpticUnitInputSelect.vue'
+import PriceHistoryForm from '@/components/__form/PriceHistoryForm.vue'
+import OpticRailInputSelect from '@/components/__form/__specific_select/OpticRailInputSelect.vue'
 
 const store = useOpticStore()
 
-const i18nPrefix = store.getI18nPrefix()
+const i18nPrefix = store.getI18NPrefix
 
 const { t } = useI18n()
 

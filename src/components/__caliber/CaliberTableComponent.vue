@@ -12,7 +12,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useCaliberStore } from '@/stores/caliber'
+import { useCaliberStore } from '@/stores/caliber.store'
 
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'

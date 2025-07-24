@@ -14,7 +14,7 @@
 <script setup lang="ts">
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
-import { useBodyTypeStore } from '@/stores/bodyType'
+import { useBodyTypeStore } from '@/stores/body-type.store'
 import { useI18n } from 'vue-i18n'
 
 const store = useBodyTypeStore()

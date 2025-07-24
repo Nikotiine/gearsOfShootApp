@@ -1,53 +1,48 @@
 import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
 import { useMutation, useQuery } from '@tanstack/vue-query'
-import type {
-  AmmunitionHeadTypeDto,
-  CaliberDto,
-  CreateAmmunitionHeadTypeDto,
-  CreateCaliberDto
-} from '@/api/Api'
+import type { ColorDto, CreateColorDto } from '@/api/Api'
 import { ref } from 'vue'
-import { getI18NPrefix } from '@/enum/I18NSuffix.enum'
 import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
+import { getI18NPrefix } from '@/enum/I18NSuffix.enum'
 
-export const useHeadTypeStore = defineStore('headType', () => {
+export const useColorStore = defineStore('color-store', () => {
   // Appel API
   const { api } = useApiStore()
+  // TOAST
 
   // Refs
   const mutationSuccess = ref(false)
   // Private Attibute
-  const _I18N_PREFIX = 'headType'
-  const _GET_ALL_FN = 'getAllHeadType'
-  const _GET_BY_ID_FN = 'getHeadTypeById'
-
+  const _I18N_PREFIX = 'color'
+  const _GET_ALL_FN = 'getAllColor'
+  const _GET_BY_ID_FN = 'getColorById'
   // *******************Methodes***************
   const _createMutation = useMutation({
-    mutationFn: async (headType: CreateAmmunitionHeadTypeDto) => {
-      return await api.api.ammunitionHeadTypeControllerCreate(headType)
+    mutationFn: async (color: CreateColorDto) => {
+      return await api.api.colorControllerCreate(color)
     },
     onSuccess() {
       mutationSuccess.value = true
     }
   })
   const _updateMutation = useMutation({
-    mutationFn: async (head: AmmunitionHeadTypeDto) => {
-      return await api.api.ammunitionHeadTypeControllerEdit(head.id, head)
+    mutationFn: async (color: ColorDto) => {
+      return await api.api.colorControllerEdit(color.id, color)
     },
     onSuccess() {
       mutationSuccess.value = true
     }
   })
-  const getAllHeadTypesQuery = () =>
+  const getAllQuery = () =>
     useQuery({
       queryKey: [_GET_ALL_FN],
       queryFn: async () => _fetchAll(),
       retry: 0
     })
   const _fetchAll = async () => {
-    const res = await api.api.ammunitionHeadTypeControllerFindAllHeadTypes()
+    const res = await api.api.colorControllerFindAll()
     return res.data
   }
   const getByIdQuery = (id?: string) =>
@@ -59,15 +54,16 @@ export const useHeadTypeStore = defineStore('headType', () => {
     })
   const _fetchById = async (id?: string) => {
     if (!id) return null
-    const res = await api.api.ammunitionHeadTypeControllerFindById(parseInt(id))
+    const res = await api.api.colorControllerFindById(parseInt(id))
     return res.data
   }
-  function useHeadTypeForm(id?: string) {
-    const emptyForm: CreateAmmunitionHeadTypeDto = {
+
+  function useColorForm(id?: string) {
+    const emptyForm: CreateColorDto = {
       name: '',
       reference: ''
     }
-    return useFormHandler<CreateAmmunitionHeadTypeDto, AxiosResponse<AmmunitionHeadTypeDto>>(
+    return useFormHandler<CreateColorDto, AxiosResponse<ColorDto>>(
       emptyForm,
       getByIdQuery,
       _createMutation,
@@ -80,9 +76,9 @@ export const useHeadTypeStore = defineStore('headType', () => {
     )
   }
   return {
-    getAll: getAllHeadTypesQuery,
-    getI18NPrefix: getI18NPrefix(_I18N_PREFIX),
+    formBuilder: useColorForm,
+    getAll: getAllQuery,
     mutationSuccess,
-    formBuilder: useHeadTypeForm
+    getI18NPrefix: getI18NPrefix(_I18N_PREFIX)
   }
 })

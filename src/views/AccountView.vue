@@ -27,7 +27,7 @@
   </Panel>
 </template>
 <script setup lang="ts">
-import { useUserStore } from '@/stores/user'
+import { useUserStore } from '@/stores/user.store'
 import Panel from 'primevue/panel'
 import Button from 'primevue/button'
 const { getUser } = useUserStore()

@@ -21,7 +21,7 @@ import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
 import InputGroup from 'primevue/inputgroup'
 import InputGroupAddonOpenDrawerButton from '@/components/__form/InputGroupAddonOpenDrawerButton.vue'
 import { computed, ref, watch } from 'vue'
-import { useHeadTypeStore } from '@/stores/headType'
+import { useHeadTypeStore } from '@/stores/head-type.store'
 import { storeToRefs } from 'pinia'
 import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.vue'
 const store = useHeadTypeStore()

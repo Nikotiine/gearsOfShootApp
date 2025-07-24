@@ -15,7 +15,7 @@
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 
-import { useHeadTypeStore } from '@/stores/headType'
+import { useHeadTypeStore } from '@/stores/head-type.store'
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 const store = useHeadTypeStore()

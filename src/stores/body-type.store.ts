@@ -7,7 +7,7 @@ import { getI18NPrefix } from '@/enum/I18NSuffix.enum'
 import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
 
-export const useBodyTypeStore = defineStore('bodyType', () => {
+export const useBodyTypeStore = defineStore('body-type-store', () => {
   // Appel API
   const { api } = useApiStore()
   // TOAST

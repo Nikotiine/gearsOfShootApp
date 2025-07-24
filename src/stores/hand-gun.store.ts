@@ -4,8 +4,7 @@ import { useToastStore } from '@/stores/toast'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import type { CreateHandGunDto, HandGunDto, UpdateHandGunDto } from '@/api/Api'
 import { type Ref, ref } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { getI18NPrefix } from '@/enum/I18NSuffix.enum'
+import { getI18NPrefix, I18NSuffix } from '@/enum/I18NSuffix.enum'
 import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
 import { getWeaponTypeDto } from '@/shared/api-dto/get-weapon-type.dto'
@@ -15,22 +14,22 @@ import { getLegalisationCategoryDto } from '@/shared/api-dto/get-legalisation-ca
 import { getBarrelTypeDto } from '@/shared/api-dto/get-barrel-type.dto'
 import { getPercussionTypeDto } from '@/shared/api-dto/get-percussion-type.dto'
 import { getTriggerTypeDto } from '@/shared/api-dto/get-trigger-type.dto'
+import { getPriceHistoryDto } from '@/shared/api-dto/get-price-history.dto'
 
-export const useHandGunStore = defineStore('hand-gun', () => {
+export const useHandGunStore = defineStore('hand-gun-store', () => {
   // Appel API
   const { api } = useApiStore()
+
   // TOAST
   const { successMessage } = useToastStore()
-  // I18N
-  const { t } = useI18n()
+
   // Refs
   const mutationSuccess = ref(false)
-
   const handguns = ref<HandGunDto[]>([])
   const handgun = ref<HandGunDto | null>(null)
+
   // Private Attibute
   const _I18N_PREFIX = 'weapon'
-  const _SUMMARY = 'weapon.summary'
   const _GET_ALL_BY_CATEGORY_FN = 'getAllHandGunByCategory'
   const _GET_ALL_FN = 'getAllHandGun'
   const _GET_BY_ID_FN = 'getHandGunById'
@@ -93,12 +92,11 @@ export const useHandGunStore = defineStore('hand-gun', () => {
     mutationFn: async (opticId: number) => {
       return await api.api.handGunControllerDelete(opticId)
     },
-    onSuccess(data) {
-      if (data.data.isSuccess) {
-        const index = handguns.value.findIndex((optic) => optic.id === data.data.id)
-        handguns.value.splice(index, 1)
-        successMessage(_SUMMARY, t(data.data.message))
-      }
+    onSuccess() {
+      successMessage(
+        getI18NPrefix(_I18N_PREFIX) + I18NSuffix.SUMMARY,
+        getI18NPrefix(_I18N_PREFIX) + I18NSuffix.DELETED
+      )
     }
   })
 
@@ -136,7 +134,8 @@ export const useHandGunStore = defineStore('hand-gun', () => {
       isExternalHammer: false,
       slideMaterial: null,
       slideColor: null,
-      triggerType: getTriggerTypeDto()
+      triggerType: getTriggerTypeDto(),
+      priceHistory: getPriceHistoryDto()
     }
     return useFormHandler<CreateHandGunDto, AxiosResponse<HandGunDto>>(
       emptyForm,

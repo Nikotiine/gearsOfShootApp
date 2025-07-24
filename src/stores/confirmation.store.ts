@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 import { useConfirm } from 'primevue/useconfirm'
 import { useI18n } from 'vue-i18n'
 import type { ActionMenuType } from '@/components/__table/ActionMenuComponent.vue'
-export const useConfirmationStore = defineStore('confirmation', () => {
+export const useConfirmationStore = defineStore('confirmation-store', () => {
   const confirmDialog = useConfirm()
 
   const { t } = useI18n()

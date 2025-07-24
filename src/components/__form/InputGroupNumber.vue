@@ -1,17 +1,24 @@
 <template>
-  <IftaLabel>
-    <InputNumber
-      v-model="value"
-      :placeholder="t(i18nPrefix + placeholder)"
-      :minFractionDigits="minFractionDigits"
-      :id="inputId"
-      @focus="onFocus"
-      @update:modelValue="onChange"
-      :invalid="isInvalid"
-      :disabled="disabled"
-    />
-    <label :for="inputId">{{ t(i18nPrefix + label) + isRequiredInput }}</label>
-  </IftaLabel>
+  <InputGroup>
+    <template v-if="!hideIcon">
+      <input-group-required-icon :is-validate="value > 0" v-if="required" />
+      <input-group-optional-icon :is-completed="value > 0" v-else />
+    </template>
+    <IftaLabel>
+      <InputNumber
+        v-model="value"
+        :placeholder="t(i18nPrefix + placeholder)"
+        :minFractionDigits="minFractionDigits"
+        :id="inputId"
+        @focus="onFocus"
+        @update:modelValue="onChange"
+        :invalid="isInvalid"
+        :disabled="disabled"
+      />
+      <label :for="inputId">{{ t(i18nPrefix + label) + isRequiredInput }}</label>
+    </IftaLabel>
+    <InputGroupAddon v-if="addOn">{{ t('formatter.' + addOn) }} </InputGroupAddon>
+  </InputGroup>
 </template>
 
 <script setup lang="ts">
@@ -19,6 +26,12 @@ import InputNumber from 'primevue/inputnumber'
 import IftaLabel from 'primevue/iftalabel'
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import InputGroup from 'primevue/inputgroup'
+import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.vue'
+import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
+import InputGroupAddon from 'primevue/inputgroupaddon'
+import type { NumberFormatterType } from '@/shared/utils/formatter.utils'
+
 const emit = defineEmits(['value'])
 const { t } = useI18n()
 const requiredLabel: string = '(*)'
@@ -31,7 +44,9 @@ const {
   maxWidth = 100,
   initialValue = 0,
   placeholder = 'defaultPlaceHolder',
-  i18nPrefix = 'global.'
+  i18nPrefix = 'global.',
+  addOn = null,
+  hideIcon = false
 } = defineProps<{
   min?: number
   i18nPrefix?: string
@@ -43,6 +58,8 @@ const {
   disabled?: boolean
   maxWidth?: number
   initialValue?: number
+  addOn?: NumberFormatterType
+  hideIcon?: boolean
 }>()
 const value = ref(initialValue)
 const hasFocused = ref(false)
@@ -81,5 +98,9 @@ watch(
 .p-inputgroup .p-floatlabel,
 .p-inputgroup .p-iftalabel {
   width: v-bind(maxWidth + '%');
+}
+.p-inputgroupaddon {
+  min-width: fit-content;
+  padding: 0.8rem;
 }
 </style>

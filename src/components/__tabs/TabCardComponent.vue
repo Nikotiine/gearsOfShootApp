@@ -5,6 +5,8 @@
       :
       {{ item.title }}
     </p>
+
+    <slot name="button"></slot>
   </div>
 </template>
 <script setup lang="ts">

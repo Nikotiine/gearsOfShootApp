@@ -3,7 +3,7 @@ import { useApiStore } from '@/stores/api'
 import { useQuery } from '@tanstack/vue-query'
 import { getI18NPrefix } from '@/enum/I18NSuffix.enum'
 
-export const useTriggerTypeStore = defineStore('triggerTypeStore', () => {
+export const useTriggerTypeStore = defineStore('trigger-type-store', () => {
   // Appel API
   const { api } = useApiStore()
   // Private Attibute

@@ -1,7 +1,16 @@
 import { useI18n } from 'vue-i18n'
 import type { FocalPlaneDto } from '@/api/Api'
 
-export type NumberFormatterType = 'mm' | 'cm' | 'pcs' | 'cps' | 'speed' | 'moa' | 'yrd' | 'db'
+export type NumberFormatterType =
+  | 'mm'
+  | 'cm'
+  | 'pcs'
+  | 'cps'
+  | 'speed'
+  | 'moa'
+  | 'yrd'
+  | 'db'
+  | 'euro'
 export function NumberFormatter(value: number, format: NumberFormatterType): string {
   const { t } = useI18n()
   if (value === 0) {
@@ -28,7 +37,7 @@ export function TriggerValueFormatter(
   return `${t('formatter.setup')}${min} kg ${t('formatter.to')} ${max} kg`
 }
 
-export function VerifyFieldIsNotNull(value: string | number | null): string {
+export function VerifyFieldIsNotNull(value: string | number | null | undefined): string {
   const { t } = useI18n()
   if (!value) {
     return t('global.notRegistered')
@@ -57,4 +66,12 @@ export function ParallaxFormatter(
   } else {
     return `${t('global.yes')} ${t('formatter.setup')} ${NumberFormatter(min, 'yrd')} ${t('formatter.to')} ${NumberFormatter(max, 'yrd')}`
   }
+}
+export function DateFormatter(date: Date | string, format: 'short' | 'medium' | 'long' = 'medium') {
+  const options: Intl.DateTimeFormatOptions = {
+    dateStyle: format,
+    timeStyle: format === 'short' ? undefined : 'short'
+  }
+
+  return new Intl.DateTimeFormat('fr-FR', options).format(new Date(date))
 }

@@ -5,7 +5,7 @@
 import MegaMenu from 'primevue/megamenu'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
-import { LegislationCategory } from '@/stores/legalisation-category'
+import { LegislationCategory } from '@/stores/legalisation-category.store'
 import { RouterEnum } from '@/enum/router.enum'
 import { WeaponEnum } from '@/enum/weapon.enum'
 import { useI18n } from 'vue-i18n'

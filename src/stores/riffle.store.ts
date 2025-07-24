@@ -1,17 +1,10 @@
 import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
-import type {
-  CreateHandGunDto,
-  CreateRiffleDto,
-  HandGunDto,
-  RiffleDto,
-  UpdateRiffleDto
-} from '@/api/Api'
+import type { CreateRiffleDto, RiffleDto, UpdateRiffleDto } from '@/api/Api'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import { useToastStore } from '@/stores/toast'
 import { type Ref, ref } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { getI18NPrefix } from '@/enum/I18NSuffix.enum'
+import { getI18NPrefix, I18NSuffix } from '@/enum/I18NSuffix.enum'
 import { getWeaponTypeDto } from '@/shared/api-dto/get-weapon-type.dto'
 import { getCaliberDto } from '@/shared/api-dto/get-caliber.dto'
 import { getFactoryDto } from '@/shared/api-dto/get-factory.dto'
@@ -20,14 +13,15 @@ import { getLegalisationCategoryDto } from '@/shared/api-dto/get-legalisation-ca
 import { getPercussionTypeDto } from '@/shared/api-dto/get-percussion-type.dto'
 import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
+import { getPriceHistoryDto } from '@/shared/api-dto/get-price-history.dto'
 
-export const useRiffleStore = defineStore('riffle', () => {
+export const useRiffleStore = defineStore('riffle-store', () => {
   // Appel API
   const { api } = useApiStore()
   // TOAST
   const { successMessage } = useToastStore()
   // I18N
-  const { t } = useI18n()
+
   // Refs
   const mutationSuccess = ref(false)
 
@@ -35,7 +29,7 @@ export const useRiffleStore = defineStore('riffle', () => {
   const riffle = ref<RiffleDto>()
   // Private Attibute
   const _I18N_PREFIX = 'weapon'
-  const _SUMMARY = 'weapon.summary'
+
   const _GET_ALL_BY_CATEGORY_FN = 'getAllRiffleByCategory'
   const _GET_ALL_FN = 'getAllRiffle'
   const _GET_BY_ID_FN = 'getRiffleById'
@@ -96,12 +90,11 @@ export const useRiffleStore = defineStore('riffle', () => {
     mutationFn: async (id: number) => {
       return await api.api.riffleControllerDelete(id)
     },
-    onSuccess(data) {
-      if (data.data.isSuccess) {
-        const index = riffles.value.findIndex((optic) => optic.id === data.data.id)
-        riffles.value.splice(index, 1)
-        successMessage(_SUMMARY, t(data.data.message))
-      }
+    onSuccess() {
+      successMessage(
+        getI18NPrefix(_I18N_PREFIX) + I18NSuffix.SUMMARY,
+        getI18NPrefix(_I18N_PREFIX) + I18NSuffix.DELETED
+      )
     }
   })
   const deleteFunction = (id: number) => {
@@ -139,7 +132,8 @@ export const useRiffleStore = defineStore('riffle', () => {
       isOpenAim: true,
       mLockOptions: null,
       qcSlot: 0,
-      railSize: null
+      railSize: null,
+      priceHistory: getPriceHistoryDto()
     }
     return useFormHandler<CreateRiffleDto, AxiosResponse<RiffleDto>>(
       emptyForm,

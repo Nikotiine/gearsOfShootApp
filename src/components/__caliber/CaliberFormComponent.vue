@@ -37,7 +37,7 @@
 <script setup lang="ts">
 import Button from 'primevue/button'
 import InputGroup from 'primevue/inputgroup'
-import { useCaliberStore } from '@/stores/caliber'
+import { useCaliberStore } from '@/stores/caliber.store'
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
 import InputGroupText from '@/components/__form/InputGroupText.vue'

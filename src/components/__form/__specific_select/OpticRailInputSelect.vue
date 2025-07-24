@@ -21,8 +21,8 @@ import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.v
 import InputGroup from 'primevue/inputgroup'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
-import { useOpticRailStore } from '@/stores/optic-rail'
-import { computed, ref } from 'vue'
+import { useOpticRailStore } from '@/stores/optic-rail.store'
+import { computed, ref, watch } from 'vue'
 const {
   initialValue = 0,
   disabled = false,
@@ -39,9 +39,16 @@ const railSizeId = ref<number>(initialValue)
 const emit = defineEmits(['onSelect'])
 const railSizeList = computed(() => data.value || [])
 const onSelect = (id: number) => {
-  emit('onSelect', id)
+  const rail = railSizeList.value.find((i) => i.id === id)
+  emit('onSelect', rail)
   railSizeId.value = id
 }
+watch(
+  () => initialValue,
+  (value) => {
+    railSizeId.value = value
+  }
+)
 </script>
 
 <style scoped></style>

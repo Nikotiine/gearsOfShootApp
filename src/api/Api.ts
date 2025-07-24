@@ -126,6 +126,17 @@ export interface CreateOpticReadyPlateDto {
   reference: string
 }
 
+export interface PriceHistoryDto {
+  supplierPrice: number
+  recommendedSalePrice: number
+  currentSalePrice: number
+  objectId: number
+  object: string
+  id: number
+  /** @format date-time */
+  createdAt: string
+}
+
 export interface WeaponReloadModeDto {
   id: number
   name: string
@@ -138,43 +149,6 @@ export interface WeaponTypeDto {
   mode: WeaponReloadModeDto
   reference: string
   type: WeaponTypeDtoTypeEnum
-}
-
-export interface PercussionTypeDto {
-  id: number
-  name: string
-}
-
-export interface WeaponBarrelTypeDto {
-  id: number
-  name: string
-}
-
-export interface WeaponTriggerTypeDto {
-  id: number
-  name: string
-  reference: string
-}
-
-export interface MLockOptionDto {
-  name: string
-  id: number
-}
-
-export interface ListOfPrerequisitesWeaponDto {
-  calibers: CaliberDto[]
-  factories: FactoryDto[]
-  types: WeaponTypeDto[]
-  threadedSizes: ThreadedSizeDto[]
-  percussionTypes: PercussionTypeDto[]
-  categories: LegislationCategoryDto[]
-  barreTypes: WeaponBarrelTypeDto[]
-  buttTypes: MaterialDto[]
-  railSizes: RailSizeDto[]
-  triggerTypes: WeaponTriggerTypeDto[]
-  colors: ColorDto[]
-  opticReadyPlates: OpticReadyPlateDto[]
-  mLockOptions: MLockOptionDto[]
 }
 
 export interface ListOfPrerequisitesWeaponTypeDto {
@@ -200,30 +174,70 @@ export interface UpdateWeaponTypeDto {
   id: number
 }
 
-export interface RiffleDto {
+export interface WeaponBarrelTypeDto {
   id: number
-  /** @example "CZ-457-VAR-22LR" */
-  reference: string
-  /** @example "CZ 457" */
+  name: string
+}
+
+export interface PercussionTypeDto {
+  id: number
+  name: string
+}
+
+export interface MLockOptionDto {
+  name: string
+  id: number
+}
+
+export interface CreatePriceHistoryDto {
+  supplierPrice: number
+  recommendedSalePrice: number
+  currentSalePrice: number
+}
+
+export interface RiffleDto {
+  /**
+   * Nom du model de l arme
+   * @example "CZ 457"
+   */
   name: string
   /** @example "Une description de l arme son histoire ..." */
-  description: string
-  /** @example "Varmint ou Luxe" */
+  description: string | null
+  /**
+   * Variante du modele
+   * @example "Varmint ou Luxe"
+   */
   variation: string | null
-  /** @example "C" */
+  /** La categorie de l arme en france */
   category: LegislationCategoryDto
+  /** Le calibre de l arme */
   caliber: CaliberDto
+  /** la marque */
   factory: FactoryDto
+  /**
+   * Type d arme
+   * @example "Fusil a verrou"
+   */
   type: WeaponTypeDto
-  /** @example 51 */
+  /**
+   * La longueur du canon en cm
+   * @example 51
+   */
   barrelLength: number
-  /** @example false */
+  /**
+   * Si le poid de depart de la detente est reglable
+   * @example false
+   */
   isAdjustableTrigger: boolean
-  /** @example false */
+  /**
+   * Si le canon est fillete
+   * @example false
+   */
   isThreadedBarrel: boolean
-  /** @example "Lourd" */
+  /** Le type de canon (lourd/leger...) */
   barrelType: WeaponBarrelTypeDto
-  threadedSize: ThreadedSizeDto
+  /** Les dimmension du filletage */
+  threadedSize: ThreadedSizeDto | null
   /**
    * les valeurs de poids depart de la detente
    * @example "Entre 1 et 2kg"
@@ -234,21 +248,33 @@ export interface RiffleDto {
    * @example "Entre 1 et 2kg"
    */
   adjustableTriggerMaxWeight: number | null
+  /** Le type de percussion ( annulaire ou centrale ) */
   percussionType: PercussionTypeDto
+  /**
+   * Le nombre de chargeur fournis
+   * @example 1
+   */
   providedMagazineQuantity: number
+  /**
+   * L'epaisseur exterieur du canon
+   * @example 18
+   */
   barrelSize: number
-  buttMaterial: MaterialDto
+  /** La matiere de la crosse ou caracasse */
+  buttMaterial: MaterialDto | null
   /** Guidon reglable */
   isAdjustableFrontSight: boolean
   /** Hausse reglable */
   isAdjustableBackSight: boolean
-  buttColor: ColorDto
-  barrelColor: ColorDto
+  /** la couleur de la crosse */
+  buttColor: ColorDto | null
+  /** la couleur du canon  */
+  barrelColor: ColorDto | null
   /** Crosse ajustable en profondeur */
   isAdjustableButt: boolean
   /** Busc adjutable */
   isAdjustableBusk: boolean
-  railSize: RailSizeDto
+  railSize: RailSizeDto | null
   /** Grenadiere */
   grenadierSlot: number
   /** Port QC */
@@ -258,32 +284,61 @@ export interface RiffleDto {
   /** Visee ouverte ? */
   isOpenAim: boolean
   mLockOptions: MLockOptionDto[] | null
-}
-
-export interface HandGunDto {
+  priceHistory: CreatePriceHistoryDto
   id: number
   /** @example "CZ-457-VAR-22LR" */
   reference: string
-  /** @example "CZ 457" */
+}
+
+export interface WeaponTriggerTypeDto {
+  id: number
+  name: string
+  reference: string
+}
+
+export interface HandGunDto {
+  /**
+   * Nom du model de l arme
+   * @example "CZ 457"
+   */
   name: string
   /** @example "Une description de l arme son histoire ..." */
-  description: string
-  /** @example "Varmint ou Luxe" */
+  description: string | null
+  /**
+   * Variante du modele
+   * @example "Varmint ou Luxe"
+   */
   variation: string | null
-  /** @example "C" */
+  /** La categorie de l arme en france */
   category: LegislationCategoryDto
+  /** Le calibre de l arme */
   caliber: CaliberDto
+  /** la marque */
   factory: FactoryDto
+  /**
+   * Type d arme
+   * @example "Fusil a verrou"
+   */
   type: WeaponTypeDto
-  /** @example 51 */
+  /**
+   * La longueur du canon en cm
+   * @example 51
+   */
   barrelLength: number
-  /** @example false */
+  /**
+   * Si le poid de depart de la detente est reglable
+   * @example false
+   */
   isAdjustableTrigger: boolean
-  /** @example false */
+  /**
+   * Si le canon est fillete
+   * @example false
+   */
   isThreadedBarrel: boolean
-  /** @example "Lourd" */
+  /** Le type de canon (lourd/leger...) */
   barrelType: WeaponBarrelTypeDto
-  threadedSize: ThreadedSizeDto
+  /** Les dimmension du filletage */
+  threadedSize: ThreadedSizeDto | null
   /**
    * les valeurs de poids depart de la detente
    * @example "Entre 1 et 2kg"
@@ -294,44 +349,70 @@ export interface HandGunDto {
    * @example "Entre 1 et 2kg"
    */
   adjustableTriggerMaxWeight: number | null
+  /** Le type de percussion ( annulaire ou centrale ) */
   percussionType: PercussionTypeDto
+  /**
+   * Le nombre de chargeur fournis
+   * @example 1
+   */
   providedMagazineQuantity: number
+  /**
+   * L'epaisseur exterieur du canon
+   * @example 18
+   */
   barrelSize: number
-  buttMaterial: MaterialDto
+  /** La matiere de la crosse ou caracasse */
+  buttMaterial: MaterialDto | null
   /** Guidon reglable */
   isAdjustableFrontSight: boolean
   /** Hausse reglable */
   isAdjustableBackSight: boolean
-  buttColor: ColorDto
-  barrelColor: ColorDto
+  /** la couleur de la crosse */
+  buttColor: ColorDto | null
+  /** la couleur du canon  */
+  barrelColor: ColorDto | null
   /** @example true */
   isOpticReady: boolean
   decocking: boolean
   triggerType: WeaponTriggerTypeDto
-  slideColor: ColorDto
-  slideMaterial: MaterialDto
+  slideColor: ColorDto | null
+  slideMaterial: MaterialDto | null
   isExternalHammer: boolean
-  opticReadyPlates: OpticReadyPlateDto[]
+  providedOpticReadyPlates: OpticReadyPlateDto[] | null
   /** Rail picatiny */
   isPicatinyRailSlop: boolean
+  priceHistory: CreatePriceHistoryDto
+  id: number
+  /** @example "CZ-457-VAR-22LR" */
+  reference: string
 }
 
 export interface WeaponMagazineDto {
-  id: number
+  /** Capacite en munition */
   capacity: number
+  /** longeur du chargeur */
   length: number
+  /** hauteur du chargeur */
   height: number
+  /** largeur du chargeur */
   width: number
-  reference: string
+  /** matiere du chargeur */
   body: MaterialDto
+  /** marque du chargeur */
   factory: FactoryDto
+  /** calibre des munitions du chargeur */
   caliber: CaliberDto
-  /** @example "C" */
+  description: string | null
+  /** La categorie de l arme en france */
   category: LegislationCategoryDto
-  riffles: RiffleDto[]
-  handguns: HandGunDto[]
-  forWeaponType: WeaponTypeDto
-  description: string
+  /** Le type de l arme */
+  weaponType: WeaponTypeDto
+  compatibleRiffle: RiffleDto[] | null
+  compatibleHandGun: HandGunDto[] | null
+  /** Historique des prix */
+  priceHistory: CreatePriceHistoryDto
+  id: number
+  reference: string
 }
 
 export interface CreateWeaponMagazineDto {
@@ -356,6 +437,8 @@ export interface CreateWeaponMagazineDto {
   weaponType: WeaponTypeDto
   compatibleRiffle: RiffleDto[] | null
   compatibleHandGun: HandGunDto[] | null
+  /** Historique des prix */
+  priceHistory: CreatePriceHistoryDto
 }
 
 export interface UpdateWeaponMagazineDto {
@@ -380,6 +463,8 @@ export interface UpdateWeaponMagazineDto {
   weaponType: WeaponTypeDto
   compatibleRiffle: RiffleDto[] | null
   compatibleHandGun: HandGunDto[] | null
+  /** Historique des prix */
+  priceHistory: CreatePriceHistoryDto
   id: number
 }
 
@@ -468,6 +553,7 @@ export interface CreateHandGunDto {
   providedOpticReadyPlates: OpticReadyPlateDto[] | null
   /** Rail picatiny */
   isPicatinyRailSlop: boolean
+  priceHistory: CreatePriceHistoryDto
 }
 
 export interface UpdateHandGunDto {
@@ -555,6 +641,7 @@ export interface UpdateHandGunDto {
   providedOpticReadyPlates: OpticReadyPlateDto[] | null
   /** Rail picatiny */
   isPicatinyRailSlop: boolean
+  priceHistory: CreatePriceHistoryDto
   id: number
 }
 
@@ -647,6 +734,7 @@ export interface CreateRiffleDto {
   /** Visee ouverte ? */
   isOpenAim: boolean
   mLockOptions: MLockOptionDto[] | null
+  priceHistory: CreatePriceHistoryDto
 }
 
 export interface UpdateRiffleDto {
@@ -738,6 +826,7 @@ export interface UpdateRiffleDto {
   /** Visee ouverte ? */
   isOpenAim: boolean
   mLockOptions: MLockOptionDto[] | null
+  priceHistory: CreatePriceHistoryDto
   id: number
 }
 
@@ -756,8 +845,6 @@ export interface AmmunitionBodyTypeDto {
 }
 
 export interface AmmunitionDto {
-  id: number
-  reference: string
   /** @example "Sk Standard" */
   name: string
   /** @example "Une description de la munition, qualite / origine / conseil d utilisation" */
@@ -771,8 +858,11 @@ export interface AmmunitionDto {
   packaging: number
   headType: AmmunitionHeadTypeDto
   bodyType: AmmunitionBodyTypeDto
-  factory: FactoryDto
   caliber: CaliberDto
+  factory: FactoryDto
+  priceHistory: CreatePriceHistoryDto
+  id: number
+  reference: string
 }
 
 export interface CreateAmmunitionDto {
@@ -791,6 +881,7 @@ export interface CreateAmmunitionDto {
   bodyType: AmmunitionBodyTypeDto
   caliber: CaliberDto
   factory: FactoryDto
+  priceHistory: CreatePriceHistoryDto
 }
 
 export interface UpdateAmmunitionDto {
@@ -809,6 +900,7 @@ export interface UpdateAmmunitionDto {
   bodyType: AmmunitionBodyTypeDto
   caliber: CaliberDto
   factory: FactoryDto
+  priceHistory: CreatePriceHistoryDto
   id: number
 }
 
@@ -896,6 +988,8 @@ export interface OpticDto {
   length: number
   eyeRelief: number
   isCollarsProvided: boolean
+  priceHistory: CreatePriceHistoryDto
+  providedOpticCollarSize: RailSizeDto | null
   id: number
   reference: string
 }
@@ -921,6 +1015,8 @@ export interface CreateOpticDto {
   length: number
   eyeRelief: number
   isCollarsProvided: boolean
+  priceHistory: CreatePriceHistoryDto
+  providedOpticCollarSize: RailSizeDto | null
 }
 
 export interface UpdateOpticDto {
@@ -944,6 +1040,8 @@ export interface UpdateOpticDto {
   length: number
   eyeRelief: number
   isCollarsProvided: boolean
+  priceHistory: CreatePriceHistoryDto
+  providedOpticCollarSize: RailSizeDto | null
   id: number
 }
 
@@ -953,35 +1051,38 @@ export interface CreateOpticTypeDto {
 }
 
 export interface OpticCollarDto {
-  id: number
   diameter: number
   height: number
   railSize: RailSizeDto
   factory: FactoryDto
-  /** @example "Une description de la marque et ses produits" */
-  description: string
-  reference: string
   name: string
+  /** @example "Une description du ou des colliers" */
+  description: string
+  priceHistory: CreatePriceHistoryDto
+  id: number
+  reference: string
 }
 
 export interface CreateOpticCollarDto {
   diameter: number
   height: number
-  railSizeId: number
-  factoryId: number
+  railSize: RailSizeDto
+  factory: FactoryDto
   name: string
-  /** @example "Une description de la marque et ses produits" */
+  /** @example "Une description du ou des colliers" */
   description: string
+  priceHistory: CreatePriceHistoryDto
 }
 
 export interface UpdateOpticCollarDto {
   diameter: number
   height: number
-  railSizeId: number
-  factoryId: number
+  railSize: RailSizeDto
+  factory: FactoryDto
   name: string
-  /** @example "Une description de la marque et ses produits" */
+  /** @example "Une description du ou des colliers" */
   description: string
+  priceHistory: CreatePriceHistoryDto
   id: number
 }
 
@@ -1002,6 +1103,8 @@ export interface SoundNoiseReducerDto {
   description: string
   /** Demontable pour nettoyage */
   isCleanable: boolean
+  /** Historique des prix */
+  priceHistory: CreatePriceHistoryDto
   id: number
   reference: string
 }
@@ -1023,6 +1126,8 @@ export interface CreateSoundNoiseReducerDto {
   description: string
   /** Demontable pour nettoyage */
   isCleanable: boolean
+  /** Historique des prix */
+  priceHistory: CreatePriceHistoryDto
 }
 
 export interface UpdateSoundNoiseReducerDto {
@@ -1042,6 +1147,8 @@ export interface UpdateSoundNoiseReducerDto {
   description: string
   /** Demontable pour nettoyage */
   isCleanable: boolean
+  /** Historique des prix */
+  priceHistory: CreatePriceHistoryDto
   id: number
 }
 
@@ -1708,6 +1815,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
     /**
      * @description Retourne la liste complete des types de percussion
      *
+     * @tags Percussion-type
      * @name PercussionTypeControllerFindAll
      * @summary Liste complète
      * @request GET:/api/percussion-type/all
@@ -1809,16 +1917,20 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
-     * @description Retourne la liste des pre-requis necesssaire a la creation d une arme
+     * @description Retourne la liste des historiques de prix disponible
      *
-     * @tags Weapon
-     * @name WeaponControllerFindPrerequisitesWeaponList
-     * @summary Liste des pre-requis
-     * @request GET:/api/weapon/prerequisites
+     * @tags Price-history
+     * @name PriceHistoryControllerFindByTypeAndObject
+     * @summary Liste complète
+     * @request GET:/api/price-history/{type}/{objectId}
      */
-    weaponControllerFindPrerequisitesWeaponList: (params: RequestParams = {}) =>
-      this.request<ListOfPrerequisitesWeaponDto, any>({
-        path: `/api/weapon/prerequisites`,
+    priceHistoryControllerFindByTypeAndObject: (
+      type: string,
+      objectId: number,
+      params: RequestParams = {}
+    ) =>
+      this.request<PriceHistoryDto[], any>({
+        path: `/api/price-history/${type}/${objectId}`,
         method: 'GET',
         format: 'json',
         ...params

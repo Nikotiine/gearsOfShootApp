@@ -21,7 +21,6 @@ const router = createRouter({
       name: 'account',
       component: () => import('../views/AccountView.vue')
     },
-
     {
       path: '/admin',
       component: () => import('../views/admin/AdminLayout.vue'),
@@ -307,6 +306,17 @@ const router = createRouter({
               ]
             }
           ]
+        }
+      ]
+    },
+    {
+      path: '/error',
+      children: [
+        {
+          path: '404',
+          name: RouterEnum.NOTFOUND_404,
+          props: true,
+          component: () => import('@/views/error/ErrorNotFoundView.vue')
         }
       ]
     }

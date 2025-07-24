@@ -37,7 +37,7 @@
 import Button from 'primevue/button'
 import InputGroup from 'primevue/inputgroup'
 import { useI18n } from 'vue-i18n'
-import { useThreadedSizeStore } from '@/stores/threadedSize'
+import { useThreadedSizeStore } from '@/stores/threaded-size.store'
 import { computed } from 'vue'
 import InputGroupText from '@/components/__form/InputGroupText.vue'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'

@@ -13,7 +13,7 @@
 </template>
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { useThreadedSizeStore } from '@/stores/threadedSize'
+import { useThreadedSizeStore } from '@/stores/threaded-size.store'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 

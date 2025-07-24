@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
 import { useQuery } from '@tanstack/vue-query'
 
-export const useRailSizeStore = defineStore('rail-size', () => {
+export const useRailSizeStore = defineStore('rail-size-store', () => {
   // Appel API
   const { api } = useApiStore()
   // Refs

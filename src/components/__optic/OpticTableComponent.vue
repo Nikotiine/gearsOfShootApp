@@ -1,6 +1,6 @@
 <template>
   <div class="card p-4">
-    <h2 class="text-center mt-2 text-2xl">{{ t('optic.list') }}</h2>
+    <table-title-component :i18n-prefix="i18nPrefix" />
     <div class="text-red-500 text-center" v-if="isError">{{ t('global.isLoadingError') }}</div>
     <DataTable
       v-model:filters="filters"
@@ -18,13 +18,18 @@
             <InputIcon>
               <i class="pi pi-search" />
             </InputIcon>
-            <InputText v-model="filters['global'].value" placeholder="Recherche globale" />
+            <InputText v-model="filters['global'].value" :placeholder="t('global.globalSearch')" />
           </IconField>
         </div>
       </template>
-      <template #empty> {{ t('optic.notFound') }} </template>
-      <template #loading> {{ t('optic.loading') }} {{ t('global.pleaseWait') }} </template>
-      <Column field="name" header="Nom" style="min-width: 12rem" :showFilterMenu="false">
+      <template #empty> {{ t(i18nPrefix + 'notFound') }} </template>
+      <template #loading> {{ t(i18nPrefix + 'loading') }} {{ t('global.pleaseWait') }} </template>
+      <Column
+        field="name"
+        :header="t('global.model')"
+        style="min-width: 12rem"
+        :showFilterMenu="false"
+      >
         <template #body="{ data }">
           {{ data.name }}
         </template>
@@ -33,12 +38,12 @@
             v-model="filterModel.value"
             type="text"
             @input="filterCallback()"
-            placeholder="Recherche par nom"
+            :placeholder="t(i18nPrefix + 'findByName')"
           />
         </template>
       </Column>
       <Column
-        header="Marque"
+        :header="t('global.factory')"
         field="factory.name"
         filterField="factory.name"
         style="min-width: 12rem"
@@ -55,7 +60,7 @@
             :options="factories$"
             optionLabel="name"
             optionValue="name"
-            placeholder="Marque"
+            :placeholder="t('global.findByFactory')"
             style="min-width: 12rem"
             :showClear="true"
           >
@@ -63,7 +68,7 @@
         </template>
       </Column>
       <Column
-        header="Type"
+        :header="t(i18nPrefix + 'opticType')"
         filterField="type.name"
         :showFilterMenu="false"
         style="min-width: 14rem"
@@ -76,7 +81,7 @@
             v-model="filterModel.value"
             @change="filterCallback()"
             :options="opticTypes$"
-            placeholder="Type"
+            :placeholder="t(i18nPrefix + 'findByType')"
             optionLabel="name"
             optionValue="name"
             style="min-width: 12rem"
@@ -108,7 +113,12 @@
           </Select>
         </template>
       </Column>-->
-      <Column field="reference" header="Reference" :showFilterMenu="false" style="min-width: 12rem">
+      <Column
+        field="reference"
+        :header="t('global.reference')"
+        :showFilterMenu="false"
+        style="min-width: 12rem"
+      >
         <template #body="{ data }">
           {{ data.reference }}
         </template>
@@ -118,11 +128,11 @@
             v-model="filterModel.value"
             type="text"
             @input="filterCallback()"
-            placeholder="Recherche par reference"
+            :placeholder="t('global.findByReference')"
           />
         </template>
       </Column>
-      <Column header="Actions" :showFilterMenu="false" style="min-width: 12rem">
+      <Column :header="t('global.action')" :showFilterMenu="false" style="min-width: 12rem">
         <template #body="{ data }">
           <action-menu-component
             @on-click-action="onClickAction"
@@ -135,7 +145,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useOpticStore } from '@/stores/optic'
+import { useOpticStore } from '@/stores/optic.store'
 import IconField from 'primevue/iconfield'
 
 import DataTable from 'primevue/datatable'
@@ -146,7 +156,7 @@ import Select from 'primevue/select'
 import { useI18n } from 'vue-i18n'
 import { FilterMatchMode } from '@primevue/core/api'
 import { ref } from 'vue'
-import { useFactoryStore } from '@/stores/factory'
+import { useFactoryStore } from '@/stores/factory.store'
 
 import ActionMenuComponent, {
   type ActionMenuEmit
@@ -155,6 +165,7 @@ import { RouterEnum } from '@/enum/router.enum'
 import { useRouter } from 'vue-router'
 import { useOpticTypeStore } from '@/stores/optic-type.store'
 import { storeToRefs } from 'pinia'
+import TableTitleComponent from '@/components/__table/TableTitleComponent.vue'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -162,7 +173,7 @@ const store = useOpticStore()
 const factoryStore = useFactoryStore()
 const opticTypeStore = useOpticTypeStore()
 factoryStore.getFactoriesByType('optic')
-
+const i18nPrefix = store.getI18NPrefix
 opticTypeStore.getAll()
 const { data: optics$, isError, isLoading, refetch } = store.getAll()
 const { factories$ } = storeToRefs(factoryStore)

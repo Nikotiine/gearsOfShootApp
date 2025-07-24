@@ -37,50 +37,46 @@
           input-id="bodyMaterial"
         />
 
-        <InputGroup>
-          <input-group-required-icon :is-validate="form.length > 0" />
-          <input-group-number
-            :min="0"
-            label="length"
-            required
-            @value="(value) => (form.length = value)"
-            input-id="length"
-            :initial-value="form.length"
-          />
-        </InputGroup>
-        <InputGroup>
-          <input-group-required-icon :is-validate="form.width > 0" />
-          <input-group-number
-            :min="0"
-            label="width"
-            required
-            @value="(value) => (form.width = value)"
-            input-id="width"
-            :initial-value="form.width"
-          />
-        </InputGroup>
-        <InputGroup>
-          <input-group-required-icon :is-validate="form.height > 0" />
-          <input-group-number
-            :min="0"
-            label="height"
-            required
-            @value="(value) => (form.height = value)"
-            input-id="height"
-            :initial-value="form.height"
-          />
-        </InputGroup>
-        <InputGroup>
-          <input-group-required-icon :is-validate="form.capacity > 0" />
-          <input-group-number
-            :min="0"
-            label="capacity"
-            required
-            @value="(value) => (form.capacity = value)"
-            input-id="capacity"
-            :initial-value="form.capacity"
-          />
-        </InputGroup>
+        <input-group-number
+          :min="0"
+          label="length"
+          required
+          @value="(value) => (form.length = value)"
+          input-id="length"
+          :initial-value="form.length"
+          add-on="cm"
+        />
+
+        <input-group-number
+          :min="0"
+          label="width"
+          required
+          @value="(value) => (form.width = value)"
+          input-id="width"
+          :initial-value="form.width"
+          add-on="cm"
+        />
+
+        <input-group-number
+          :min="0"
+          label="height"
+          required
+          @value="(value) => (form.height = value)"
+          input-id="height"
+          :initial-value="form.height"
+          add-on="cm"
+        />
+
+        <input-group-number
+          :min="0"
+          label="capacity"
+          required
+          @value="(value) => (form.capacity = value)"
+          input-id="capacity"
+          :initial-value="form.capacity"
+          add-on="cps"
+        />
+
         <InputGroup>
           <input-group-optional-icon :is-completed="selectedCompatibleWeapon.length > 0" />
           <input-group-multi-select
@@ -105,7 +101,10 @@
           :placeholder="t('global.description')"
         />
       </div>
-
+      <price-history-form
+        :price-history-form="form.priceHistory"
+        @update:price-history-form="(value) => (form.priceHistory = value)"
+      />
       <div class="text-center">
         <save-button :status="formStatus" :disabled="!isFormValid" />
       </div>
@@ -113,11 +112,10 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useWeaponMagazineStore } from '@/stores/weapon-magazine'
+import { useWeaponMagazineStore } from '@/stores/weapon-magazine.store'
 
 import { computed, ref, watch } from 'vue'
 import InputGroup from 'primevue/inputgroup'
-import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 import InputGroupNumber from '@/components/__form/InputGroupNumber.vue'
 import Textarea from 'primevue/textarea'
 import { useI18n } from 'vue-i18n'
@@ -131,6 +129,7 @@ import LegalisationCategoryInputSelect from '@/components/__form/__specific_sele
 import CaliberInputSelect from '@/components/__form/__specific_select/CaliberInputSelect.vue'
 import MaterialInputSelect from '@/components/__form/__specific_select/MaterialInputSelect.vue'
 import { storeToRefs } from 'pinia'
+import PriceHistoryForm from '@/components/__form/PriceHistoryForm.vue'
 
 const { id, formStatus } = defineProps<{
   id?: string

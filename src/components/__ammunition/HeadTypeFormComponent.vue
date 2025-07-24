@@ -33,7 +33,7 @@
   </form>
 </template>
 <script setup lang="ts">
-import { useHeadTypeStore } from '@/stores/headType'
+import { useHeadTypeStore } from '@/stores/head-type.store'
 import Button from 'primevue/button'
 import InputGroupText from '@/components/__form/InputGroupText.vue'
 import InputGroup from 'primevue/inputgroup'

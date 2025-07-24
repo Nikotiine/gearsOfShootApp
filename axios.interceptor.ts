@@ -1,5 +1,7 @@
 // axios.interceptor.ts
 import axios from 'axios'
+import { useRouter } from 'vue-router'
+import { RouterEnum } from '@/enum/router.enum'
 
 // Créer une instance Axios avec une configuration de base
 const axiosInstance = axios.create({
@@ -26,17 +28,20 @@ axiosInstance.interceptors.request.use(
 )
 
 // Interceptor de réponse pour gérer les erreurs globales (optionnel)
-/*axiosInstance.interceptors.response.use(
+axiosInstance.interceptors.response.use(
   (response) => {
     return response
   },
   (error) => {
-    if (error.response && error.response.status === 401) {
+    if (error.response && error.response.status === 404) {
       // Gérer les erreurs 401 (par exemple, rediriger vers la page de login)
-      window.location.href = '/'
+      // window.location.href = '/'
+
+      window.location.href = '/error/404'
+      //alert('toto')
     }
     return Promise.reject(error)
   }
-)*/
+)
 
 export default axiosInstance

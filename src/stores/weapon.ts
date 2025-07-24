@@ -17,7 +17,7 @@ import {
 } from '@/api/Api'
 
 import { ref } from 'vue'
-
+//TODO: Supprimer ce store
 export const useWeaponStore = defineStore('weapon', () => {
   const initialOptions: NewWeapon = {
     type: {

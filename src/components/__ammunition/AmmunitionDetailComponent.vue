@@ -1,41 +1,47 @@
 <template>
-  <div class="" v-if="ammo">
-    <h2 class="text-2xl font-bold mb-4 text-center mt-10">
-      <span class="text-blue-500">{{ t('global.ammunition') }}</span> : {{ ammo.factory.name }} -
-      {{ ammo.name }}
-    </h2>
+  <h2 class="text-2xl font-bold mb-4 text-center mt-10" v-if="ammo">
+    <span class="text-blue-500">{{ t('global.ammunition') }}</span> : {{ ammo.factory.name }} -
+    {{ ammo.name }}
+  </h2>
 
-    <div class="p-6 max-w-md mt-6" v-if="ammo">
-      <Tabs value="0">
-        <TabList>
-          <Tab value="0">{{ t('global.importantInformation') }}</Tab>
-          <Tab value="1">{{ t('global.description') }}</Tab>
-          <Tab value="2">{{ t('global.associatedProducts') }}</Tab>
-        </TabList>
-        <TabPanels>
-          <TabPanel value="0">
-            <TabCardComponent :props="importantInfo" v-if="importantInfo" />
-          </TabPanel>
-          <TabPanel value="1">
-            <p>
-              {{
-                ammo.description && ammo.description.length > 0
-                  ? ammo.description
-                  : t('global.notRegistered')
-              }}
-            </p>
-          </TabPanel>
-          <TabPanel value="2">
-            <p>// Feature</p>
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
-    </div>
+  <div class="p-6 max-w-md mt-6" v-if="ammo">
+    <Tabs value="0">
+      <TabList>
+        <Tab value="0">{{ t('global.importantInformation') }}</Tab>
+        <Tab value="1">{{ t('global.price') }}</Tab>
+        <Tab value="2">{{ t('global.description') }}</Tab>
+        <Tab value="3">{{ t('global.associatedProducts') }}</Tab>
+      </TabList>
+      <TabPanels>
+        <TabPanel value="0">
+          <TabCardComponent :props="importantInfo" v-if="importantInfo" />
+        </TabPanel>
+        <TabPanel value="1">
+          <TabCardComponent :props="priceInfo" v-if="priceInfo">
+            <template v-slot:button>
+              <show-price-history-button :id="id" type="AMMUNITION" />
+            </template>
+          </TabCardComponent>
+        </TabPanel>
+        <TabPanel value="2">
+          <p>
+            {{
+              ammo.description && ammo.description.length > 0
+                ? ammo.description
+                : t('global.notRegistered')
+            }}
+          </p>
+        </TabPanel>
+        <TabPanel value="3">
+          <p>// Feature</p>
+        </TabPanel>
+      </TabPanels>
+    </Tabs>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useAmmunitionStore } from '@/stores/ammunition'
+import { useAmmunitionStore } from '@/stores/ammunition.store'
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
 import { NumberFormatter } from '@/shared/utils/formatter.utils'
@@ -45,6 +51,7 @@ import TabCardComponent from '@/components/__tabs/TabCardComponent.vue'
 import TabList from 'primevue/tablist'
 import Tabs from 'primevue/tabs'
 import TabPanel from 'primevue/tabpanel'
+import ShowPriceHistoryButton from '@/components/__layout/ShowPriceHistoryButton.vue'
 
 const { id } = defineProps<{
   id: string
@@ -96,6 +103,23 @@ const importantInfo = computed(() => {
     {
       label: t('global.reference'),
       title: ammo.value.reference
+    }
+  ]
+})
+const priceInfo = computed(() => {
+  if (!ammo.value || !ammo.value.priceHistory) return undefined
+  return [
+    {
+      label: t('priceHistory.supplierPrice'),
+      title: NumberFormatter(ammo.value.priceHistory.supplierPrice, 'euro')
+    },
+    {
+      label: t('priceHistory.recommendedSalePrice'),
+      title: NumberFormatter(ammo.value.priceHistory.recommendedSalePrice, 'euro')
+    },
+    {
+      label: t('priceHistory.currentSalePrice'),
+      title: NumberFormatter(ammo.value.priceHistory.currentSalePrice, 'euro')
     }
   ]
 })

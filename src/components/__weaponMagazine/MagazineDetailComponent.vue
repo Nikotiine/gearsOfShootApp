@@ -32,7 +32,7 @@
 </template>
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { useWeaponMagazineStore } from '@/stores/weapon-magazine'
+import { useWeaponMagazineStore } from '@/stores/weapon-magazine.store'
 import { computed } from 'vue'
 import TabPanels from 'primevue/tabpanels'
 import Tab from 'primevue/tab'

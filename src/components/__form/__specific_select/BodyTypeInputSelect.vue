@@ -20,7 +20,7 @@ import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.v
 import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
 import InputGroup from 'primevue/inputgroup'
 import InputGroupAddonOpenDrawerButton from '@/components/__form/InputGroupAddonOpenDrawerButton.vue'
-import { useBodyTypeStore } from '@/stores/bodyType'
+import { useBodyTypeStore } from '@/stores/body-type.store'
 import { computed, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.vue'

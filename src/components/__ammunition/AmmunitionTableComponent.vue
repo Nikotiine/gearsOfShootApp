@@ -1,6 +1,6 @@
 <template>
   <div class="card p-4">
-    <h2 class="text-center mt-2 text-2xl">{{ t(i18nPrefix + 'list') }} {{ categoryId }}</h2>
+    <table-title-component :i18n-prefix="i18nPrefix" />
     <div class="text-red-500 text-center" v-if="isError">{{ t('global.isLoadingError') }}</div>
     <DataTable
       v-model:filters="filters"
@@ -18,13 +18,18 @@
             <InputIcon>
               <i class="pi pi-search" />
             </InputIcon>
-            <InputText v-model="filters['global'].value" placeholder="Recherche globale" />
+            <InputText v-model="filters['global'].value" :placeholder="t('global.globalSearch')" />
           </IconField>
         </div>
       </template>
       <template #empty> {{ t(i18nPrefix + 'notFound') }} </template>
       <template #loading> {{ t(i18nPrefix + 'loading') }} {{ t('global.pleaseWait') }} </template>
-      <Column field="name" header="Nom" style="min-width: 12rem" :showFilterMenu="false">
+      <Column
+        field="name"
+        :header="t('global.model')"
+        style="min-width: 12rem"
+        :showFilterMenu="false"
+      >
         <template #body="{ data }">
           {{ data.name }}
         </template>
@@ -33,12 +38,12 @@
             v-model="filterModel.value"
             type="text"
             @input="filterCallback()"
-            placeholder="Recherche par nom"
+            :placeholder="t(i18nPrefix + 'findByName')"
           />
         </template>
       </Column>
       <Column
-        header="Marque"
+        :header="t('global.factory')"
         field="factory.name"
         filterField="factory.name"
         style="min-width: 12rem"
@@ -55,7 +60,7 @@
             :options="factories$"
             optionLabel="name"
             optionValue="name"
-            placeholder="Marque"
+            :placeholder="t('global.findByFactory')"
             style="min-width: 12rem"
             :showClear="true"
           >
@@ -63,7 +68,7 @@
         </template>
       </Column>
       <Column
-        header="Calibre"
+        :header="t('global.caliber')"
         filterField="caliber.name"
         :showFilterMenu="false"
         style="min-width: 14rem"
@@ -85,7 +90,12 @@
           </Select>
         </template>
       </Column>
-      <Column field="reference" header="Reference" :showFilterMenu="false" style="min-width: 12rem">
+      <Column
+        field="reference"
+        :header="t('global.reference')"
+        :showFilterMenu="false"
+        style="min-width: 12rem"
+      >
         <template #body="{ data }">
           {{ data.reference }}
         </template>
@@ -99,11 +109,11 @@
           />
         </template>
       </Column>
-      <Column header="Actions" :showFilterMenu="false" style="min-width: 12rem">
+      <Column :header="t('global.action')" :showFilterMenu="false" style="min-width: 12rem">
         <template #body="{ data }">
           <action-menu-component
             @on-click-action="onClickAction"
-            type="magazine"
+            type="ammunition"
             :reference="data.reference"
             :id="data.id"
         /></template>
@@ -118,9 +128,9 @@ import InputText from 'primevue/inputtext'
 import Select from 'primevue/select'
 import Column from 'primevue/column'
 import DataTable from 'primevue/datatable'
-import { useAmmunitionStore } from '@/stores/ammunition'
-import { useCaliberStore } from '@/stores/caliber'
-import { useFactoryStore } from '@/stores/factory'
+import { useAmmunitionStore } from '@/stores/ammunition.store'
+import { useCaliberStore } from '@/stores/caliber.store'
+import { useFactoryStore } from '@/stores/factory.store'
 import { computed, ref } from 'vue'
 import { FilterMatchMode } from '@primevue/core/api'
 import { useI18n } from 'vue-i18n'
@@ -129,6 +139,7 @@ import { useRouter } from 'vue-router'
 import ActionMenuComponent, {
   type ActionMenuEmit
 } from '@/components/__table/ActionMenuComponent.vue'
+import TableTitleComponent from '@/components/__table/TableTitleComponent.vue'
 
 const { categoryId } = defineProps<{
   categoryId: number

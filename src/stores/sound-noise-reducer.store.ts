@@ -15,8 +15,10 @@ import { useToastStore } from '@/stores/toast'
 import { getCaliberDto } from '@/shared/api-dto/get-caliber.dto'
 import { getFactoryDto } from '@/shared/api-dto/get-factory.dto'
 import { getThreadedSizeDto } from '@/shared/api-dto/get-threaded-size.dto'
+import { getPriceHistoryDto } from '@/shared/api-dto/get-price-history.dto'
+import { getI18NPrefix, I18NSuffix } from '@/enum/I18NSuffix.enum'
 
-export const useSoundReducerStore = defineStore('sound-noise-reducer', () => {
+export const useSoundReducerStore = defineStore('sound-noise-reducer-store', () => {
   // Appel API
   const { api } = useApiStore()
   // TOAST
@@ -25,8 +27,8 @@ export const useSoundReducerStore = defineStore('sound-noise-reducer', () => {
   const { push } = useRouter()
 
   // Private Attibute
-  const _I18N_PREFIX = 'soundNoiseReducer.'
-  const _SUMMARY = _I18N_PREFIX + 'summary'
+  const _I18N_PREFIX = 'soundNoiseReducer'
+
   const _GET_ALL_FN = 'getAllSoundNoiseReducer'
   const _GET_BY_ID_FN = 'getSoundNoiseReducerById'
   // *******************Methodes***************
@@ -57,10 +59,11 @@ export const useSoundReducerStore = defineStore('sound-noise-reducer', () => {
     mutationFn: async (opticId: number) => {
       return await api.api.opticCollarControllerDelete(opticId)
     },
-    onSuccess(data) {
-      if (data.data.isSuccess) {
-        successMessage(_SUMMARY, _I18N_PREFIX + 'deleted')
-      }
+    onSuccess() {
+      successMessage(
+        getI18NPrefix(_I18N_PREFIX) + I18NSuffix.SUMMARY,
+        getI18NPrefix(_I18N_PREFIX) + I18NSuffix.DELETED
+      )
     }
   })
 
@@ -93,7 +96,8 @@ export const useSoundReducerStore = defineStore('sound-noise-reducer', () => {
       isCleanable: false,
       threadedSize: getThreadedSizeDto(),
       chicane: 0,
-      estimatedNoiseReduction: 0
+      estimatedNoiseReduction: 0,
+      priceHistory: getPriceHistoryDto()
     }
     return useFormHandler<CreateSoundNoiseReducerDto, AxiosResponse<SoundNoiseReducerDto>>(
       emptyForm,
@@ -107,14 +111,12 @@ export const useSoundReducerStore = defineStore('sound-noise-reducer', () => {
       })
     )
   }
-  function getI18NPrefix(): string {
-    return _I18N_PREFIX
-  }
+
   return {
     getById: getByIdQuery,
     getAll: getAllQuery,
     formBuilder: useSoundNoiseForm,
-    getI18NPrefix,
+    getI18NPrefix: getI18NPrefix(_I18N_PREFIX),
     delete: deleteFunction
   }
 })
