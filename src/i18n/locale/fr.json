@@ -111,8 +111,9 @@
     "findByFactory": "Recherche par marque",
     "findByCaliber": "Recherche par calibre",
     "findByReference": "Recherche par reference",
-    "globalSearch": "Recherche globale"
-
+    "globalSearch": "Recherche globale",
+    "inStock": "En stock",
+    "stock": "Stock"
   },
   "weapon": {
     "summary": "Gestion des armes",
@@ -203,7 +204,8 @@
     "list":"Liste des munitions",
     "notFound": "Aucune munition trouvée",
     "loading": "Chargement des muntions en cours",
-    "findByName": "Recherche par modele"
+    "findByName": "Recherche par modele",
+    "stock": "Mise en stock"
   },
   "admin": {
     "dashboard": {
@@ -426,6 +428,15 @@
     "priceHistoryModalHeader": "Historique complet",
     "createdAt": "Date de mise a jour",
     "notFound": "Aucun prix enregistré"
+  },
+  "stock": {
+    "quantity": "Quantite actuelle en stock",
+    "lastUpdated": "Derniere mise a jour du stock",
+    "summary": "Gestion du stock",
+    "movementType": "Type de mouvement de stock",
+    "placeholder": "Choisir entree / sortie",
+    "onOrder": "En commande",
+    "edit": "Editer le stock"
   },
   "formatter": {
     "setup": "Réglage de ",

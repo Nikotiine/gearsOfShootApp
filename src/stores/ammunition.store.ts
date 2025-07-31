@@ -14,6 +14,7 @@ import { getBodyTypeDto } from '@/shared/api-dto/get-body-type.dto'
 import { getHeadTypeDto } from '@/shared/api-dto/get-head-type.dto'
 import { getPercussionTypeDto } from '@/shared/api-dto/get-percussion-type.dto'
 import { getPriceHistoryDto } from '@/shared/api-dto/get-price-history.dto'
+import { getStockDto } from '@/shared/api-dto/get-stock.dto'
 
 export const useAmmunitionStore = defineStore('ammunition-store', () => {
   // Appel API
@@ -62,7 +63,8 @@ export const useAmmunitionStore = defineStore('ammunition-store', () => {
       packaging: 50,
       headType: getHeadTypeDto(),
       percussionType: getPercussionTypeDto(),
-      priceHistory: getPriceHistoryDto()
+      priceHistory: getPriceHistoryDto(),
+      inStock: 0
     }
     return useFormHandler<CreateAmmunitionDto, AxiosResponse<AmmunitionDto>>(
       emptyForm,
@@ -72,13 +74,7 @@ export const useAmmunitionStore = defineStore('ammunition-store', () => {
       _I18N_PREFIX,
       id,
       (data) => ({
-        ...data,
-        factoryId: data.factory.id,
-        caliberId: data.caliber.id,
-        percussionTypeId: data.percussionType.id,
-        bodyTypeId: data.bodyType.id,
-        headTypeId: data.headType.id,
-        categoryId: data.category.id
+        ...data
       })
     )
   }

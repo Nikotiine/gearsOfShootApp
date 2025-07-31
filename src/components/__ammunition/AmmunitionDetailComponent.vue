@@ -11,6 +11,7 @@
         <Tab value="1">{{ t('global.price') }}</Tab>
         <Tab value="2">{{ t('global.description') }}</Tab>
         <Tab value="3">{{ t('global.associatedProducts') }}</Tab>
+        <Tab value="4">{{ t('global.stock') }}</Tab>
       </TabList>
       <TabPanels>
         <TabPanel value="0">
@@ -35,6 +36,9 @@
         <TabPanel value="3">
           <p>// Feature</p>
         </TabPanel>
+        <TabPanel value="4">
+          <TabCardComponent :props="stockInfo" v-if="stockInfo" />
+        </TabPanel>
       </TabPanels>
     </Tabs>
   </div>
@@ -44,7 +48,7 @@
 import { useAmmunitionStore } from '@/stores/ammunition.store'
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
-import { NumberFormatter } from '@/shared/utils/formatter.utils'
+import { DateFormatter, NumberFormatter } from '@/shared/utils/formatter.utils'
 import TabPanels from 'primevue/tabpanels'
 import Tab from 'primevue/tab'
 import TabCardComponent from '@/components/__tabs/TabCardComponent.vue'
@@ -120,6 +124,21 @@ const priceInfo = computed(() => {
     {
       label: t('priceHistory.currentSalePrice'),
       title: NumberFormatter(ammo.value.priceHistory.currentSalePrice, 'euro')
+    }
+  ]
+})
+const stockInfo = computed(() => {
+  if (!ammo.value || !ammo.value.stock) return undefined
+  return [
+    {
+      label: t('stock.quantity'),
+      title: NumberFormatter(ammo.value.stock.quantity, 'pcs')
+    },
+    {
+      label: t('stock.lastUpdated'),
+      title: ammo.value.stock.updatedAt
+        ? DateFormatter(ammo.value.stock.updatedAt, 'short')
+        : DateFormatter(ammo.value.stock.createdAt, 'short')
     }
   ]
 })

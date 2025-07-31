@@ -109,6 +109,26 @@
           />
         </template>
       </Column>
+      <Column
+        field="inStock"
+        filterField="inStock"
+        :header="t('global.inStock')"
+        :showFilterMenu="false"
+        style=""
+      >
+        <template #body="{ data }">
+          {{ data.inStock }}
+        </template>
+
+        <template #filter="{ filterModel, filterCallback }">
+          <InputText
+            v-model="filterModel.value"
+            type="text"
+            @input="filterCallback()"
+            placeholder="Recherche par reference"
+          />
+        </template>
+      </Column>
       <Column :header="t('global.action')" :showFilterMenu="false" style="min-width: 12rem">
         <template #body="{ data }">
           <action-menu-component
@@ -159,6 +179,7 @@ const filters = ref({
   name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
   'factory.name': { value: null, matchMode: FilterMatchMode.EQUALS },
   'caliber.name': { value: null, matchMode: FilterMatchMode.EQUALS },
+  inStock: { value: null, matchMode: FilterMatchMode.EQUALS },
   reference: { value: null, matchMode: FilterMatchMode.STARTS_WITH }
 })
 

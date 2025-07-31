@@ -1,6 +1,6 @@
 {
   "name": "front",
-  "version": "0.0.0",
+  "version": "0.2.2",
   "private": true,
   "type": "module",
   "scripts": {
@@ -15,7 +15,6 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write src/",
     "swagger:generate": "npx swagger-typescript-api --output ./src/api --path http://localhost:3000/api-json --axios --api-class-name ApiService --extract-enums --api-class-name"
-
   },
   "dependencies": {
     "@primevue/themes": "^4.1.0",

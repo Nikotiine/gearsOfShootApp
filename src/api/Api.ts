@@ -861,6 +861,7 @@ export interface AmmunitionDto {
   caliber: CaliberDto
   factory: FactoryDto
   priceHistory: CreatePriceHistoryDto
+  inStock: number
   id: number
   reference: string
 }
@@ -882,6 +883,7 @@ export interface CreateAmmunitionDto {
   caliber: CaliberDto
   factory: FactoryDto
   priceHistory: CreatePriceHistoryDto
+  inStock: number
 }
 
 export interface UpdateAmmunitionDto {
@@ -901,6 +903,7 @@ export interface UpdateAmmunitionDto {
   caliber: CaliberDto
   factory: FactoryDto
   priceHistory: CreatePriceHistoryDto
+  inStock: number
   id: number
 }
 
@@ -914,6 +917,34 @@ export interface CreateAmmunitionBodyTypeDto {
   /** @example "Laiton" */
   name: string
   reference: string
+}
+
+export interface CreateStockDto {
+  quantity: number
+  movementType: string
+  object: string
+  objectId: number
+  reason: string | null
+}
+
+export interface StockHistoriesDto {
+  id: number
+  movementQuantity: number
+  previousQuantity: number
+  newQuantity: number
+  /** @format date-time */
+  createdAt: string
+  movement: string
+}
+
+export interface StockDto {
+  id: number
+  quantity: number
+  /** @format date-time */
+  createdAt: string
+  /** @format date-time */
+  updatedAt: string
+  histories: StockHistoriesDto[]
 }
 
 export interface CreateUserDto {
@@ -2698,6 +2729,24 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       this.request<ApiDeleteResponseDto, any>({
         path: `/api/ammunition-body-type/${id}`,
         method: 'DELETE',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Mise a jour du stock
+     *
+     * @tags Stock
+     * @name StockControllerUpdateStock
+     * @summary Creation
+     * @request POST:/api/stock
+     */
+    stockControllerUpdateStock: (data: CreateStockDto, params: RequestParams = {}) =>
+      this.request<StockDto, any>({
+        path: `/api/stock`,
+        method: 'POST',
+        body: data,
+        type: ContentType.Json,
         format: 'json',
         ...params
       }),

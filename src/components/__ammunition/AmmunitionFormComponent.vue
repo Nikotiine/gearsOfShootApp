@@ -52,7 +52,7 @@
           @value="(value) => (form.initialSpeed = value)"
           input-id="initialSpeed"
           :initial-value="form.initialSpeed"
-          add-on="m/s"
+          add-on="speed"
         />
 
         <head-type-input-select
@@ -94,7 +94,20 @@
         :price-history-form="form.priceHistory"
         @update:price-history-form="(value) => (form.priceHistory = value)"
       />
+      <!--  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 p-4">
+       <input-group-number
+         :i18n-prefix="i18nPrefix"
+         placeholder="stock"
+         label="stock"
+         :disabled="formStatus !== 'save'"
+         @value="(value) => (form.inStock = value)"
+         input-id="stock"
+         :initial-value="form.inStock"
+         add-on="pcs"
+       />
 
+     </div>-->
+      <edit-stock-component :in-stock="form.inStock" :form-status="formStatus" />
       <div class="text-center">
         <save-button :status="formStatus" :disabled="!isFormValid" />
       </div>
@@ -122,6 +135,7 @@ import HeadTypeInputSelect from '@/components/__form/__specific_select/HeadTypeI
 import BodyTypeInputSelect from '@/components/__form/__specific_select/BodyTypeInputSelect.vue'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 import PriceHistoryForm from '@/components/__form/PriceHistoryForm.vue'
+import EditStockComponent from '@/components/__stock/EditStockComponent.vue'
 
 const { id } = defineProps<{
   id?: string
