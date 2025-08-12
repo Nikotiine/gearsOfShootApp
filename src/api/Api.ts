@@ -844,6 +844,26 @@ export interface AmmunitionBodyTypeDto {
   id: number
 }
 
+export interface StockHistoriesDto {
+  id: number
+  movementQuantity: number
+  previousQuantity: number
+  newQuantity: number
+  /** @format date-time */
+  createdAt: string
+  movement: string
+}
+
+export interface StockDto {
+  id: number
+  quantity: number
+  /** @format date-time */
+  createdAt: string
+  /** @format date-time */
+  updatedAt: string
+  histories: StockHistoriesDto[]
+}
+
 export interface AmmunitionDto {
   /** @example "Sk Standard" */
   name: string
@@ -864,6 +884,7 @@ export interface AmmunitionDto {
   inStock: number
   id: number
   reference: string
+  stock: StockDto | null
 }
 
 export interface CreateAmmunitionDto {
@@ -925,26 +946,6 @@ export interface CreateStockDto {
   object: string
   objectId: number
   reason: string | null
-}
-
-export interface StockHistoriesDto {
-  id: number
-  movementQuantity: number
-  previousQuantity: number
-  newQuantity: number
-  /** @format date-time */
-  createdAt: string
-  movement: string
-}
-
-export interface StockDto {
-  id: number
-  quantity: number
-  /** @format date-time */
-  createdAt: string
-  /** @format date-time */
-  updatedAt: string
-  histories: StockHistoriesDto[]
 }
 
 export interface CreateUserDto {
@@ -2747,6 +2748,26 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
         method: 'POST',
         body: data,
         type: ContentType.Json,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Stock par id d objet
+     *
+     * @tags Stock
+     * @name StockControllerFindByStockableObjectAndId
+     * @summary by/id/:id
+     * @request GET:/api/stock/by/{object}/{objectId}
+     */
+    stockControllerFindByStockableObjectAndId: (
+      object: string,
+      objectId: number,
+      params: RequestParams = {}
+    ) =>
+      this.request<StockDto, any>({
+        path: `/api/stock/by/${object}/${objectId}`,
+        method: 'GET',
         format: 'json',
         ...params
       }),

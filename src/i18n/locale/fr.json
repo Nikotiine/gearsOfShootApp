@@ -436,7 +436,9 @@
     "movementType": "Type de mouvement de stock",
     "placeholder": "Choisir entree / sortie",
     "onOrder": "En commande",
-    "edit": "Editer le stock"
+    "edit": "Editer le stock",
+    "showHistory": "Voir l historique",
+    "updated": "Mise a jour du stock :{key} pieces disponibles"
   },
   "formatter": {
     "setup": "Réglage de ",

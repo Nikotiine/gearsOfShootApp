@@ -74,6 +74,7 @@ import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
 import { storeToRefs } from 'pinia'
 import type { FormStatus } from '@/types/form-status.type'
 import SaveButton from '@/components/__form/SaveButton.vue'
+import { useFormStore } from '@/stores/form.store'
 const store = useFactoryStore()
 
 const { factoryTypes$ } = storeToRefs(store)
@@ -81,13 +82,13 @@ const { factoryTypes$ } = storeToRefs(store)
 const { t, locale } = useI18n()
 const localeValue = ref(locale.value)
 
-const { id, factoryType, formStatus } = defineProps<{
+const { id, factoryType } = defineProps<{
   id?: string
-  formStatus: FormStatus
   factoryType?: FactoryType
 }>()
 const { form, submit } = store.formBuilder(id)
-//*******************Init du formulaire*********************
+const formStore = useFormStore()
+const formStatus: FormStatus = formStore.getFormStatus()
 
 //***********************Validateur*************************
 const isFormValid = computed(() => {

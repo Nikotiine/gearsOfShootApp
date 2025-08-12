@@ -78,14 +78,15 @@ import type { FormStatus } from '@/types/form-status.type'
 import FactoryInputSelect from '@/components/__form/__specific_select/FactoryInputSelect.vue'
 import OpticRailInputSelect from '@/components/__form/__specific_select/OpticRailInputSelect.vue'
 import PriceHistoryForm from '@/components/__form/PriceHistoryForm.vue'
-
+import { useFormStore } from '@/stores/form.store'
+const { id } = defineProps<{
+  id?: string
+}>()
 const { t } = useI18n()
 const store = useOpticCollarStore()
 
-const { id } = defineProps<{
-  id?: string
-  formStatus: FormStatus
-}>()
+const formStore = useFormStore()
+const formStatus: FormStatus = formStore.getFormStatus()
 
 const { form, submit } = store.formBuilder(id)
 

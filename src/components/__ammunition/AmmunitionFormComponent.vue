@@ -107,9 +107,15 @@
        />
 
      </div>-->
-      <edit-stock-component :in-stock="form.inStock" :form-status="formStatus" />
+      <edit-stock-component
+        v-if="form.inStock"
+        :in-stock="form.inStock"
+        object="AMMUNITION"
+        :object-id="id"
+        @update:in-stock="(value) => (form.inStock = value)"
+      />
       <div class="text-center">
-        <save-button :status="formStatus" :disabled="!isFormValid" />
+        <save-button :disabled="!isFormValid" />
       </div>
     </form>
   </div>
@@ -124,8 +130,6 @@ import { computed } from 'vue'
 import InputGroupText from '@/components/__form/InputGroupText.vue'
 
 import InputGroupNumber from '@/components/__form/InputGroupNumber.vue'
-
-import type { FormStatus } from '@/types/form-status.type'
 import SaveButton from '@/components/__form/SaveButton.vue'
 import CaliberInputSelect from '@/components/__form/__specific_select/CaliberInputSelect.vue'
 import FactoryInputSelect from '@/components/__form/__specific_select/FactoryInputSelect.vue'
@@ -136,14 +140,17 @@ import BodyTypeInputSelect from '@/components/__form/__specific_select/BodyTypeI
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 import PriceHistoryForm from '@/components/__form/PriceHistoryForm.vue'
 import EditStockComponent from '@/components/__stock/EditStockComponent.vue'
+import { useFormStore } from '@/stores/form.store'
+import type { FormStatus } from '@/types/form-status.type'
 
 const { id } = defineProps<{
   id?: string
-  formStatus: FormStatus
 }>()
 
 const { t } = useI18n()
 const store = useAmmunitionStore()
+const formStore = useFormStore()
+const formStatus: FormStatus = formStore.getFormStatus()
 const i18nPrefix = store.getI18NPrefix
 const { form, submit } = store.formBuilder(id)
 

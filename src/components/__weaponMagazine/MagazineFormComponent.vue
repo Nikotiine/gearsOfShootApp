@@ -130,15 +130,15 @@ import CaliberInputSelect from '@/components/__form/__specific_select/CaliberInp
 import MaterialInputSelect from '@/components/__form/__specific_select/MaterialInputSelect.vue'
 import { storeToRefs } from 'pinia'
 import PriceHistoryForm from '@/components/__form/PriceHistoryForm.vue'
+import { useFormStore } from '@/stores/form.store'
 
-const { id, formStatus } = defineProps<{
+const { id } = defineProps<{
   id?: string
-  formStatus: FormStatus
 }>()
 const store = useWeaponMagazineStore()
-
 const { form, submit } = store.builder(id)
-
+const formStore = useFormStore()
+const formStatus: FormStatus = formStore.getFormStatus()
 const { t } = useI18n()
 const { compatibleWeapons$ } = storeToRefs(store)
 const selectedCompatibleWeapon = ref<any>([])

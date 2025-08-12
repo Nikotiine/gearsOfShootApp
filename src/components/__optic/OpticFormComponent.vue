@@ -255,6 +255,7 @@ import FocalPlaneInputSelect from '@/components/__form/__specific_select/FocalPl
 import OpticUnitInputSelect from '@/components/__form/__specific_select/OpticUnitInputSelect.vue'
 import PriceHistoryForm from '@/components/__form/PriceHistoryForm.vue'
 import OpticRailInputSelect from '@/components/__form/__specific_select/OpticRailInputSelect.vue'
+import { useFormStore } from '@/stores/form.store'
 
 const store = useOpticStore()
 
@@ -264,9 +265,10 @@ const { t } = useI18n()
 
 const { id } = defineProps<{
   id?: string
-  formStatus: FormStatus
 }>()
 const { form, submit } = store.formBuilder(id)
+const formStore = useFormStore()
+const formStatus: FormStatus = formStore.getFormStatus()
 const isFormValid = computed(() => {
   let isValid: boolean = false
   if (

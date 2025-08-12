@@ -122,16 +122,17 @@ import FactoryInputSelect from '@/components/__form/__specific_select/FactoryInp
 import CaliberInputSelect from '@/components/__form/__specific_select/CaliberInputSelect.vue'
 import ThreadedSizeInputSelect from '@/components/__form/__specific_select/ThreadedSizeInputSelect.vue'
 import PriceHistoryForm from '@/components/__form/PriceHistoryForm.vue'
+import { useFormStore } from '@/stores/form.store'
 
 const { t } = useI18n()
 const store = useSoundReducerStore()
 
 const { id } = defineProps<{
   id?: string
-  formStatus: FormStatus
 }>()
 const { form, submit } = store.formBuilder(id)
-
+const formStore = useFormStore()
+const formStatus: FormStatus = formStore.getFormStatus()
 const i18nPrefix = store.getI18NPrefix
 
 const isFormValid = computed(() => {

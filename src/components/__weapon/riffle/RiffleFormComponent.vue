@@ -323,6 +323,7 @@ import WeaponTypeInputSelect from '@/components/__form/__specific_select/WeaponT
 import LegalisationCategoryInputSelect from '@/components/__form/__specific_select/LegalisationCategoryInputSelect.vue'
 import type { FormStatus } from '@/types/form-status.type'
 import PriceHistoryForm from '@/components/__form/PriceHistoryForm.vue'
+import { useFormStore } from '@/stores/form.store'
 
 // Store
 const riffleStore = useRiffleStore()
@@ -334,9 +335,10 @@ const { t } = useI18n()
 const buttonLabel = ref('global.save')
 const { id } = defineProps<{
   id?: string
-  formStatus: FormStatus
 }>()
 const { form, submit } = riffleStore.formBuilder(id)
+const formStore = useFormStore()
+const formStatus: FormStatus = formStore.getFormStatus()
 const adjustableTriggerMinWeight = ref(0)
 const adjustableTriggerMaxWeight = ref(0)
 const isProvidedMagazine = ref(false)

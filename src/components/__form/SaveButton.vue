@@ -7,9 +7,11 @@
 import Button from 'primevue/button'
 import { useI18n } from 'vue-i18n'
 import type { FormStatus } from '@/types/form-status.type'
+import { useFormStore } from '@/stores/form.store'
 const { t } = useI18n()
-const { status = 'save', disabled = false } = defineProps<{
-  status?: FormStatus
+const formStore = useFormStore()
+const status: FormStatus = formStore.getFormStatus()
+const { disabled = false } = defineProps<{
   disabled?: boolean
 }>()
 </script>

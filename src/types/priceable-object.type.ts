@@ -6,3 +6,12 @@ export type PriceableObjectType =
   | 'RIFFLE'
   | 'RDS'
   | 'MAGAZINE'
+export type StockableObjectType =
+  | 'AMMUNITION'
+  | 'HANDGUN'
+  | 'OPTIC'
+  | 'OPTIC_COLLAR'
+  | 'RIFFLE'
+  | 'RDS'
+  | 'MAGAZINE'
+  | 'DEFAULT'

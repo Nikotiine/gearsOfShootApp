@@ -14,20 +14,32 @@
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 p-4" v-else>
     <p>
       {{ t('stock.quantity') }}
-      <span :class="textColor(inStock)">{{ NumberFormatter(inStock, 'pcs') }}</span>
+      <span :class="textColor(currentStock)">{{ NumberFormatter(currentStock, 'pcs') }}</span>
     </p>
     <p>
       {{ t('stock.onOrder') }}
       <span>On mettra en commande pour la gestion du stock</span>
     </p>
-    <Button
-      type="button"
-      :label="t('stock.edit')"
-      class="mx-auto p-0"
-      text
-      severity="danger"
-    ></Button>
+    <div class="flex flex-col">
+      <Button
+        type="button"
+        :label="t('stock.edit')"
+        class="mx-auto p-0"
+        text
+        @click="showDrawer('stock')"
+        severity="danger"
+      ></Button>
+      <Button
+        type="button"
+        :label="t('stock.showHistory')"
+        class="mx-auto p-0"
+        text
+        @click="showDrawer('stockHistory')"
+        severity="info"
+      ></Button>
+    </div>
   </div>
+  <drawer-view v-model:visible="visible" :component="drawerTypeComponent" />
 </template>
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
@@ -35,17 +47,38 @@ import { NumberFormatter } from '@/shared/utils/formatter.utils'
 import InputGroupNumber from '@/components/__form/InputGroupNumber.vue'
 import type { FormStatus } from '@/types/form-status.type'
 import Button from 'primevue/button'
+import { ref } from 'vue'
+import DrawerView, { type DrawerViewFormComponent } from '@/views/shared/DrawerView.vue'
+import { useFormStore } from '@/stores/form.store'
+import type { StockableObjectType } from '@/types/priceable-object.type'
+import { useStockStore } from '@/stores/stock.store'
+import { storeToRefs } from 'pinia'
 
 const { t } = useI18n()
-
-const emit = defineEmits(['initialStock'])
+const store = useStockStore()
+const formStore = useFormStore()
+const formStatus: FormStatus = formStore.getFormStatus()
+const emit = defineEmits(['update:inStock'])
 const i18nPrefix = 'stock.'
-const { formStatus, inStock } = defineProps<{
+const { inStock, objectId, object } = defineProps<{
   inStock: number
-  formStatus: FormStatus
+  objectId?: string
+  object: StockableObjectType
 }>()
+store.setCurrentStock(inStock)
 function updateInitialStock(value: number) {
-  emit('initialStock', value)
+  emit('update:inStock', value)
+}
+const drawerTypeComponent = ref<DrawerViewFormComponent>('stock')
+const { data } = store.getByObjectAndObjectId(object, objectId)
+console.log(data)
+const { currentStock } = storeToRefs(store)
+const visible = ref(false)
+function showDrawer(item: DrawerViewFormComponent): void {
+  drawerTypeComponent.value = item
+  visible.value = true
+  store.setObject(object)
+  store.setObjectId(objectId)
 }
 
 function textColor(quantity: number): string {
