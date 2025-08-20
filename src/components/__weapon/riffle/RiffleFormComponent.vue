@@ -291,6 +291,13 @@
       :price-history-form="form.priceHistory"
       @update:price-history-form="(value) => (form.priceHistory = value)"
     />
+    <edit-stock-component
+      v-if="form.inStock > -1"
+      :in-stock="form.inStock"
+      object="RIFFLE"
+      :object-id="id"
+      @update:in-stock="(value) => (form.inStock = value)"
+    />
     <div class="text-center">
       <Button type="submit" :label="t(buttonLabel)" :disabled="!isValidForm"></Button>
     </div>
@@ -324,6 +331,7 @@ import LegalisationCategoryInputSelect from '@/components/__form/__specific_sele
 import type { FormStatus } from '@/types/form-status.type'
 import PriceHistoryForm from '@/components/__form/PriceHistoryForm.vue'
 import { useFormStore } from '@/stores/form.store'
+import EditStockComponent from '@/components/__stock/EditStockComponent.vue'
 
 // Store
 const riffleStore = useRiffleStore()

@@ -31,7 +31,7 @@ import { storeToRefs } from 'pinia'
 import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.vue'
 const store = useFactoryStore()
 const emit = defineEmits(['onSelect'])
-const { mutationSuccess } = storeToRefs(store)
+//const { mutationSuccess } = storeToRefs(store)
 const {
   initialValue = 0,
   canAddNew = false,
@@ -52,7 +52,7 @@ const onSelect = (id: number) => {
   emit('onSelect', factory)
   factoryId.value = id
 }
-watch(
+/*watch(
   () => mutationSuccess.value,
   (value) => {
     if (value) {
@@ -61,7 +61,7 @@ watch(
       closeDrawer.value = value
     }
   }
-)
+)*/
 watch(
   () => initialValue,
   (value) => {

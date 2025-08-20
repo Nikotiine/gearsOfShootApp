@@ -45,6 +45,12 @@
         </TabPanel>
       </TabPanels>
     </Tabs>
+    <audit-info-component
+      :created-by="handgun.createdBy"
+      :updated-by="handgun.updatedBy"
+      :created-at="handgun.createdAt"
+      :update-at="handgun.updatedAt"
+    />
   </div>
 </template>
 <script setup lang="ts">
@@ -64,6 +70,7 @@ import {
   VerifyFieldIsNotNull
 } from '@/shared/utils/formatter.utils'
 import ShowPriceHistoryButton from '@/components/__layout/ShowPriceHistoryButton.vue'
+import AuditInfoComponent from '@/components/__detail/AuditInfoComponent.vue'
 const store = useHandGunStore()
 const { t } = useI18n()
 const { id } = defineProps<{

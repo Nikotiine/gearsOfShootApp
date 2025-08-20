@@ -113,10 +113,14 @@
     "findByReference": "Recherche par reference",
     "globalSearch": "Recherche globale",
     "inStock": "En stock",
-    "stock": "Stock"
+    "stock": "Stock",
+    "missingData": "Information non disponible"
   },
-  "weapon": {
-    "summary": "Gestion des armes",
+  "handgun": {
+    "list": "Liste des arme de poing",
+    "save": "Ajouter une arme de poing",
+    "edit": "Modifier une arme de poing",
+    "summary": "Gestion des armes de poing",
     "model": "Modele de l'arme",
     "variation": "Variante",
     "barrelLength": "Longueur du canon",
@@ -130,6 +134,53 @@
     "isPicatinyRailSlop": "Rail picatiny pour accessoires",
     "decocking": "Decocking",
     "isExternalHammer": "Chien exterieur",
+    "isThreadedBarrel": "Canon filete",
+    "isOpenAim": "Visee ouverte",
+    "isAdjustableBackSight": "Hausse reglable",
+    "isAdjustableFrontSight": "Guidon reglable",
+    "triggerType": "Type de detente",
+    "percussionType": "Type de percussion",
+    "barrelType": "Type de canon",
+    "barrelColor": "Couleur du canon",
+    "buttMaterial": "Matiere de la crosse",
+    "buttColor": "Couleur de la crosse",
+    "slideMaterial": "Matiere de la culasse",
+    "slideColor": "Couleur de la culasse",
+    "providedOpticReadyPlates": "Plaques optic ready fournies",
+    "selectType": "Quel type d'arme ?",
+    "handGunButtType": "Matiere de la carcasse",
+    "mLockOptions": "Position MLOCK",
+    "weaponType": "Type d'arme",
+    "weaponTypeMode": "Fonctionement",
+    "created": "Nouvelle arme enregister",
+    "updated": "Arme modifié avec succes",
+    "deleted": "Arme supprimée",
+    "form": {
+      "add": "Ajouter une arme de categorie",
+      "isThreadedBarrel": "Filetage",
+      "isProvidedMagazine": "Chargeur fournis",
+      "opticReadyPlates": "Type de plaque Optic ready",
+      "yourChoose": "Votre choix : ",
+      "magazine": "Type de chargeur",
+      "selectType": "Quel type d'arme ?",
+      "isOpticReady": "OR ?",
+      "weaponModel": "Modele d'arme",
+      "weaponVariation": "Variante du modele",
+      "isPicatinyRailSlop": "Rail picatiny"
+    }
+  },
+  "riffle": {
+    "list": "Listes des armes longues",
+    "summary": "Gestion des armes longues",
+    "model": "Modele de l'arme",
+    "variation": "Variante",
+    "barrelLength": "Longueur du canon",
+    "barrelSize": "Epaisseur du canon",
+    "isProvidedMagazine": "Chargeur fournis ?",
+    "providedMagazineQuantity": "Nombre de chargeurs fournis",
+    "isAdjustableTrigger": "Detente reglable",
+    "adjustableTriggerMinWeight": "Poids mini",
+    "adjustableTriggerMaxWeight": "Poids max",
     "isThreadedBarrel": "Canon filete",
     "isAdjustableButt": "Crosse reglable",
     "isAdjustableBusk": "Busc ajustable",
@@ -148,7 +199,6 @@
     "slideMaterial": "Matiere de la culasse",
     "slideColor": "Couleur de la culasse",
     "railSize": "Taille du rail d'optique",
-    "providedOpticReadyPlates": "Plaques optic ready fournies",
     "selectType": "Quel type d'arme ?",
     "handGunButtType": "Matiere de la carcasse",
     "mLockOptions": "Position MLOCK",
@@ -168,7 +218,6 @@
       "isCollarsProvided": "Collier fournis ?",
       "magazine": "Type de chargeur",
       "selectType": "Quel type d'arme ?",
-      "isOpticReady": "OR ?",
       "weaponModel": "Modele d'arme",
       "weaponVariation": "Variante du modele",
       "isPicatinyRailSlop": "Rail picatiny"
@@ -214,13 +263,11 @@
   },
   "bodyType": {
     "name": "Type de douille",
+    "save": "Ajouter un nouveau type de douille",
     "placeholder": "Choisir un type",
-    "form": {
-      "addTitle": "Ajouter un nouveau type de douille",
-      "success": "Ajout d'un nouveau type confirme"
-    },
     "existingList": "Liste de types existants",
     "type": "Type de douille",
+    "ref": "Reference",
     "summary": "Gestion des douilles"
   },
   "headType": {
@@ -433,12 +480,23 @@
     "quantity": "Quantite actuelle en stock",
     "lastUpdated": "Derniere mise a jour du stock",
     "summary": "Gestion du stock",
-    "movementType": "Type de mouvement de stock",
+    "movementType": "Type de mouvement",
     "placeholder": "Choisir entree / sortie",
     "onOrder": "En commande",
     "edit": "Editer le stock",
     "showHistory": "Voir l historique",
-    "updated": "Mise a jour du stock :{key} pieces disponibles"
+    "updated": "Mise a jour du stock :{key} pieces disponibles",
+    "newQuantity": "Nouvelle quantite",
+    "updatedBy": "Mis a jour par",
+    "movementQuantity": "Quantite modifie",
+    "reason": "Raison",
+    "previousQuantity": "Quantite precedente",
+    "IN": "Ajout",
+    "OUT": "Retrait"
+  },
+  "drawer": {
+    "stock": "Edition du stock",
+    "stockHistory": "Historique"
   },
   "formatter": {
     "setup": "Réglage de ",
@@ -493,5 +551,10 @@
   },
   "deleteMessage": {
     "000": "Optique supprimeée"
+  },
+  "auditInfo": {
+    "createdAt": "Creer le :",
+    "updatedAt": "Mise a jour le :",
+    "from": "par"
   }
 }

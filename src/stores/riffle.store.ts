@@ -28,7 +28,7 @@ export const useRiffleStore = defineStore('riffle-store', () => {
   const riffles = ref<RiffleDto[]>([])
   const riffle = ref<RiffleDto>()
   // Private Attibute
-  const _I18N_PREFIX = 'weapon'
+  const _I18N_PREFIX = 'riffle'
 
   const _GET_ALL_BY_CATEGORY_FN = 'getAllRiffleByCategory'
   const _GET_ALL_FN = 'getAllRiffle'
@@ -133,7 +133,8 @@ export const useRiffleStore = defineStore('riffle-store', () => {
       mLockOptions: null,
       qcSlot: 0,
       railSize: null,
-      priceHistory: getPriceHistoryDto()
+      priceHistory: getPriceHistoryDto(),
+      inStock: 0
     }
     return useFormHandler<CreateRiffleDto, AxiosResponse<RiffleDto>>(
       emptyForm,
@@ -141,6 +142,7 @@ export const useRiffleStore = defineStore('riffle-store', () => {
       _createMutation,
       _updateMutation,
       _I18N_PREFIX,
+      _GET_BY_ID_FN,
       id,
       (data) => ({
         ...data

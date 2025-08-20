@@ -1,8 +1,6 @@
 <template>
   <div class="card">
-    <h2 class="text-center mt-2 text-2xl text-blue-500">
-      {{ t(i18nPrefix + formStatus) }}
-    </h2>
+    <form-title-component />
     <form @submit.prevent="submit">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 p-4">
         <legalisation-category-input-select
@@ -36,23 +34,23 @@
           <input-group-text
             @value="(value) => (form.name = value)"
             :min-length="2"
-            :i18n-prefix="i18nPrefix"
             placeholder="name"
             label="name"
             required
             input-id="name"
+            :i18n-prefix="i18nPrefix"
             :initial-value="form.name"
           />
         </InputGroup>
 
         <input-group-number
-          :i18n-prefix="i18nPrefix"
           label="initialSpeed"
           placeholder="initialSpeed"
           @value="(value) => (form.initialSpeed = value)"
           input-id="initialSpeed"
           :initial-value="form.initialSpeed"
           add-on="speed"
+          :i18n-prefix="i18nPrefix"
         />
 
         <head-type-input-select
@@ -69,13 +67,13 @@
         />
 
         <input-group-number
-          :i18n-prefix="i18nPrefix"
           placeholder="packaging"
           label="packaging"
           @value="(value) => (form.packaging = value)"
           input-id="packaging"
           :initial-value="form.packaging"
           add-on="pcs"
+          :i18n-prefix="i18nPrefix"
         />
       </div>
 
@@ -94,21 +92,9 @@
         :price-history-form="form.priceHistory"
         @update:price-history-form="(value) => (form.priceHistory = value)"
       />
-      <!--  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 p-4">
-       <input-group-number
-         :i18n-prefix="i18nPrefix"
-         placeholder="stock"
-         label="stock"
-         :disabled="formStatus !== 'save'"
-         @value="(value) => (form.inStock = value)"
-         input-id="stock"
-         :initial-value="form.inStock"
-         add-on="pcs"
-       />
 
-     </div>-->
       <edit-stock-component
-        v-if="form.inStock"
+        v-if="form.inStock > -1"
         :in-stock="form.inStock"
         object="AMMUNITION"
         :object-id="id"
@@ -142,16 +128,13 @@ import PriceHistoryForm from '@/components/__form/PriceHistoryForm.vue'
 import EditStockComponent from '@/components/__stock/EditStockComponent.vue'
 import { useFormStore } from '@/stores/form.store'
 import type { FormStatus } from '@/types/form-status.type'
-
-const { id } = defineProps<{
-  id?: string
-}>()
+import FormTitleComponent from '@/components/__form/FormTitleComponent.vue'
 
 const { t } = useI18n()
 const store = useAmmunitionStore()
 const formStore = useFormStore()
-const formStatus: FormStatus = formStore.getFormStatus()
 const i18nPrefix = store.getI18NPrefix
+const id = formStore.getFormId()
 const { form, submit } = store.formBuilder(id)
 
 const isFormValid = computed(() => {

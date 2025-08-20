@@ -23,6 +23,7 @@ export const useWeaponMagazineStore = defineStore('weapon-magazine-store', () =>
   const weapons = ref<any>([])
   const magazines = ref<WeaponMagazineDto[]>([])
   const magazine = ref<WeaponMagazineDto>()
+  const submitSuccess = ref(false)
   // Private Attibute
   const _I18N_PREFIX = 'magazine'
   const _GET_ALL_BY_CATEGORY_FN = 'getAllMagazineByCategory'
@@ -109,6 +110,7 @@ export const useWeaponMagazineStore = defineStore('weapon-magazine-store', () =>
       _createMutation,
       _updateMutation,
       _I18N_PREFIX,
+      _GET_BY_ID_FN,
       id,
       (data) => ({
         ...data,
@@ -169,6 +171,7 @@ export const useWeaponMagazineStore = defineStore('weapon-magazine-store', () =>
     builder: useWeaponForm,
     fetchCompatibleWeapons,
     compatibleWeapons$: weapons,
-    getI18NPrefix: getI18NPrefix(_I18N_PREFIX)
+    getI18NPrefix: getI18NPrefix(_I18N_PREFIX),
+    submitSuccess
   }
 })

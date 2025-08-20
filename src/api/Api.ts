@@ -195,6 +195,41 @@ export interface CreatePriceHistoryDto {
   currentSalePrice: number
 }
 
+export interface UserDto {
+  id: number
+  email: string
+  firstName: string
+  lastName: string
+  address: string
+  phone: string
+  city: string
+  state: string
+  zipCode: string
+  role: UserDtoRoleEnum
+}
+
+export interface StockHistoriesDto {
+  id: number
+  movementQuantity: number
+  previousQuantity: number
+  newQuantity: number
+  /** @format date-time */
+  createdAt: string
+  movement: string
+  reason: string | null
+  createdBy: UserDto
+}
+
+export interface StockDto {
+  id: number
+  quantity: number
+  /** @format date-time */
+  createdAt: string
+  /** @format date-time */
+  updatedAt: string
+  histories: StockHistoriesDto[]
+}
+
 export interface RiffleDto {
   /**
    * Nom du model de l arme
@@ -285,9 +320,17 @@ export interface RiffleDto {
   isOpenAim: boolean
   mLockOptions: MLockOptionDto[] | null
   priceHistory: CreatePriceHistoryDto
+  inStock: number
   id: number
   /** @example "CZ-457-VAR-22LR" */
   reference: string
+  stock: StockDto | null
+  createdBy: UserDto
+  updatedBy: UserDto
+  /** @format date-time */
+  createdAt: string
+  /** @format date-time */
+  updatedAt: string
 }
 
 export interface WeaponTriggerTypeDto {
@@ -382,9 +425,17 @@ export interface HandGunDto {
   /** Rail picatiny */
   isPicatinyRailSlop: boolean
   priceHistory: CreatePriceHistoryDto
+  inStock: number
   id: number
   /** @example "CZ-457-VAR-22LR" */
   reference: string
+  stock: StockDto | null
+  createdBy: UserDto
+  updatedBy: UserDto
+  /** @format date-time */
+  createdAt: string
+  /** @format date-time */
+  updatedAt: string
 }
 
 export interface WeaponMagazineDto {
@@ -554,6 +605,7 @@ export interface CreateHandGunDto {
   /** Rail picatiny */
   isPicatinyRailSlop: boolean
   priceHistory: CreatePriceHistoryDto
+  inStock: number
 }
 
 export interface UpdateHandGunDto {
@@ -642,6 +694,7 @@ export interface UpdateHandGunDto {
   /** Rail picatiny */
   isPicatinyRailSlop: boolean
   priceHistory: CreatePriceHistoryDto
+  inStock: number
   id: number
 }
 
@@ -735,6 +788,7 @@ export interface CreateRiffleDto {
   isOpenAim: boolean
   mLockOptions: MLockOptionDto[] | null
   priceHistory: CreatePriceHistoryDto
+  inStock: number
 }
 
 export interface UpdateRiffleDto {
@@ -827,7 +881,16 @@ export interface UpdateRiffleDto {
   isOpenAim: boolean
   mLockOptions: MLockOptionDto[] | null
   priceHistory: CreatePriceHistoryDto
+  inStock: number
   id: number
+}
+
+export interface CreateStockDto {
+  quantity: number
+  movementType: string
+  object: string
+  objectId: number
+  reason: string | null
 }
 
 export interface AmmunitionHeadTypeDto {
@@ -842,26 +905,6 @@ export interface AmmunitionBodyTypeDto {
   name: string
   reference: string
   id: number
-}
-
-export interface StockHistoriesDto {
-  id: number
-  movementQuantity: number
-  previousQuantity: number
-  newQuantity: number
-  /** @format date-time */
-  createdAt: string
-  movement: string
-}
-
-export interface StockDto {
-  id: number
-  quantity: number
-  /** @format date-time */
-  createdAt: string
-  /** @format date-time */
-  updatedAt: string
-  histories: StockHistoriesDto[]
 }
 
 export interface AmmunitionDto {
@@ -885,6 +928,12 @@ export interface AmmunitionDto {
   id: number
   reference: string
   stock: StockDto | null
+  createdBy: UserDto
+  updatedBy: UserDto
+  /** @format date-time */
+  createdAt: string
+  /** @format date-time */
+  updatedAt: string
 }
 
 export interface CreateAmmunitionDto {
@@ -940,14 +989,6 @@ export interface CreateAmmunitionBodyTypeDto {
   reference: string
 }
 
-export interface CreateStockDto {
-  quantity: number
-  movementType: string
-  object: string
-  objectId: number
-  reason: string | null
-}
-
 export interface CreateUserDto {
   email: string
   password: string
@@ -959,19 +1000,6 @@ export interface CreateUserDto {
   state: string
   zipCode: string
   role: CreateUserDtoRoleEnum
-}
-
-export interface UserDto {
-  id: number
-  email: string
-  firstName: string
-  lastName: string
-  address: string
-  phone: string
-  city: string
-  state: string
-  zipCode: string
-  role: UserDtoRoleEnum
 }
 
 export interface UserCredentialDto {
@@ -1189,12 +1217,12 @@ export enum WeaponTypeDtoTypeEnum {
   Riffle = 'riffle'
 }
 
-export enum CreateUserDtoRoleEnum {
+export enum UserDtoRoleEnum {
   USER = 'USER',
   ADMIN = 'ADMIN'
 }
 
-export enum UserDtoRoleEnum {
+export enum CreateUserDtoRoleEnum {
   USER = 'USER',
   ADMIN = 'ADMIN'
 }
@@ -2139,12 +2167,14 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @name MagazineControllerCreate
      * @summary Creation
      * @request POST:/api/magazine
+     * @secure
      */
     magazineControllerCreate: (data: CreateWeaponMagazineDto, params: RequestParams = {}) =>
       this.request<WeaponMagazineDto, any>({
         path: `/api/magazine`,
         method: 'POST',
         body: data,
+        secure: true,
         type: ContentType.Json,
         format: 'json',
         ...params
@@ -2157,6 +2187,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @name MagazineControllerEdit
      * @summary Edition
      * @request PUT:/api/magazine/{id}
+     * @secure
      */
     magazineControllerEdit: (
       id: number,
@@ -2167,6 +2198,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
         path: `/api/magazine/${id}`,
         method: 'PUT',
         body: data,
+        secure: true,
         type: ContentType.Json,
         format: 'json',
         ...params
@@ -2179,11 +2211,13 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @name MagazineControllerDelete
      * @summary Suppresion logique
      * @request DELETE:/api/magazine/{id}
+     * @secure
      */
     magazineControllerDelete: (id: number, params: RequestParams = {}) =>
       this.request<ApiDeleteResponseDto, any>({
         path: `/api/magazine/${id}`,
         method: 'DELETE',
+        secure: true,
         format: 'json',
         ...params
       }),
@@ -2243,12 +2277,14 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @name HandGunControllerCreate
      * @summary Creation
      * @request POST:/api/hand-gun
+     * @secure
      */
     handGunControllerCreate: (data: CreateHandGunDto, params: RequestParams = {}) =>
       this.request<HandGunDto, any>({
         path: `/api/hand-gun`,
         method: 'POST',
         body: data,
+        secure: true,
         type: ContentType.Json,
         format: 'json',
         ...params
@@ -2261,12 +2297,14 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @name HandGunControllerUpdate
      * @summary Edition
      * @request PUT:/api/hand-gun/{id}
+     * @secure
      */
     handGunControllerUpdate: (id: number, data: UpdateHandGunDto, params: RequestParams = {}) =>
       this.request<HandGunDto, any>({
         path: `/api/hand-gun/${id}`,
         method: 'PUT',
         body: data,
+        secure: true,
         type: ContentType.Json,
         format: 'json',
         ...params
@@ -2279,11 +2317,13 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @name HandGunControllerDelete
      * @summary Suppresion logique
      * @request DELETE:/api/hand-gun/{id}
+     * @secure
      */
     handGunControllerDelete: (id: number, params: RequestParams = {}) =>
       this.request<ApiDeleteResponseDto, any>({
         path: `/api/hand-gun/${id}`,
         method: 'DELETE',
+        secure: true,
         format: 'json',
         ...params
       }),
@@ -2343,12 +2383,14 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @name RiffleControllerCreate
      * @summary Creation
      * @request POST:/api/riffle
+     * @secure
      */
     riffleControllerCreate: (data: CreateRiffleDto, params: RequestParams = {}) =>
       this.request<RiffleDto, any>({
         path: `/api/riffle`,
         method: 'POST',
         body: data,
+        secure: true,
         type: ContentType.Json,
         format: 'json',
         ...params
@@ -2361,12 +2403,14 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @name RiffleControllerUpdate
      * @summary Edition
      * @request PUT:/api/riffle/{id}
+     * @secure
      */
     riffleControllerUpdate: (id: number, data: UpdateRiffleDto, params: RequestParams = {}) =>
       this.request<RiffleDto, any>({
         path: `/api/riffle/${id}`,
         method: 'PUT',
         body: data,
+        secure: true,
         type: ContentType.Json,
         format: 'json',
         ...params
@@ -2379,11 +2423,13 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @name RiffleControllerDelete
      * @summary Suppresion logique
      * @request DELETE:/api/riffle/{id}
+     * @secure
      */
     riffleControllerDelete: (id: number, params: RequestParams = {}) =>
       this.request<ApiDeleteResponseDto, any>({
         path: `/api/riffle/${id}`,
         method: 'DELETE',
+        secure: true,
         format: 'json',
         ...params
       }),
@@ -2453,6 +2499,46 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
+     * @description Mise a jour du stock
+     *
+     * @tags Stock
+     * @name StockControllerUpdateStock
+     * @summary Creation
+     * @request POST:/api/stock
+     * @secure
+     */
+    stockControllerUpdateStock: (data: CreateStockDto, params: RequestParams = {}) =>
+      this.request<StockDto, any>({
+        path: `/api/stock`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Stock par id d objet
+     *
+     * @tags Stock
+     * @name StockControllerFindByStockableObjectAndId
+     * @summary by/id/:id
+     * @request GET:/api/stock/by/{object}/{objectId}
+     */
+    stockControllerFindByStockableObjectAndId: (
+      object: string,
+      objectId: number,
+      params: RequestParams = {}
+    ) =>
+      this.request<StockDto, any>({
+        path: `/api/stock/by/${object}/${objectId}`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
      * @description Retourne la liste des munitions filtre par calibre
      *
      * @tags Ammunition
@@ -2507,12 +2593,14 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @name AmmunitionControllerCreate
      * @summary Creation
      * @request POST:/api/ammunition
+     * @secure
      */
     ammunitionControllerCreate: (data: CreateAmmunitionDto, params: RequestParams = {}) =>
       this.request<AmmunitionDto, any>({
         path: `/api/ammunition`,
         method: 'POST',
         body: data,
+        secure: true,
         type: ContentType.Json,
         format: 'json',
         ...params
@@ -2525,12 +2613,14 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @name AmmunitionControllerEdit
      * @summary Edition
      * @request PUT:/api/ammunition/{id}
+     * @secure
      */
     ammunitionControllerEdit: (id: number, data: UpdateAmmunitionDto, params: RequestParams = {}) =>
       this.request<AmmunitionDto, any>({
         path: `/api/ammunition/${id}`,
         method: 'PUT',
         body: data,
+        secure: true,
         type: ContentType.Json,
         format: 'json',
         ...params
@@ -2543,11 +2633,13 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @name AmmunitionControllerDelete
      * @summary Suppresion logique
      * @request DELETE:/api/ammunition/{id}
+     * @secure
      */
     ammunitionControllerDelete: (id: number, params: RequestParams = {}) =>
       this.request<ApiDeleteResponseDto, any>({
         path: `/api/ammunition/${id}`,
         method: 'DELETE',
+        secure: true,
         format: 'json',
         ...params
       }),
@@ -2735,44 +2827,6 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
-     * @description Mise a jour du stock
-     *
-     * @tags Stock
-     * @name StockControllerUpdateStock
-     * @summary Creation
-     * @request POST:/api/stock
-     */
-    stockControllerUpdateStock: (data: CreateStockDto, params: RequestParams = {}) =>
-      this.request<StockDto, any>({
-        path: `/api/stock`,
-        method: 'POST',
-        body: data,
-        type: ContentType.Json,
-        format: 'json',
-        ...params
-      }),
-
-    /**
-     * @description Stock par id d objet
-     *
-     * @tags Stock
-     * @name StockControllerFindByStockableObjectAndId
-     * @summary by/id/:id
-     * @request GET:/api/stock/by/{object}/{objectId}
-     */
-    stockControllerFindByStockableObjectAndId: (
-      object: string,
-      objectId: number,
-      params: RequestParams = {}
-    ) =>
-      this.request<StockDto, any>({
-        path: `/api/stock/by/${object}/${objectId}`,
-        method: 'GET',
-        format: 'json',
-        ...params
-      }),
-
-    /**
      * @description Point d entree pour creer un nouveau compte utilisateur (Client part defaut)
      *
      * @tags Users
@@ -2865,12 +2919,14 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @name OpticControllerCreate
      * @summary Creation d une nouvelle optique
      * @request POST:/api/optic
+     * @secure
      */
     opticControllerCreate: (data: CreateOpticDto, params: RequestParams = {}) =>
       this.request<OpticDto, any>({
         path: `/api/optic`,
         method: 'POST',
         body: data,
+        secure: true,
         type: ContentType.Json,
         format: 'json',
         ...params
@@ -2883,12 +2939,14 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @name OpticControllerEdit
      * @summary Edition
      * @request PUT:/api/optic/{id}
+     * @secure
      */
     opticControllerEdit: (id: number, data: UpdateOpticDto, params: RequestParams = {}) =>
       this.request<OpticDto, any>({
         path: `/api/optic/${id}`,
         method: 'PUT',
         body: data,
+        secure: true,
         type: ContentType.Json,
         format: 'json',
         ...params
@@ -2901,11 +2959,13 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @name OpticControllerDelete
      * @summary Suppresion logique
      * @request DELETE:/api/optic/{id}
+     * @secure
      */
     opticControllerDelete: (id: number, params: RequestParams = {}) =>
       this.request<ApiDeleteResponseDto, any>({
         path: `/api/optic/${id}`,
         method: 'DELETE',
+        secure: true,
         format: 'json',
         ...params
       }),
@@ -2979,7 +3039,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
-     * @description Liste complete des collier d optique
+     * @description Liste complete des colliers d optique
      *
      * @tags Optic-Collar
      * @name OpticCollarControllerFindAll
@@ -2995,7 +3055,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
-     * @description Retourne le detail de l optique
+     * @description Retourne le detail du collier optique
      *
      * @tags Optic-Collar
      * @name OpticCollarControllerFindById
@@ -3017,24 +3077,27 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @name OpticCollarControllerCreate
      * @summary Creation
      * @request POST:/api/optic-collar
+     * @secure
      */
     opticCollarControllerCreate: (data: CreateOpticCollarDto, params: RequestParams = {}) =>
       this.request<OpticCollarDto, any>({
         path: `/api/optic-collar`,
         method: 'POST',
         body: data,
+        secure: true,
         type: ContentType.Json,
         format: 'json',
         ...params
       }),
 
     /**
-     * @description Edition de l optique
+     * @description Edition du collier optique
      *
      * @tags Optic-Collar
      * @name OpticCollarControllerEdit
      * @summary Edition
      * @request PUT:/api/optic-collar/{id}
+     * @secure
      */
     opticCollarControllerEdit: (
       id: number,
@@ -3045,23 +3108,26 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
         path: `/api/optic-collar/${id}`,
         method: 'PUT',
         body: data,
+        secure: true,
         type: ContentType.Json,
         format: 'json',
         ...params
       }),
 
     /**
-     * @description Suppression logique de l optique
+     * @description Suppression logique du collier optique
      *
      * @tags Optic-Collar
      * @name OpticCollarControllerDelete
      * @summary Suppresion logique
      * @request DELETE:/api/optic-collar/{id}
+     * @secure
      */
     opticCollarControllerDelete: (id: number, params: RequestParams = {}) =>
       this.request<ApiDeleteResponseDto, any>({
         path: `/api/optic-collar/${id}`,
         method: 'DELETE',
+        secure: true,
         format: 'json',
         ...params
       }),
@@ -3137,12 +3203,14 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @name SoundReducerControllerCreate
      * @summary Creation
      * @request POST:/api/sound-reducer
+     * @secure
      */
     soundReducerControllerCreate: (data: CreateSoundNoiseReducerDto, params: RequestParams = {}) =>
       this.request<SoundNoiseReducerDto, any>({
         path: `/api/sound-reducer`,
         method: 'POST',
         body: data,
+        secure: true,
         type: ContentType.Json,
         format: 'json',
         ...params
@@ -3155,6 +3223,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @name SoundReducerControllerEdit
      * @summary Edition
      * @request PUT:/api/sound-reducer/{id}
+     * @secure
      */
     soundReducerControllerEdit: (
       id: number,
@@ -3165,6 +3234,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
         path: `/api/sound-reducer/${id}`,
         method: 'PUT',
         body: data,
+        secure: true,
         type: ContentType.Json,
         format: 'json',
         ...params
@@ -3177,11 +3247,13 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @name SoundReducerControllerDelete
      * @summary Suppresion logique
      * @request DELETE:/api/sound-reducer/{id}
+     * @secure
      */
     soundReducerControllerDelete: (id: number, params: RequestParams = {}) =>
       this.request<ApiDeleteResponseDto, any>({
         path: `/api/sound-reducer/${id}`,
         method: 'DELETE',
+        secure: true,
         format: 'json',
         ...params
       })

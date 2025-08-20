@@ -27,7 +27,7 @@ import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.v
 const store = useHeadTypeStore()
 const i18nPrefix = store.getI18NPrefix
 const { data: headTypes$, refetch } = store.getAll()
-const { mutationSuccess } = storeToRefs(store)
+//const { mutationSuccess } = storeToRefs(store)
 const {
   initialValue = 0,
   canAddNew = false,
@@ -46,7 +46,7 @@ const onSelect = (id: number) => {
   emit('onSelect', type)
   headTypeId.value = id
 }
-watch(
+/*watch(
   () => mutationSuccess.value,
   (value) => {
     if (value) {
@@ -55,7 +55,7 @@ watch(
       closeDrawer.value = value
     }
   }
-)
+)*/
 watch(
   () => initialValue,
   (value) => {

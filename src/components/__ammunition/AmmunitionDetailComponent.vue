@@ -12,6 +12,7 @@
         <Tab value="2">{{ t('global.description') }}</Tab>
         <Tab value="3">{{ t('global.associatedProducts') }}</Tab>
         <Tab value="4">{{ t('global.stock') }}</Tab>
+        <!--        <Tab value="5">{{ t('global.authors') }}</Tab>-->
       </TabList>
       <TabPanels>
         <TabPanel value="0">
@@ -39,8 +40,17 @@
         <TabPanel value="4">
           <TabCardComponent :props="stockInfo" v-if="stockInfo" />
         </TabPanel>
+        <!--        <TabPanel value="5">
+          <TabCardComponent :props="stockInfo" v-if="stockInfo" />
+        </TabPanel>-->
       </TabPanels>
     </Tabs>
+    <audit-info-component
+      :created-by="ammo.createdBy"
+      :updated-by="ammo.updatedBy"
+      :created-at="ammo.createdAt"
+      :update-at="ammo.updatedAt"
+    />
   </div>
 </template>
 
@@ -56,6 +66,7 @@ import TabList from 'primevue/tablist'
 import Tabs from 'primevue/tabs'
 import TabPanel from 'primevue/tabpanel'
 import ShowPriceHistoryButton from '@/components/__layout/ShowPriceHistoryButton.vue'
+import AuditInfoComponent from '@/components/__detail/AuditInfoComponent.vue'
 
 const { id } = defineProps<{
   id: string

@@ -105,6 +105,7 @@ export const useSoundReducerStore = defineStore('sound-noise-reducer-store', () 
       _createMutation,
       _updateMutation,
       _I18N_PREFIX,
+      _GET_BY_ID_FN,
       id,
       (data) => ({
         ...data

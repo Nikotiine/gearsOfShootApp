@@ -12,7 +12,7 @@ export const useHeadTypeStore = defineStore('head-type-store', () => {
   const { api } = useApiStore()
 
   // Refs
-  const mutationSuccess = ref(false)
+  const submitSuccess = ref(false)
   // Private Attibute
   const _I18N_PREFIX = 'headType'
   const _GET_ALL_FN = 'getAllHeadType'
@@ -24,7 +24,7 @@ export const useHeadTypeStore = defineStore('head-type-store', () => {
       return await api.api.ammunitionHeadTypeControllerCreate(headType)
     },
     onSuccess() {
-      mutationSuccess.value = true
+      submitSuccess.value = true
     }
   })
   const _updateMutation = useMutation({
@@ -32,7 +32,7 @@ export const useHeadTypeStore = defineStore('head-type-store', () => {
       return await api.api.ammunitionHeadTypeControllerEdit(head.id, head)
     },
     onSuccess() {
-      mutationSuccess.value = true
+      submitSuccess.value = true
     }
   })
   const getAllHeadTypesQuery = () =>
@@ -68,6 +68,7 @@ export const useHeadTypeStore = defineStore('head-type-store', () => {
       _createMutation,
       _updateMutation,
       _I18N_PREFIX,
+      _GET_BY_ID_FN,
       id,
       (data) => ({
         ...data
@@ -77,7 +78,7 @@ export const useHeadTypeStore = defineStore('head-type-store', () => {
   return {
     getAll: getAllHeadTypesQuery,
     getI18NPrefix: getI18NPrefix(_I18N_PREFIX),
-    mutationSuccess,
+    submitSuccess,
     formBuilder: useHeadTypeForm
   }
 })

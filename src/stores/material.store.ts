@@ -12,7 +12,7 @@ export const useMaterialStore = defineStore('material-store', () => {
   const { api } = useApiStore()
 
   // Refs
-  const mutationSuccess = ref(false)
+  const submitSuccess = ref(false)
   // Private Attibute
   const _I18N_PREFIX = 'material'
   const _GET_ALL_FN = 'getAllMaterial'
@@ -24,7 +24,7 @@ export const useMaterialStore = defineStore('material-store', () => {
       return await api.api.materialControllerCreate(materialDto)
     },
     onSuccess() {
-      mutationSuccess.value = true
+      submitSuccess.value = true
     }
   })
   const _updateMutation = useMutation({
@@ -32,7 +32,7 @@ export const useMaterialStore = defineStore('material-store', () => {
       return await api.api.materialControllerEdit(material.id, material)
     },
     onSuccess() {
-      mutationSuccess.value = true
+      submitSuccess.value = true
     }
   })
   const getAllQuery = () =>
@@ -68,6 +68,7 @@ export const useMaterialStore = defineStore('material-store', () => {
       _createMutation,
       _updateMutation,
       _I18N_PREFIX,
+      _GET_BY_ID_FN,
       id,
       (data) => ({
         ...data
@@ -77,7 +78,7 @@ export const useMaterialStore = defineStore('material-store', () => {
   return {
     formBuilder: useMaterialForm,
     getAll: getAllQuery,
-    mutationSuccess,
+    submitSuccess,
     getI18NPrefix: getI18NPrefix(_I18N_PREFIX)
   }
 })

@@ -1,5 +1,5 @@
 <template>
-  <h2 class="text-center text-2xl">{{ t('bodyType.form.addTitle') }}</h2>
+  <form-title-component />
   <form @submit.prevent="submit">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
       <InputGroup>
@@ -41,6 +41,7 @@ import { useBodyTypeStore } from '@/stores/body-type.store'
 import { useI18n } from 'vue-i18n'
 import InputGroupText from '@/components/__form/InputGroupText.vue'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
+import FormTitleComponent from '@/components/__form/FormTitleComponent.vue'
 
 const store = useBodyTypeStore()
 const { t } = useI18n()

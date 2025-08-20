@@ -29,7 +29,7 @@ export const useHandGunStore = defineStore('hand-gun-store', () => {
   const handgun = ref<HandGunDto | null>(null)
 
   // Private Attibute
-  const _I18N_PREFIX = 'weapon'
+  const _I18N_PREFIX = 'handgun'
   const _GET_ALL_BY_CATEGORY_FN = 'getAllHandGunByCategory'
   const _GET_ALL_FN = 'getAllHandGun'
   const _GET_BY_ID_FN = 'getHandGunById'
@@ -135,7 +135,8 @@ export const useHandGunStore = defineStore('hand-gun-store', () => {
       slideMaterial: null,
       slideColor: null,
       triggerType: getTriggerTypeDto(),
-      priceHistory: getPriceHistoryDto()
+      priceHistory: getPriceHistoryDto(),
+      inStock: 0
     }
     return useFormHandler<CreateHandGunDto, AxiosResponse<HandGunDto>>(
       emptyForm,
@@ -143,6 +144,7 @@ export const useHandGunStore = defineStore('hand-gun-store', () => {
       _createMutation,
       _updateMutation,
       _I18N_PREFIX,
+      _GET_BY_ID_FN,
       id,
       (data) => ({
         ...data

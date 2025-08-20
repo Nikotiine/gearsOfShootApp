@@ -13,7 +13,7 @@ export const useColorStore = defineStore('color-store', () => {
   // TOAST
 
   // Refs
-  const mutationSuccess = ref(false)
+  const submitSuccess = ref(false)
   // Private Attibute
   const _I18N_PREFIX = 'color'
   const _GET_ALL_FN = 'getAllColor'
@@ -24,7 +24,7 @@ export const useColorStore = defineStore('color-store', () => {
       return await api.api.colorControllerCreate(color)
     },
     onSuccess() {
-      mutationSuccess.value = true
+      submitSuccess.value = true
     }
   })
   const _updateMutation = useMutation({
@@ -32,7 +32,7 @@ export const useColorStore = defineStore('color-store', () => {
       return await api.api.colorControllerEdit(color.id, color)
     },
     onSuccess() {
-      mutationSuccess.value = true
+      submitSuccess.value = true
     }
   })
   const getAllQuery = () =>
@@ -69,6 +69,7 @@ export const useColorStore = defineStore('color-store', () => {
       _createMutation,
       _updateMutation,
       _I18N_PREFIX,
+      _GET_BY_ID_FN,
       id,
       (data) => ({
         ...data
@@ -78,7 +79,7 @@ export const useColorStore = defineStore('color-store', () => {
   return {
     formBuilder: useColorForm,
     getAll: getAllQuery,
-    mutationSuccess,
+    submitSuccess,
     getI18NPrefix: getI18NPrefix(_I18N_PREFIX)
   }
 })

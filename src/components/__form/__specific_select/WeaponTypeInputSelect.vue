@@ -47,7 +47,7 @@ const store = useWeaponTypeStore()
 const i18Prefix = store.getI18NPrefix
 const { data: weaponType$, refetch } = store.getAll()
 
-const { mutationSuccess } = storeToRefs(store)
+const { submitSuccess } = storeToRefs(store)
 const emit = defineEmits(['onSelect'])
 const weaponTypeList = computed(() => {
   let list: WeaponTypeDto[] = []
@@ -78,11 +78,11 @@ const onSelect = (id: number) => {
   typeId.value = id
 }
 watch(
-  () => mutationSuccess.value,
+  () => submitSuccess.value,
   (value) => {
     if (value) {
       refetch()
-      mutationSuccess.value = false
+      submitSuccess.value = false
       closeDrawer.value = value
     }
   }

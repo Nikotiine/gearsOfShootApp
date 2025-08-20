@@ -40,13 +40,13 @@ const emit = defineEmits(['onSelect'])
 const bodyTypesList = computed(() => bodyTypes$.value || [])
 const bodyTypeId = ref<number>(initialValue)
 const closeDrawer = ref(false)
-const { mutationSuccess } = storeToRefs(store)
+//const { mutationSuccess } = storeToRefs(store)
 const onSelect = (id: number) => {
   const type = bodyTypesList.value.find((type) => type.id === id)
   emit('onSelect', type)
   bodyTypeId.value = id
 }
-watch(
+/*watch(
   () => mutationSuccess.value,
   (value) => {
     if (value) {
@@ -55,7 +55,7 @@ watch(
       closeDrawer.value = value
     }
   }
-)
+)*/
 watch(
   () => initialValue,
   (value) => {

@@ -14,6 +14,7 @@
           placeholder="name"
           label="name"
           required
+          :i18n-prefix="i18nPrefix"
           input-id="name"
           :initial-value="form.name"
         />
@@ -29,6 +30,7 @@
           required
           input-id="reference"
           :initial-value="form.reference"
+          :i18n-prefix="i18nPrefix"
         />
       </InputGroup>
       <weapon-reload-mode-input-select
@@ -57,7 +59,7 @@ import WeaponReloadModeInputSelect from '@/components/__form/__specific_select/W
 const { t } = useI18n()
 const store = useWeaponTypeStore()
 const { modes$ } = storeToRefs(store)
-
+const i18nPrefix = store.getI18NPrefix
 //*******************Init du formulaire*********************
 const { form, submit } = store.formBuilder()
 

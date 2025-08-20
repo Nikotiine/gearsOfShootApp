@@ -11,9 +11,9 @@ export type NumberFormatterType =
   | 'yrd'
   | 'db'
   | 'euro'
-export function NumberFormatter(value: number, format: NumberFormatterType): string {
+export function NumberFormatter(value: number | undefined, format: NumberFormatterType): string {
   const { t } = useI18n()
-  if (value === 0) {
+  if (value === 0 || !value) {
     return t('global.notRegistered')
   } else {
     return `${value} ${t('formatter.' + format)}`

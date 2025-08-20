@@ -45,6 +45,12 @@
         </TabPanel>
       </TabPanels>
     </Tabs>
+    <audit-info-component
+      :created-by="riffle.createdBy"
+      :updated-by="riffle.updatedBy"
+      :created-at="riffle.createdAt"
+      :update-at="riffle.updatedAt"
+    />
   </div>
 </template>
 
@@ -65,6 +71,7 @@ import {
   VerifyFieldIsNotNull
 } from '@/shared/utils/formatter.utils'
 import ShowPriceHistoryButton from '@/components/__layout/ShowPriceHistoryButton.vue'
+import AuditInfoComponent from '@/components/__detail/AuditInfoComponent.vue'
 
 const { t } = useI18n()
 const store = useRiffleStore()

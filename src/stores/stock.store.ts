@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { getI18NPrefix, I18NSuffix } from '@/enum/I18NSuffix.enum'
-import type { CreateStockDto } from '@/api/Api'
+import type { CreateStockDto, StockDto } from '@/api/Api'
 import { useApiStore } from '@/stores/api'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import { ref } from 'vue'
@@ -18,6 +18,7 @@ export const useStockStore = defineStore('stock-store', () => {
   const objectId = ref<number>(0)
   const currentStock = ref<number>(0)
   const object = ref<StockableObjectType>('DEFAULT')
+  const stockAndHistories = ref<StockDto>()
   const submitSuccess = ref(false)
   const _createMutation = useMutation({
     mutationFn: async (stock: CreateStockDto) => {
@@ -38,10 +39,11 @@ export const useStockStore = defineStore('stock-store', () => {
       _createMutation.mutate(
         { ...form.value, object: object.value, objectId: objectId.value },
         {
-          onSuccess: (data) => {
+          onSuccess: async (data) => {
             console.log(data.data.quantity)
             currentStock.value = data.data.quantity
             submitSuccess.value = true
+            await _fetchByObjectAndObjectId(object.value, objectId.value.toString())
             successMessage(
               getI18NPrefix(_I18N_PREFIX) + I18NSuffix.SUMMARY,
               getI18NPrefix(_I18N_PREFIX) + I18NSuffix.UPDATED,
@@ -76,6 +78,8 @@ export const useStockStore = defineStore('stock-store', () => {
   const _fetchByObjectAndObjectId = async (object: StockableObjectType, objectId?: string) => {
     if (!object || !objectId) return null
     const res = await api.api.stockControllerFindByStockableObjectAndId(object, parseInt(objectId))
+    console.log('res', res.data)
+    stockAndHistories.value = res.data
     return res.data
   }
 
@@ -96,6 +100,7 @@ export const useStockStore = defineStore('stock-store', () => {
     submitSuccess,
     setCurrentStock: setCurrentStock,
     currentStock,
-    getByObjectAndObjectId
+    getByObjectAndObjectId,
+    stockAndHistories
   }
 })

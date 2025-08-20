@@ -8,7 +8,7 @@
 
     <input-group-number
       :i18n-prefix="i18nPrefix"
-      label="quantity"
+      label="movementQuantity"
       placeholder="quantity"
       @value="(value) => (form.quantity = value)"
       input-id="quantity"

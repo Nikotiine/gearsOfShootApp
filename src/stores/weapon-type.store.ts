@@ -18,7 +18,7 @@ export const useWeaponTypeStore = defineStore('weapon-type-store', () => {
   // TOAST
 
   // Refs
-  const mutationSuccess = ref(false)
+  const submitSuccess = ref(false)
 
   const modes = ref<WeaponReloadModeDto[]>([])
   // Private Attibute
@@ -26,6 +26,7 @@ export const useWeaponTypeStore = defineStore('weapon-type-store', () => {
   const _GET_ALL_FN = 'getAllWeaponType'
   const _GET_BY_ID_FN = 'getWeaponTypeById'
 
+  //TODO: A changer ca
   const _PREREQUISITE_FN = 'prerequisite-weaponType'
   // *******************Methodes***************
   const _createMutation = useMutation({
@@ -33,7 +34,7 @@ export const useWeaponTypeStore = defineStore('weapon-type-store', () => {
       return await api.api.weaponTypeControllerCreate(weaponType)
     },
     onSuccess() {
-      mutationSuccess.value = true
+      submitSuccess.value = true
     }
   })
   const _updateMutation = useMutation({
@@ -41,7 +42,7 @@ export const useWeaponTypeStore = defineStore('weapon-type-store', () => {
       return await api.api.weaponTypeControllerEdit(factory.id, factory)
     },
     onSuccess() {
-      mutationSuccess.value = true
+      submitSuccess.value = true
     }
   })
   const _fetchById = async (id?: string) => {
@@ -89,6 +90,7 @@ export const useWeaponTypeStore = defineStore('weapon-type-store', () => {
       _createMutation,
       _updateMutation,
       _I18N_PREFIX,
+      _GET_BY_ID_FN,
       id,
       (data) => ({
         ...data,
@@ -99,7 +101,7 @@ export const useWeaponTypeStore = defineStore('weapon-type-store', () => {
   return {
     formBuilder: useWeaponTypeForm,
     getAll: getAllQuery,
-    mutationSuccess,
+    submitSuccess,
     prerequisiteList: queryPrerequisitesWeaponTypeQuery,
     modes$: modes,
     getI18NPrefix: getI18NPrefix(_I18N_PREFIX)

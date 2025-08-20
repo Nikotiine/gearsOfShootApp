@@ -43,7 +43,7 @@ const store = useThreadedSizeStore()
 const i18Prefix = store.getI18NPrefix
 const { data, refetch } = store.getAll()
 const threadedSizeId = ref<number>(initialValue)
-const { mutationSuccess } = storeToRefs(store)
+//const { mutationSuccess } = storeToRefs(store)
 const emit = defineEmits(['onSelect'])
 const threadedSizesList = computed(() => data.value || [])
 const closeDrawer = ref(false)
@@ -52,7 +52,7 @@ const onSelect = (id: number) => {
   emit('onSelect', threadedSize)
   threadedSizeId.value = id
 }
-watch(
+/*watch(
   () => mutationSuccess.value,
   (value) => {
     if (value) {
@@ -61,7 +61,7 @@ watch(
       closeDrawer.value = value
     }
   }
-)
+)*/
 watch(
   () => initialValue,
   (value) => {

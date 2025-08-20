@@ -17,10 +17,12 @@ const route = useRoute()
 const id = ref<string | undefined>(route.params.id ? (route.params.id as string) : undefined)
 const formStatus = ref<FormStatus>(route.params.id ? 'edit' : 'save')
 formStore.setFormStatus(formStatus.value)
+formStore.setCurrentId(id.value)
 watch(
   () => route.params.id,
   (newId) => {
     id.value = newId ? (newId as string) : undefined
+    formStore.setCurrentId(id.value)
     formStatus.value = newId ? 'edit' : 'save'
     formStore.setFormStatus(formStatus.value)
   }

@@ -13,7 +13,7 @@ export const useBodyTypeStore = defineStore('body-type-store', () => {
   // TOAST
 
   // Refs
-  const mutationSuccess = ref(false)
+  const submitSuccess = ref(false)
   // Private Attibute
   const _I18N_PREFIX = 'bodyType'
   const _GET_ALL_FN = 'getAllBodyType'
@@ -24,7 +24,7 @@ export const useBodyTypeStore = defineStore('body-type-store', () => {
       return await api.api.ammunitionBodyTypeControllerCreate(bodyType)
     },
     onSuccess() {
-      mutationSuccess.value = true
+      submitSuccess.value = true
     }
   })
 
@@ -43,7 +43,7 @@ export const useBodyTypeStore = defineStore('body-type-store', () => {
       return await api.api.ammunitionBodyTypeControllerEdit(body.id, body)
     },
     onSuccess() {
-      mutationSuccess.value = true
+      submitSuccess.value = true
     }
   })
   const getByIdQuery = (id?: string) =>
@@ -69,6 +69,7 @@ export const useBodyTypeStore = defineStore('body-type-store', () => {
       _createMutation,
       _updateMutation,
       _I18N_PREFIX,
+      _GET_BY_ID_FN,
       id,
       (data) => ({
         ...data
@@ -79,7 +80,7 @@ export const useBodyTypeStore = defineStore('body-type-store', () => {
   return {
     formBuilder: useBodyTypeForm,
     getAll: getAllQuery,
-    mutationSuccess,
+    submitSuccess,
     getI18NPrefix: getI18NPrefix(_I18N_PREFIX)
   }
 })

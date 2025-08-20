@@ -14,7 +14,6 @@ import { getBodyTypeDto } from '@/shared/api-dto/get-body-type.dto'
 import { getHeadTypeDto } from '@/shared/api-dto/get-head-type.dto'
 import { getPercussionTypeDto } from '@/shared/api-dto/get-percussion-type.dto'
 import { getPriceHistoryDto } from '@/shared/api-dto/get-price-history.dto'
-import { getStockDto } from '@/shared/api-dto/get-stock.dto'
 
 export const useAmmunitionStore = defineStore('ammunition-store', () => {
   // Appel API
@@ -72,6 +71,7 @@ export const useAmmunitionStore = defineStore('ammunition-store', () => {
       _createMutation,
       _updateMutation,
       _I18N_PREFIX,
+      _GET_BY_ID_FN,
       id,
       (data) => ({
         ...data
