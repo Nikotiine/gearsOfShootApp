@@ -145,6 +145,7 @@ export const useHandGunStore = defineStore('hand-gun-store', () => {
       _updateMutation,
       _I18N_PREFIX,
       _GET_BY_ID_FN,
+      undefined,
       id,
       (data) => ({
         ...data

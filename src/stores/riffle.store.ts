@@ -143,6 +143,7 @@ export const useRiffleStore = defineStore('riffle-store', () => {
       _updateMutation,
       _I18N_PREFIX,
       _GET_BY_ID_FN,
+      undefined,
       id,
       (data) => ({
         ...data

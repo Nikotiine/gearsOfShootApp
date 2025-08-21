@@ -8,12 +8,6 @@
     />
   </InputGroupAddon>
 
-  <!--  <drawer-form-view
-    :visible="isVisibleDrawer"
-    :type="type"
-    @on-close="isVisibleDrawer = $event"
-    :factory-type="factoryType"
-  />-->
   <drawer-view v-model:visible="visible" :component="type" position="bottom" />
 </template>
 
@@ -29,29 +23,15 @@ import DrawerView, { type DrawerViewFormComponent } from '@/views/shared/DrawerV
 
 const { t } = useI18n()
 const icon: string = 'pi pi-plus text-blue-700'
-const {
-  type,
-  factoryType = 'weapon',
-  close = false
-} = defineProps<{
+const { type, factoryType = 'weapon' } = defineProps<{
   type: DrawerViewFormComponent
   factoryType?: FactoryType
-  close: boolean
 }>()
 
 const visible = ref(false)
 const toggleDrawer = () => {
   visible.value = !visible.value
 }
-
-watch(
-  () => close,
-  (value) => {
-    if (value) {
-      visible.value = !visible.value
-    }
-  }
-)
 </script>
 
 <style scoped>

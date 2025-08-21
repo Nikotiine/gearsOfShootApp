@@ -40,7 +40,6 @@ export const useStockStore = defineStore('stock-store', () => {
         { ...form.value, object: object.value, objectId: objectId.value },
         {
           onSuccess: async (data) => {
-            console.log(data.data.quantity)
             currentStock.value = data.data.quantity
             submitSuccess.value = true
             await _fetchByObjectAndObjectId(object.value, objectId.value.toString())

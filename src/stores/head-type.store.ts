@@ -17,13 +17,12 @@ export const useHeadTypeStore = defineStore('head-type-store', () => {
   const _I18N_PREFIX = 'headType'
   const _GET_ALL_FN = 'getAllHeadType'
   const _GET_BY_ID_FN = 'getHeadTypeById'
-
   // *******************Methodes***************
   const _createMutation = useMutation({
     mutationFn: async (headType: CreateAmmunitionHeadTypeDto) => {
       return await api.api.ammunitionHeadTypeControllerCreate(headType)
     },
-    onSuccess() {
+    onSuccess: async () => {
       submitSuccess.value = true
     }
   })
@@ -69,6 +68,7 @@ export const useHeadTypeStore = defineStore('head-type-store', () => {
       _updateMutation,
       _I18N_PREFIX,
       _GET_BY_ID_FN,
+      _GET_ALL_FN,
       id,
       (data) => ({
         ...data

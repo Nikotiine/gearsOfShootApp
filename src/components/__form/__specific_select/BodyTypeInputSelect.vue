@@ -12,7 +12,7 @@
       input-id="bodyTypeId"
       :initial-value="bodyTypeId"
     />
-    <input-group-addon-open-drawer-button :close="closeDrawer" type="bodyType" v-if="canAddNew" />
+    <input-group-addon-open-drawer-button type="bodyType" v-if="canAddNew" />
   </InputGroup>
 </template>
 <script setup lang="ts">
@@ -22,11 +22,12 @@ import InputGroup from 'primevue/inputgroup'
 import InputGroupAddonOpenDrawerButton from '@/components/__form/InputGroupAddonOpenDrawerButton.vue'
 import { useBodyTypeStore } from '@/stores/body-type.store'
 import { computed, ref, watch } from 'vue'
-import { storeToRefs } from 'pinia'
 import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.vue'
+
 const store = useBodyTypeStore()
 const i18nPrefix = store.getI18NPrefix
-const { data: bodyTypes$, refetch } = store.getAll()
+const { data: bodyTypes } = store.getAll()
+
 const {
   initialValue = 0,
   canAddNew = false,
@@ -37,25 +38,14 @@ const {
   required?: boolean
 }>()
 const emit = defineEmits(['onSelect'])
-const bodyTypesList = computed(() => bodyTypes$.value || [])
+const bodyTypesList = computed(() => bodyTypes.value || [])
 const bodyTypeId = ref<number>(initialValue)
-const closeDrawer = ref(false)
-//const { mutationSuccess } = storeToRefs(store)
+
 const onSelect = (id: number) => {
   const type = bodyTypesList.value.find((type) => type.id === id)
   emit('onSelect', type)
   bodyTypeId.value = id
 }
-/*watch(
-  () => mutationSuccess.value,
-  (value) => {
-    if (value) {
-      refetch()
-      mutationSuccess.value = false
-      closeDrawer.value = value
-    }
-  }
-)*/
 watch(
   () => initialValue,
   (value) => {
