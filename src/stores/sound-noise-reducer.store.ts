@@ -97,7 +97,8 @@ export const useSoundReducerStore = defineStore('sound-noise-reducer-store', () 
       threadedSize: getThreadedSizeDto(),
       chicane: 0,
       estimatedNoiseReduction: 0,
-      priceHistory: getPriceHistoryDto()
+      priceHistory: getPriceHistoryDto(),
+      inStock: 0
     }
     return useFormHandler<CreateSoundNoiseReducerDto, AxiosResponse<SoundNoiseReducerDto>>(
       emptyForm,

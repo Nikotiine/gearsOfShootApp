@@ -34,16 +34,16 @@ const emit = defineEmits(['onSelect'])
 const {
   initialValue = 0,
   canAddNew = false,
-  factoryType = undefined,
+  factoryType,
   required = false
 } = defineProps<{
   initialValue?: number
   canAddNew?: boolean
-  factoryType?: FactoryType
+  factoryType: FactoryType
   required?: boolean
 }>()
 const factoryId = ref<number>(initialValue)
-
+store.setFactoryType(factoryType)
 const { data } = store.getFactoriesByType(factoryType)
 const factoriesList = computed(() => data.value || [])
 const onSelect = (id: number) => {

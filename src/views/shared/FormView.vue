@@ -3,7 +3,7 @@
 </template>
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import { computed, watch } from 'vue'
+import { computed } from 'vue'
 import FormWrapper from '@/views/shared/FormWrapper.vue'
 import OpticCollarFormComponent from '@/components/__optic/OpticCollarFormComponent.vue'
 import AmmunitionFormComponent from '@/components/__ammunition/AmmunitionFormComponent.vue'
@@ -21,25 +21,9 @@ import SoundReducerFormComponent from '@/components/__accessory/rds/SoundReducer
 import { RouterEnum } from '@/enum/router.enum'
 import HandGunFormComponent from '@/components/__weapon/handgun/HandGunFormComponent.vue'
 import RiffleFormComponent from '@/components/__weapon/riffle/RiffleFormComponent.vue'
-import { useOpticCollarStore } from '@/stores/optic-collar.store'
-import { useAmmunitionStore } from '@/stores/ammunition.store'
-import { useWeaponMagazineStore } from '@/stores/weapon-magazine.store'
-import { useFactoryStore } from '@/stores/factory.store'
-import { useOpticStore } from '@/stores/optic.store'
-import { useColorStore } from '@/stores/color.store'
-import { useMaterialStore } from '@/stores/material.store'
-import { useHeadTypeStore } from '@/stores/head-type.store'
-import { useBodyTypeStore } from '@/stores/body-type.store'
-import { useThreadedSizeStore } from '@/stores/threaded-size.store'
-import { useWeaponTypeStore } from '@/stores/weapon-type.store'
-import { useCaliberStore } from '@/stores/caliber.store'
-import { useSoundReducerStore } from '@/stores/sound-noise-reducer.store'
-import { useHandGunStore } from '@/stores/hand-gun.store'
-import { useRiffleStore } from '@/stores/riffle.store'
-import { useFormStore } from '@/stores/form.store'
 
 const route = useRoute()
-const store = useFormStore()
+
 enum RouterFormEnum {
   OPTIC_COLLAR_NEW = RouterEnum.OPTIC_COLLAR_NEW,
   OPTIC_COLLAR_EDIT = RouterEnum.OPTIC_COLLAR_EDIT,
@@ -65,6 +49,7 @@ enum RouterFormEnum {
   RIFFLE_NEW = RouterEnum.RIFFLE_NEW,
   RIFFLE_EDIT = RouterEnum.RIFFLE_EDIT
 }
+
 // Mapping entre les noms de route et les composants
 const componentMap = {
   [RouterFormEnum.OPTIC_COLLAR_EDIT]: OpticCollarFormComponent,

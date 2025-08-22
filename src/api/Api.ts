@@ -462,8 +462,16 @@ export interface WeaponMagazineDto {
   compatibleHandGun: HandGunDto[] | null
   /** Historique des prix */
   priceHistory: CreatePriceHistoryDto
+  inStock: number
   id: number
   reference: string
+  createdBy: UserDto
+  updatedBy: UserDto
+  /** @format date-time */
+  createdAt: string
+  /** @format date-time */
+  updatedAt: string
+  stock: StockDto | null
 }
 
 export interface CreateWeaponMagazineDto {
@@ -490,6 +498,7 @@ export interface CreateWeaponMagazineDto {
   compatibleHandGun: HandGunDto[] | null
   /** Historique des prix */
   priceHistory: CreatePriceHistoryDto
+  inStock: number
 }
 
 export interface UpdateWeaponMagazineDto {
@@ -516,6 +525,7 @@ export interface UpdateWeaponMagazineDto {
   compatibleHandGun: HandGunDto[] | null
   /** Historique des prix */
   priceHistory: CreatePriceHistoryDto
+  inStock: number
   id: number
 }
 
@@ -1050,7 +1060,15 @@ export interface OpticDto {
   isCollarsProvided: boolean
   priceHistory: CreatePriceHistoryDto
   providedOpticCollarSize: RailSizeDto | null
+  inStock: number
   id: number
+  createdBy: UserDto
+  updatedBy: UserDto
+  /** @format date-time */
+  createdAt: string
+  /** @format date-time */
+  updatedAt: string
+  stock: StockDto | null
   reference: string
 }
 
@@ -1077,6 +1095,7 @@ export interface CreateOpticDto {
   isCollarsProvided: boolean
   priceHistory: CreatePriceHistoryDto
   providedOpticCollarSize: RailSizeDto | null
+  inStock: number
 }
 
 export interface UpdateOpticDto {
@@ -1102,6 +1121,7 @@ export interface UpdateOpticDto {
   isCollarsProvided: boolean
   priceHistory: CreatePriceHistoryDto
   providedOpticCollarSize: RailSizeDto | null
+  inStock: number
   id: number
 }
 
@@ -1119,8 +1139,16 @@ export interface OpticCollarDto {
   /** @example "Une description du ou des colliers" */
   description: string
   priceHistory: CreatePriceHistoryDto
+  inStock: number
   id: number
   reference: string
+  createdBy: UserDto
+  updatedBy: UserDto
+  /** @format date-time */
+  createdAt: string
+  /** @format date-time */
+  updatedAt: string
+  stock: StockDto | null
 }
 
 export interface CreateOpticCollarDto {
@@ -1132,6 +1160,7 @@ export interface CreateOpticCollarDto {
   /** @example "Une description du ou des colliers" */
   description: string
   priceHistory: CreatePriceHistoryDto
+  inStock: number
 }
 
 export interface UpdateOpticCollarDto {
@@ -1143,6 +1172,7 @@ export interface UpdateOpticCollarDto {
   /** @example "Une description du ou des colliers" */
   description: string
   priceHistory: CreatePriceHistoryDto
+  inStock: number
   id: number
 }
 
@@ -1165,8 +1195,16 @@ export interface SoundNoiseReducerDto {
   isCleanable: boolean
   /** Historique des prix */
   priceHistory: CreatePriceHistoryDto
+  inStock: number
   id: number
   reference: string
+  createdBy: UserDto
+  updatedBy: UserDto
+  /** @format date-time */
+  createdAt: string
+  /** @format date-time */
+  updatedAt: string
+  stock: StockDto | null
 }
 
 export interface CreateSoundNoiseReducerDto {
@@ -1188,6 +1226,7 @@ export interface CreateSoundNoiseReducerDto {
   isCleanable: boolean
   /** Historique des prix */
   priceHistory: CreatePriceHistoryDto
+  inStock: number
 }
 
 export interface UpdateSoundNoiseReducerDto {
@@ -1209,6 +1248,7 @@ export interface UpdateSoundNoiseReducerDto {
   isCleanable: boolean
   /** Historique des prix */
   priceHistory: CreatePriceHistoryDto
+  inStock: number
   id: number
 }
 

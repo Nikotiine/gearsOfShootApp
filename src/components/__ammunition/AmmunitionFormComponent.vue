@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <form-title-component />
+    <form-title-component :i18n-prefix="i18nPrefix" />
     <form @submit.prevent="submit">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 p-4">
         <legalisation-category-input-select
@@ -112,9 +112,7 @@ import InputGroup from 'primevue/inputgroup'
 import { useAmmunitionStore } from '@/stores/ammunition.store'
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
-
 import InputGroupText from '@/components/__form/InputGroupText.vue'
-
 import InputGroupNumber from '@/components/__form/InputGroupNumber.vue'
 import SaveButton from '@/components/__form/SaveButton.vue'
 import CaliberInputSelect from '@/components/__form/__specific_select/CaliberInputSelect.vue'
@@ -127,7 +125,6 @@ import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.v
 import PriceHistoryForm from '@/components/__form/PriceHistoryForm.vue'
 import EditStockComponent from '@/components/__stock/EditStockComponent.vue'
 import { useFormStore } from '@/stores/form.store'
-import type { FormStatus } from '@/types/form-status.type'
 import FormTitleComponent from '@/components/__form/FormTitleComponent.vue'
 
 const { t } = useI18n()

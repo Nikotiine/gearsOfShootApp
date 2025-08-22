@@ -111,6 +111,7 @@
     "findByFactory": "Recherche par marque",
     "findByCaliber": "Recherche par calibre",
     "findByReference": "Recherche par reference",
+    "findByName": "Recherche par modele",
     "globalSearch": "Recherche globale",
     "inStock": "En stock",
     "stock": "Stock",
@@ -121,6 +122,8 @@
     "save": "Ajouter une arme de poing",
     "edit": "Modifier une arme de poing",
     "summary": "Gestion des armes de poing",
+    "notFound": "Aucune arme trouvée",
+    "loading": "Chargement",
     "model": "Modele de l'arme",
     "variation": "Variante",
     "barrelLength": "Longueur du canon",
@@ -171,6 +174,7 @@
   },
   "riffle": {
     "list": "Listes des armes longues",
+    "save": "Ajouter une arme longue",
     "summary": "Gestion des armes longues",
     "model": "Modele de l'arme",
     "variation": "Variante",
@@ -208,7 +212,7 @@
     "updated": "Arme modifié avec succes",
     "deleted": "Arme supprimée",
     "form": {
-      "add": "Ajouter une arme de categorie",
+
       "isThreadedBarrel": "Filetage",
       "isProvidedMagazine": "Chargeur fournis",
       "qcSlot": "Connextion QC",
@@ -349,8 +353,9 @@
     "notFound": "Aucun reducteur de son trouvé"
   },
   "factory": {
+    "save": "Ajouter une nouvelle marque de type",
     "form": {
-      "addTitle": "Ajouter une nouvelle marque de type",
+
       "success": "Ajout d'un nouveau type confirme"
     },
     "existingList": "Liste des marques existantes",
@@ -496,7 +501,16 @@
   },
   "drawer": {
     "stock": "Edition du stock",
-    "stockHistory": "Historique"
+    "stockHistory": "Historique",
+    "caliber": "Calibre",
+    "factory": "Marque",
+    "material": "Materiel",
+    "color": "Couleur",
+    "threadSize": "Pas de vis",
+    "weaponType": "Type d'arme",
+    "magazine": "Chargeur",
+    "bodyType": "Type de douille",
+    "headType": "Type d'ovige"
   },
   "formatter": {
     "setup": "Réglage de ",

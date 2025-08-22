@@ -1,5 +1,5 @@
 <template>
-  <h2 class="text-center mt-16 text-xl lg:text-2xl text-blue-500">{{ t('global.riffle') }}</h2>
+  <form-title-component :i18n-prefix="i18nPrefix" />
   <form @submit.prevent="submit">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 mt-10">
       <weapon-type-input-select
@@ -34,7 +34,7 @@
           placeholder="model"
           label="model"
           required
-          :i18n-prefix="i18Prefix"
+          :i18n-prefix="i18nPrefix"
           input-id="name"
           :initial-value="form.name"
         />
@@ -46,7 +46,7 @@
           @value="(value) => (form.variation = value)"
           placeholder="variation"
           label="variation"
-          :i18n-prefix="i18Prefix"
+          :i18n-prefix="i18nPrefix"
           input-id="variation"
           :initial-value="form.variation ?? undefined"
         />
@@ -69,7 +69,7 @@
         :min-fraction-digits="2"
         placeholder="barrelLength"
         label="barrelLength"
-        :i18n-prefix="i18Prefix"
+        :i18n-prefix="i18nPrefix"
         required
         @value="(value) => (form.barrelLength = value)"
         input-id="barrelLength"
@@ -80,7 +80,7 @@
       <input-group-number
         placeholder="barrelSize"
         label="barrelSize"
-        :i18n-prefix="i18Prefix"
+        :i18n-prefix="i18nPrefix"
         @value="(value) => (form.barrelSize = value)"
         input-id="barrelSize"
         :initial-value="form.barrelSize"
@@ -101,7 +101,7 @@
         <input-group-check-box
           input-id="isThreadedBarrel"
           label="isThreadedBarrel"
-          :i18n-prefix="i18Prefix"
+          :i18n-prefix="i18nPrefix"
           @checked="(event) => (form.isThreadedBarrel = event)"
           :checked="form.isThreadedBarrel"
         />
@@ -118,7 +118,7 @@
         <input-group-check-box
           input-id="isProvidedMagazine"
           label="isProvidedMagazine"
-          :i18n-prefix="i18Prefix"
+          :i18n-prefix="i18nPrefix"
           @checked="(event) => (isProvidedMagazine = event)"
           :checked="isProvidedMagazine"
         />
@@ -127,7 +127,7 @@
           label="providedMagazineQuantity"
           @value="(value) => (form.providedMagazineQuantity = value)"
           input-id="providedMagazineQuantity"
-          :i18n-prefix="i18Prefix"
+          :i18n-prefix="i18nPrefix"
           :disabled="!isProvidedMagazine"
           :initial-value="form.providedMagazineQuantity"
           hide-icon
@@ -141,7 +141,7 @@
         <input-group-check-box
           input-id="isAdjustableTrigger"
           label="isAdjustableTrigger"
-          :i18n-prefix="i18Prefix"
+          :i18n-prefix="i18nPrefix"
           @checked="(event) => (form.isAdjustableTrigger = event)"
           :checked="form.isAdjustableTrigger"
           class="width-20rem"
@@ -150,7 +150,7 @@
           :min="0.1"
           :min-fraction-digits="2"
           label="adjustableTriggerMinWeight"
-          :i18n-prefix="i18Prefix"
+          :i18n-prefix="i18nPrefix"
           :disabled="!form.isAdjustableTrigger"
           @value="(value) => (adjustableTriggerMinWeight = value)"
           input-id="adjustableTriggerMinWeight"
@@ -161,7 +161,7 @@
           :min="adjustableTriggerMaxWeight + 0.1"
           :min-fraction-digits="2"
           label="adjustableTriggerMaxWeight"
-          :i18n-prefix="i18Prefix"
+          :i18n-prefix="i18nPrefix"
           :disabled="!form.isAdjustableTrigger"
           @value="(value) => (adjustableTriggerMaxWeight = value)"
           input-id="adjustableTriggerMaxWeight"
@@ -183,7 +183,7 @@
         <input-group-optional-icon />
         <input-group-check-box
           input-id="isAdjustableButt"
-          :i18n-prefix="i18Prefix"
+          :i18n-prefix="i18nPrefix"
           label="isAdjustableButt"
           @checked="(event) => (form.isAdjustableButt = event)"
           :checked="form.isAdjustableButt"
@@ -192,7 +192,7 @@
         />
         <input-group-check-box
           input-id="isAdjustableBusk"
-          :i18n-prefix="i18Prefix"
+          :i18n-prefix="i18nPrefix"
           label="isAdjustableBusk"
           @checked="(event) => (form.isAdjustableBusk = event)"
           :checked="form.isAdjustableBusk"
@@ -224,7 +224,7 @@
           @checked="(event) => (form.isOpenAim = event)"
           :checked="form.isOpenAim"
           is-width-half-size
-          :i18n-prefix="i18Prefix"
+          :i18n-prefix="i18nPrefix"
         />
         <input-group-check-box
           input-id="isAdjustableBackSight"
@@ -232,7 +232,7 @@
           @checked="(event) => (form.isAdjustableBackSight = event)"
           :checked="form.isAdjustableBackSight"
           is-width-half-size
-          :i18n-prefix="i18Prefix"
+          :i18n-prefix="i18nPrefix"
         />
         <input-group-check-box
           input-id="isAdjustableFrontSight"
@@ -240,7 +240,7 @@
           @checked="(event) => (form.isAdjustableFrontSight = event)"
           :checked="form.isAdjustableFrontSight"
           is-width-half-size
-          :i18n-prefix="i18Prefix"
+          :i18n-prefix="i18nPrefix"
         />
       </InputGroup>
 
@@ -249,14 +249,14 @@
         @value="(value) => (form.qcSlot = value)"
         input-id="qcSlot"
         :initial-value="form.qcSlot"
-        :i18n-prefix="i18Prefix"
+        :i18n-prefix="i18nPrefix"
       />
       <input-group-number
         label="grenadierSlot"
         @value="(value) => (form.grenadierSlot = value)"
         input-id="grenadierSlot"
         :initial-value="form.grenadierSlot"
-        :i18n-prefix="i18Prefix"
+        :i18n-prefix="i18nPrefix"
       />
 
       <InputGroup>
@@ -266,7 +266,7 @@
           label="isMlockCompatibility"
           @checked="(event) => (form.isMlockCompatibility = event)"
           :checked="form.isMlockCompatibility"
-          :i18n-prefix="i18Prefix"
+          :i18n-prefix="i18nPrefix"
         />
         <m-lcok-option-input-multi-select
           :disabled="!form.isMlockCompatibility"
@@ -332,11 +332,12 @@ import type { FormStatus } from '@/types/form-status.type'
 import PriceHistoryForm from '@/components/__form/PriceHistoryForm.vue'
 import { useFormStore } from '@/stores/form.store'
 import EditStockComponent from '@/components/__stock/EditStockComponent.vue'
+import FormTitleComponent from '@/components/__form/FormTitleComponent.vue'
 
 // Store
 const riffleStore = useRiffleStore()
 
-const i18Prefix = riffleStore.getI18NPrefix
+const i18nPrefix = riffleStore.getI18NPrefix
 // Request
 
 const { t } = useI18n()

@@ -1,5 +1,5 @@
 <template>
-  <form-title-component />
+  <form-title-component :i18n-prefix="i18nPrefix" custom-status="save" />
   <form @submit.prevent="submit">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
       <InputGroup>
@@ -44,6 +44,7 @@ import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.v
 import FormTitleComponent from '@/components/__form/FormTitleComponent.vue'
 
 const store = useBodyTypeStore()
+const i18nPrefix = store.getI18NPrefix
 const { t } = useI18n()
 const { form, submit } = store.formBuilder()
 const isValidForm = computed(() => {

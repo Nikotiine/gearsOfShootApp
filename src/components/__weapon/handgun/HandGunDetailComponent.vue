@@ -8,8 +8,8 @@
     {{ handgun.name }}
   </h2>
 
-  <div class="p-6 max-w-md mt-6" v-if="handgun">
-    <Tabs value="0">
+  <div class="p-6 mt-6" v-if="handgun">
+    <Tabs value="0" scrollable>
       <TabList>
         <Tab value="0">{{ t('global.importantInformation') }}</Tab>
         <Tab value="1">{{ t('global.barrelInformation') }}</Tab>
@@ -17,6 +17,7 @@
         <Tab value="3">{{ t('global.price') }}</Tab>
         <Tab value="4">{{ t('global.description') }}</Tab>
         <Tab value="5">{{ t('global.associatedProducts') }}</Tab>
+        <Tab value="6">{{ t('global.stock') }}</Tab>
       </TabList>
       <TabPanels>
         <TabPanel value="0">
@@ -41,6 +42,9 @@
           </p>
         </TabPanel>
         <TabPanel value="5">
+          <p>// Feature</p>
+        </TabPanel>
+        <TabPanel value="6">
           <p>// Feature</p>
         </TabPanel>
       </TabPanels>
@@ -76,6 +80,7 @@ const { t } = useI18n()
 const { id } = defineProps<{
   id: string
 }>()
+const i18nPrefix = store.getI18NPrefix
 const { data: handgun } = store.getHandGunById(id)
 const importantInfo = computed(() => {
   if (!handgun.value) return undefined
@@ -101,19 +106,19 @@ const importantInfo = computed(() => {
       title: VerifyFieldIsNotNull(handgun.value.variation)
     },
     {
-      label: t('weapon.weaponType'),
+      label: t(i18nPrefix + 'weaponType'),
       title: handgun.value.type.name
     },
     {
-      label: t('weapon.weaponTypeMode'),
+      label: t(i18nPrefix + 'weaponTypeMode'),
       title: handgun.value.type.mode.name
     },
     {
-      label: t('weapon.providedMagazineQuantity'),
+      label: t(i18nPrefix + 'providedMagazineQuantity'),
       title: handgun.value.providedMagazineQuantity
     },
     {
-      label: t('weapon.triggerType'),
+      label: t(i18nPrefix + 'triggerType'),
       title: VerifyFieldIsNotNull(handgun.value.triggerType?.name)
     }
   ]
@@ -123,19 +128,19 @@ const barrelInfo = computed(() => {
   if (!handgun.value) return undefined
   return [
     {
-      label: t('weapon.percussionType'),
+      label: t(i18nPrefix + 'percussionType'),
       title: handgun.value.percussionType.name
     },
     {
-      label: t('weapon.barrelLength'),
+      label: t(i18nPrefix + 'barrelLength'),
       title: `${handgun.value.barrelLength} cm (${(handgun.value.barrelLength / 2.54).toFixed()} ${t('global.inches')})`
     },
     {
-      label: t('weapon.barrelSize'),
+      label: t(i18nPrefix + 'barrelSize'),
       title: NumberFormatter(handgun.value.barrelSize, 'mm')
     },
     {
-      label: t('weapon.isThreadedBarrel'),
+      label: t(i18nPrefix + 'isThreadedBarrel'),
       title: BooleanFormatter(handgun.value.isThreadedBarrel)
     },
     {
@@ -143,19 +148,19 @@ const barrelInfo = computed(() => {
       title: VerifyFieldIsNotNull(handgun.value.threadedSize?.size)
     },
     {
-      label: t('weapon.barrelType'),
+      label: t(i18nPrefix + 'barrelType'),
       title: handgun.value.barrelType.name
     },
     {
-      label: t('weapon.barrelColor'),
+      label: t(i18nPrefix + 'barrelColor'),
       title: VerifyFieldIsNotNull(handgun.value.barrelColor?.name)
     },
     {
-      label: t('weapon.slideColor'),
+      label: t(i18nPrefix + 'slideColor'),
       title: VerifyFieldIsNotNull(handgun.value.slideColor?.name)
     },
     {
-      label: t('weapon.slideMaterial'),
+      label: t(i18nPrefix + 'slideMaterial'),
       title: VerifyFieldIsNotNull(handgun.value.slideMaterial?.name)
     }
   ]
@@ -164,7 +169,7 @@ const otherProps = computed(() => {
   if (!handgun.value) return undefined
   return [
     {
-      label: t('weapon.isAdjustableTrigger'),
+      label: t(i18nPrefix + 'isAdjustableTrigger'),
       title:
         BooleanFormatter(handgun.value.isAdjustableTrigger) +
         TriggerValueFormatter(
@@ -174,41 +179,41 @@ const otherProps = computed(() => {
         )
     },
     {
-      label: t('weapon.buttMaterial'),
+      label: t(i18nPrefix + 'buttMaterial'),
       title: VerifyFieldIsNotNull(handgun.value.buttMaterial?.name)
     },
 
     {
-      label: t('weapon.buttColor'),
+      label: t(i18nPrefix + 'buttColor'),
       title: VerifyFieldIsNotNull(handgun.value.buttColor?.name)
     },
     /* TODO: Mettre visée ouverte en bdd
  {
-      label: t('weapon.isOpenAim'),
+      label: t(i18nPrefix +'isOpenAim'),
       title: BooleanFormatter(handgun.value.isOpenAim)
     },*/
     {
-      label: t('weapon.isAdjustableBackSight'),
+      label: t(i18nPrefix + 'isAdjustableBackSight'),
       title: BooleanFormatter(handgun.value.isAdjustableBackSight)
     },
     {
-      label: t('weapon.isAdjustableFrontSight'),
+      label: t(i18nPrefix + 'isAdjustableFrontSight'),
       title: BooleanFormatter(handgun.value.isAdjustableFrontSight)
     },
     {
-      label: t('weapon.decocking'),
+      label: t(i18nPrefix + 'decocking'),
       title: BooleanFormatter(handgun.value.decocking)
     },
     {
-      label: t('weapon.isOpticReady'),
+      label: t(i18nPrefix + 'isOpticReady'),
       title: BooleanFormatter(handgun.value.isOpticReady)
     },
     {
-      label: t('weapon.isPicatinyRailSlop'),
+      label: t(i18nPrefix + 'isPicatinyRailSlop'),
       title: BooleanFormatter(handgun.value.isPicatinyRailSlop)
     },
     {
-      label: t('weapon.isExternalHammer'),
+      label: t(i18nPrefix + 'isExternalHammer'),
       title: BooleanFormatter(handgun.value.isExternalHammer)
     }
   ]

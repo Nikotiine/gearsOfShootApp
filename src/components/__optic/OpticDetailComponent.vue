@@ -38,6 +38,12 @@
           </TabPanel>
         </TabPanels>
       </Tabs>
+      <audit-info-component
+        :created-by="optic.createdBy"
+        :updated-by="optic.updatedBy"
+        :created-at="optic.createdAt"
+        :update-at="optic.updatedAt"
+      />
     </div>
   </div>
 </template>
@@ -58,6 +64,7 @@ import TabCardComponent from '@/components/__tabs/TabCardComponent.vue'
 import TabList from 'primevue/tablist'
 import Tabs from 'primevue/tabs'
 import TabPanel from 'primevue/tabpanel'
+import AuditInfoComponent from '@/components/__detail/AuditInfoComponent.vue'
 
 const { t } = useI18n()
 const store = useOpticStore()

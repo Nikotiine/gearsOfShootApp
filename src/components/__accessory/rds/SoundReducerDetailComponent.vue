@@ -38,6 +38,12 @@
           </TabPanel>
         </TabPanels>
       </Tabs>
+      <audit-info-component
+        :created-by="rds.createdBy"
+        :updated-by="rds.updatedBy"
+        :created-at="rds.createdAt"
+        :update-at="rds.updatedAt"
+      />
     </div>
   </div>
 </template>
@@ -57,6 +63,7 @@ import TabList from 'primevue/tablist'
 import Tabs from 'primevue/tabs'
 import TabPanel from 'primevue/tabpanel'
 import ShowPriceHistoryButton from '@/components/__layout/ShowPriceHistoryButton.vue'
+import AuditInfoComponent from '@/components/__detail/AuditInfoComponent.vue'
 const { t } = useI18n()
 const { id } = defineProps<{
   id: string

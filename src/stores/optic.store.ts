@@ -123,7 +123,8 @@ export const useOpticStore = defineStore('optic-store', () => {
       isCollarsProvided: false,
       length: 0,
       priceHistory: getPriceHistoryDto(),
-      providedOpticCollarSize: getOpticRailSizeDto()
+      providedOpticCollarSize: null,
+      inStock: 0
     }
     return useFormHandler<CreateOpticDto, AxiosResponse<OpticDto>>(
       emptyForm,

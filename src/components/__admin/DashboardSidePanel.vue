@@ -28,7 +28,7 @@ const items = ref([
     items: [
       [
         {
-          label: 'Produits',
+          label: t(I18N_PREFIX + 'product'),
           items: [
             {
               label: 'Arme de poing',
@@ -58,6 +58,19 @@ const items = ref([
               label: 'Chargeur',
               command: () => {
                 push({ name: RouterEnum.MAGAZINE_NEW })
+              }
+            }
+          ]
+        }
+      ],
+      [
+        {
+          label: 'Accessoires',
+          items: [
+            {
+              label: 'Collier d optique',
+              command: () => {
+                push({ name: RouterEnum.OPTIC_COLLAR_NEW })
               }
             },
             {
@@ -127,19 +140,6 @@ const items = ref([
               label: 'Couleur',
               command: () => {
                 push({ name: RouterEnum.COLOR_NEW })
-              }
-            }
-          ]
-        }
-      ],
-      [
-        {
-          label: 'Accessoires',
-          items: [
-            {
-              label: 'Collier d optique',
-              command: () => {
-                push({ name: RouterEnum.OPTIC_COLLAR_NEW })
               }
             }
           ]

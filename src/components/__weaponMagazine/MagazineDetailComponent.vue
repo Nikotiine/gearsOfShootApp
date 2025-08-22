@@ -9,6 +9,7 @@
         <Tab value="0">{{ t('global.importantInformation') }}</Tab>
         <Tab value="1">{{ t('global.description') }}</Tab>
         <Tab value="2">{{ t('global.associatedWeapons') }}</Tab>
+        <Tab value="3">{{ t('global.price') }}</Tab>
       </TabList>
       <TabPanels>
         <TabPanel value="0">
@@ -24,10 +25,19 @@
           </p>
         </TabPanel>
         <TabPanel value="2">
-          <TabCardComponent :props="associatedWeapons" v-if="associatedWeapons" />
+          <!--          <TabCardComponent :props="associatedWeapons" v-if="associatedWeapons" />-->
+        </TabPanel>
+        <TabPanel value="3">
+          <TabCardComponent :props="priceInfo" v-if="priceInfo" />
         </TabPanel>
       </TabPanels>
     </Tabs>
+    <audit-info-component
+      :created-by="magazine.createdBy"
+      :updated-by="magazine.updatedBy"
+      :created-at="magazine.createdAt"
+      :update-at="magazine.updatedAt"
+    />
   </div>
 </template>
 <script setup lang="ts">
@@ -41,6 +51,7 @@ import TabList from 'primevue/tablist'
 import Tabs from 'primevue/tabs'
 import TabPanel from 'primevue/tabpanel'
 import { NumberFormatter } from '@/shared/utils/formatter.utils'
+import AuditInfoComponent from '@/components/__detail/AuditInfoComponent.vue'
 const store = useWeaponMagazineStore()
 const { t } = useI18n()
 const { id } = defineProps<{
@@ -84,7 +95,24 @@ const importantInfo = computed(() => {
     }
   ]
 })
-const associatedWeapons = computed(() => {
+const priceInfo = computed(() => {
+  if (!magazine.value || !magazine.value.priceHistory) return undefined
+  return [
+    {
+      label: t('priceHistory.supplierPrice'),
+      title: NumberFormatter(magazine.value.priceHistory.supplierPrice, 'euro')
+    },
+    {
+      label: t('priceHistory.recommendedSalePrice'),
+      title: NumberFormatter(magazine.value.priceHistory.recommendedSalePrice, 'euro')
+    },
+    {
+      label: t('priceHistory.currentSalePrice'),
+      title: NumberFormatter(magazine.value.priceHistory.currentSalePrice, 'euro')
+    }
+  ]
+})
+/*const associatedWeapons = computed(() => {
   if (!magazine.value) return undefined
   let weapons: TabCardProps[] = []
   if (magazine.value.riffles) {
@@ -104,7 +132,7 @@ const associatedWeapons = computed(() => {
     })
   }
   return weapons
-})
+})*/
 </script>
 
 <style scoped></style>

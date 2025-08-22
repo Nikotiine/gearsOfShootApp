@@ -1,8 +1,8 @@
 <template>
   <div class="card">
-    <h2 class="text-center mt-2 text-2xl">{{ t('magazine.' + formStatus) }}</h2>
+    <form-title-component :i18n-prefix="i18nPrefix" />
     <form @submit.prevent="submit">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 mt-10">
         <factory-input-select
           :initial-value="form.factory.id"
           can-add-new
@@ -82,7 +82,8 @@
           <input-group-multi-select
             input-id="compatibleWeaponOptions"
             label="compatibleWeaponOptions"
-            i18n-prefix="magazine."
+            placeholder="compatibleWeaponOptions"
+            :i18n-prefix="i18nPrefix"
             :options="options"
             :disabled="options.length < 1"
             @selected-options="(event) => onSelectCompatibleWeapons(event)"
@@ -104,6 +105,13 @@
       <price-history-form
         :price-history-form="form.priceHistory"
         @update:price-history-form="(value) => (form.priceHistory = value)"
+      />
+      <edit-stock-component
+        v-if="form.inStock > -1"
+        :in-stock="form.inStock"
+        object="MAGAZINE"
+        :object-id="id"
+        @update:in-stock="(value) => (form.inStock = value)"
       />
       <div class="text-center">
         <save-button :status="formStatus" :disabled="!isFormValid" />
@@ -131,11 +139,14 @@ import MaterialInputSelect from '@/components/__form/__specific_select/MaterialI
 import { storeToRefs } from 'pinia'
 import PriceHistoryForm from '@/components/__form/PriceHistoryForm.vue'
 import { useFormStore } from '@/stores/form.store'
+import FormTitleComponent from '@/components/__form/FormTitleComponent.vue'
+import EditStockComponent from '@/components/__stock/EditStockComponent.vue'
 
 const { id } = defineProps<{
   id?: string
 }>()
 const store = useWeaponMagazineStore()
+const i18nPrefix = store.getI18NPrefix
 const { form, submit } = store.builder(id)
 const formStore = useFormStore()
 const formStatus: FormStatus = formStore.getFormStatus()

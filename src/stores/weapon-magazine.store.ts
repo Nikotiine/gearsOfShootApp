@@ -102,7 +102,8 @@ export const useWeaponMagazineStore = defineStore('weapon-magazine-store', () =>
       compatibleHandGun: [],
       compatibleRiffle: [],
       weaponType: getWeaponTypeDto(),
-      priceHistory: getPriceHistoryDto()
+      priceHistory: getPriceHistoryDto(),
+      inStock: 0
     }
     return useFormHandler<CreateWeaponMagazineDto, AxiosResponse<WeaponMagazineDto>>(
       emptyForm,

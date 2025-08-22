@@ -117,7 +117,9 @@
       </InputGroup>
 
       <InputGroup>
-        <input-group-optional-icon />
+        <input-group-optional-icon
+          :is-completed="isProvidedMagazine && form.providedMagazineQuantity > 0"
+        />
         <input-group-check-box
           input-id="isProvidedMagazine"
           label="isProvidedMagazine"
@@ -215,7 +217,7 @@
         @on-select="(event) => (form.buttColor = event)"
       />
       <InputGroup>
-        <input-group-optional-icon />
+        <input-group-optional-icon :is-completed="form.isOpticReady" />
         <input-group-check-box
           input-id="isOpticReady"
           label="isOpticReady"
@@ -232,7 +234,7 @@
       </InputGroup>
 
       <InputGroup class="w-full">
-        <input-group-optional-icon />
+        <input-group-optional-icon is-completed />
         <input-group-check-box
           input-id="isExternalHammer"
           label="isExternalHammer"
@@ -260,7 +262,7 @@
         />
       </InputGroup>
       <InputGroup class="w-full">
-        <input-group-optional-icon />
+        <input-group-optional-icon is-completed />
         <input-group-check-box
           input-id="isAdjustableBackSight"
           label="isAdjustableBackSight"

@@ -1,16 +1,17 @@
 <template>
   <div class="card p-4">
     <table-title-component :i18n-prefix="i18nPrefix" />
-    <div class="text-red-500 text-center" v-if="isError">Error</div>
+    <div class="text-red-500 text-center" v-if="isError">{{ t('global.isLoadingError') }}</div>
     <DataTable
       v-model:filters="filters"
       :value="handgun$?.data"
       paginator
       :rows="10"
       dataKey="id"
-      filterDisplay="row"
-      :loading="datasIsloading"
-      :globalFilterFields="['name', 'factory.name', 'caliber.name', 'reference']"
+      filterDisplay="menu"
+      :loading="isLoading"
+      :globalFilterFields="globalFilterFields"
+      columnResizeMode="fit"
     >
       <template #header>
         <div class="flex justify-center">
@@ -18,13 +19,13 @@
             <InputIcon>
               <i class="pi pi-search" />
             </InputIcon>
-            <InputText v-model="filters['global'].value" placeholder="Recherche globale" />
+            <InputText v-model="filters['global'].value" :placeholder="t('global.globalSearch')" />
           </IconField>
         </div>
       </template>
-      <template #empty> Aucune arme trouvée. </template>
-      <template #loading> Loading customers data. Please wait. </template>
-      <Column field="name" header="Nom" style="min-width: 12rem" :showFilterMenu="false">
+      <template #empty> {{ t(i18nPrefix + 'notFound') }} </template>
+      <template #loading> {{ t(i18nPrefix + 'loading') }} {{ t('global.pleaseWait') }} </template>
+      <Column field="name" :header="t('global.model')" style="max-width: 12rem">
         <template #body="{ data }">
           {{ data.name }}
         </template>
@@ -32,17 +33,17 @@
           <InputText
             v-model="filterModel.value"
             type="text"
+            style="max-width: 10rem"
             @input="filterCallback()"
-            placeholder="Recherche par nom"
+            :placeholder="t('global.findByName')"
           />
         </template>
       </Column>
       <Column
-        header="Marque"
+        :header="t('global.factory')"
         field="factory.name"
         filterField="factory.name"
-        style="min-width: 12rem"
-        :showFilterMenu="false"
+        style="max-width: 12rem"
       >
         <template #body="{ data }">
           {{ data.factory.name }}
@@ -52,22 +53,16 @@
           <Select
             v-model="filterModel.value"
             @change="filterCallback()"
-            :options="weaponFactory$?.data"
+            :options="weaponFactory$"
             optionLabel="name"
             optionValue="name"
-            placeholder="Marque"
-            style="min-width: 12rem"
+            :placeholder="t('global.findByFactory')"
             :showClear="true"
           >
           </Select>
         </template>
       </Column>
-      <Column
-        header="Calibre"
-        filterField="caliber.name"
-        :showFilterMenu="false"
-        style="min-width: 14rem"
-      >
+      <Column :header="t('global.caliber')" filterField="caliber.name">
         <template #body="{ data }">
           {{ data.caliber.name }}
         </template>
@@ -75,17 +70,16 @@
           <Select
             v-model="filterModel.value"
             @change="filterCallback()"
-            :options="calibers$?.data"
-            placeholder="Calibre"
+            :options="calibers$"
+            :placeholder="t('global.findByCaliber')"
             optionLabel="name"
             optionValue="name"
-            style="min-width: 12rem"
             :showClear="true"
           >
           </Select>
         </template>
       </Column>
-      <Column field="reference" header="Status" :showFilterMenu="false" style="min-width: 12rem">
+      <Column field="reference" :header="t('global.reference')">
         <template #body="{ data }">
           {{ data.reference }}
         </template>
@@ -95,11 +89,16 @@
             v-model="filterModel.value"
             type="text"
             @input="filterCallback()"
-            placeholder="Recherche par reference"
+            :placeholder="t('global.findByReference')"
           />
         </template>
       </Column>
-      <Column header="Actions" :showFilterMenu="false" style="min-width: 12rem">
+      <Column field="inStock" :header="t('global.inStock')" sortable="-1" :showFilterMenu="false">
+        <template #body="{ data }">
+          {{ data.inStock }}
+        </template>
+      </Column>
+      <Column :header="t('global.action')" :showFilterMenu="false">
         <template #body="{ data }">
           <action-menu-component
             @on-click-action="onClickAction"
@@ -130,7 +129,8 @@ import { RouterEnum } from '@/enum/router.enum'
 import { useRouter } from 'vue-router'
 import { type NewWeapon, useWeaponStore } from '@/stores/weapon'
 import TableTitleComponent from '@/components/__table/TableTitleComponent.vue'
-
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 const { category } = defineProps<{
   category: string
 }>()
@@ -147,15 +147,12 @@ const filters = ref({
   name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
   'factory.name': { value: null, matchMode: FilterMatchMode.EQUALS },
   'caliber.name': { value: null, matchMode: FilterMatchMode.EQUALS },
-  reference: { value: null, matchMode: FilterMatchMode.STARTS_WITH }
+  reference: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+  inStock: { value: null, matchMode: FilterMatchMode.STARTS_WITH }
 })
+const globalFilterFields = ['name', 'factory.name', 'caliber.name', 'reference']
 const currentCategory = ref<string>(category)
-const {
-  data: handgun$,
-  isLoading: datasIsloading,
-  isError,
-  refetch
-} = store.getAllByCategory(currentCategory)
+const { data: handgun$, isLoading, isError, refetch } = store.getAllByCategory(currentCategory)
 watch(
   () => category,
   (newCategory) => {

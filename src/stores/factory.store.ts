@@ -21,7 +21,7 @@ export const useFactoryStore = defineStore('factory-store', () => {
   // Refs
   const factories = ref<FactoryDto[]>([])
   const factoryTypes = ref<FactoryTypeDto[]>([])
-
+  const factoryType = ref<FactoryType>('weapon')
   const submitSuccess = ref(false)
 
   const _I18N_PREFIX = 'factory'
@@ -104,7 +104,7 @@ export const useFactoryStore = defineStore('factory-store', () => {
       _updateMutation,
       _I18N_PREFIX,
       _GET_BY_ID_FN,
-      undefined,
+      _GET_ALL_BY_TYPE_FN,
       id,
       (data) => ({
         ...data,
@@ -122,9 +122,18 @@ export const useFactoryStore = defineStore('factory-store', () => {
     }
   })
 
-  const deleteFunction = (id: number) => {
+  const deleteFunction = (id: number): void => {
     _deleteFactoryMutation.mutate(id)
   }
+
+  function setFactoryType(type: FactoryType): void {
+    factoryType.value = type
+  }
+
+  function getFactoryType(): FactoryType {
+    return factoryType.value
+  }
+
   return {
     formBuilder: useFactoryForm,
     getFactoryTypes: getPrerequisitesFactoryList,
@@ -133,7 +142,9 @@ export const useFactoryStore = defineStore('factory-store', () => {
     delete: deleteFunction,
     submitSuccess: submitSuccess,
     getI18NPrefix: getI18NPrefix(_I18N_PREFIX),
-    factories$: factories
+    factories$: factories,
+    setFactoryType,
+    getFactoryType
   }
 })
 export type FactoryType = 'weapon' | 'ammunition' | 'optic' | 'magazine' | 'accessory'

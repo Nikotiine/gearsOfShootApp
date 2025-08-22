@@ -2,12 +2,11 @@
   <component :is="formComponent" :id="id" :key="id" />
 </template>
 <script setup lang="ts">
-// Props : On passe le composant de formulaire en paramètre
 import { useRoute } from 'vue-router'
 import { ref, watch } from 'vue'
 import type { FormStatus } from '@/types/form-status.type'
 import { useFormStore } from '@/stores/form.store'
-
+// Props : On passe le composant de formulaire en paramètre
 const { formComponent } = defineProps<{
   formComponent: any // Le composant de formulaire à afficher
 }>()
