@@ -9,14 +9,14 @@
   </h2>
 
   <div class="p-6 mt-6" v-if="handgun">
-    <Tabs value="0" scrollable>
+    <Tabs value="0" scrollable class="min-h-100vh">
       <TabList>
         <Tab value="0">{{ t('global.importantInformation') }}</Tab>
         <Tab value="1">{{ t('global.barrelInformation') }}</Tab>
         <Tab value="2">{{ t('global.otherInformation') }}</Tab>
-        <Tab value="3">{{ t('global.price') }}</Tab>
-        <Tab value="4">{{ t('global.description') }}</Tab>
-        <Tab value="5">{{ t('global.associatedProducts') }}</Tab>
+        <Tab value="3">{{ t('global.description') }}</Tab>
+        <Tab value="4">{{ t('global.associatedProducts') }}</Tab>
+        <Tab value="5">{{ t('global.price') }}</Tab>
         <Tab value="6">{{ t('global.stock') }}</Tab>
       </TabList>
       <TabPanels>
@@ -30,22 +30,22 @@
           <TabCardComponent :props="otherProps" v-if="otherProps" />
         </TabPanel>
         <TabPanel value="3">
-          <TabCardComponent :props="priceInfo" v-if="priceInfo">
-            <template v-slot:button>
-              <show-price-history-button :id="id" type="HANDGUN" />
-            </template>
-          </TabCardComponent>
-        </TabPanel>
-        <TabPanel value="4">
           <p>
-            {{ handgun.description.length > 0 ? handgun.description : t('global.notRegistered') }}
+            {{
+              handgun.description && handgun.description.length > 0
+                ? handgun.description
+                : t('global.notRegistered')
+            }}
           </p>
         </TabPanel>
-        <TabPanel value="5">
+        <TabPanel value="4">
           <p>// Feature</p>
         </TabPanel>
+        <TabPanel value="5">
+          <tab-price-component :id="id" type="HANDGUN" :price="handgun.priceHistory" />
+        </TabPanel>
         <TabPanel value="6">
-          <p>// Feature</p>
+          <tab-stock-component :stock="handgun.stock" />
         </TabPanel>
       </TabPanels>
     </Tabs>
@@ -73,15 +73,20 @@ import {
   TriggerValueFormatter,
   VerifyFieldIsNotNull
 } from '@/shared/utils/formatter.utils'
-import ShowPriceHistoryButton from '@/components/__layout/ShowPriceHistoryButton.vue'
+
 import AuditInfoComponent from '@/components/__detail/AuditInfoComponent.vue'
+import TabStockComponent from '@/components/__tabs/TabStockComponent.vue'
+import TabPriceComponent from '@/components/__tabs/TabPriceComponent.vue'
+
 const store = useHandGunStore()
+
 const { t } = useI18n()
 const { id } = defineProps<{
   id: string
 }>()
 const i18nPrefix = store.getI18NPrefix
 const { data: handgun } = store.getHandGunById(id)
+
 const importantInfo = computed(() => {
   if (!handgun.value) return undefined
   return [
@@ -99,7 +104,7 @@ const importantInfo = computed(() => {
     },
     {
       label: t('global.model'),
-      title: handgun.value.factory.name
+      title: handgun.value.name
     },
     {
       label: t('global.variation'),
@@ -218,23 +223,10 @@ const otherProps = computed(() => {
     }
   ]
 })
-const priceInfo = computed(() => {
-  if (!handgun.value || !handgun.value.priceHistory) return undefined
-  return [
-    {
-      label: t('priceHistory.supplierPrice'),
-      title: NumberFormatter(handgun.value.priceHistory.supplierPrice, 'euro')
-    },
-    {
-      label: t('priceHistory.recommendedSalePrice'),
-      title: NumberFormatter(handgun.value.priceHistory.recommendedSalePrice, 'euro')
-    },
-    {
-      label: t('priceHistory.currentSalePrice'),
-      title: NumberFormatter(handgun.value.priceHistory.currentSalePrice, 'euro')
-    }
-  ]
-})
 </script>
 
-<style scoped></style>
+<style scoped>
+.min-h-100vh {
+  min-height: 100vh;
+}
+</style>

@@ -4,26 +4,20 @@
       <span class="text-blue-500">{{ t('global.collar') }}</span> : {{ collar.factory.name }} -
       {{ collar.name }}
     </h2>
-    <div class="p-6 max-w-md mt-6" v-if="collar">
+    <div class="p-6 mt-6" v-if="collar">
       <Tabs value="0">
         <TabList>
           <Tab value="0">{{ t('global.importantInformation') }}</Tab>
-          <Tab value="1">{{ t('global.price') }}</Tab>
-          <Tab value="2">{{ t('global.description') }}</Tab>
-          <Tab value="3">{{ t('global.associatedProducts') }}</Tab>
+          <Tab value="1">{{ t('global.description') }}</Tab>
+          <Tab value="2">{{ t('global.associatedProducts') }}</Tab>
+          <Tab value="3">{{ t('global.price') }}</Tab>
+          <Tab value="4">{{ t('global.stock') }}</Tab>
         </TabList>
         <TabPanels>
           <TabPanel value="0">
             <TabCardComponent :props="importantInfo" v-if="importantInfo" />
           </TabPanel>
           <TabPanel value="1">
-            <TabCardComponent :props="priceInfo" v-if="priceInfo">
-              <template v-slot:button>
-                <show-price-history-button :id="id" type="OPTIC_COLLAR" />
-              </template>
-            </TabCardComponent>
-          </TabPanel>
-          <TabPanel value="2">
             <p>
               {{
                 collar.description && collar.description.length > 0
@@ -32,8 +26,14 @@
               }}
             </p>
           </TabPanel>
-          <TabPanel value="4">
+          <TabPanel value="2">
             <p>// Feature</p>
+          </TabPanel>
+          <TabPanel value="3">
+            <tab-price-component :id="id" type="OPTIC_COLLAR" :price="collar.priceHistory" />
+          </TabPanel>
+          <TabPanel value="4">
+            <tab-stock-component :stock="collar.stock" />
           </TabPanel>
         </TabPanels>
       </Tabs>
@@ -60,6 +60,8 @@ import Tabs from 'primevue/tabs'
 import TabPanel from 'primevue/tabpanel'
 import ShowPriceHistoryButton from '@/components/__layout/ShowPriceHistoryButton.vue'
 import AuditInfoComponent from '@/components/__detail/AuditInfoComponent.vue'
+import TabPriceComponent from '@/components/__tabs/TabPriceComponent.vue'
+import TabStockComponent from '@/components/__tabs/TabStockComponent.vue'
 const { t } = useI18n()
 const { id } = defineProps<{
   id: string

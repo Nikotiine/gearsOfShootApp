@@ -115,12 +115,14 @@
     "globalSearch": "Recherche globale",
     "inStock": "En stock",
     "stock": "Stock",
-    "missingData": "Information non disponible"
+    "missingData": "Information non disponible",
+    "lastUpdate": "Derniere mise a jour"
   },
   "handgun": {
     "list": "Liste des arme de poing",
     "save": "Ajouter une arme de poing",
     "edit": "Modifier une arme de poing",
+    "breadcrumb": "Arme de poing",
     "summary": "Gestion des armes de poing",
     "notFound": "Aucune arme trouvée",
     "loading": "Chargement",
@@ -479,7 +481,8 @@
     "showHistoryButtonLabel": "Voir l historique complet",
     "priceHistoryModalHeader": "Historique complet",
     "createdAt": "Date de mise a jour",
-    "notFound": "Aucun prix enregistré"
+    "notFound": "Aucun prix enregistré",
+    "histories": "Historique des prix"
   },
   "stock": {
     "quantity": "Quantite actuelle en stock",
@@ -497,7 +500,8 @@
     "reason": "Raison",
     "previousQuantity": "Quantite precedente",
     "IN": "Ajout",
-    "OUT": "Retrait"
+    "OUT": "Retrait",
+    "histories": "Historique du stock"
   },
   "drawer": {
     "stock": "Edition du stock",
@@ -569,6 +573,12 @@
   "auditInfo": {
     "createdAt": "Creer le :",
     "updatedAt": "Mise a jour le :",
-    "from": "par"
+    "from": "par",
+    "createdBy": "Creer par"
+  },
+  "breadcrumb": {
+    "edit": "Edition",
+    "show": "Detail",
+    "save": "Creation"
   }
 }

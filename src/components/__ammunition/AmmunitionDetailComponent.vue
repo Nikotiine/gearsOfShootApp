@@ -4,28 +4,20 @@
     {{ ammo.name }}
   </h2>
 
-  <div class="p-6 max-w-md mt-6" v-if="ammo">
+  <div class="p-6 mt-6" v-if="ammo">
     <Tabs value="0">
       <TabList>
         <Tab value="0">{{ t('global.importantInformation') }}</Tab>
-        <Tab value="1">{{ t('global.price') }}</Tab>
-        <Tab value="2">{{ t('global.description') }}</Tab>
-        <Tab value="3">{{ t('global.associatedProducts') }}</Tab>
+        <Tab value="1">{{ t('global.description') }}</Tab>
+        <Tab value="2">{{ t('global.associatedProducts') }}</Tab>
+        <Tab value="3">{{ t('global.price') }}</Tab>
         <Tab value="4">{{ t('global.stock') }}</Tab>
-        <!--        <Tab value="5">{{ t('global.authors') }}</Tab>-->
       </TabList>
       <TabPanels>
         <TabPanel value="0">
           <TabCardComponent :props="importantInfo" v-if="importantInfo" />
         </TabPanel>
         <TabPanel value="1">
-          <TabCardComponent :props="priceInfo" v-if="priceInfo">
-            <template v-slot:button>
-              <show-price-history-button :id="id" type="AMMUNITION" />
-            </template>
-          </TabCardComponent>
-        </TabPanel>
-        <TabPanel value="2">
           <p>
             {{
               ammo.description && ammo.description.length > 0
@@ -34,15 +26,15 @@
             }}
           </p>
         </TabPanel>
-        <TabPanel value="3">
+        <TabPanel value="2">
           <p>// Feature</p>
         </TabPanel>
-        <TabPanel value="4">
-          <TabCardComponent :props="stockInfo" v-if="stockInfo" />
+        <TabPanel value="3">
+          <tab-price-component :id="id" type="AMMUNITION" :price="ammo.priceHistory" />
         </TabPanel>
-        <!--        <TabPanel value="5">
-          <TabCardComponent :props="stockInfo" v-if="stockInfo" />
-        </TabPanel>-->
+        <TabPanel value="4">
+          <tab-stock-component :stock="ammo.stock" />
+        </TabPanel>
       </TabPanels>
     </Tabs>
     <audit-info-component
@@ -67,6 +59,8 @@ import Tabs from 'primevue/tabs'
 import TabPanel from 'primevue/tabpanel'
 import ShowPriceHistoryButton from '@/components/__layout/ShowPriceHistoryButton.vue'
 import AuditInfoComponent from '@/components/__detail/AuditInfoComponent.vue'
+import TabPriceComponent from '@/components/__tabs/TabPriceComponent.vue'
+import TabStockComponent from '@/components/__tabs/TabStockComponent.vue'
 
 const { id } = defineProps<{
   id: string

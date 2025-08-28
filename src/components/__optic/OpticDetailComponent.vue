@@ -5,14 +5,15 @@
       {{ optic.name }}
     </h2>
 
-    <div class="p-6 max-w-md mt-6" v-if="optic">
+    <div class="p-6 mt-6" v-if="optic">
       <Tabs value="0">
         <TabList>
           <Tab value="0">{{ t('global.importantInformation') }}</Tab>
           <Tab value="1">{{ t('global.otherInformation') }}</Tab>
-          <Tab value="2">{{ t('global.price') }}</Tab>
-          <Tab value="3">{{ t('global.description') }}</Tab>
-          <Tab value="4">{{ t('global.associatedProducts') }}</Tab>
+          <Tab value="2">{{ t('global.description') }}</Tab>
+          <Tab value="3">{{ t('global.associatedProducts') }}</Tab>
+          <Tab value="4">{{ t('global.price') }}</Tab>
+          <Tab value="5">{{ t('global.stock') }}</Tab>
         </TabList>
         <TabPanels>
           <TabPanel value="0">
@@ -22,9 +23,6 @@
             <TabCardComponent :props="otherInformation" v-if="otherInformation" />
           </TabPanel>
           <TabPanel value="2">
-            <TabCardComponent :props="priceInfo" v-if="priceInfo" />
-          </TabPanel>
-          <TabPanel value="3">
             <p>
               {{
                 optic.description && optic.description.length > 0
@@ -33,8 +31,14 @@
               }}
             </p>
           </TabPanel>
-          <TabPanel value="4">
+          <TabPanel value="3">
             <p>// Feature</p>
+          </TabPanel>
+          <TabPanel value="4">
+            <tab-price-component :id="id" type="OPTIC" :price="optic.priceHistory" />
+          </TabPanel>
+          <TabPanel value="5">
+            <tab-stock-component :stock="optic.stock" />
           </TabPanel>
         </TabPanels>
       </Tabs>
@@ -65,6 +69,8 @@ import TabList from 'primevue/tablist'
 import Tabs from 'primevue/tabs'
 import TabPanel from 'primevue/tabpanel'
 import AuditInfoComponent from '@/components/__detail/AuditInfoComponent.vue'
+import TabStockComponent from '@/components/__tabs/TabStockComponent.vue'
+import TabPriceComponent from '@/components/__tabs/TabPriceComponent.vue'
 
 const { t } = useI18n()
 const store = useOpticStore()
@@ -163,23 +169,6 @@ const otherInformation = computed(() => {
         optic.value.isCollarsProvided && optic.value.providedOpticCollarSize
           ? optic.value.providedOpticCollarSize.name
           : t('optic.noCollarsProvided')
-    }
-  ]
-})
-const priceInfo = computed(() => {
-  if (!optic.value || !optic.value.priceHistory) return undefined
-  return [
-    {
-      label: t('priceHistory.supplierPrice'),
-      title: NumberFormatter(optic.value.priceHistory.supplierPrice, 'euro')
-    },
-    {
-      label: t('priceHistory.recommendedSalePrice'),
-      title: NumberFormatter(optic.value.priceHistory.recommendedSalePrice, 'euro')
-    },
-    {
-      label: t('priceHistory.currentSalePrice'),
-      title: NumberFormatter(optic.value.priceHistory.currentSalePrice, 'euro')
     }
   ]
 })

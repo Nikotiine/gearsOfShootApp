@@ -15,6 +15,8 @@ import { getBarrelTypeDto } from '@/shared/api-dto/get-barrel-type.dto'
 import { getPercussionTypeDto } from '@/shared/api-dto/get-percussion-type.dto'
 import { getTriggerTypeDto } from '@/shared/api-dto/get-trigger-type.dto'
 import { getPriceHistoryDto } from '@/shared/api-dto/get-price-history.dto'
+import { useRoute } from 'vue-router'
+import { type BreadCrumbState, useBreadcrumbStore } from '@/stores/breadcrumb.store'
 
 export const useHandGunStore = defineStore('hand-gun-store', () => {
   // Appel API
@@ -22,7 +24,8 @@ export const useHandGunStore = defineStore('hand-gun-store', () => {
 
   // TOAST
   const { successMessage } = useToastStore()
-
+  const route = useRoute()
+  const stepperStore = useBreadcrumbStore()
   // Refs
   const mutationSuccess = ref(false)
   const handguns = ref<HandGunDto[]>([])
@@ -83,9 +86,16 @@ export const useHandGunStore = defineStore('hand-gun-store', () => {
     })
 
   const _fetchById = async (id?: string) => {
-    if (!id) return null
+    if (!id) {
+      return null
+    }
     const res = await api.api.handGunControllerFindById(parseInt(id))
     handgun.value = res.data
+    stepperStore.setStep({
+      label: stepperStore.generateLabel(_I18N_PREFIX, res.data.name),
+      index: 2,
+      path: route.path
+    })
     return res.data
   }
   const _deleteMutation = useMutation({
@@ -137,6 +147,14 @@ export const useHandGunStore = defineStore('hand-gun-store', () => {
       triggerType: getTriggerTypeDto(),
       priceHistory: getPriceHistoryDto(),
       inStock: 0
+    }
+    const breadCrumbState: BreadCrumbState = {
+      label: stepperStore.generateLabel(_I18N_PREFIX),
+      index: 1,
+      path: route.fullPath
+    }
+    if (!id) {
+      stepperStore.setStep(breadCrumbState)
     }
     return useFormHandler<CreateHandGunDto, AxiosResponse<HandGunDto>>(
       emptyForm,

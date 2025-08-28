@@ -1,5 +1,5 @@
 <template>
-  <MegaMenu :model="items" orientation="vertical" class="mr-4 w-full" />
+  <MegaMenu :model="items" orientation="vertical" class="mr-4 max-w-fit" />
 </template>
 <script setup lang="ts">
 import MegaMenu from 'primevue/megamenu'

@@ -130,12 +130,15 @@ import { useRouter } from 'vue-router'
 import { type NewWeapon, useWeaponStore } from '@/stores/weapon'
 import TableTitleComponent from '@/components/__table/TableTitleComponent.vue'
 import { useI18n } from 'vue-i18n'
+
 const { t } = useI18n()
 const { category } = defineProps<{
   category: string
 }>()
 const router = useRouter()
+
 const store = useHandGunStore()
+
 const i18nPrefix = store.getI18NPrefix
 const factoryStore = useFactoryStore()
 const { data: weaponFactory$ } = factoryStore.getFactoriesByType('weapon')
