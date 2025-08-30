@@ -1,9 +1,6 @@
 <template>
   <div class="card">
-    <h2 class="text-center mt-2 text-2xl">{{ t('factory.existingList') }}</h2>
-    <div class="text-red-500 text-center" v-if="isError">
-      {{ t('error.' + error.response.data.message) }}
-    </div>
+    <table-title-component :i18n-prefix="i18nPrefix" />
     <div class="mt-2" v-if="isSuccess">
       <DataTable
         v-model:filters="filters"
@@ -107,21 +104,15 @@ import ActionMenuComponent, {
 } from '@/components/__table/ActionMenuComponent.vue'
 import { RouterEnum } from '@/enum/router.enum'
 import { useRouter } from 'vue-router'
+import TableTitleComponent from '@/components/__table/TableTitleComponent.vue'
 
 const props = defineProps<{
   type?: string
 }>()
 
-const { t } = useI18n()
 const store = useFactoryStore()
-const {
-  isError,
-  isSuccess,
-  isLoading,
-  error,
-  data: factories$,
-  refetch
-} = store.getFactoriesByType()
+const i18nPrefix = store.getI18NPrefix
+const { isSuccess, isLoading, data: factories$, refetch } = store.getFactoriesByType()
 
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },

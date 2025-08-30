@@ -20,7 +20,6 @@ import { getFocalPlaneDto } from '@/shared/api-dto/get-focal-plane.dto'
 import { getOpticUnitDto } from '@/shared/api-dto/get-optic-unit.dto'
 import { getOpticTypeDto } from '@/shared/api-dto/get-optic-type.dto'
 import { getPriceHistoryDto } from '@/shared/api-dto/get-price-history.dto'
-import { getOpticRailSizeDto } from '@/shared/api-dto/get-optic-rail-size.dto'
 import { getI18NPrefix, I18NSuffix } from '@/enum/I18NSuffix.enum'
 
 export const useOpticStore = defineStore('optic-store', () => {

@@ -33,6 +33,7 @@ const router = createRouter({
         },
         {
           path: 'gestion',
+          meta: { navbar: true },
           children: [
             {
               path: 'ammunition',

@@ -11,15 +11,19 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import Breadcrumb from 'primevue/breadcrumb'
-import { useBreadcrumbStore } from '@/stores/breadcrumb.store'
+import { type BreadCrumbState, useBreadcrumbStore } from '@/stores/breadcrumb.store'
 import { storeToRefs } from 'pinia'
+
+const { home } = defineProps<{
+  home: BreadCrumbState
+}>()
 const store = useBreadcrumbStore()
 const toto = store.goToStep
 const { breadcrumbs: items } = storeToRefs(store)
-const home = ref({
+/*const home = ref({
   icon: 'pi pi-home',
   path: '/admin'
-})
+})*/
 </script>
 
 <style scoped></style>

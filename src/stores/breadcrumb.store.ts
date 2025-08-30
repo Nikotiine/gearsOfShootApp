@@ -8,7 +8,8 @@ import { getI18NPrefix } from '@/enum/I18NSuffix.enum'
 export interface BreadCrumbState {
   label: string
   index: number
-  path: string
+  path: string,
+  icon?:string
 }
 
 export const useBreadcrumbStore = defineStore('breadcrumb-store', () => {

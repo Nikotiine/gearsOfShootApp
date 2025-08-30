@@ -44,7 +44,8 @@
   "dashboard": {
     "home": "Accueil",
     "newProduct": "Nouvelle reference",
-    "product": "Produit"
+    "product": "Produit",
+    "productList": "Liste des produits"
   },
   "global": {
     "password": "Mot de passe",
@@ -116,7 +117,11 @@
     "inStock": "En stock",
     "stock": "Stock",
     "missingData": "Information non disponible",
-    "lastUpdate": "Derniere mise a jour"
+    "lastUpdate": "Derniere mise a jour",
+    "accessories": "Accessoires",
+    "blackPowderWeapon": "Arme a poudre noire",
+    "new": "Ajouter",
+    "colors": "Couleurs"
   },
   "handgun": {
     "list": "Liste des arme de poing",
@@ -360,7 +365,7 @@
 
       "success": "Ajout d'un nouveau type confirme"
     },
-    "existingList": "Liste des marques existantes",
+    "list": "Liste des marques",
     "type": "Marque specialisée",
     "summary": "Gestion des marques",
     "types": {
@@ -580,5 +585,15 @@
     "edit": "Edition",
     "show": "Detail",
     "save": "Creation"
+  },
+  "adminNavbar": {
+    "title": "Navigation admin",
+    "internalReference": "Reference interne",
+    "specificWeapons": "Spec. armes",
+    "bodyType": "Douilles",
+    "headType": "Oviges",
+    "weaponType": "Type d'arme",
+    "threadSize": "Pas de vis",
+    "commonReference": "Reference communes"
   }
 }
