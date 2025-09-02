@@ -12,7 +12,7 @@ export const useThreadedSizeStore = defineStore('threaded-size.store', () => {
   const { api } = useApiStore()
 
   // Refs
-  const mutationSuccess = ref(false)
+  const submitSuccess = ref(false)
   // Private Attibute
   const _I18N_PREFIX = 'threadedSize'
   const _GET_ALL_FN = 'getAllThreadedSizes'
@@ -46,7 +46,7 @@ export const useThreadedSizeStore = defineStore('threaded-size.store', () => {
       return api.api.threadedSizeControllerCreate(threadedSize)
     },
     onSuccess() {
-      mutationSuccess.value = true
+      submitSuccess.value = true
     }
   })
   const _updateMutation = useMutation({
@@ -54,7 +54,7 @@ export const useThreadedSizeStore = defineStore('threaded-size.store', () => {
       return api.api.threadedSizeControllerEdit(threadedSize.id, threadedSize)
     },
     onSuccess() {
-      mutationSuccess.value = true
+      submitSuccess.value = true
     }
   })
   function useThreadedSizeForm(id?: string) {
@@ -68,6 +68,8 @@ export const useThreadedSizeStore = defineStore('threaded-size.store', () => {
       _createMutation,
       _updateMutation,
       _I18N_PREFIX,
+      _GET_BY_ID_FN,
+      _GET_ALL_FN,
       id,
       (data) => ({
         ...data
@@ -77,7 +79,7 @@ export const useThreadedSizeStore = defineStore('threaded-size.store', () => {
   return {
     formBuilder: useThreadedSizeForm,
     getAll: getAllQuery,
-    mutationSuccess,
+    submitSuccess,
     getI18NPrefix: getI18NPrefix(_I18N_PREFIX)
   }
 })

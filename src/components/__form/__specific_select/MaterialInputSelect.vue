@@ -14,7 +14,7 @@
       :i18n-prefix="i18Prefix"
       :disabled="disabled"
     />
-    <input-group-addon-open-drawer-button type="material" :close="closeDrawer" v-if="canAddNew" />
+    <input-group-addon-open-drawer-button type="material" v-if="canAddNew" />
   </InputGroup>
 </template>
 <script setup lang="ts">
@@ -23,7 +23,6 @@ import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.v
 import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
 import InputGroup from 'primevue/inputgroup'
 import { computed, ref, watch } from 'vue'
-import { storeToRefs } from 'pinia'
 import { useMaterialStore } from '@/stores/material.store'
 import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.vue'
 
@@ -46,27 +45,18 @@ const {
 }>()
 const store = useMaterialStore()
 const i18Prefix = store.getI18NPrefix
-const { data, refetch } = store.getAll()
+const { data } = store.getAll()
 const materialId = ref<number>(initialValue)
-const { mutationSuccess } = storeToRefs(store)
+
 const emit = defineEmits(['onSelect'])
 const materialsList = computed(() => data.value || [])
-const closeDrawer = ref(false)
+
 const onSelect = (id: number) => {
   const material = materialsList.value.find((material) => material.id === id)
   emit('onSelect', material)
   materialId.value = id
 }
-watch(
-  () => mutationSuccess.value,
-  (value) => {
-    if (value) {
-      refetch()
-      mutationSuccess.value = false
-      closeDrawer.value = value
-    }
-  }
-)
+
 watch(
   () => initialValue,
   (value) => {

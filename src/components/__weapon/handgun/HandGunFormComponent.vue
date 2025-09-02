@@ -1,5 +1,5 @@
 <template>
-  <h2 class="text-center mt-16 text-xl lg:text-2xl text-blue-500">{{ t('global.handgun') }}</h2>
+  <form-title-component :i18n-prefix="i18nPrefix" />
   <form @submit.prevent="submit">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 mt-10">
       <weapon-type-input-select
@@ -37,7 +37,7 @@
           placeholder="model"
           label="model"
           required
-          :i18n-prefix="i18Prefix"
+          :i18n-prefix="i18nPrefix"
           input-id="name"
           :initial-value="form.name"
         />
@@ -49,7 +49,7 @@
           @value="(value) => (form.variation = value)"
           placeholder="variation"
           label="variation"
-          :i18n-prefix="i18Prefix"
+          :i18n-prefix="i18nPrefix"
           input-id="variation"
           :initial-value="form.variation ?? undefined"
         />
@@ -72,7 +72,7 @@
         :min-fraction-digits="2"
         placeholder="barrelLength"
         label="barrelLength"
-        :i18n-prefix="i18Prefix"
+        :i18n-prefix="i18nPrefix"
         required
         @value="(value) => (form.barrelLength = value)"
         input-id="barrelLength"
@@ -83,7 +83,7 @@
       <input-group-number
         placeholder="barrelSize"
         label="barrelSize"
-        :i18n-prefix="i18Prefix"
+        :i18n-prefix="i18nPrefix"
         @value="(value) => (form.barrelSize = value)"
         input-id="barrelSize"
         :initial-value="form.barrelSize"
@@ -103,7 +103,7 @@
         <input-group-check-box
           input-id="isThreadedBarrel"
           label="isThreadedBarrel"
-          :i18n-prefix="i18Prefix"
+          :i18n-prefix="i18nPrefix"
           @checked="(event) => (form.isThreadedBarrel = event)"
           :checked="form.isThreadedBarrel"
         />
@@ -117,11 +117,13 @@
       </InputGroup>
 
       <InputGroup>
-        <input-group-optional-icon />
+        <input-group-optional-icon
+          :is-completed="isProvidedMagazine && form.providedMagazineQuantity > 0"
+        />
         <input-group-check-box
           input-id="isProvidedMagazine"
           label="isProvidedMagazine"
-          :i18n-prefix="i18Prefix"
+          :i18n-prefix="i18nPrefix"
           @checked="(event) => (isProvidedMagazine = event)"
           :checked="isProvidedMagazine"
           :disabled="isRevolver"
@@ -131,7 +133,7 @@
           label="providedMagazineQuantity"
           @value="(value) => (form.providedMagazineQuantity = value)"
           input-id="providedMagazineQuantity"
-          :i18n-prefix="i18Prefix"
+          :i18n-prefix="i18nPrefix"
           :disabled="!isProvidedMagazine"
           :initial-value="form.providedMagazineQuantity"
           hide-icon
@@ -145,7 +147,7 @@
         <input-group-check-box
           input-id="isAdjustableTrigger"
           label="isAdjustableTrigger"
-          :i18n-prefix="i18Prefix"
+          :i18n-prefix="i18nPrefix"
           @checked="(event) => (form.isAdjustableTrigger = event)"
           :checked="form.isAdjustableTrigger"
           class="width-20rem"
@@ -154,7 +156,7 @@
           :min="0.1"
           :min-fraction-digits="2"
           label="adjustableTriggerMinWeight"
-          :i18n-prefix="i18Prefix"
+          :i18n-prefix="i18nPrefix"
           :disabled="!form.isAdjustableTrigger"
           @value="(value) => (form.adjustableTriggerMinWeight = value)"
           input-id="adjustableTriggerMinWeight"
@@ -165,7 +167,7 @@
           :min="form.adjustableTriggerMaxWeight + 0.1"
           :min-fraction-digits="2"
           label="adjustableTriggerMaxWeight"
-          :i18n-prefix="i18Prefix"
+          :i18n-prefix="i18nPrefix"
           :disabled="!form.isAdjustableTrigger"
           @value="(value) => (form.adjustableTriggerMaxWeight = value)"
           input-id="adjustableTriggerMaxWeight"
@@ -215,11 +217,11 @@
         @on-select="(event) => (form.buttColor = event)"
       />
       <InputGroup>
-        <input-group-optional-icon />
+        <input-group-optional-icon :is-completed="form.isOpticReady" />
         <input-group-check-box
           input-id="isOpticReady"
           label="isOpticReady"
-          :i18n-prefix="i18Prefix"
+          :i18n-prefix="i18nPrefix"
           @checked="(event) => (form.isOpticReady = event)"
           :checked="form.isOpticReady"
         />
@@ -232,11 +234,11 @@
       </InputGroup>
 
       <InputGroup class="w-full">
-        <input-group-optional-icon />
+        <input-group-optional-icon is-completed />
         <input-group-check-box
           input-id="isExternalHammer"
           label="isExternalHammer"
-          :i18n-prefix="i18Prefix"
+          :i18n-prefix="i18nPrefix"
           @checked="(event) => (form.isExternalHammer = event)"
           :checked="form.isExternalHammer"
           is-width-half-size
@@ -246,13 +248,13 @@
           label="isPicatinyRailSlop"
           @checked="(event) => (form.isPicatinyRailSlop = event)"
           :checked="form.isPicatinyRailSlop"
-          :i18n-prefix="i18Prefix"
+          :i18n-prefix="i18nPrefix"
           is-width-half-size
         />
         <input-group-check-box
           input-id="decocking"
           label="decocking"
-          :i18n-prefix="i18Prefix"
+          :i18n-prefix="i18nPrefix"
           @checked="(event) => (form.decocking = event)"
           :checked="isRevolver ? false : form.decocking"
           is-width-half-size
@@ -260,11 +262,11 @@
         />
       </InputGroup>
       <InputGroup class="w-full">
-        <input-group-optional-icon />
+        <input-group-optional-icon is-completed />
         <input-group-check-box
           input-id="isAdjustableBackSight"
           label="isAdjustableBackSight"
-          :i18n-prefix="i18Prefix"
+          :i18n-prefix="i18nPrefix"
           @checked="(event) => (form.isAdjustableBackSight = event)"
           :checked="form.isAdjustableBackSight"
           size="medium"
@@ -274,7 +276,7 @@
           label="isAdjustableFrontSight"
           @checked="(event) => (form.isAdjustableFrontSight = event)"
           :checked="form.isAdjustableFrontSight"
-          :i18n-prefix="i18Prefix"
+          :i18n-prefix="i18nPrefix"
           size="medium"
         />
       </InputGroup>
@@ -292,6 +294,13 @@
     <price-history-form
       :price-history-form="form.priceHistory"
       @update:price-history-form="(value) => (form.priceHistory = value)"
+    />
+    <edit-stock-component
+      v-if="form.inStock > -1"
+      :in-stock="form.inStock"
+      object="HANDGUN"
+      :object-id="id"
+      @update:in-stock="(value) => (form.inStock = value)"
     />
     <div class="text-center">
       <Button type="submit" :label="t(buttonLabel)" :disabled="!isValidForm"></Button>
@@ -323,19 +332,18 @@ import TriggerTypeInputSelect from '@/components/__form/__specific_select/Trigge
 import { WeaponEnum } from '@/enum/weapon.enum'
 import WeaponTypeInputSelect from '@/components/__form/__specific_select/WeaponTypeInputSelect.vue'
 import LegalisationCategoryInputSelect from '@/components/__form/__specific_select/LegalisationCategoryInputSelect.vue'
-import type { FormStatus } from '@/types/form-status.type'
 import PriceHistoryForm from '@/components/__form/PriceHistoryForm.vue'
+import { useFormStore } from '@/stores/form.store'
+import EditStockComponent from '@/components/__stock/EditStockComponent.vue'
+import FormTitleComponent from '@/components/__form/FormTitleComponent.vue'
 
 const handGunStore = useHandGunStore()
-const i18Prefix = handGunStore.getI18NPrefix
+const i18nPrefix = handGunStore.getI18NPrefix
 
-const { id } = defineProps<{
-  id?: string
-  formStatus: FormStatus
-}>()
 const { t } = useI18n()
 const buttonLabel = ref('global.save')
-
+const formStore = useFormStore()
+const id = formStore.getFormId()
 const isProvidedMagazine = ref(false)
 
 const resetMultiselect = ref(false)

@@ -33,6 +33,7 @@ const router = createRouter({
         },
         {
           path: 'gestion',
+          meta: { navbar: true },
           children: [
             {
               path: 'ammunition',
@@ -43,9 +44,10 @@ const router = createRouter({
                   component: () => import('../views/shared/FormView.vue')
                 },
                 {
-                  path: 'list',
+                  path: 'list/:category',
                   name: RouterEnum.AMMUNITION_LIST,
-                  component: () => import('../views/shared/TableWithSelectCategoryView.vue')
+                  props: true,
+                  component: () => import('../views/shared/TableWithPropsView.vue')
                 },
                 {
                   path: 'detail/:id',
@@ -71,9 +73,10 @@ const router = createRouter({
                   component: () => import('../views/shared/DetailView.vue')
                 },
                 {
-                  path: 'list',
+                  path: 'list/:category',
                   name: RouterEnum.MAGAZINE_LIST,
-                  component: () => import('../views/shared/TableWithSelectCategoryView.vue')
+                  props: true,
+                  component: () => import('../views/shared/TableWithPropsView.vue')
                 },
                 {
                   path: 'new',
@@ -129,10 +132,16 @@ const router = createRouter({
                   component: () => import('../views/shared/FormView.vue')
                 },
                 {
-                  path: 'list/:type/:category',
-                  name: RouterEnum.WEAPON_LIST,
+                  path: `list/${WeaponEnum.RIFFLE}/:category`,
+                  name: RouterEnum.RIFFLE_LIST,
                   props: true,
-                  component: () => import('../views/weapon/AdminWeaponListView.vue')
+                  component: () => import('../views/shared/TableWithPropsView.vue')
+                },
+                {
+                  path: `list/${WeaponEnum.HAND_GUN}/:category`,
+                  name: RouterEnum.HANDGUN_LIST,
+                  props: true,
+                  component: () => import('../views/shared/TableWithPropsView.vue')
                 },
                 {
                   path: `detail/${WeaponEnum.HAND_GUN}/:id`,

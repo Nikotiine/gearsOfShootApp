@@ -15,7 +15,7 @@
       :i18n-prefix="i18Prefix"
       :disabled="disabled"
     />
-    <input-group-addon-open-drawer-button type="threadSize" :close="closeDrawer" v-if="canAddNew" />
+    <input-group-addon-open-drawer-button type="threadSize" v-if="canAddNew" />
   </InputGroup>
 </template>
 
@@ -27,7 +27,7 @@ import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
 import InputGroup from 'primevue/inputgroup'
 import { useThreadedSizeStore } from '@/stores/threaded-size.store'
 import { computed, ref, watch } from 'vue'
-import { storeToRefs } from 'pinia'
+
 const {
   initialValue = 0,
   canAddNew = false,
@@ -41,27 +41,18 @@ const {
 }>()
 const store = useThreadedSizeStore()
 const i18Prefix = store.getI18NPrefix
-const { data, refetch } = store.getAll()
+const { data } = store.getAll()
 const threadedSizeId = ref<number>(initialValue)
-const { mutationSuccess } = storeToRefs(store)
+
 const emit = defineEmits(['onSelect'])
 const threadedSizesList = computed(() => data.value || [])
-const closeDrawer = ref(false)
+
 const onSelect = (id: number) => {
   const threadedSize = threadedSizesList.value.find((size) => size.id === id)
   emit('onSelect', threadedSize)
   threadedSizeId.value = id
 }
-watch(
-  () => mutationSuccess.value,
-  (value) => {
-    if (value) {
-      refetch()
-      mutationSuccess.value = false
-      closeDrawer.value = value
-    }
-  }
-)
+
 watch(
   () => initialValue,
   (value) => {

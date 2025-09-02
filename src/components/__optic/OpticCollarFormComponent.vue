@@ -1,7 +1,5 @@
 <template>
-  <h2 class="text-center mt-2 text-2xl">
-    {{ t('opticCollar.' + formStatus) }}
-  </h2>
+  <form-title-component :i18n-prefix="i18nPrefix" />
   <form @submit.prevent="submit">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
       <InputGroup>
@@ -54,14 +52,21 @@
         rows="5"
         cols="30"
         class="w-full"
-        placeholder="Description"
+        :placeholder="t('global.description')"
       />
     </div>
     <price-history-form
       :price-history-form="form.priceHistory"
       @update:price-history-form="(value) => (form.priceHistory = value)"
     />
-    <save-button :status="formStatus" :disabled="!isFormValid" />
+    <edit-stock-component
+      v-if="form.inStock > -1"
+      :in-stock="form.inStock"
+      object="OPTIC_COLLAR"
+      :object-id="id"
+      @update:in-stock="(value) => (form.inStock = value)"
+    />
+    <save-button :disabled="!isFormValid" />
   </form>
 </template>
 <script setup lang="ts">
@@ -74,18 +79,18 @@ import InputGroupText from '@/components/__form/InputGroupText.vue'
 import InputGroupNumber from '@/components/__form/InputGroupNumber.vue'
 import { useOpticCollarStore } from '@/stores/optic-collar.store'
 import SaveButton from '@/components/__form/SaveButton.vue'
-import type { FormStatus } from '@/types/form-status.type'
 import FactoryInputSelect from '@/components/__form/__specific_select/FactoryInputSelect.vue'
 import OpticRailInputSelect from '@/components/__form/__specific_select/OpticRailInputSelect.vue'
 import PriceHistoryForm from '@/components/__form/PriceHistoryForm.vue'
+import { useFormStore } from '@/stores/form.store'
+import EditStockComponent from '@/components/__stock/EditStockComponent.vue'
+import FormTitleComponent from '@/components/__form/FormTitleComponent.vue'
 
-const { t } = useI18n()
 const store = useOpticCollarStore()
-
-const { id } = defineProps<{
-  id?: string
-  formStatus: FormStatus
-}>()
+const formStore = useFormStore()
+const id = formStore.getFormId()
+const { t } = useI18n()
+const i18nPrefix = store.getI18NPrefix
 
 const { form, submit } = store.formBuilder(id)
 

@@ -3,7 +3,7 @@ import { useApiStore } from '@/stores/api'
 import { useToastStore } from '@/stores/toast'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import type { AmmunitionDto, CreateAmmunitionDto, UpdateAmmunitionDto } from '@/api/Api'
-import { ref } from 'vue'
+import { type Ref, ref } from 'vue'
 import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
 import { getI18NPrefix, I18NSuffix } from '@/enum/I18NSuffix.enum'
@@ -41,13 +41,13 @@ export const useAmmunitionStore = defineStore('ammunition-store', () => {
     }
   })
 
-  const queryFindAllAmmunitionByCategory = (categoryId: number) =>
+  const queryFindAllAmmunitionByCategory = (category: Ref<string>) =>
     useQuery({
-      queryKey: [_GET_ALL_BY_CATEGORY_FN, categoryId],
+      queryKey: [_GET_ALL_BY_CATEGORY_FN, category.value],
       queryFn: async () => {
-        return await _fetchAllByCategoryId(categoryId)
+        return await _fetchAllByCategory(category.value)
       },
-      enabled: !!categoryId
+      enabled: !!category.value
     })
 
   function useAmmunitionForm(id?: string) {
@@ -62,7 +62,8 @@ export const useAmmunitionStore = defineStore('ammunition-store', () => {
       packaging: 50,
       headType: getHeadTypeDto(),
       percussionType: getPercussionTypeDto(),
-      priceHistory: getPriceHistoryDto()
+      priceHistory: getPriceHistoryDto(),
+      inStock: 0
     }
     return useFormHandler<CreateAmmunitionDto, AxiosResponse<AmmunitionDto>>(
       emptyForm,
@@ -70,15 +71,11 @@ export const useAmmunitionStore = defineStore('ammunition-store', () => {
       _createMutation,
       _updateMutation,
       _I18N_PREFIX,
+      _GET_BY_ID_FN,
+      undefined,
       id,
       (data) => ({
-        ...data,
-        factoryId: data.factory.id,
-        caliberId: data.caliber.id,
-        percussionTypeId: data.percussionType.id,
-        bodyTypeId: data.bodyType.id,
-        headTypeId: data.headType.id,
-        categoryId: data.category.id
+        ...data
       })
     )
   }
@@ -95,9 +92,9 @@ export const useAmmunitionStore = defineStore('ammunition-store', () => {
     const res = await api.api.ammunitionControllerFindById(parseInt(id))
     return res.data
   }
-  const _fetchAllByCategoryId = async (categoryId: number) => {
-    if (!categoryId) return null
-    const res = await api.api.ammunitionControllerFindByCategory(categoryId)
+  const _fetchAllByCategory = async (category: string) => {
+    if (!category) return null
+    const res = await api.api.ammunitionControllerFindByCategory(category)
     return res.data
   }
   const _deleteAmmunitionMutation = useMutation({

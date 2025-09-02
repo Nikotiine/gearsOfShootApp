@@ -13,7 +13,9 @@ import OpticDetailComponent from '@/components/__optic/OpticDetailComponent.vue'
 import RiffleDetailComponent from '@/components/__weapon/riffle/RiffleDetailComponent.vue'
 import HandGunDetailComponent from '@/components/__weapon/handgun/HandGunDetailComponent.vue'
 import MagazineDetailComponent from '@/components/__weaponMagazine/MagazineDetailComponent.vue'
+import { useFormStore } from '@/stores/form.store'
 const route = useRoute()
+const formStore = useFormStore()
 const id = ref<string | undefined>(route.params.id ? (route.params.id as string) : undefined)
 enum DetailRoute {
   RDS_DETAIL = RouterEnum.RDS_DETAIL,
@@ -34,6 +36,7 @@ const componentMap = {
   [DetailRoute.MAGAZINE_DETAIL]: MagazineDetailComponent
 }
 const detailComponent = computed(() => componentMap[route.name as DetailRoute])
+formStore.setFormStatus('show')
 </script>
 
 <style scoped></style>

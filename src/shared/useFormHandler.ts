@@ -1,5 +1,5 @@
 import { ref, watch } from 'vue'
-import { type UseMutationReturnType, useQuery } from '@tanstack/vue-query'
+import { type UseMutationReturnType, useQuery, useQueryClient } from '@tanstack/vue-query'
 import { useToastStore } from '@/stores/toast'
 import { getI18NPrefix, I18NSuffix } from '@/enum/I18NSuffix.enum'
 
@@ -9,9 +9,12 @@ export function useFormHandler<TForm extends object, TMutationResponse, TError =
   createMutation: UseMutationReturnType<TMutationResponse, TError, TForm, unknown>,
   updateMutation: UseMutationReturnType<TMutationResponse, TError, TForm & { id: number }, unknown>,
   storeName: string,
+  getByIdQueryKey: string,
+  getAllQueryKey: string | undefined,
   id?: string,
   formatData?: (data: any) => TForm // Optionnel : Transformer les données avant de les injecter dans le formulaire
 ) {
+  const queryClient = useQueryClient()
   const form = ref<TForm>({ ...emptyForm })
   const prefix = getI18NPrefix(storeName)
   const { successMessage, errorMessage } = useToastStore()
@@ -19,6 +22,9 @@ export function useFormHandler<TForm extends object, TMutationResponse, TError =
     form.value = { ...emptyForm }
   }
 
+  if (!id) {
+    resetForm()
+  }
   // Récupération des données en mode édition
   const { data, isSuccess } = getByIdQuery(id)
   watch(
@@ -37,7 +43,8 @@ export function useFormHandler<TForm extends object, TMutationResponse, TError =
       updateMutation.mutate(
         { ...form.value, id: parseInt(id) },
         {
-          onSuccess: () => {
+          onSuccess: async () => {
+            await queryClient.invalidateQueries({ queryKey: [getByIdQueryKey] })
             successMessage(prefix + I18NSuffix.SUMMARY, prefix + I18NSuffix.UPDATED)
           },
           onError(error: any) {
@@ -47,7 +54,10 @@ export function useFormHandler<TForm extends object, TMutationResponse, TError =
       )
     } else {
       createMutation.mutate(form.value, {
-        onSuccess: () => {
+        onSuccess: async () => {
+          if (getAllQueryKey) {
+            await queryClient.invalidateQueries({ queryKey: [getAllQueryKey] })
+          }
           successMessage(prefix + I18NSuffix.SUMMARY, prefix + I18NSuffix.CREATED)
           resetForm()
         },

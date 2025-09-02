@@ -8,48 +8,26 @@
     />
   </InputGroupAddon>
 
-  <drawer-form-view
-    :visible="isVisibleDrawer"
-    :type="type"
-    @on-close="isVisibleDrawer = $event"
-    :factory-type="factoryType"
-  />
+  <drawer-view v-model:visible="visible" :component="type" position="bottom" />
 </template>
 
 <script setup lang="ts">
 import InputGroupAddon from 'primevue/inputgroupaddon'
 import Button from 'primevue/button'
 import { useI18n } from 'vue-i18n'
-import type { DrawerType } from '@/types/form-type'
-import { ref, watch } from 'vue'
-import type { FactoryType } from '@/stores/factory.store'
-import DrawerFormView from '@/views/shared/DrawerFormView.vue'
+import { ref } from 'vue'
+import DrawerView, { type DrawerViewFormComponent } from '@/views/shared/DrawerView.vue'
 
 const { t } = useI18n()
 const icon: string = 'pi pi-plus text-blue-700'
-const {
-  type,
-  factoryType = 'weapon',
-  close = false
-} = defineProps<{
-  type: DrawerType
-  factoryType?: FactoryType
-  close: boolean
+const { type } = defineProps<{
+  type: DrawerViewFormComponent
 }>()
 
-const isVisibleDrawer = ref(false)
+const visible = ref(false)
 const toggleDrawer = () => {
-  isVisibleDrawer.value = !isVisibleDrawer.value
+  visible.value = !visible.value
 }
-
-watch(
-  () => close,
-  (value) => {
-    if (value) {
-      isVisibleDrawer.value = !isVisibleDrawer.value
-    }
-  }
-)
 </script>
 
 <style scoped>

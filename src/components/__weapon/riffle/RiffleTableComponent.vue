@@ -1,6 +1,6 @@
 <template>
   <div class="card p-4">
-    <table-title-component :i18n-prefix="i18nPrefix" />
+    <table-title-component :i18n-prefix="i18nPrefix" :category="category" />
     <div class="text-red-500 text-center" v-if="isError">Error</div>
     <DataTable
       v-model:filters="filters"
@@ -52,7 +52,7 @@
           <Select
             v-model="filterModel.value"
             @change="filterCallback()"
-            :options="weaponFoctory$?.data"
+            :options="weaponFoctory$"
             optionLabel="name"
             optionValue="name"
             placeholder="Marque"
@@ -75,7 +75,7 @@
           <Select
             v-model="filterModel.value"
             @change="filterCallback()"
-            :options="calibers$?.data"
+            :options="calibers$"
             placeholder="Calibre"
             optionLabel="name"
             optionValue="name"

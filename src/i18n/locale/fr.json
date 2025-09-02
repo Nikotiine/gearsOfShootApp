@@ -44,7 +44,8 @@
   "dashboard": {
     "home": "Accueil",
     "newProduct": "Nouvelle reference",
-    "product": "Produit"
+    "product": "Produit",
+    "productList": "Liste des produits"
   },
   "global": {
     "password": "Mot de passe",
@@ -111,11 +112,25 @@
     "findByFactory": "Recherche par marque",
     "findByCaliber": "Recherche par calibre",
     "findByReference": "Recherche par reference",
-    "globalSearch": "Recherche globale"
-
+    "findByName": "Recherche par modele",
+    "globalSearch": "Recherche globale",
+    "inStock": "En stock",
+    "stock": "Stock",
+    "missingData": "Information non disponible",
+    "lastUpdate": "Derniere mise a jour",
+    "accessories": "Accessoires",
+    "blackPowderWeapon": "Arme a poudre noire",
+    "new": "Ajouter",
+    "colors": "Couleurs"
   },
-  "weapon": {
-    "summary": "Gestion des armes",
+  "handgun": {
+    "list": "Liste des arme de poing de categorie : {key}",
+    "save": "Ajouter une arme de poing",
+    "edit": "Modifier une arme de poing",
+    "breadcrumb": "Arme de poing",
+    "summary": "Gestion des armes de poing",
+    "notFound": "Aucune arme trouvée",
+    "loading": "Chargement",
     "model": "Modele de l'arme",
     "variation": "Variante",
     "barrelLength": "Longueur du canon",
@@ -129,6 +144,54 @@
     "isPicatinyRailSlop": "Rail picatiny pour accessoires",
     "decocking": "Decocking",
     "isExternalHammer": "Chien exterieur",
+    "isThreadedBarrel": "Canon filete",
+    "isOpenAim": "Visee ouverte",
+    "isAdjustableBackSight": "Hausse reglable",
+    "isAdjustableFrontSight": "Guidon reglable",
+    "triggerType": "Type de detente",
+    "percussionType": "Type de percussion",
+    "barrelType": "Type de canon",
+    "barrelColor": "Couleur du canon",
+    "buttMaterial": "Matiere de la crosse",
+    "buttColor": "Couleur de la crosse",
+    "slideMaterial": "Matiere de la culasse",
+    "slideColor": "Couleur de la culasse",
+    "providedOpticReadyPlates": "Plaques optic ready fournies",
+    "selectType": "Quel type d'arme ?",
+    "handGunButtType": "Matiere de la carcasse",
+    "mLockOptions": "Position MLOCK",
+    "weaponType": "Type d'arme",
+    "weaponTypeMode": "Fonctionement",
+    "created": "Nouvelle arme enregister",
+    "updated": "Arme modifié avec succes",
+    "deleted": "Arme supprimée",
+    "form": {
+      "add": "Ajouter une arme de categorie",
+      "isThreadedBarrel": "Filetage",
+      "isProvidedMagazine": "Chargeur fournis",
+      "opticReadyPlates": "Type de plaque Optic ready",
+      "yourChoose": "Votre choix : ",
+      "magazine": "Type de chargeur",
+      "selectType": "Quel type d'arme ?",
+      "isOpticReady": "OR ?",
+      "weaponModel": "Modele d'arme",
+      "weaponVariation": "Variante du modele",
+      "isPicatinyRailSlop": "Rail picatiny"
+    }
+  },
+  "riffle": {
+    "list": "Listes des armes longues de categorie : {key}",
+    "save": "Ajouter une arme longue",
+    "summary": "Gestion des armes longues",
+    "model": "Modele de l'arme",
+    "variation": "Variante",
+    "barrelLength": "Longueur du canon",
+    "barrelSize": "Epaisseur du canon",
+    "isProvidedMagazine": "Chargeur fournis ?",
+    "providedMagazineQuantity": "Nombre de chargeurs fournis",
+    "isAdjustableTrigger": "Detente reglable",
+    "adjustableTriggerMinWeight": "Poids mini",
+    "adjustableTriggerMaxWeight": "Poids max",
     "isThreadedBarrel": "Canon filete",
     "isAdjustableButt": "Crosse reglable",
     "isAdjustableBusk": "Busc ajustable",
@@ -147,7 +210,6 @@
     "slideMaterial": "Matiere de la culasse",
     "slideColor": "Couleur de la culasse",
     "railSize": "Taille du rail d'optique",
-    "providedOpticReadyPlates": "Plaques optic ready fournies",
     "selectType": "Quel type d'arme ?",
     "handGunButtType": "Matiere de la carcasse",
     "mLockOptions": "Position MLOCK",
@@ -157,7 +219,7 @@
     "updated": "Arme modifié avec succes",
     "deleted": "Arme supprimée",
     "form": {
-      "add": "Ajouter une arme de categorie",
+
       "isThreadedBarrel": "Filetage",
       "isProvidedMagazine": "Chargeur fournis",
       "qcSlot": "Connextion QC",
@@ -167,7 +229,6 @@
       "isCollarsProvided": "Collier fournis ?",
       "magazine": "Type de chargeur",
       "selectType": "Quel type d'arme ?",
-      "isOpticReady": "OR ?",
       "weaponModel": "Modele d'arme",
       "weaponVariation": "Variante du modele",
       "isPicatinyRailSlop": "Rail picatiny"
@@ -183,7 +244,7 @@
     "created": "Chargeur ajouté",
     "compatibleWeapons": "Armes compatibles",
     "updated": "Chargeur correctement modifié",
-    "list":"Liste des chargeurs de categorie",
+    "list":"Liste des chargeurs de categorie : {key}",
     "notFound": "Aucun chargeur trouvé",
     "loading": "Chargement des chargeurs en cours",
     "deleted": "Chargeur supprimé"
@@ -200,10 +261,11 @@
     "headType": "Type d'ovige",
     "bodyType": "Type de douille",
     "packaging": "Packaging",
-    "list":"Liste des munitions",
+    "list":"Liste des munitions de categorie : {key}",
     "notFound": "Aucune munition trouvée",
     "loading": "Chargement des muntions en cours",
-    "findByName": "Recherche par modele"
+    "findByName": "Recherche par modele",
+    "stock": "Mise en stock"
   },
   "admin": {
     "dashboard": {
@@ -212,13 +274,11 @@
   },
   "bodyType": {
     "name": "Type de douille",
+    "save": "Ajouter un nouveau type de douille",
     "placeholder": "Choisir un type",
-    "form": {
-      "addTitle": "Ajouter un nouveau type de douille",
-      "success": "Ajout d'un nouveau type confirme"
-    },
     "existingList": "Liste de types existants",
     "type": "Type de douille",
+    "ref": "Reference",
     "summary": "Gestion des douilles"
   },
   "headType": {
@@ -300,11 +360,12 @@
     "notFound": "Aucun reducteur de son trouvé"
   },
   "factory": {
+    "save": "Ajouter une nouvelle marque de type",
     "form": {
-      "addTitle": "Ajouter une nouvelle marque de type",
+
       "success": "Ajout d'un nouveau type confirme"
     },
-    "existingList": "Liste des marques existantes",
+    "list": "Liste des marques",
     "type": "Marque specialisée",
     "summary": "Gestion des marques",
     "types": {
@@ -425,7 +486,40 @@
     "showHistoryButtonLabel": "Voir l historique complet",
     "priceHistoryModalHeader": "Historique complet",
     "createdAt": "Date de mise a jour",
-    "notFound": "Aucun prix enregistré"
+    "notFound": "Aucun prix enregistré",
+    "histories": "Historique des prix"
+  },
+  "stock": {
+    "quantity": "Quantite actuelle en stock",
+    "lastUpdated": "Derniere mise a jour du stock",
+    "summary": "Gestion du stock",
+    "movementType": "Type de mouvement",
+    "placeholder": "Choisir entree / sortie",
+    "onOrder": "En commande",
+    "edit": "Editer le stock",
+    "showHistory": "Voir l historique",
+    "updated": "Mise a jour du stock :{key} pieces disponibles",
+    "newQuantity": "Nouvelle quantite",
+    "updatedBy": "Mis a jour par",
+    "movementQuantity": "Quantite modifie",
+    "reason": "Raison",
+    "previousQuantity": "Quantite precedente",
+    "IN": "Ajout",
+    "OUT": "Retrait",
+    "histories": "Historique du stock"
+  },
+  "drawer": {
+    "stock": "Edition du stock",
+    "stockHistory": "Historique",
+    "caliber": "Calibre",
+    "factory": "Marque",
+    "material": "Materiel",
+    "color": "Couleur",
+    "threadSize": "Pas de vis",
+    "weaponType": "Type d'arme",
+    "magazine": "Chargeur",
+    "bodyType": "Type de douille",
+    "headType": "Type d'ovige"
   },
   "formatter": {
     "setup": "Réglage de ",
@@ -480,5 +574,26 @@
   },
   "deleteMessage": {
     "000": "Optique supprimeée"
+  },
+  "auditInfo": {
+    "createdAt": "Creer le :",
+    "updatedAt": "Mise a jour le :",
+    "from": "par",
+    "createdBy": "Creer par"
+  },
+  "breadcrumb": {
+    "edit": "Edition",
+    "show": "Detail",
+    "save": "Creation"
+  },
+  "adminNavbar": {
+    "title": "Navigation admin",
+    "internalReference": "Reference interne",
+    "specificWeapons": "Spec. armes",
+    "bodyType": "Douilles",
+    "headType": "Oviges",
+    "weaponType": "Type d'arme",
+    "threadSize": "Pas de vis",
+    "commonReference": "Reference communes"
   }
 }

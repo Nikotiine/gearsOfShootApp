@@ -194,7 +194,6 @@ const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
       router.push({ name: RouterEnum.OPTIC_DETAIL, params: { id: id } })
       break
     case 'edit':
-      console.log(id)
       router.push({ name: RouterEnum.OPTIC_EDIT, params: { id: id } })
       break
     case true:

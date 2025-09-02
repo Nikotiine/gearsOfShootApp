@@ -24,8 +24,8 @@ import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
 import InputGroup from 'primevue/inputgroup'
 import { computed, ref, watch } from 'vue'
 import { useColorStore } from '@/stores/color.store'
-import { storeToRefs } from 'pinia'
 import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.vue'
+
 const {
   initialValue = 0,
   canAddNew = false,
@@ -45,27 +45,18 @@ const {
 }>()
 const store = useColorStore()
 const i18Prefix = store.getI18NPrefix
-const { data: colors$, refetch } = store.getAll()
+const { data: colors$ } = store.getAll()
 const colorId = ref<number>(initialValue)
-const { mutationSuccess } = storeToRefs(store)
+
 const emit = defineEmits(['onSelect'])
 const colorsList = computed(() => colors$.value || [])
-const closeDrawer = ref(false)
+
 const onSelect = (id: number) => {
   const color = colorsList.value.find((item) => item.id === id)
   emit('onSelect', color)
   colorId.value = id
 }
-watch(
-  () => mutationSuccess.value,
-  (value) => {
-    if (value) {
-      refetch()
-      mutationSuccess.value = false
-      closeDrawer.value = value
-    }
-  }
-)
+
 watch(
   () => initialValue,
   (value) => {

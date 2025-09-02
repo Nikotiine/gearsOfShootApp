@@ -20,7 +20,6 @@ import { getFocalPlaneDto } from '@/shared/api-dto/get-focal-plane.dto'
 import { getOpticUnitDto } from '@/shared/api-dto/get-optic-unit.dto'
 import { getOpticTypeDto } from '@/shared/api-dto/get-optic-type.dto'
 import { getPriceHistoryDto } from '@/shared/api-dto/get-price-history.dto'
-import { getOpticRailSizeDto } from '@/shared/api-dto/get-optic-rail-size.dto'
 import { getI18NPrefix, I18NSuffix } from '@/enum/I18NSuffix.enum'
 
 export const useOpticStore = defineStore('optic-store', () => {
@@ -123,7 +122,8 @@ export const useOpticStore = defineStore('optic-store', () => {
       isCollarsProvided: false,
       length: 0,
       priceHistory: getPriceHistoryDto(),
-      providedOpticCollarSize: getOpticRailSizeDto()
+      providedOpticCollarSize: null,
+      inStock: 0
     }
     return useFormHandler<CreateOpticDto, AxiosResponse<OpticDto>>(
       emptyForm,
@@ -131,6 +131,8 @@ export const useOpticStore = defineStore('optic-store', () => {
       _createMutation,
       _updateMutation,
       _I18N_PREFIX,
+      _GET_BY_ID_FN,
+      undefined,
       id,
       (data) => ({
         ...data

@@ -1,6 +1,6 @@
 <template>
   <div class="card p-4">
-    <table-title-component :i18n-prefix="i18nPrefix" />
+    <table-title-component :i18n-prefix="i18nPrefix" :category="category" />
     <div class="text-red-500 text-center" v-if="isError">{{ t('global.isLoadingError') }}</div>
     <DataTable
       v-model:filters="filters"
@@ -109,6 +109,26 @@
           />
         </template>
       </Column>
+      <Column
+        field="inStock"
+        filterField="inStock"
+        :header="t('global.inStock')"
+        :showFilterMenu="false"
+        style=""
+      >
+        <template #body="{ data }">
+          {{ data.inStock }}
+        </template>
+
+        <template #filter="{ filterModel, filterCallback }">
+          <InputText
+            v-model="filterModel.value"
+            type="text"
+            @input="filterCallback()"
+            placeholder="Recherche par reference"
+          />
+        </template>
+      </Column>
       <Column :header="t('global.action')" :showFilterMenu="false" style="min-width: 12rem">
         <template #body="{ data }">
           <action-menu-component
@@ -131,7 +151,7 @@ import DataTable from 'primevue/datatable'
 import { useAmmunitionStore } from '@/stores/ammunition.store'
 import { useCaliberStore } from '@/stores/caliber.store'
 import { useFactoryStore } from '@/stores/factory.store'
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { FilterMatchMode } from '@primevue/core/api'
 import { useI18n } from 'vue-i18n'
 import { RouterEnum } from '@/enum/router.enum'
@@ -141,8 +161,8 @@ import ActionMenuComponent, {
 } from '@/components/__table/ActionMenuComponent.vue'
 import TableTitleComponent from '@/components/__table/TableTitleComponent.vue'
 
-const { categoryId } = defineProps<{
-  categoryId: number
+const { category } = defineProps<{
+  category: string
 }>()
 const { t } = useI18n()
 const store = useAmmunitionStore()
@@ -151,7 +171,8 @@ const router = useRouter()
 const caliberStore = useCaliberStore()
 const factoryStore = useFactoryStore()
 const { data: factories$ } = factoryStore.getFactoriesByType('ammunition')
-const { data, refetch, isError, isLoading: storeIsLoading } = store.getByCategory(categoryId)
+const currentCategory = ref<string>(category)
+const { data, refetch, isError, isLoading: storeIsLoading } = store.getByCategory(currentCategory)
 const { data: calibers$, isLoading: gatAllCalibersIsSuccess } = caliberStore.getAll()
 
 const filters = ref({
@@ -159,6 +180,7 @@ const filters = ref({
   name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
   'factory.name': { value: null, matchMode: FilterMatchMode.EQUALS },
   'caliber.name': { value: null, matchMode: FilterMatchMode.EQUALS },
+  inStock: { value: null, matchMode: FilterMatchMode.EQUALS },
   reference: { value: null, matchMode: FilterMatchMode.STARTS_WITH }
 })
 
@@ -180,6 +202,15 @@ const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
       break
   }
 }
+watch(
+  () => category,
+  (newCategory) => {
+    if (newCategory !== currentCategory.value) {
+      currentCategory.value = newCategory
+      refetch()
+    }
+  }
+)
 </script>
 
 <style scoped></style>

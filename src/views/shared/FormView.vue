@@ -23,6 +23,7 @@ import HandGunFormComponent from '@/components/__weapon/handgun/HandGunFormCompo
 import RiffleFormComponent from '@/components/__weapon/riffle/RiffleFormComponent.vue'
 
 const route = useRoute()
+
 enum RouterFormEnum {
   OPTIC_COLLAR_NEW = RouterEnum.OPTIC_COLLAR_NEW,
   OPTIC_COLLAR_EDIT = RouterEnum.OPTIC_COLLAR_EDIT,
@@ -48,6 +49,7 @@ enum RouterFormEnum {
   RIFFLE_NEW = RouterEnum.RIFFLE_NEW,
   RIFFLE_EDIT = RouterEnum.RIFFLE_EDIT
 }
+
 // Mapping entre les noms de route et les composants
 const componentMap = {
   [RouterFormEnum.OPTIC_COLLAR_EDIT]: OpticCollarFormComponent,

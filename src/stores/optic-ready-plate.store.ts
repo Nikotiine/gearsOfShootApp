@@ -67,6 +67,8 @@ export const useOpticReadyPlateStore = defineStore('optic-ready-plate-store', ()
       _createMutation,
       _updateMutation,
       _I18N_PREFIX,
+      _GET_BY_ID_FN,
+      _GET_ALL_FN,
       id,
       (data) => ({
         ...data

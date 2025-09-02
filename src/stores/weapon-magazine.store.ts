@@ -23,6 +23,7 @@ export const useWeaponMagazineStore = defineStore('weapon-magazine-store', () =>
   const weapons = ref<any>([])
   const magazines = ref<WeaponMagazineDto[]>([])
   const magazine = ref<WeaponMagazineDto>()
+  const submitSuccess = ref(false)
   // Private Attibute
   const _I18N_PREFIX = 'magazine'
   const _GET_ALL_BY_CATEGORY_FN = 'getAllMagazineByCategory'
@@ -58,18 +59,18 @@ export const useWeaponMagazineStore = defineStore('weapon-magazine-store', () =>
       enabled: () => enabled.value
     })
 
-  const getAllByCategoryQuery = (categoryId: number) =>
+  const getAllByCategoryQuery = (category: Ref<string>) =>
     useQuery({
-      queryKey: [_GET_ALL_BY_CATEGORY_FN, categoryId],
+      queryKey: [_GET_ALL_BY_CATEGORY_FN, category.value],
       queryFn: async () => {
-        return await _fetchAllByCategoryId(categoryId)
+        return await _fetchAllByCategory(category.value)
       },
-      enabled: !!categoryId
+      enabled: !!category.value
     })
 
-  const _fetchAllByCategoryId = async (categoryId: number) => {
-    if (!categoryId) return null
-    const res = await api.api.magazineControllerFindByCategory(categoryId)
+  const _fetchAllByCategory = async (category: string) => {
+    if (!category) return null
+    const res = await api.api.magazineControllerFindByCategory(category)
     return res.data
   }
 
@@ -101,7 +102,8 @@ export const useWeaponMagazineStore = defineStore('weapon-magazine-store', () =>
       compatibleHandGun: [],
       compatibleRiffle: [],
       weaponType: getWeaponTypeDto(),
-      priceHistory: getPriceHistoryDto()
+      priceHistory: getPriceHistoryDto(),
+      inStock: 0
     }
     return useFormHandler<CreateWeaponMagazineDto, AxiosResponse<WeaponMagazineDto>>(
       emptyForm,
@@ -109,6 +111,8 @@ export const useWeaponMagazineStore = defineStore('weapon-magazine-store', () =>
       _createMutation,
       _updateMutation,
       _I18N_PREFIX,
+      _GET_BY_ID_FN,
+      undefined,
       id,
       (data) => ({
         ...data,
@@ -169,6 +173,7 @@ export const useWeaponMagazineStore = defineStore('weapon-magazine-store', () =>
     builder: useWeaponForm,
     fetchCompatibleWeapons,
     compatibleWeapons$: weapons,
-    getI18NPrefix: getI18NPrefix(_I18N_PREFIX)
+    getI18NPrefix: getI18NPrefix(_I18N_PREFIX),
+    submitSuccess
   }
 })

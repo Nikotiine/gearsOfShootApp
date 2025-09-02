@@ -92,7 +92,8 @@ export const useOpticCollarStore = defineStore('optic-collar-store', () => {
       name: '',
       railSize: getOpticRailSizeDto(),
       description: '',
-      priceHistory: getPriceHistoryDto()
+      priceHistory: getPriceHistoryDto(),
+      inStock: 0
     }
     return useFormHandler<CreateOpticCollarDto, AxiosResponse<OpticCollarDto>>(
       emptyForm,
@@ -100,6 +101,8 @@ export const useOpticCollarStore = defineStore('optic-collar-store', () => {
       _createMutation,
       _updateMutation,
       _I18N_PREFIX,
+      _GET_BY_ID_FN,
+      _GET_ALL_FN,
       id,
       (data) => ({
         ...data

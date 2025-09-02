@@ -14,7 +14,7 @@
       :initial-value="typeId"
       :i18n-prefix="i18Prefix"
     />
-    <input-group-addon-open-drawer-button type="weaponType" :close="closeDrawer" v-if="canAddNew" />
+    <input-group-addon-open-drawer-button type="weaponType" v-if="canAddNew" />
   </InputGroup>
 </template>
 <script setup lang="ts">
@@ -24,11 +24,11 @@ import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
 import { useWeaponTypeStore } from '@/stores/weapon-type.store'
 import InputGroup from 'primevue/inputgroup'
 import { computed, ref, watch } from 'vue'
-import { storeToRefs } from 'pinia'
 import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.vue'
 
 import { type WeaponTypeDto, WeaponTypeDtoTypeEnum } from '@/api/Api'
 import type { WeaponEnum } from '@/enum/weapon.enum'
+
 const {
   initialValue = 0,
   canAddNew = false,
@@ -45,9 +45,8 @@ const {
 const typeId = ref<number>(initialValue)
 const store = useWeaponTypeStore()
 const i18Prefix = store.getI18NPrefix
-const { data: weaponType$, refetch } = store.getAll()
+const { data: weaponType$ } = store.getAll()
 
-const { mutationSuccess } = storeToRefs(store)
 const emit = defineEmits(['onSelect'])
 const weaponTypeList = computed(() => {
   let list: WeaponTypeDto[] = []
@@ -71,22 +70,12 @@ const weaponTypeList = computed(() => {
   return list
 })
 
-const closeDrawer = ref(false)
 const onSelect = (id: number) => {
   const type = weaponTypeList.value.find((t) => t.id === id)
   emit('onSelect', type)
   typeId.value = id
 }
-watch(
-  () => mutationSuccess.value,
-  (value) => {
-    if (value) {
-      refetch()
-      mutationSuccess.value = false
-      closeDrawer.value = value
-    }
-  }
-)
+
 watch(
   () => initialValue,
   (value) => {

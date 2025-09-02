@@ -11,7 +11,7 @@ export const useCaliberStore = defineStore('caliber-store', () => {
   // Appel API
   const { api } = useApiStore()
   // Refs
-  const mutationSuccess = ref(false)
+  const submitSuccess = ref(false)
   // Private Attibute
   const _I18N_PREFIX = 'caliber'
   const _GET_ALL_FN = 'getAllCaliber'
@@ -34,7 +34,7 @@ export const useCaliberStore = defineStore('caliber-store', () => {
       return api.api.caliberControllerCreate(caliber)
     },
     onSuccess() {
-      mutationSuccess.value = true
+      submitSuccess.value = true
     }
   })
   const _updateMutation = useMutation({
@@ -42,7 +42,7 @@ export const useCaliberStore = defineStore('caliber-store', () => {
       return await api.api.caliberControllerEdit(rds.id, rds)
     },
     onSuccess() {
-      mutationSuccess.value = true
+      submitSuccess.value = true
     }
   })
   const _fetchById = async (id?: string) => {
@@ -68,6 +68,8 @@ export const useCaliberStore = defineStore('caliber-store', () => {
       _createMutation,
       _updateMutation,
       _I18N_PREFIX,
+      _GET_BY_ID_FN,
+      _GET_ALL_FN,
       id,
       (data) => ({
         ...data
@@ -78,7 +80,7 @@ export const useCaliberStore = defineStore('caliber-store', () => {
   return {
     getAll: getAllCalibersQuery,
     formBuilder: useCaliberForm,
-    mutationSuccess,
+    submitSuccess,
     getI18NPrefix: getI18NPrefix(_I18N_PREFIX)
   }
 })

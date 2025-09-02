@@ -1,8 +1,6 @@
 <template>
   <div class="card">
-    <h2 class="text-center mt-2 text-2xl text-blue-500">
-      {{ t(i18nPrefix + formStatus) }}
-    </h2>
+    <form-title-component :i18n-prefix="i18nPrefix" />
     <form @submit.prevent="submit">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 p-4">
         <legalisation-category-input-select
@@ -36,23 +34,23 @@
           <input-group-text
             @value="(value) => (form.name = value)"
             :min-length="2"
-            :i18n-prefix="i18nPrefix"
             placeholder="name"
             label="name"
             required
             input-id="name"
+            :i18n-prefix="i18nPrefix"
             :initial-value="form.name"
           />
         </InputGroup>
 
         <input-group-number
-          :i18n-prefix="i18nPrefix"
           label="initialSpeed"
           placeholder="initialSpeed"
           @value="(value) => (form.initialSpeed = value)"
           input-id="initialSpeed"
           :initial-value="form.initialSpeed"
-          add-on="m/s"
+          add-on="speed"
+          :i18n-prefix="i18nPrefix"
         />
 
         <head-type-input-select
@@ -69,13 +67,13 @@
         />
 
         <input-group-number
-          :i18n-prefix="i18nPrefix"
           placeholder="packaging"
           label="packaging"
           @value="(value) => (form.packaging = value)"
           input-id="packaging"
           :initial-value="form.packaging"
           add-on="pcs"
+          :i18n-prefix="i18nPrefix"
         />
       </div>
 
@@ -95,8 +93,15 @@
         @update:price-history-form="(value) => (form.priceHistory = value)"
       />
 
+      <edit-stock-component
+        v-if="form.inStock > -1"
+        :in-stock="form.inStock"
+        object="AMMUNITION"
+        :object-id="id"
+        @update:in-stock="(value) => (form.inStock = value)"
+      />
       <div class="text-center">
-        <save-button :status="formStatus" :disabled="!isFormValid" />
+        <save-button :disabled="!isFormValid" />
       </div>
     </form>
   </div>
@@ -107,12 +112,8 @@ import InputGroup from 'primevue/inputgroup'
 import { useAmmunitionStore } from '@/stores/ammunition.store'
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
-
 import InputGroupText from '@/components/__form/InputGroupText.vue'
-
 import InputGroupNumber from '@/components/__form/InputGroupNumber.vue'
-
-import type { FormStatus } from '@/types/form-status.type'
 import SaveButton from '@/components/__form/SaveButton.vue'
 import CaliberInputSelect from '@/components/__form/__specific_select/CaliberInputSelect.vue'
 import FactoryInputSelect from '@/components/__form/__specific_select/FactoryInputSelect.vue'
@@ -122,15 +123,15 @@ import HeadTypeInputSelect from '@/components/__form/__specific_select/HeadTypeI
 import BodyTypeInputSelect from '@/components/__form/__specific_select/BodyTypeInputSelect.vue'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 import PriceHistoryForm from '@/components/__form/PriceHistoryForm.vue'
-
-const { id } = defineProps<{
-  id?: string
-  formStatus: FormStatus
-}>()
+import EditStockComponent from '@/components/__stock/EditStockComponent.vue'
+import { useFormStore } from '@/stores/form.store'
+import FormTitleComponent from '@/components/__form/FormTitleComponent.vue'
 
 const { t } = useI18n()
 const store = useAmmunitionStore()
+const formStore = useFormStore()
 const i18nPrefix = store.getI18NPrefix
+const id = formStore.getFormId()
 const { form, submit } = store.formBuilder(id)
 
 const isFormValid = computed(() => {

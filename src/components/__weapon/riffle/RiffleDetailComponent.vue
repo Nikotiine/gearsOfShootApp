@@ -8,15 +8,16 @@
     {{ riffle.name }}
   </h2>
 
-  <div class="p-6 max-w-md mt-6" v-if="riffle">
+  <div class="p-6 mt-6" v-if="riffle">
     <Tabs value="0">
       <TabList>
         <Tab value="0">{{ t('global.importantInformation') }}</Tab>
         <Tab value="1">{{ t('global.barrelInformation') }}</Tab>
         <Tab value="2">{{ t('global.otherInformation') }}</Tab>
-        <Tab value="3">{{ t('global.price') }}</Tab>
-        <Tab value="4">{{ t('global.description') }}</Tab>
-        <Tab value="5">{{ t('global.associatedProducts') }}</Tab>
+        <Tab value="3">{{ t('global.description') }}</Tab>
+        <Tab value="4">{{ t('global.associatedProducts') }}</Tab>
+        <Tab value="5">{{ t('global.price') }}</Tab>
+        <Tab value="6">{{ t('global.stock') }}</Tab>
       </TabList>
       <TabPanels>
         <TabPanel value="0">
@@ -29,22 +30,27 @@
           <TabCardComponent :props="otherProps" v-if="otherProps" />
         </TabPanel>
         <TabPanel value="3">
-          <TabCardComponent :props="priceInfo" v-if="priceInfo">
-            <template v-slot:button>
-              <show-price-history-button :id="id" type="RIFFLE" />
-            </template>
-          </TabCardComponent>
-        </TabPanel>
-        <TabPanel value="4">
           <p>
             {{ riffle.description.length > 0 ? riffle.description : t('global.notRegistered') }}
           </p>
         </TabPanel>
-        <TabPanel value="5">
+        <TabPanel value="4">
           <p>// Feature</p>
+        </TabPanel>
+        <TabPanel value="5">
+          <tab-price-component :id="id" type="RIFFLE" :price="riffle.priceHistory" />
+        </TabPanel>
+        <TabPanel value="6">
+          <tab-stock-component :stock="riffle.stock" />
         </TabPanel>
       </TabPanels>
     </Tabs>
+    <audit-info-component
+      :created-by="riffle.createdBy"
+      :updated-by="riffle.updatedBy"
+      :created-at="riffle.createdAt"
+      :update-at="riffle.updatedAt"
+    />
   </div>
 </template>
 
@@ -65,6 +71,9 @@ import {
   VerifyFieldIsNotNull
 } from '@/shared/utils/formatter.utils'
 import ShowPriceHistoryButton from '@/components/__layout/ShowPriceHistoryButton.vue'
+import AuditInfoComponent from '@/components/__detail/AuditInfoComponent.vue'
+import TabPriceComponent from '@/components/__tabs/TabPriceComponent.vue'
+import TabStockComponent from '@/components/__tabs/TabStockComponent.vue'
 
 const { t } = useI18n()
 const store = useRiffleStore()

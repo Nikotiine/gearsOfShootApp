@@ -10,8 +10,19 @@ import FactoriesTableComponent from '@/components/__factory/FactoriesTableCompon
 import OpticTableComponent from '@/components/__optic/OpticTableComponent.vue'
 import SoundReducerTableComponent from '@/components/__accessory/rds/SoundReducerTableComponent.vue'
 import { useRoute } from 'vue-router'
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
+import { useOpticCollarStore } from '@/stores/optic-collar.store'
+import { useWeaponMagazineStore } from '@/stores/weapon-magazine.store'
+import { useAmmunitionStore } from '@/stores/ammunition.store'
+import { useFactoryStore } from '@/stores/factory.store'
+import { useSoundReducerStore } from '@/stores/sound-noise-reducer.store'
+import { useOpticStore } from '@/stores/optic.store'
+import { useBreadcrumbStore } from '@/stores/breadcrumb.store'
+import { useI18n } from 'vue-i18n'
+
 const route = useRoute()
+const breadcrumbStore = useBreadcrumbStore()
+const { t } = useI18n()
 enum TableRoute {
   OPTIC_LIST = RouterEnum.OPTIC_LIST,
   RDS_LIST = RouterEnum.RDS_LIST,
@@ -28,8 +39,35 @@ const componentMap = {
   [TableRoute.RDS_LIST]: SoundReducerTableComponent,
   [TableRoute.OPTIC_LIST]: OpticTableComponent
 }
+const storeMap = {
+  [TableRoute.OPTIC_COLLAR_LIST]: useOpticCollarStore,
+  [TableRoute.MAGAZINE_LIST]: useWeaponMagazineStore,
+  [TableRoute.AMMUNITION_LIST]: useAmmunitionStore,
+  [TableRoute.FACTORY_LIST]: useFactoryStore,
+  [TableRoute.RDS_LIST]: useSoundReducerStore,
+  [TableRoute.OPTIC_LIST]: useOpticStore
+}
 
 const formComponent = computed(() => componentMap[route.name as TableRoute])
+const currentStore = computed(() => {
+  const storeFn = storeMap[route.name as TableRoute]
+  return storeFn ? storeFn() : null
+})
+
+watch(
+  () => route.name,
+  () => {
+    if (currentStore.value) {
+      const i18nPrefix = currentStore.value.getI18NPrefix
+      breadcrumbStore.setStep({
+        label: t(i18nPrefix + 'list'),
+        index: 1,
+        path: route.fullPath
+      })
+    }
+  },
+  { immediate: true }
+)
 </script>
 
 <style scoped></style>

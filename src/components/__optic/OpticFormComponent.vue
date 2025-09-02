@@ -1,8 +1,8 @@
 <template>
   <div class="card">
-    <h2 class="text-center mt-2 text-2xl">{{ t(i18nPrefix + formStatus) }}</h2>
+    <form-title-component :i18n-prefix="i18nPrefix" />
     <form @submit.prevent="submit">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 mt-10">
         <factory-input-select
           :initial-value="form.factory.id"
           can-add-new
@@ -227,7 +227,13 @@
         :price-history-form="form.priceHistory"
         @update:price-history-form="(value) => (form.priceHistory = value)"
       />
-
+      <edit-stock-component
+        v-if="form.inStock > -1"
+        :in-stock="form.inStock"
+        object="OPTIC"
+        :object-id="id"
+        @update:in-stock="(value) => (form.inStock = value)"
+      />
       <div class="text-center">
         <save-button :status="formStatus" :disabled="!isFormValid" />
       </div>
@@ -255,18 +261,20 @@ import FocalPlaneInputSelect from '@/components/__form/__specific_select/FocalPl
 import OpticUnitInputSelect from '@/components/__form/__specific_select/OpticUnitInputSelect.vue'
 import PriceHistoryForm from '@/components/__form/PriceHistoryForm.vue'
 import OpticRailInputSelect from '@/components/__form/__specific_select/OpticRailInputSelect.vue'
+import { useFormStore } from '@/stores/form.store'
+import FormTitleComponent from '@/components/__form/FormTitleComponent.vue'
+import EditStockComponent from '@/components/__stock/EditStockComponent.vue'
 
 const store = useOpticStore()
-
+const formStore = useFormStore()
 const i18nPrefix = store.getI18NPrefix
 
 const { t } = useI18n()
 
-const { id } = defineProps<{
-  id?: string
-  formStatus: FormStatus
-}>()
+const id = formStore.getFormId()
 const { form, submit } = store.formBuilder(id)
+
+const formStatus: FormStatus = formStore.getFormStatus()
 const isFormValid = computed(() => {
   let isValid: boolean = false
   if (

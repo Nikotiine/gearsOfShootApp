@@ -21,8 +21,8 @@ export const useFactoryStore = defineStore('factory-store', () => {
   // Refs
   const factories = ref<FactoryDto[]>([])
   const factoryTypes = ref<FactoryTypeDto[]>([])
-
-  const mutationSuccess = ref(false)
+  const factoryType = ref<FactoryType>('weapon')
+  const submitSuccess = ref(false)
 
   const _I18N_PREFIX = 'factory'
   const _GET_ALL_BY_TYPE_FN = 'getAllByTypeFactory'
@@ -34,7 +34,7 @@ export const useFactoryStore = defineStore('factory-store', () => {
       return await api.api.factoryControllerCreate(factory)
     },
     onSuccess() {
-      mutationSuccess.value = true
+      submitSuccess.value = true
     }
   })
 
@@ -43,7 +43,7 @@ export const useFactoryStore = defineStore('factory-store', () => {
       return await api.api.factoryControllerEdit(factory.id, factory)
     },
     onSuccess() {
-      mutationSuccess.value = true
+      submitSuccess.value = true
     }
   })
   const getByIdQuery = (id?: string) =>
@@ -103,6 +103,8 @@ export const useFactoryStore = defineStore('factory-store', () => {
       _createMutation,
       _updateMutation,
       _I18N_PREFIX,
+      _GET_BY_ID_FN,
+      _GET_ALL_BY_TYPE_FN,
       id,
       (data) => ({
         ...data,
@@ -120,18 +122,29 @@ export const useFactoryStore = defineStore('factory-store', () => {
     }
   })
 
-  const deleteFunction = (id: number) => {
+  const deleteFunction = (id: number): void => {
     _deleteFactoryMutation.mutate(id)
   }
+
+  function setFactoryType(type: FactoryType): void {
+    factoryType.value = type
+  }
+
+  function getFactoryType(): FactoryType {
+    return factoryType.value
+  }
+
   return {
     formBuilder: useFactoryForm,
     getFactoryTypes: getPrerequisitesFactoryList,
     factoryTypes$: factoryTypes,
     getFactoriesByType: getFactoriesByType,
     delete: deleteFunction,
-    mutationSuccess,
+    submitSuccess: submitSuccess,
     getI18NPrefix: getI18NPrefix(_I18N_PREFIX),
-    factories$: factories
+    factories$: factories,
+    setFactoryType,
+    getFactoryType
   }
 })
 export type FactoryType = 'weapon' | 'ammunition' | 'optic' | 'magazine' | 'accessory'

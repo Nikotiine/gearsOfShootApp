@@ -17,7 +17,9 @@ import IftaLabel from 'primevue/iftalabel'
 import InputText from 'primevue/inputtext'
 import { useI18n } from 'vue-i18n'
 import { computed, ref, watch } from 'vue'
+import { useFormStore } from '@/stores/form.store'
 const requiredLabel: string = '(*)'
+
 const {
   minLength = 0,
   label = 'label',
@@ -36,6 +38,7 @@ const {
 }>()
 const emit = defineEmits(['value'])
 const { t } = useI18n()
+
 const hasFocused = ref(false)
 const value = ref(initialValue)
 

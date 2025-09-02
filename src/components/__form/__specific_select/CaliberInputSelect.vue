@@ -12,7 +12,7 @@
       :initial-value="caliberId"
       :i18n-prefix="i18Prefix"
     />
-    <input-group-addon-open-drawer-button type="caliber" :close="closeDrawer" v-if="canAddNew" />
+    <input-group-addon-open-drawer-button type="caliber" v-if="canAddNew" />
   </InputGroup>
 </template>
 <script setup lang="ts">
@@ -22,7 +22,6 @@ import InputGroup from 'primevue/inputgroup'
 import InputGroupAddonOpenDrawerButton from '@/components/__form/InputGroupAddonOpenDrawerButton.vue'
 import { useCaliberStore } from '@/stores/caliber.store'
 import { computed, ref, watch } from 'vue'
-import { storeToRefs } from 'pinia'
 import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.vue'
 
 const {
@@ -37,26 +36,17 @@ const {
 const caliberId = ref<number>(initialValue)
 const store = useCaliberStore()
 const i18Prefix = store.getI18NPrefix
-const { data, refetch } = store.getAll()
-const { mutationSuccess } = storeToRefs(store)
+const { data } = store.getAll()
+
 const emit = defineEmits(['onSelect'])
 const calibersList = computed(() => data.value || [])
-const closeDrawer = ref(false)
+
 const onSelect = (id: number) => {
   const caliber = calibersList.value.find((caliber) => caliber.id === id)
   emit('onSelect', caliber)
   caliberId.value = id
 }
-watch(
-  () => mutationSuccess.value,
-  (value) => {
-    if (value) {
-      refetch()
-      mutationSuccess.value = false
-      closeDrawer.value = value
-    }
-  }
-)
+
 watch(
   () => initialValue,
   (value) => {

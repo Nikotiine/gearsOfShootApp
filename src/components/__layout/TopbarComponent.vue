@@ -65,7 +65,7 @@
   <RegisterDialog />
 </template>
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 import MegaMenu from 'primevue/megamenu'
 import Button from 'primevue/button'
@@ -85,7 +85,7 @@ const { push } = useRouter()
 const { t } = useI18n()
 const { isLogged } = useSecurityStore()
 
-const items = ref([
+/*const items = ref([
   {
     label: 'sportShooting',
     root: true,
@@ -131,7 +131,7 @@ const items = ref([
     label: 'recreationalShooting',
     root: true
   }
-  /* {
+  /!* {
     label: 'account',
     root: true,
     items: [
@@ -158,8 +158,91 @@ const items = ref([
         }
       ]
     ]
-  }*/
-])
+  }*!/
+])*/
+const items = computed(() => {
+  const baseItems = [
+    {
+      label: 'sportShooting',
+      root: true,
+      items: [
+        [
+          {
+            items: [
+              {
+                label: 'categoryC',
+                icon: 'pi pi-list',
+                subtext: 'Subtext of item',
+                command: () => {
+                  push('/tir/sportif/categorie/c')
+                }
+              },
+              { label: 'ammoC', icon: 'pi pi-users', subtext: 'Subtext of item' },
+              { label: 'accessC', icon: 'pi pi-file', subtext: 'Subtext of item' }
+            ]
+          }
+        ],
+        [
+          {
+            label: 'toto',
+            items: [
+              { label: 'categoryBRiffle', icon: 'pi pi-shield', subtext: 'Subtext of item' },
+              { label: 'categoryBHandgun', icon: 'pi pi-question', subtext: 'Subtext of item' },
+              { label: 'categoryC', icon: 'pi pi-search', subtext: 'Subtext of item' },
+              { label: 'categoryC', icon: 'pi pi-search', subtext: 'Subtext of item' }
+            ]
+          }
+        ],
+        [
+          {
+            items: [
+              { label: 'categoryC', icon: 'pi pi-comments', subtext: 'Subtext of item' },
+              { label: 'categoryC', icon: 'pi pi-star', subtext: 'Subtext of item' },
+              { label: 'categoryC', icon: 'pi pi-globe', subtext: 'Subtext of item' }
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      label: 'recreationalShooting',
+      root: true
+    }
+  ]
+
+  if (isLogged.value) {
+    baseItems.push({
+      label: 'admin',
+      root: true,
+      items: [
+        [
+          {
+            items: [
+              {
+                label: 'profile',
+                icon: 'pi pi-user',
+                subtext: 'Voir mon profil',
+                command: () => {
+                  push('/account/profile')
+                }
+              },
+              {
+                label: 'logout',
+                icon: 'pi pi-sign-out',
+                subtext: 'Se déconnecter',
+                command: () => {
+                  // appel à ton store pour logout
+                }
+              }
+            ]
+          }
+        ]
+      ]
+    })
+  }
+
+  return baseItems
+})
 </script>
 
 <style scoped></style>

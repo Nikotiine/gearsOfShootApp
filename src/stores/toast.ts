@@ -5,8 +5,13 @@ import { useI18n } from 'vue-i18n'
 export const useToastStore = defineStore('toast', () => {
   const toast = useToast()
   const { t } = useI18n()
-  function successMessage(summary: string, message: string) {
-    toast.add({ severity: 'info', summary: t(summary), detail: t(message), life: 3000 })
+  function successMessage(summary: string, message: string, key?: string) {
+    toast.add({
+      severity: 'info',
+      summary: t(summary),
+      detail: t(message, { key: key }),
+      life: 3000
+    })
   }
   function errorMessage(summary: string, message: string) {
     toast.add({ severity: 'error', summary: t(summary), detail: t(message), life: 5000 })

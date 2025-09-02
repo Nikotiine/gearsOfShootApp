@@ -31,6 +31,7 @@ import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.v
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 import InputGroupAddon from 'primevue/inputgroupaddon'
 import type { NumberFormatterType } from '@/shared/utils/formatter.utils'
+import { useFormStore } from '@/stores/form.store'
 
 const emit = defineEmits(['value'])
 const { t } = useI18n()
@@ -61,6 +62,7 @@ const {
   addOn?: NumberFormatterType
   hideIcon?: boolean
 }>()
+
 const value = ref(initialValue)
 const hasFocused = ref(false)
 const onFocus = () => {

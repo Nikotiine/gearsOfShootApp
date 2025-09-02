@@ -1,8 +1,5 @@
 <template>
-  <h2 class="text-center mt-2 text-2xl">
-    {{ t('factory.form.addTitle') }}
-    <span class="text-blue-500">{{ t('factory.types.' + factoryType) }}</span>
-  </h2>
+  <form-title-component :i18n-prefix="i18nPrefix" custom-status="save" />
   <form @submit.prevent="submit">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
       <InputGroup>
@@ -10,8 +7,8 @@
         <input-group-text
           @value="(value) => (form.name = value)"
           :min-length="3"
-          placeholder="global.name"
-          label="global.name"
+          placeholder="name"
+          label="name"
           required
           input-id="name"
           :initial-value="form.name"
@@ -23,8 +20,8 @@
         <input-group-text
           @value="(value) => (form.reference = value)"
           :min-length="3"
-          placeholder="global.ref"
-          label="global.ref"
+          placeholder="ref"
+          label="ref"
           required
           input-id="reference"
           :initial-value="form.reference"
@@ -36,7 +33,8 @@
         <input-group-select
           :options="factoryTypeViewModel"
           option-label="label"
-          label="factory.type"
+          label="type"
+          :i18n-prefix="i18nPrefix"
           required
           :disabled="disabledSelectFactoryType"
           input-id="typeId"
@@ -65,7 +63,7 @@
 import Textarea from 'primevue/textarea'
 
 import InputGroup from 'primevue/inputgroup'
-import { type FactoryType, useFactoryStore } from '@/stores/factory.store'
+import { useFactoryStore } from '@/stores/factory.store'
 import { computed, ref, watch, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
 import InputGroupText from '@/components/__form/InputGroupText.vue'
@@ -74,20 +72,23 @@ import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
 import { storeToRefs } from 'pinia'
 import type { FormStatus } from '@/types/form-status.type'
 import SaveButton from '@/components/__form/SaveButton.vue'
-const store = useFactoryStore()
+import { useFormStore } from '@/stores/form.store'
+import FormTitleComponent from '@/components/__form/FormTitleComponent.vue'
 
+const store = useFactoryStore()
+const i18nPrefix = store.getI18NPrefix
 const { factoryTypes$ } = storeToRefs(store)
 
 const { t, locale } = useI18n()
 const localeValue = ref(locale.value)
 
-const { id, factoryType, formStatus } = defineProps<{
+const { id } = defineProps<{
   id?: string
-  formStatus: FormStatus
-  factoryType?: FactoryType
 }>()
 const { form, submit } = store.formBuilder(id)
-//*******************Init du formulaire*********************
+const formStore = useFormStore()
+const formStatus: FormStatus = formStore.getFormStatus()
+const factoryType = store.getFactoryType()
 
 //***********************Validateur*************************
 const isFormValid = computed(() => {
