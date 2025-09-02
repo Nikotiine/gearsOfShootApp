@@ -63,15 +63,15 @@ export const useRiffleStore = defineStore('riffle-store', () => {
     return _getAllRiffleQuery.data.value?.data ?? []
   }
 
-  const getAllRiffleByCategoryQuery = (catgory: Ref<string>) =>
+  const getAllRiffleByCategoryQuery = (category: Ref<string>) =>
     useQuery({
-      queryKey: [_GET_ALL_BY_CATEGORY_FN, catgory.value],
+      queryKey: [_GET_ALL_BY_CATEGORY_FN, category.value],
       queryFn: async () => {
-        const res = await api.api.riffleControllerFindAllByCategory(catgory.value)
+        const res = await api.api.riffleControllerFindAllByCategory(category.value)
         riffles.value = res.data
         return res
       },
-      enabled: !!catgory.value
+      enabled: !!category.value
     })
 
   const getByIdQuery = (id?: string) =>

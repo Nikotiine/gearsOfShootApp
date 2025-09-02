@@ -124,7 +124,7 @@
     "colors": "Couleurs"
   },
   "handgun": {
-    "list": "Liste des arme de poing",
+    "list": "Liste des arme de poing de categorie : {key}",
     "save": "Ajouter une arme de poing",
     "edit": "Modifier une arme de poing",
     "breadcrumb": "Arme de poing",
@@ -180,7 +180,7 @@
     }
   },
   "riffle": {
-    "list": "Listes des armes longues",
+    "list": "Listes des armes longues de categorie : {key}",
     "save": "Ajouter une arme longue",
     "summary": "Gestion des armes longues",
     "model": "Modele de l'arme",
@@ -244,7 +244,7 @@
     "created": "Chargeur ajouté",
     "compatibleWeapons": "Armes compatibles",
     "updated": "Chargeur correctement modifié",
-    "list":"Liste des chargeurs de categorie",
+    "list":"Liste des chargeurs de categorie : {key}",
     "notFound": "Aucun chargeur trouvé",
     "loading": "Chargement des chargeurs en cours",
     "deleted": "Chargeur supprimé"
@@ -261,7 +261,7 @@
     "headType": "Type d'ovige",
     "bodyType": "Type de douille",
     "packaging": "Packaging",
-    "list":"Liste des munitions",
+    "list":"Liste des munitions de categorie : {key}",
     "notFound": "Aucune munition trouvée",
     "loading": "Chargement des muntions en cours",
     "findByName": "Recherche par modele",

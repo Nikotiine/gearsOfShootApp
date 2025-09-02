@@ -1,6 +1,6 @@
 <template>
   <div class="card p-4">
-    <table-title-component :i18n-prefix="i18nPrefix" />
+    <table-title-component :i18n-prefix="i18nPrefix" :category="category" />
     <div class="text-red-500 text-center" v-if="isError">{{ t('global.isLoadingError') }}</div>
     <DataTable
       v-model:filters="filters"

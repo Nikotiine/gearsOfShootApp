@@ -8,8 +8,8 @@ import { getI18NPrefix } from '@/enum/I18NSuffix.enum'
 export interface BreadCrumbState {
   label: string
   index: number
-  path: string,
-  icon?:string
+  path: string
+  icon?: string
 }
 
 export const useBreadcrumbStore = defineStore('breadcrumb-store', () => {
@@ -19,7 +19,6 @@ export const useBreadcrumbStore = defineStore('breadcrumb-store', () => {
   const breadcrumbs = ref<BreadCrumbState[]>([])
   const router = useRouter()
   function goToStep(breadcrumb: BreadCrumbState) {
-    console.log(breadcrumb)
     breadcrumbs.value = breadcrumbs.value.filter((s) => s.index <= breadcrumb.index)
     updateSessionStorage(breadcrumbs.value)
     router.push({ path: breadcrumb.path })

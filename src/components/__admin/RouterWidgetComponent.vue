@@ -9,7 +9,7 @@
             <ProductMegaMenu />
           </div>
           <div
-            class="flex items-center justify-center bg-cyan-100 dark:bg-orange-400/10 rounded-border"
+            class="flex items-center justify-center bg-cyan-100 dark:bg-cyan-400/10 rounded-border"
             style="width: 2.5rem; height: 2.5rem"
           >
             <i class="pi pi-plus text-blue-500"></i>
@@ -26,7 +26,7 @@
             <ListMegaMenu />
           </div>
           <div
-            class="flex items-center justify-center bg-cyan-100 dark:bg-orange-400/10 rounded-border"
+            class="flex items-center justify-center bg-cyan-100 dark:bg-cyan-400/10 rounded-border"
             style="width: 2.5rem; height: 2.5rem"
           >
             <i class="pi pi-list text-blue-500"></i>
@@ -45,7 +45,7 @@
             class="flex items-center justify-center bg-cyan-100 dark:bg-cyan-400/10 rounded-border"
             style="width: 2.5rem; height: 2.5rem"
           >
-            <i class="pi pi-users text-cyan-500 !text-xl"></i>
+            <i class="pi pi-cog text-cyan-500 !text-xl"></i>
           </div>
         </div>
       </div>
@@ -54,7 +54,7 @@
       <div class="card mb-0 p-2 shadow shadow-gray-400 max-w-80 mx-auto">
         <div class="flex justify-between mb-4">
           <div>
-            <span class="block text-muted-color font-medium mb-4">Comments</span>
+            <span class="block text-muted-color font-medium mb-4">USER a faire</span>
             <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">152 Unread</div>
           </div>
           <div

@@ -1,13 +1,13 @@
 <template>
   <Panel :header="t('adminNavbar.title')" toggleable collapsed>
     <div class="grid grid-cols-12 gap-8">
-      <div class="col-span-12 lg:col-span-6 xl:col-span-3">
+      <div class="col-span-12 lg:col-span-6 xl:col-span-3 max-sm:max-w-64">
         <ProductMegaMenu />
       </div>
-      <div class="col-span-12 lg:col-span-6 xl:col-span-3">
+      <div class="col-span-12 lg:col-span-6 xl:col-span-3 max-sm:max-w-64">
         <ListMegaMenu />
       </div>
-      <div class="col-span-12 lg:col-span-6 xl:col-span-3">
+      <div class="col-span-12 lg:col-span-6 xl:col-span-3 max-sm:max-w-64">
         <InternalReferenceMegaMenu />
       </div>
     </div>

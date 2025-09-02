@@ -43,7 +43,6 @@ import { useI18n } from 'vue-i18n'
 import { GetClassTextColorByQuantity } from '@/shared/utils/colors.utils'
 const store = useStockStore()
 const { stockAndHistories } = storeToRefs(store)
-console.log(stockAndHistories)
 const { t } = useI18n()
 </script>
 

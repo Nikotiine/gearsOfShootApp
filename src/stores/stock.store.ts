@@ -77,7 +77,6 @@ export const useStockStore = defineStore('stock-store', () => {
   const _fetchByObjectAndObjectId = async (object: StockableObjectType, objectId?: string) => {
     if (!object || !objectId) return null
     const res = await api.api.stockControllerFindByStockableObjectAndId(object, parseInt(objectId))
-    console.log('res', res.data)
     stockAndHistories.value = res.data
     return res.data
   }

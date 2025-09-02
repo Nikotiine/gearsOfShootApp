@@ -126,6 +126,19 @@ export interface CreateOpticReadyPlateDto {
   reference: string
 }
 
+export interface UserDto {
+  id: number
+  email: string
+  firstName: string
+  lastName: string
+  address: string
+  phone: string
+  city: string
+  state: string
+  zipCode: string
+  role: UserDtoRoleEnum
+}
+
 export interface PriceHistoryDto {
   supplierPrice: number
   recommendedSalePrice: number
@@ -135,6 +148,8 @@ export interface PriceHistoryDto {
   id: number
   /** @format date-time */
   createdAt: string
+  createdBy: UserDto | null
+  updatedBy: UserDto | null
 }
 
 export interface WeaponReloadModeDto {
@@ -193,19 +208,6 @@ export interface CreatePriceHistoryDto {
   supplierPrice: number
   recommendedSalePrice: number
   currentSalePrice: number
-}
-
-export interface UserDto {
-  id: number
-  email: string
-  firstName: string
-  lastName: string
-  address: string
-  phone: string
-  city: string
-  state: string
-  zipCode: string
-  role: UserDtoRoleEnum
 }
 
 export interface StockHistoriesDto {
@@ -1252,14 +1254,14 @@ export interface UpdateSoundNoiseReducerDto {
   id: number
 }
 
-export enum WeaponTypeDtoTypeEnum {
-  Handgun = 'handgun',
-  Riffle = 'riffle'
-}
-
 export enum UserDtoRoleEnum {
   USER = 'USER',
   ADMIN = 'ADMIN'
+}
+
+export enum WeaponTypeDtoTypeEnum {
+  Handgun = 'handgun',
+  Riffle = 'riffle'
 }
 
 export enum CreateUserDtoRoleEnum {
@@ -2192,7 +2194,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @summary Filtré par categorie
      * @request GET:/api/magazine/by/category/{category}
      */
-    magazineControllerFindByCategory: (category: number, params: RequestParams = {}) =>
+    magazineControllerFindByCategory: (category: string, params: RequestParams = {}) =>
       this.request<WeaponMagazineDto[], any>({
         path: `/api/magazine/by/category/${category}`,
         method: 'GET',
@@ -2618,7 +2620,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @summary Filtré par categorie
      * @request GET:/api/ammunition/by/category/{category}
      */
-    ammunitionControllerFindByCategory: (category: number, params: RequestParams = {}) =>
+    ammunitionControllerFindByCategory: (category: string, params: RequestParams = {}) =>
       this.request<AmmunitionDto[], any>({
         path: `/api/ammunition/by/category/${category}`,
         method: 'GET',

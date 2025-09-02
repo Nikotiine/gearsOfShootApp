@@ -1,6 +1,6 @@
 <template>
   <div class="card p-4">
-    <table-title-component :i18n-prefix="i18nPrefix" />
+    <table-title-component :i18n-prefix="i18nPrefix" :category="category" />
     <div class="text-red-500 text-center" v-if="isError">Error</div>
     <DataTable
       v-model:filters="filters"
@@ -52,7 +52,7 @@
           <Select
             v-model="filterModel.value"
             @change="filterCallback()"
-            :options="magazineFactory$?.data"
+            :options="magazineFactory$"
             optionLabel="name"
             optionValue="name"
             placeholder="Marque"
@@ -75,7 +75,7 @@
           <Select
             v-model="filterModel.value"
             @change="filterCallback()"
-            :options="calibers$?.data"
+            :options="calibers$"
             placeholder="Calibre"
             optionLabel="name"
             optionValue="name"
@@ -114,7 +114,7 @@
 </template>
 <script setup lang="ts">
 import { useWeaponMagazineStore } from '@/stores/weapon-magazine.store'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import IconField from 'primevue/iconfield'
 
 import DataTable from 'primevue/datatable'
@@ -135,18 +135,18 @@ import { useI18n } from 'vue-i18n'
 import TableTitleComponent from '@/components/__table/TableTitleComponent.vue'
 
 const router = useRouter()
-const { categoryId } = defineProps<{
-  categoryId: number
+const { category } = defineProps<{
+  category: string
 }>()
 const { t } = useI18n()
 const factoryStore = useFactoryStore()
 const { data: magazineFactory$ } = factoryStore.getFactoriesByType('magazine')
 const caliberStore = useCaliberStore()
 const { data: calibers$ } = caliberStore.getAll()
-
+const currentCategory = ref<string>(category)
 const store = useWeaponMagazineStore()
 const i18nPrefix = store.getI18NPrefix
-const { data: magazines$, isError, isLoading, refetch } = store.getByCategory(categoryId)
+const { data: magazines$, isError, isLoading, refetch } = store.getByCategory(currentCategory)
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   reference: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
@@ -169,6 +169,15 @@ const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
       break
   }
 }
+watch(
+  () => category,
+  (newCategory) => {
+    if (newCategory !== currentCategory.value) {
+      currentCategory.value = newCategory
+      refetch()
+    }
+  }
+)
 </script>
 
 <style scoped></style>
