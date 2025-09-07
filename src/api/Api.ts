@@ -126,32 +126,6 @@ export interface CreateOpticReadyPlateDto {
   reference: string
 }
 
-export interface UserDto {
-  id: number
-  email: string
-  firstName: string
-  lastName: string
-  address: string
-  phone: string
-  city: string
-  state: string
-  zipCode: string
-  role: UserDtoRoleEnum
-}
-
-export interface PriceHistoryDto {
-  supplierPrice: number
-  recommendedSalePrice: number
-  currentSalePrice: number
-  objectId: number
-  object: string
-  id: number
-  /** @format date-time */
-  createdAt: string
-  createdBy: UserDto | null
-  updatedBy: UserDto | null
-}
-
 export interface WeaponReloadModeDto {
   id: number
   name: string
@@ -204,10 +178,35 @@ export interface MLockOptionDto {
   id: number
 }
 
+export interface SupplierDto {
+  name: string
+  address: string
+  phoneNumber: string
+  city: string
+  country: string
+  zipCode: string
+  siret: string
+  id: number
+}
+
 export interface CreatePriceHistoryDto {
   supplierPrice: number
   recommendedSalePrice: number
   currentSalePrice: number
+  supplier: SupplierDto
+}
+
+export interface UserDto {
+  id: number
+  email: string
+  firstName: string
+  lastName: string
+  address: string
+  phone: string
+  city: string
+  state: string
+  zipCode: string
+  role: UserDtoRoleEnum
 }
 
 export interface StockHistoriesDto {
@@ -905,6 +904,20 @@ export interface CreateStockDto {
   reason: string | null
 }
 
+export interface PriceHistoryDto {
+  supplierPrice: number
+  recommendedSalePrice: number
+  currentSalePrice: number
+  supplier: SupplierDto
+  objectId: number
+  object: string
+  id: number
+  /** @format date-time */
+  createdAt: string
+  createdBy: UserDto | null
+  updatedBy: UserDto | null
+}
+
 export interface AmmunitionHeadTypeDto {
   /** @example "Full metal jacket" */
   name: string
@@ -1254,14 +1267,14 @@ export interface UpdateSoundNoiseReducerDto {
   id: number
 }
 
-export enum UserDtoRoleEnum {
-  USER = 'USER',
-  ADMIN = 'ADMIN'
-}
-
 export enum WeaponTypeDtoTypeEnum {
   Handgun = 'handgun',
   Riffle = 'riffle'
+}
+
+export enum UserDtoRoleEnum {
+  USER = 'USER',
+  ADMIN = 'ADMIN'
 }
 
 export enum CreateUserDtoRoleEnum {
@@ -1423,7 +1436,7 @@ export class HttpClient<SecurityDataType = unknown> {
 
 /**
  * @title Gears of shoot
- * @version 0.1.0
+ * @version 0.2.3
  * @contact
  *
  * Gears of shoot API
@@ -2019,26 +2032,6 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
-     * @description Retourne la liste des historiques de prix disponible
-     *
-     * @tags Price-history
-     * @name PriceHistoryControllerFindByTypeAndObject
-     * @summary Liste complète
-     * @request GET:/api/price-history/{type}/{objectId}
-     */
-    priceHistoryControllerFindByTypeAndObject: (
-      type: string,
-      objectId: number,
-      params: RequestParams = {}
-    ) =>
-      this.request<PriceHistoryDto[], any>({
-        path: `/api/price-history/${type}/${objectId}`,
-        method: 'GET',
-        format: 'json',
-        ...params
-      }),
-
-    /**
      * @description Retourne la liste des diffents type d armes possible
      *
      * @tags Weapon type
@@ -2575,6 +2568,42 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
     ) =>
       this.request<StockDto, any>({
         path: `/api/stock/by/${object}/${objectId}`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne la liste des historiques de prix disponible
+     *
+     * @tags Price-history
+     * @name PriceHistoryControllerFindByTypeAndObject
+     * @summary Liste complète
+     * @request GET:/api/price-history/{type}/{objectId}
+     */
+    priceHistoryControllerFindByTypeAndObject: (
+      type: string,
+      objectId: number,
+      params: RequestParams = {}
+    ) =>
+      this.request<PriceHistoryDto[], any>({
+        path: `/api/price-history/${type}/${objectId}`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne la liste complete des plans focal
+     *
+     * @tags Supplier
+     * @name SupplierControllerFindAll
+     * @summary Liste complète
+     * @request GET:/api/supplier/all
+     */
+    supplierControllerFindAll: (params: RequestParams = {}) =>
+      this.request<SupplierDto[], any>({
+        path: `/api/supplier/all`,
         method: 'GET',
         format: 'json',
         ...params

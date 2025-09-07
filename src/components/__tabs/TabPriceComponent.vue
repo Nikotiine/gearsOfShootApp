@@ -15,6 +15,11 @@
         {{ NumberFormatter(data.supplierPrice, 'euro') }}
       </template>
     </Column>
+    <Column :header="t('priceHistory.supplier')">
+      <template #body="{ data }">
+        {{ data.supplier.name }}
+      </template>
+    </Column>
     <Column :header="t('priceHistory.recommendedSalePrice')">
       <template #body="{ data }">
         {{ NumberFormatter(data.recommendedSalePrice, 'euro') }}
@@ -65,6 +70,10 @@ const priceInfo = computed(() => {
     {
       label: t('priceHistory.currentSalePrice'),
       title: NumberFormatter(price.currentSalePrice, 'euro')
+    },
+    {
+      label: t('priceHistory.supplier'),
+      title: price.supplier.name
     }
   ]
 })

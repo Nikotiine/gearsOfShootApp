@@ -1,6 +1,6 @@
 <template>
   <h2 class="text-xl text-center text-blue-500 mt-2">{{ t(i18nPrefix + 'title') }}</h2>
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 mt-2">
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-4 p-4 mt-2">
     <template v-for="[key, value] in numericFields" :key="key">
       <input-group-number
         :i18n-prefix="i18nPrefix"
@@ -14,6 +14,11 @@
         add-on="euro"
       />
     </template>
+    <supplier-select-input-select
+      :initial-value="priceHistoryForm.supplier.id"
+      required
+      @on-select="(value) => updateField('supplier', value)"
+    />
   </div>
 </template>
 <script setup lang="ts">
@@ -21,6 +26,7 @@ import type { CreatePriceHistoryDto } from '@/api/Api'
 import InputGroupNumber from '@/components/__form/InputGroupNumber.vue'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import SupplierSelectInputSelect from '@/components/__form/__specific_select/SupplierSelectInputSelect.vue'
 
 const { t } = useI18n()
 const i18nPrefix = 'priceHistory.'
