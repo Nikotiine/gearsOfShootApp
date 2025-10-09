@@ -1267,6 +1267,70 @@ export interface UpdateSoundNoiseReducerDto {
   id: number
 }
 
+export interface ItemInvoice {
+  name: string
+  reference: string
+  unitPriceHt: number
+  quantity: number
+  totalPriceHT: number
+  caliber: CaliberDto | null
+  colors: string | null
+  description: string
+  id: number
+  status: string
+  factory: FactoryDto
+  /** @example "C" */
+  category: LegislationCategoryDto | null
+}
+
+export interface InvoiceSupplierDto {
+  comment: string
+  supplier: SupplierDto
+  /** @format date-time */
+  dueDate: string
+  shippingCost: number
+  /** @format date-time */
+  createdAt: string
+  /** @format date-time */
+  updatedAt: string
+  createdBy: UserDto
+  id: number
+  internalInvoiceReference: string
+  invoiceSupplierReference: string
+  items: ItemInvoice[]
+}
+
+export interface CreateItemInvoiceSupplierDto {
+  quantity: number
+  object: string
+  objectId: number
+  accountHT: number
+  comment: string
+  supplierPriceHT: number
+  status: string
+  id: number
+}
+
+export interface CreateInvoiceSupplierDto {
+  comment: string
+  supplier: SupplierDto
+  /** @format date-time */
+  dueDate: string
+  shippingCost: number
+  items: CreateItemInvoiceSupplierDto[]
+}
+
+export interface UpdateInvoiceSupplierDto {
+  comment: string
+  supplier: SupplierDto
+  /** @format date-time */
+  dueDate: string
+  shippingCost: number
+  items: CreateItemInvoiceSupplierDto[]
+  invoiceSupplierReference: string
+  id: number
+}
+
 export enum WeaponTypeDtoTypeEnum {
   Handgun = 'handgun',
   Riffle = 'riffle'
@@ -3325,6 +3389,66 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
         path: `/api/sound-reducer/${id}`,
         method: 'DELETE',
         secure: true,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne la commnde fournisseur par son id
+     *
+     * @tags Invoice
+     * @name SupplierInvoiceControllerFindById
+     * @summary Filtré par id
+     * @request GET:/api/supplier-invoice/by/id/{id}
+     */
+    supplierInvoiceControllerFindById: (id: number, params: RequestParams = {}) =>
+      this.request<InvoiceSupplierDto, any>({
+        path: `/api/supplier-invoice/by/id/${id}`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Ajout d une nouvelle commande fournisseur
+     *
+     * @tags Invoice
+     * @name SupplierInvoiceControllerCreate
+     * @summary Creation
+     * @request POST:/api/supplier-invoice
+     * @secure
+     */
+    supplierInvoiceControllerCreate: (data: CreateInvoiceSupplierDto, params: RequestParams = {}) =>
+      this.request<InvoiceSupplierDto, any>({
+        path: `/api/supplier-invoice`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Edition d une commande
+     *
+     * @tags Invoice
+     * @name SupplierInvoiceControllerUpdate
+     * @summary Edition
+     * @request PUT:/api/supplier-invoice/{id}
+     * @secure
+     */
+    supplierInvoiceControllerUpdate: (
+      id: number,
+      data: UpdateInvoiceSupplierDto,
+      params: RequestParams = {}
+    ) =>
+      this.request<InvoiceSupplierDto, any>({
+        path: `/api/supplier-invoice/${id}`,
+        method: 'PUT',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
         format: 'json',
         ...params
       })
