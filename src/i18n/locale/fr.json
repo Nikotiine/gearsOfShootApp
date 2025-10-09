@@ -487,7 +487,8 @@
     "priceHistoryModalHeader": "Historique complet",
     "createdAt": "Date de mise a jour",
     "notFound": "Aucun prix enregistré",
-    "histories": "Historique des prix"
+    "histories": "Historique des prix",
+    "supplier": "Fournisseur"
   },
   "stock": {
     "quantity": "Quantite actuelle en stock",
