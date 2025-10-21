@@ -21,16 +21,13 @@ export const useInvoiceStore = defineStore('invoice-store', () => {
   const toastStore = useToastStore()
   const submitSuccess = ref(false)
 
-  const tempInvoice = ref<CreateInvoiceSupplierDto | null>(null)
+  const tempInvoice = ref<CreateInvoiceSupplierDto>({ ...getInvoiceDto() })
 
   const tempInvoice$ = computed(() => {
     const invoiceInStorage = JSON.parse(<string>sessionStorage.getItem(_STORAGE_KEY))
 
-    if (!tempInvoice.value && invoiceInStorage) {
+    if (invoiceInStorage) {
       tempInvoice.value = invoiceInStorage
-    }
-    if (!tempInvoice.value && !invoiceInStorage) {
-      tempInvoice.value = getInvoiceDto()
     }
     // If tempinvoice vide et localsotagevide faire requete api pour le remplir
     return tempInvoice.value
@@ -64,6 +61,9 @@ export const useInvoiceStore = defineStore('invoice-store', () => {
   }
   const _createMutation = useMutation({
     mutationFn: async (invoice: CreateInvoiceSupplierDto) => {
+      invoice.items.forEach((item) => {
+        item.status = 'IN_ORDER'
+      })
       return await api.api.supplierInvoiceControllerCreate(invoice)
     },
     onSuccess: async () => {

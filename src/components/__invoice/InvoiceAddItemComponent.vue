@@ -27,16 +27,21 @@ import { useToastStore } from '@/stores/toast'
 const store = useInvoiceStore()
 
 const priceHistoryModalRef = ref<PriceHistoryModalExposed | null>(null)
-const { objectId, object } = defineProps<{
+const {
+  objectId,
+  object,
+  description = ''
+} = defineProps<{
   objectId: string
   object: PriceableObjectType
+  description?: string
 }>()
 const onClickAction = () => {
   priceHistoryModalRef.value?.show()
 }
 const OnSelectItem = (item: CreateItemInvoiceSupplierDto) => {
   priceHistoryModalRef.value?.hide()
-
+  item.comment = description
   store.addItemInInvoice(item)
 }
 </script>

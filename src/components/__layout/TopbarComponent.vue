@@ -50,7 +50,7 @@
           <div class="flex items-center gap-2">
             <SearchInput />
             <!--            <LanguageSplitButton />-->
-            <InvoiceButtonComponent />
+            <InvoiceButtonComponent v-if="isAdmin" />
             <div v-if="!isLogged">
               <ConnexionSplitButton />
             </div>
@@ -83,10 +83,11 @@ import ConnexionSplitButton from '@/components/__layout/ConnexionSplitButton.vue
 import ConnectedSplitButton from '@/components/__layout/ConnectedSplitButton.vue'
 import { useRouter } from 'vue-router'
 import InvoiceButtonComponent from '@/components/__invoice/InvoiceButtonComponent.vue'
+import { useUserStore } from '@/stores/user.store'
 const { push } = useRouter()
 const { t } = useI18n()
 const { isLogged } = useSecurityStore()
-
+const { isAdmin } = useUserStore()
 /*const items = ref([
   {
     label: 'sportShooting',

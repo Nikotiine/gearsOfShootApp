@@ -96,7 +96,7 @@ function onClickAction(data: PriceHistoryDto): void {
     quantity: 1,
     accountHT: 0,
     comment: '',
-    status: 'IN_ORDER',
+    status: 'VALIDATE_ORDER',
     id: null
   }
   emit('onSelectItem', item)

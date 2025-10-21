@@ -537,7 +537,8 @@
     "FFP": "Premier plan focal",
     "yrd": "yards",
     "db": "DB",
-    "euro": "€"
+    "euro": "€",
+    "percent": "%"
   },
   "error": {
     "0001": "Email deja utilisé",
@@ -602,6 +603,21 @@
   "invoice": {
     "summary": "Commande",
     "itemAdded": "Ajouter a la commande",
-    "alreadyItemInInvoice": "Deja dans la commande"
+    "alreadyItemInInvoice": "Deja dans la commande",
+    "shippingCost": "Frais de port",
+    "save": "Nouvelle commande fournisseur",
+    "vat": "TVA"
+
+  },
+  "orderStatus": {
+    "VALIDATE_ORDER": "Commande a valider",
+    "IN_ORDER": "Commande en cours",
+    "SHIPPING": "Expedie",
+    "RECEIVED": "Recue",
+    "AMMUNITION": "Munition",
+    "OPTIC": "Optique",
+    "HANDGUN": "Arme de poing",
+    "RIFFLE": "Arme longue",
+    "OPTIC_COLLAR": "Collier"
   }
 }

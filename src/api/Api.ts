@@ -1306,6 +1306,7 @@ export interface CreateItemInvoiceSupplierDto {
   objectId: number
   accountHT: number
   comment: string
+  description: string
   supplierPriceHT: number
   status: string
   id: number | null
@@ -1317,6 +1318,7 @@ export interface CreateInvoiceSupplierDto {
   /** @format date-time */
   dueDate: string
   shippingCost: number
+  vat: number
   items: CreateItemInvoiceSupplierDto[]
   invoiceSupplierReference: string | null
 }
@@ -1327,6 +1329,7 @@ export interface UpdateInvoiceSupplierDto {
   /** @format date-time */
   dueDate: string
   shippingCost: number
+  vat: number
   items: CreateItemInvoiceSupplierDto[]
   invoiceSupplierReference: string | null
   id: number

@@ -1,16 +1,10 @@
 <template>
   <OverlayBadge :value="totalItemInInvoice">
-    <Button
-      v-if="isAdmin"
-      :disabled="totalItemInInvoice < 1"
-      @click="goToInvoice"
-      icon="pi pi-cart-plus"
-    >
+    <Button :disabled="totalItemInInvoice < 1" @click="goToInvoice" icon="pi pi-cart-plus">
     </Button>
   </OverlayBadge>
 </template>
 <script setup lang="ts">
-import { useUserStore } from '@/stores/user.store'
 import Button from 'primevue/button'
 import OverlayBadge from 'primevue/overlaybadge'
 
@@ -21,7 +15,6 @@ import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-const { isAdmin } = useUserStore()
 
 const store = useInvoiceStore()
 const { tempInvoice$ } = storeToRefs(store)

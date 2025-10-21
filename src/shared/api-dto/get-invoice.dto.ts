@@ -8,6 +8,7 @@ export const getInvoiceDto = (): CreateInvoiceSupplierDto => {
     dueDate: '',
     shippingCost: 0,
     supplier: getSupplierDto(),
-    invoiceSupplierReference: null
+    invoiceSupplierReference: null,
+    vat: 20
   }
 }
