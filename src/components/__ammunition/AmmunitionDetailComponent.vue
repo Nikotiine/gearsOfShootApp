@@ -57,7 +57,7 @@ import TabCardComponent from '@/components/__tabs/TabCardComponent.vue'
 import TabList from 'primevue/tablist'
 import Tabs from 'primevue/tabs'
 import TabPanel from 'primevue/tabpanel'
-import ShowPriceHistoryButton from '@/components/__layout/ShowPriceHistoryButton.vue'
+
 import AuditInfoComponent from '@/components/__detail/AuditInfoComponent.vue'
 import TabPriceComponent from '@/components/__tabs/TabPriceComponent.vue'
 import TabStockComponent from '@/components/__tabs/TabStockComponent.vue'

@@ -3,7 +3,7 @@
 </template>
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
 import FormWrapper from '@/views/shared/FormWrapper.vue'
 import OpticCollarFormComponent from '@/components/__optic/OpticCollarFormComponent.vue'
 import AmmunitionFormComponent from '@/components/__ammunition/AmmunitionFormComponent.vue'
@@ -21,9 +21,28 @@ import SoundReducerFormComponent from '@/components/__accessory/rds/SoundReducer
 import { RouterEnum } from '@/enum/router.enum'
 import HandGunFormComponent from '@/components/__weapon/handgun/HandGunFormComponent.vue'
 import RiffleFormComponent from '@/components/__weapon/riffle/RiffleFormComponent.vue'
-
+import InvoiceFormComponent from '@/components/__invoice/InvoiceFormComponent.vue'
+import { useBreadcrumbStore } from '@/stores/breadcrumb.store'
+import { useOpticCollarStore } from '@/stores/optic-collar.store'
+import { useWeaponMagazineStore } from '@/stores/weapon-magazine.store'
+import { useAmmunitionStore } from '@/stores/ammunition.store'
+import { useFactoryStore } from '@/stores/factory.store'
+import { useSoundReducerStore } from '@/stores/sound-noise-reducer.store'
+import { useOpticStore } from '@/stores/optic.store'
+import { useInvoiceStore } from '@/stores/invoice.store'
+import { useRiffleStore } from '@/stores/riffle.store'
+import { useHandGunStore } from '@/stores/hand-gun.store'
+import { useColorStore } from '@/stores/color.store'
+import { useMaterialStore } from '@/stores/material.store'
+import { useHeadTypeStore } from '@/stores/head-type.store'
+import { useBodyTypeStore } from '@/stores/body-type.store'
+import { useThreadedSizeStore } from '@/stores/threaded-size.store'
+import { useWeaponTypeStore } from '@/stores/weapon-type.store'
+import { useI18n } from 'vue-i18n'
+import type { FormStatus } from '@/types/form-status.type'
+const { t } = useI18n()
 const route = useRoute()
-
+const breadcrumbStore = useBreadcrumbStore()
 enum RouterFormEnum {
   OPTIC_COLLAR_NEW = RouterEnum.OPTIC_COLLAR_NEW,
   OPTIC_COLLAR_EDIT = RouterEnum.OPTIC_COLLAR_EDIT,
@@ -47,7 +66,8 @@ enum RouterFormEnum {
   HANDGUN_NEW = RouterEnum.HANDGUN_NEW,
   HANDGUN_EDIT = RouterEnum.HANDGUN_EDIT,
   RIFFLE_NEW = RouterEnum.RIFFLE_NEW,
-  RIFFLE_EDIT = RouterEnum.RIFFLE_EDIT
+  RIFFLE_EDIT = RouterEnum.RIFFLE_EDIT,
+  INVOICE_NEW = RouterEnum.INVOICE_NEW
 }
 
 // Mapping entre les noms de route et les composants
@@ -59,6 +79,7 @@ const componentMap = {
   [RouterFormEnum.MAGAZINE_NEW]: MagazineFormComponent,
   [RouterFormEnum.MAGAZINE_EDIT]: MagazineFormComponent,
   [RouterFormEnum.FACTORY_NEW]: FactoryFormComponent,
+  [RouterFormEnum.FACTORY_EDIT]: FactoryFormComponent,
   [RouterFormEnum.OPTIC_NEW]: OpticFormComponent,
   [RouterFormEnum.OPTIC_EDIT]: OpticFormComponent,
   [RouterFormEnum.COLOR_NEW]: ColorFormComponent,
@@ -70,14 +91,62 @@ const componentMap = {
   [RouterFormEnum.CALIBER_NEW]: CaliberFormComponent,
   [RouterFormEnum.RDS_NEW]: SoundReducerFormComponent,
   [RouterFormEnum.RDS_EDIT]: SoundReducerFormComponent,
-  [RouterFormEnum.FACTORY_EDIT]: FactoryFormComponent,
+
   [RouterFormEnum.HANDGUN_NEW]: HandGunFormComponent,
   [RouterFormEnum.HANDGUN_EDIT]: HandGunFormComponent,
   [RouterFormEnum.RIFFLE_NEW]: RiffleFormComponent,
-  [RouterFormEnum.RIFFLE_EDIT]: RiffleFormComponent
+  [RouterFormEnum.RIFFLE_EDIT]: RiffleFormComponent,
+  [RouterFormEnum.INVOICE_NEW]: InvoiceFormComponent
+}
+
+const storeMap = {
+  [RouterFormEnum.OPTIC_COLLAR_EDIT]: useOpticCollarStore,
+  [RouterFormEnum.OPTIC_COLLAR_NEW]: useOpticCollarStore,
+  [RouterFormEnum.MAGAZINE_NEW]: useWeaponMagazineStore,
+  [RouterFormEnum.MAGAZINE_EDIT]: useWeaponMagazineStore,
+  [RouterFormEnum.AMMUNITION_EDIT]: useAmmunitionStore,
+  [RouterFormEnum.AMMUNITION_NEW]: useAmmunitionStore,
+  [RouterFormEnum.FACTORY_NEW]: useFactoryStore,
+  [RouterFormEnum.FACTORY_EDIT]: useFactoryStore,
+  [RouterFormEnum.RDS_NEW]: useSoundReducerStore,
+  [RouterFormEnum.RDS_EDIT]: useSoundReducerStore,
+  [RouterFormEnum.OPTIC_NEW]: useOpticStore,
+  [RouterFormEnum.OPTIC_EDIT]: useOpticStore,
+  [RouterFormEnum.INVOICE_NEW]: useInvoiceStore,
+  [RouterFormEnum.RIFFLE_NEW]: useRiffleStore,
+  [RouterFormEnum.RIFFLE_EDIT]: useRiffleStore,
+  [RouterFormEnum.HANDGUN_EDIT]: useHandGunStore,
+  [RouterFormEnum.HANDGUN_NEW]: useHandGunStore,
+  [RouterFormEnum.COLOR_NEW]: useColorStore,
+  [RouterFormEnum.MATERIAL_NEW]: useMaterialStore,
+  [RouterFormEnum.HEAD_TYPE_NEW]: useHeadTypeStore,
+  [RouterFormEnum.BODY_TYPE_NEW]: useBodyTypeStore,
+  [RouterFormEnum.THREADED_SIZE_NEW]: useThreadedSizeStore,
+  [RouterFormEnum.WEAPON_TYPE_NEW]: useWeaponTypeStore,
+  [RouterFormEnum.CALIBER_NEW]: useColorStore
 }
 
 const formComponent = computed(() => componentMap[route.name as RouterFormEnum])
+
+const currentStore = computed(() => {
+  const storeFn = storeMap[route.name as RouterFormEnum]
+  return storeFn ? storeFn() : null
+})
+watch(
+  () => route.name,
+  () => {
+    if (currentStore.value) {
+      const formStatus = ref<FormStatus>(route.params.id ? 'edit' : 'save')
+      const i18nPrefix = currentStore.value.getI18NPrefix
+      breadcrumbStore.setStep({
+        label: t(i18nPrefix + formStatus.value),
+        index: 1,
+        path: route.fullPath
+      })
+    }
+  },
+  { immediate: true }
+)
 </script>
 
 <style scoped></style>

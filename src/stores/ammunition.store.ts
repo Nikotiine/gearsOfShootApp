@@ -92,7 +92,7 @@ export const useAmmunitionStore = defineStore('ammunition-store', () => {
     const res = await api.api.ammunitionControllerFindById(parseInt(id))
     return res.data
   }
-  const _fetchAllByCategory = async (category: string) => {
+  const _fetchAllByCategory = async (category: string): Promise<AmmunitionDto[] | null> => {
     if (!category) return null
     const res = await api.api.ammunitionControllerFindByCategory(category)
     return res.data

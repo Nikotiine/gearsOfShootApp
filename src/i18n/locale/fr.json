@@ -121,7 +121,8 @@
     "accessories": "Accessoires",
     "blackPowderWeapon": "Arme a poudre noire",
     "new": "Ajouter",
-    "colors": "Couleurs"
+    "colors": "Couleurs",
+    "invoice": "Commandes"
   },
   "handgun": {
     "list": "Liste des arme de poing de categorie : {key}",
@@ -488,7 +489,8 @@
     "createdAt": "Date de mise a jour",
     "notFound": "Aucun prix enregistré",
     "histories": "Historique des prix",
-    "supplier": "Fournisseur"
+    "supplier": "Fournisseur",
+    "addToInvoice": "Commander"
   },
   "stock": {
     "quantity": "Quantite actuelle en stock",
@@ -596,5 +598,10 @@
     "weaponType": "Type d'arme",
     "threadSize": "Pas de vis",
     "commonReference": "Reference communes"
+  },
+  "invoice": {
+    "summary": "Commande",
+    "itemAdded": "Ajouter a la commande",
+    "alreadyItemInInvoice": "Deja dans la commande"
   }
 }

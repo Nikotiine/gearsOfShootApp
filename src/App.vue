@@ -12,7 +12,7 @@ import FooterComponent from '@/components/__layout/FooterComponent.vue'
   <ConfirmDialog></ConfirmDialog>
   <div class="h-screen"><RouterView /></div>
 
-  <!--  <FooterComponent class="" />-->
+  <FooterComponent class="" />
 </template>
 
 <style scoped></style>

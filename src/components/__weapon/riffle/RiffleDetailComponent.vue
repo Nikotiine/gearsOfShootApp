@@ -70,7 +70,7 @@ import {
   TriggerValueFormatter,
   VerifyFieldIsNotNull
 } from '@/shared/utils/formatter.utils'
-import ShowPriceHistoryButton from '@/components/__layout/ShowPriceHistoryButton.vue'
+
 import AuditInfoComponent from '@/components/__detail/AuditInfoComponent.vue'
 import TabPriceComponent from '@/components/__tabs/TabPriceComponent.vue'
 import TabStockComponent from '@/components/__tabs/TabStockComponent.vue'

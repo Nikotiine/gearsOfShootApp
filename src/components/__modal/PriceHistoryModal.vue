@@ -30,6 +30,21 @@
             {{ NumberFormatter(data.currentSalePrice, 'euro') }}
           </template>
         </Column>
+        <Column :header="t('priceHistory.currentSalePrice')">
+          <template #body="{ data }">
+            {{ data.supplier.name }}
+          </template>
+        </Column>
+        <Column :header="t('priceHistory.currentSalePrice')">
+          <template #body="{ data }">
+            <Button
+              :label="t('priceHistory.addToInvoice')"
+              severity="info"
+              @click="onClickAction(data)"
+              text
+            />
+          </template>
+        </Column>
       </DataTable>
     </div>
   </Dialog>
@@ -43,13 +58,21 @@ import { useI18n } from 'vue-i18n'
 import type { PriceableObjectType } from '@/types/priceable-object.type'
 import { usePriceHistoryStore } from '@/stores/price-history.store'
 import { DateFormatter, NumberFormatter } from '@/shared/utils/formatter.utils'
+import Button from 'primevue/button'
+import { useInvoiceStore } from '@/stores/invoice.store'
+import type { CreateItemInvoiceSupplierDto, PriceHistoryDto } from '@/api/Api'
 
 export interface PriceHistoryModalExposed {
   show: () => void
   hide: () => void
+  onClickAction: () => CreateItemInvoiceSupplierDto
 }
 const { t } = useI18n()
 const store = usePriceHistoryStore()
+
+const emit = defineEmits<{
+  (e: 'onSelectItem', data: CreateItemInvoiceSupplierDto): void
+}>()
 const { id, type } = defineProps<{
   id?: string
   type?: PriceableObjectType
@@ -63,6 +86,20 @@ function show() {
 
 function hide() {
   visible.value = false
+}
+
+function onClickAction(data: PriceHistoryDto): void {
+  const item: CreateItemInvoiceSupplierDto = {
+    object: data.object,
+    objectId: data.objectId,
+    supplierPriceHT: data.supplierPrice,
+    quantity: 1,
+    accountHT: 0,
+    comment: '',
+    status: 'IN_ORDER',
+    id: null
+  }
+  emit('onSelectItem', item)
 }
 defineExpose({ show, hide })
 </script>

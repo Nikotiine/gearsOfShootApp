@@ -1,4 +1,5 @@
 import type { StockDto, StockHistoriesDto } from '@/api/Api'
+import { getUserDto } from '@/shared/api-dto/get-user.dto'
 
 export const getStockDto = (): StockDto => {
   return {
@@ -16,7 +17,10 @@ const getStockHistoryDto = (): StockHistoriesDto[] => {
       createdAt: '',
       movementQuantity: 0,
       newQuantity: 0,
-      previousQuantity: 0
+      previousQuantity: 0,
+      reason: '',
+      movement: '',
+      createdBy: getUserDto()
     }
   ]
 }

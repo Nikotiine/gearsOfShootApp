@@ -1308,7 +1308,7 @@ export interface CreateItemInvoiceSupplierDto {
   comment: string
   supplierPriceHT: number
   status: string
-  id: number
+  id: number | null
 }
 
 export interface CreateInvoiceSupplierDto {
@@ -1318,6 +1318,7 @@ export interface CreateInvoiceSupplierDto {
   dueDate: string
   shippingCost: number
   items: CreateItemInvoiceSupplierDto[]
+  invoiceSupplierReference: string | null
 }
 
 export interface UpdateInvoiceSupplierDto {
@@ -1327,7 +1328,7 @@ export interface UpdateInvoiceSupplierDto {
   dueDate: string
   shippingCost: number
   items: CreateItemInvoiceSupplierDto[]
-  invoiceSupplierReference: string
+  invoiceSupplierReference: string | null
   id: number
 }
 
@@ -3389,6 +3390,22 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
         path: `/api/sound-reducer/${id}`,
         method: 'DELETE',
         secure: true,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne la liste de tous les commandes
+     *
+     * @tags Invoice
+     * @name SupplierInvoiceControllerFindAll
+     * @summary Liste complète
+     * @request GET:/api/supplier-invoice/all
+     */
+    supplierInvoiceControllerFindAll: (params: RequestParams = {}) =>
+      this.request<InvoiceSupplierDto[], any>({
+        path: `/api/supplier-invoice/all`,
+        method: 'GET',
         format: 'json',
         ...params
       }),

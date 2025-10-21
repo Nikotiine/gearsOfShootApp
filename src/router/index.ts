@@ -313,6 +313,16 @@ const router = createRouter({
                   component: () => import('../views/shared/FormView.vue')
                 }
               ]
+            },
+            {
+              path: 'invoice',
+              children: [
+                {
+                  path: 'new',
+                  name: RouterEnum.INVOICE_NEW,
+                  component: () => import('../views/shared/FormView.vue')
+                }
+              ]
             }
           ]
         }

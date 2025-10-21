@@ -131,12 +131,16 @@
       </Column>
       <Column :header="t('global.action')" :showFilterMenu="false" style="min-width: 12rem">
         <template #body="{ data }">
-          <action-menu-component
-            @on-click-action="onClickAction"
-            type="ammunition"
-            :reference="data.reference"
-            :id="data.id"
-        /></template>
+          <div class="flex justify-around">
+            <action-menu-component
+              @on-click-action="onClickAction"
+              type="ammunition"
+              :reference="data.reference"
+              :id="data.id"
+            />
+            <InvoiceAddItemComponent :object="'AMMUNITION'" :object-id="data.id" />
+          </div>
+        </template>
       </Column>
     </DataTable>
   </div>
@@ -160,6 +164,7 @@ import ActionMenuComponent, {
   type ActionMenuEmit
 } from '@/components/__table/ActionMenuComponent.vue'
 import TableTitleComponent from '@/components/__table/TableTitleComponent.vue'
+import InvoiceAddItemComponent from '@/components/__invoice/InvoiceAddItemComponent.vue'
 
 const { category } = defineProps<{
   category: string
