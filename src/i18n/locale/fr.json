@@ -49,6 +49,7 @@
   },
   "global": {
     "password": "Mot de passe",
+    "status": "Statut",
     "price": "Prix",
     "yes": "Oui",
     "no": "Non",
@@ -122,7 +123,8 @@
     "blackPowderWeapon": "Arme a poudre noire",
     "new": "Ajouter",
     "colors": "Couleurs",
-    "invoice": "Commandes"
+    "invoice": "Commandes",
+    "createdBy": "Creer par"
   },
   "handgun": {
     "list": "Liste des arme de poing de categorie : {key}",
@@ -266,7 +268,8 @@
     "notFound": "Aucune munition trouvée",
     "loading": "Chargement des muntions en cours",
     "findByName": "Recherche par modele",
-    "stock": "Mise en stock"
+    "stock": "Mise en stock",
+    "detail": "Detail munition: {key}"
   },
   "admin": {
     "dashboard": {
@@ -606,8 +609,26 @@
     "alreadyItemInInvoice": "Deja dans la commande",
     "shippingCost": "Frais de port",
     "save": "Nouvelle commande fournisseur",
-    "vat": "TVA"
-
+    "vat": "TVA",
+    "dueDate": "Date de payement",
+    "totalPriceHt": "Prix total HT",
+    "totalInvoiceItems": "Nombre d'objets",
+    "list": "Liste des commandes",
+    "detailTitle": "Commande N°",
+    "createdAt": "Date de la commande :",
+    "createdBy": "Commande passer par :",
+    "supplier": "Fournisseur",
+    "totalAccountHT": "Accompte total :",
+    "totalRemaining": "Reste à payer :",
+    "paymentCompleted": "Payement completé",
+    "detail": "Detail de la commande",
+    "item": "Article",
+    "unitPriceHt": "Prix unitaire (€)",
+    "totalPriceHT": "Prix total (€)",
+    "received": "Commande termine",
+    "pending": "Commande en cours",
+    "statusUpdated": "Status de la commande modifie",
+    "statusUpdatedFailed": "Erreur de status"
   },
   "orderStatus": {
     "VALIDATE_ORDER": "Commande a valider",
@@ -618,6 +639,8 @@
     "OPTIC": "Optique",
     "HANDGUN": "Arme de poing",
     "RIFFLE": "Arme longue",
-    "OPTIC_COLLAR": "Collier"
+    "OPTIC_COLLAR": "Collier",
+    "name": "Statut de la commande",
+    "warning": "Attention, cette commande est en deja marque comme recue, voulez vous continuer ?"
   }
 }

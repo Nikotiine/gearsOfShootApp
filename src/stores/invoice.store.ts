@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
-import { useMutation, useQuery } from '@tanstack/vue-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import { getI18NPrefix, I18NSuffix } from '@/enum/I18NSuffix.enum'
 import { computed, ref } from 'vue'
 import type {
@@ -18,6 +18,7 @@ import { useToastStore } from '@/stores/toast'
 export const useInvoiceStore = defineStore('invoice-store', () => {
   // Appel API
   const { api } = useApiStore()
+  const queryClient = useQueryClient()
   const toastStore = useToastStore()
   const submitSuccess = ref(false)
 
@@ -44,7 +45,12 @@ export const useInvoiceStore = defineStore('invoice-store', () => {
     })
   const _fetchAll = async () => {
     const res = await api.api.supplierInvoiceControllerFindAll()
-    return res.data
+    return res.data.map((invoice) => {
+      return {
+        ...invoice,
+        dueDate: new Date(invoice.dueDate)
+      }
+    })
   }
 
   const getByIdQuery = (id?: string) =>
@@ -77,6 +83,24 @@ export const useInvoiceStore = defineStore('invoice-store', () => {
     },
     onSuccess() {
       submitSuccess.value = true
+    }
+  })
+  type UpdateItemVars = { itemId: number; status: string }
+  const updateItemMutation = useMutation({
+    mutationFn: async ({ itemId, status }: UpdateItemVars) => {
+      if (!itemId) return
+
+      return await api.api.invoiceItemControllerUpdateStatus(itemId, { status: status })
+    },
+    onSuccess: async () => {
+      const prefix = getI18NPrefix(_I18N_PREFIX)
+      submitSuccess.value = true
+      await queryClient.invalidateQueries({ queryKey: [_GET_BY_ID_FN] })
+      toastStore.successMessage(prefix + I18NSuffix.SUMMARY, prefix + 'statusUpdated')
+    },
+    onError: async () => {
+      const prefix = getI18NPrefix(_I18N_PREFIX)
+      toastStore.errorMessage(prefix + I18NSuffix.SUMMARY, prefix + 'statusUpdatedFailed')
     }
   })
 
@@ -121,9 +145,11 @@ export const useInvoiceStore = defineStore('invoice-store', () => {
     getAll: getAllInvoicesQuery,
     getI18NPrefix: getI18NPrefix(_I18N_PREFIX),
     submitSuccess,
+    getById: getByIdQuery,
     formBuilder: useInvoiceForm,
     setTempInvoice,
     addItemInInvoice,
-    tempInvoice$
+    tempInvoice$,
+    updateItem: updateItemMutation
   }
 })

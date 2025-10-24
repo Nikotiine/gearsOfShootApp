@@ -66,7 +66,7 @@
             style="width: 2.5rem; height: 2.5rem"
           >
             <Button asChild icon="pi pi-check">
-              <RouterLink to="/">
+              <RouterLink :to="{ name: RouterEnum.INVOICE_LIST }">
                 <i class="pi pi-comment text-purple-500 !text-xl"></i
               ></RouterLink>
             </Button>
@@ -78,6 +78,8 @@
     </div>
   </div>
 </template>
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { RouterEnum } from '@/enum/router.enum.js'
+</script>
 
 <style scoped></style>

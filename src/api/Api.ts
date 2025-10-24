@@ -1298,6 +1298,10 @@ export interface InvoiceSupplierDto {
   internalInvoiceReference: string
   invoiceSupplierReference: string
   items: ItemInvoice[]
+  totalPriceHt: number
+  totalInvoiceItems: number
+  totalAccountHT: number
+  vat: number
 }
 
 export interface CreateItemInvoiceSupplierDto {
@@ -1334,6 +1338,12 @@ export interface UpdateInvoiceSupplierDto {
   invoiceSupplierReference: string | null
   id: number
 }
+
+export interface UpdateItemStatusDto {
+  status: string
+}
+
+export type ItemInvoiceSupplier = object
 
 export enum WeaponTypeDtoTypeEnum {
   Handgun = 'handgun',
@@ -3465,6 +3475,30 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
     ) =>
       this.request<InvoiceSupplierDto, any>({
         path: `/api/supplier-invoice/${id}`,
+        method: 'PUT',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Edition d une commande
+     *
+     * @tags invoice-item
+     * @name InvoiceItemControllerUpdateStatus
+     * @summary Edition
+     * @request PUT:/api/invoice-item/{id}
+     * @secure
+     */
+    invoiceItemControllerUpdateStatus: (
+      id: number,
+      data: UpdateItemStatusDto,
+      params: RequestParams = {}
+    ) =>
+      this.request<ItemInvoiceSupplier, any>({
+        path: `/api/invoice-item/${id}`,
         method: 'PUT',
         body: data,
         secure: true,

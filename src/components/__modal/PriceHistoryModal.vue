@@ -59,7 +59,6 @@ import type { PriceableObjectType } from '@/types/priceable-object.type'
 import { usePriceHistoryStore } from '@/stores/price-history.store'
 import { DateFormatter, NumberFormatter } from '@/shared/utils/formatter.utils'
 import Button from 'primevue/button'
-import { useInvoiceStore } from '@/stores/invoice.store'
 import type { CreateItemInvoiceSupplierDto, PriceHistoryDto } from '@/api/Api'
 
 export interface PriceHistoryModalExposed {
@@ -97,7 +96,8 @@ function onClickAction(data: PriceHistoryDto): void {
     accountHT: 0,
     comment: '',
     status: 'VALIDATE_ORDER',
-    id: null
+    id: null,
+    description: ''
   }
   emit('onSelectItem', item)
 }

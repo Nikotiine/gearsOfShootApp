@@ -19,6 +19,8 @@ import { useSoundReducerStore } from '@/stores/sound-noise-reducer.store'
 import { useOpticStore } from '@/stores/optic.store'
 import { useBreadcrumbStore } from '@/stores/breadcrumb.store'
 import { useI18n } from 'vue-i18n'
+import InvoiceTableComponent from '@/components/__invoice/InvoiceTableComponent.vue'
+import { useInvoiceStore } from '@/stores/invoice.store'
 
 const route = useRoute()
 const breadcrumbStore = useBreadcrumbStore()
@@ -29,7 +31,8 @@ enum TableRoute {
   FACTORY_LIST = RouterEnum.FACTORY_LIST,
   AMMUNITION_LIST = RouterEnum.AMMUNITION_LIST,
   MAGAZINE_LIST = RouterEnum.MAGAZINE_LIST,
-  OPTIC_COLLAR_LIST = RouterEnum.OPTIC_COLLAR_LIST
+  OPTIC_COLLAR_LIST = RouterEnum.OPTIC_COLLAR_LIST,
+  INVOICE_LIST = RouterEnum.INVOICE_LIST
 }
 const componentMap = {
   [TableRoute.OPTIC_COLLAR_LIST]: OpticCollarTableComponent,
@@ -37,7 +40,8 @@ const componentMap = {
   [TableRoute.AMMUNITION_LIST]: AmmunitionTableComponent,
   [TableRoute.FACTORY_LIST]: FactoriesTableComponent,
   [TableRoute.RDS_LIST]: SoundReducerTableComponent,
-  [TableRoute.OPTIC_LIST]: OpticTableComponent
+  [TableRoute.OPTIC_LIST]: OpticTableComponent,
+  [TableRoute.INVOICE_LIST]: InvoiceTableComponent
 }
 const storeMap = {
   [TableRoute.OPTIC_COLLAR_LIST]: useOpticCollarStore,
@@ -45,7 +49,8 @@ const storeMap = {
   [TableRoute.AMMUNITION_LIST]: useAmmunitionStore,
   [TableRoute.FACTORY_LIST]: useFactoryStore,
   [TableRoute.RDS_LIST]: useSoundReducerStore,
-  [TableRoute.OPTIC_LIST]: useOpticStore
+  [TableRoute.OPTIC_LIST]: useOpticStore,
+  [TableRoute.INVOICE_LIST]: useInvoiceStore
 }
 
 const formComponent = computed(() => componentMap[route.name as TableRoute])

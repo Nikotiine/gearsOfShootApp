@@ -8,9 +8,15 @@
       paginator
       :rows="10"
       dataKey="id"
-      filterDisplay="row"
-      :loading="storeAreLoading.value"
-      :globalFilterFields="['name', 'factory.name', 'caliber.name', 'reference']"
+      filterDisplay="menu"
+      :loading="isLoading"
+      :globalFilterFields="[
+        'supplier.name',
+        'dueDate',
+        'totalPriceHt',
+        'totalInvoiceItems',
+        'createdBy.lastName'
+      ]"
     >
       <template #header>
         <div class="flex justify-center">
@@ -24,80 +30,64 @@
       </template>
       <template #empty> {{ t(i18nPrefix + 'notFound') }} </template>
       <template #loading> {{ t(i18nPrefix + 'loading') }} {{ t('global.pleaseWait') }} </template>
+      <Column field="supplier.name" :header="t('global.model')" style="min-width: 12rem">
+        <template #body="{ data }">
+          {{ data.supplier.name }}
+        </template>
+        <template #filter="{ filterModel, filterCallback }">
+          <Select
+            v-model="filterModel.value"
+            @change="filterCallback()"
+            :options="suppliers$"
+            optionLabel="name"
+            optionValue="name"
+            :placeholder="t('global.findBySupplier')"
+            style="min-width: 12rem"
+            :showClear="true"
+          >
+          </Select>
+        </template>
+      </Column>
       <Column
-        field="name"
-        :header="t('global.model')"
+        :header="t('invoice.dueDate')"
+        filterField="dueDate"
         style="min-width: 12rem"
-        :showFilterMenu="false"
+        dataType="date"
       >
         <template #body="{ data }">
-          {{ data.name }}
+          {{ DateFormatter(data.dueDate, 'long') }}
+        </template>
+
+        <template #filter="{ filterModel, filterCallback }">
+          <DatePicker v-model="filterModel.value" dateFormat="mm/dd/yy" @input="filterCallback()" />
+        </template>
+      </Column>
+      <Column
+        :header="t('invoice.totalPriceHt')"
+        field="totalPriceHt"
+        filterField="totalPriceHt"
+        style="min-width: 14rem"
+      >
+        <template #body="{ data }">
+          {{ data.totalPriceHt }}
         </template>
         <template #filter="{ filterModel, filterCallback }">
           <InputText
             v-model="filterModel.value"
             type="text"
             @input="filterCallback()"
-            :placeholder="t(i18nPrefix + 'findByName')"
+            placeholder="Recherche par reference"
           />
         </template>
       </Column>
       <Column
-        :header="t('global.factory')"
-        field="factory.name"
-        filterField="factory.name"
-        style="min-width: 12rem"
-        :showFilterMenu="false"
-      >
-        <template #body="{ data }">
-          {{ data.factory.name }}
-        </template>
-
-        <template #filter="{ filterModel, filterCallback }">
-          <Select
-            v-model="filterModel.value"
-            @change="filterCallback()"
-            :options="factories$"
-            optionLabel="name"
-            optionValue="name"
-            :placeholder="t('global.findByFactory')"
-            style="min-width: 12rem"
-            :showClear="true"
-          >
-          </Select>
-        </template>
-      </Column>
-      <Column
-        :header="t('global.caliber')"
-        filterField="caliber.name"
-        :showFilterMenu="false"
-        style="min-width: 14rem"
-      >
-        <template #body="{ data }">
-          {{ data.caliber.name }}
-        </template>
-        <template #filter="{ filterModel, filterCallback }">
-          <Select
-            v-model="filterModel.value"
-            @change="filterCallback()"
-            :options="calibers$"
-            placeholder="Calibre"
-            optionLabel="name"
-            optionValue="name"
-            style="min-width: 12rem"
-            :showClear="true"
-          >
-          </Select>
-        </template>
-      </Column>
-      <Column
-        field="reference"
-        :header="t('global.reference')"
-        :showFilterMenu="false"
+        field="totalInvoiceItems"
+        filterField="totalInvoiceItems"
+        :header="t('invoice.totalInvoiceItems')"
         style="min-width: 12rem"
       >
         <template #body="{ data }">
-          {{ data.reference }}
+          {{ data.totalInvoiceItems }}
         </template>
 
         <template #filter="{ filterModel, filterCallback }">
@@ -110,14 +100,13 @@
         </template>
       </Column>
       <Column
-        field="inStock"
-        filterField="inStock"
-        :header="t('global.inStock')"
-        :showFilterMenu="false"
+        field="createdBy.lastName"
+        filterField="createdBy.lastName"
+        :header="t('global.createdBy')"
         style=""
       >
         <template #body="{ data }">
-          {{ data.inStock }}
+          {{ data.createdBy.lastName }}
         </template>
 
         <template #filter="{ filterModel, filterCallback }">
@@ -135,13 +124,8 @@
             <action-menu-component
               @on-click-action="onClickAction"
               type="ammunition"
-              :reference="data.reference"
+              :reference="data.internalInvoiceReference"
               :id="data.id"
-            />
-            <InvoiceAddItemComponent
-              object="AMMUNITION"
-              :object-id="data.id"
-              :description="`Marque:${data.factory.name} Model:${data.name} Calibre:${data.caliber.name} Packaging:${data.packaging}`"
             />
           </div>
         </template>
@@ -154,27 +138,54 @@ import { useInvoiceStore } from '@/stores/invoice.store'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import InputText from 'primevue/inputtext'
-import InvoiceAddItemComponent from '@/components/__invoice/InvoiceAddItemComponent.vue'
 import InputIcon from 'primevue/inputicon'
 import Select from 'primevue/select'
 import TableTitleComponent from '@/components/__table/TableTitleComponent.vue'
 import IconField from 'primevue/iconfield'
-import ActionMenuComponent from '@/components/__table/ActionMenuComponent.vue'
+import ActionMenuComponent, {
+  type ActionMenuEmit
+} from '@/components/__table/ActionMenuComponent.vue'
 import { ref } from 'vue'
-import { FilterMatchMode } from '@primevue/core/api'
+import { FilterMatchMode, FilterOperator } from '@primevue/core/api'
 import { useI18n } from 'vue-i18n'
+import { useSupplierStore } from '@/stores/supplier.store'
+import DatePicker from 'primevue/datepicker'
+import { RouterEnum } from '@/enum/router.enum'
+import { useRouter } from 'vue-router'
+import { DateFormatter } from '@/shared/utils/formatter.utils'
+
 const store = useInvoiceStore()
+const supplierStore = useSupplierStore()
 const { t } = useI18n()
+const router = useRouter()
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-  name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-  'factory.name': { value: null, matchMode: FilterMatchMode.EQUALS },
-  'caliber.name': { value: null, matchMode: FilterMatchMode.EQUALS },
-  inStock: { value: null, matchMode: FilterMatchMode.EQUALS },
-  reference: { value: null, matchMode: FilterMatchMode.STARTS_WITH }
+  'supplier.name': { value: null, matchMode: FilterMatchMode.EQUALS },
+  dueDate: {
+    operator: FilterOperator.AND,
+    constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }]
+  },
+  totalPriceHt: { value: null, matchMode: FilterMatchMode.EQUALS },
+  totalInvoiceItems: { value: null, matchMode: FilterMatchMode.EQUALS },
+  'createdBy.lastName': { value: null, matchMode: FilterMatchMode.CONTAINS }
 })
 const i18nPrefix = store.getI18NPrefix
-const { data: invoices, refetch, isError } = store.getAll()
+const { data: invoices, refetch, isError, isLoading } = store.getAll()
+const { data: suppliers$ } = supplierStore.getAll()
+const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
+  switch (event) {
+    case 'view':
+      router.push({ name: RouterEnum.INVOICE_DETAIL, params: { id: id } })
+      break
+    case 'edit':
+      router.push({ name: RouterEnum.AMMUNITION_EDIT, params: { id: id } })
+      break
+    case true:
+      // store.delete(id)
+      refetch()
+      break
+  }
+}
 </script>
 
 <style scoped></style>
