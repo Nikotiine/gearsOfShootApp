@@ -4,6 +4,7 @@
     modal
     :header="t('priceHistory.priceHistoryModalHeader')"
     :style="{ width: '50rem' }"
+    @hide="hide"
   >
     <OrderStatusInputSelect
       :current-status="currentStatus"
@@ -19,7 +20,7 @@
         severity="danger"
         class="ml-2"
         label="Oui"
-        @click="disable = false"
+        @click="disableSelectStatus$ = false"
       />
     </div>
     <div class="flex justify-end mt-2">
@@ -33,25 +34,29 @@ import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import OrderStatusInputSelect from '@/components/__form/__specific_select/OrderStatusInputSelect.vue'
 import Button from 'primevue/button'
+import { useOrderStatusStore } from '@/stores/shared/order-status.store'
+import { storeToRefs } from 'pinia'
 
 export interface OrderEditStatusModalExposed {
   show: () => void
   hide: () => void
 }
+const orderStatusStore = useOrderStatusStore()
+const { disableSelectStatus$ } = storeToRefs(orderStatusStore)
 const emit = defineEmits(['onSelect', 'hide'])
-const { currentStatus } = defineProps<{
-  currentStatus: string
+const { currentStatus = 'ON_ORDER' } = defineProps<{
+  currentStatus?: string
 }>()
 const { t } = useI18n()
 const visible = ref<boolean>(false)
-const disable = ref<boolean>(true)
+
 function show() {
   visible.value = true
 }
 
 function hide() {
   visible.value = false
-  disable.value = true
+  disableSelectStatus$.value = true
   emit('hide')
 }
 const onSelect = (status: string) => {
@@ -59,7 +64,7 @@ const onSelect = (status: string) => {
 }
 
 const disableSelect = computed(() => {
-  return disable.value && currentStatus === 'RECEIVED'
+  return disableSelectStatus$.value && currentStatus === 'RECEIVED'
 })
 defineExpose({ show, hide })
 </script>

@@ -37,7 +37,13 @@
     <Divider />
 
     <!-- 🔹 Tableau des articles -->
-    <DataTable :value="invoice.items" responsiveLayout="scroll" class="mb-6">
+    <DataTable
+      :value="invoice.items"
+      v-model:selection="selectedItems"
+      responsiveLayout="scroll"
+      class="mb-6"
+    >
+      <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
       <Column field="name" :header="t(i18nPrefix + 'item')">
         <template #body="{ data }">
           {{ data.factory.name }} : {{ data.name }} <br />
@@ -94,6 +100,13 @@
         </p>
       </div>
     </div>
+    <div class="mt-2" v-if="isItemsSelected">
+      <InvoiceEditBulkStatusButton
+        :item-ids="itemsSelectedIds"
+        :is-all-received="allReceived"
+        @updated="onUpdateStatuses"
+      />
+    </div>
   </div>
 </template>
 
@@ -105,8 +118,11 @@ import Divider from 'primevue/divider'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import { useI18n } from 'vue-i18n'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import InvoiceEditStatusButton from '@/components/__invoice/InvoiceEditStatusButton.vue'
+import type { ItemInvoice } from '@/api/Api'
+import InvoiceEditBulkStatusButton from '@/components/__invoice/InvoiceEditBulkStatusButton.vue'
+
 const store = useInvoiceStore()
 const i18nPrefix = store.getI18NPrefix
 const { t } = useI18n()
@@ -114,10 +130,20 @@ const { id } = defineProps<{
   id: string
 }>()
 const { data: invoice } = store.getById(id)
+const selectedItems = ref<ItemInvoice[]>([])
 
 const allReceived = computed(() => {
   return invoice.value?.items.every((item) => item.status === 'RECEIVED')
 })
+const isItemsSelected = computed(() => {
+  return selectedItems.value.length > 0
+})
+const itemsSelectedIds = computed(() => {
+  return selectedItems.value.map((item: ItemInvoice) => item.id)
+})
+const onUpdateStatuses = () => {
+  selectedItems.value = []
+}
 </script>
 
 <style scoped></style>

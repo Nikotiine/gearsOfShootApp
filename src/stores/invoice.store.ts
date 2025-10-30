@@ -7,6 +7,7 @@ import type {
   CreateInvoiceSupplierDto,
   CreateItemInvoiceSupplierDto,
   InvoiceSupplierDto,
+  UpdateBulkItemStatusDto,
   UpdateInvoiceSupplierDto
 } from '@/api/Api'
 
@@ -74,6 +75,7 @@ export const useInvoiceStore = defineStore('invoice-store', () => {
     },
     onSuccess: async () => {
       submitSuccess.value = true
+      sessionStorage.removeItem(_STORAGE_KEY)
     }
   })
 
@@ -101,6 +103,41 @@ export const useInvoiceStore = defineStore('invoice-store', () => {
     onError: async () => {
       const prefix = getI18NPrefix(_I18N_PREFIX)
       toastStore.errorMessage(prefix + I18NSuffix.SUMMARY, prefix + 'statusUpdatedFailed')
+    }
+  })
+
+  const updateBulkItemMutation = useMutation({
+    mutationFn: async (body: UpdateBulkItemStatusDto) => {
+      if (body.ids.length === 0) return
+
+      return await api.api.invoiceItemControllerUpdateStatuses(body)
+    },
+    onSuccess: async () => {
+      const prefix = getI18NPrefix(_I18N_PREFIX)
+      submitSuccess.value = true
+      await queryClient.invalidateQueries({ queryKey: [_GET_BY_ID_FN] })
+      toastStore.successMessage(prefix + I18NSuffix.SUMMARY, prefix + 'statusUpdated')
+    },
+    onError: async () => {
+      const prefix = getI18NPrefix(_I18N_PREFIX)
+      toastStore.errorMessage(prefix + I18NSuffix.SUMMARY, prefix + 'statusUpdatedFailed')
+    }
+  })
+
+  const archiveInvoiceMutation = useMutation({
+    mutationFn: async (id?: number) => {
+      if (!id) return
+      return await api.api.supplierInvoiceControllerArchive(id)
+    },
+    onSuccess: async () => {
+      const prefix = getI18NPrefix(_I18N_PREFIX)
+      submitSuccess.value = true
+      await queryClient.invalidateQueries({ queryKey: [_GET_ALL_FN] })
+      toastStore.successMessage(prefix + I18NSuffix.SUMMARY, prefix + 'archived')
+    },
+    onError: async () => {
+      const prefix = getI18NPrefix(_I18N_PREFIX)
+      toastStore.errorMessage(prefix + I18NSuffix.SUMMARY, prefix + 'archivedFailed')
     }
   })
 
@@ -150,6 +187,8 @@ export const useInvoiceStore = defineStore('invoice-store', () => {
     setTempInvoice,
     addItemInInvoice,
     tempInvoice$,
-    updateItem: updateItemMutation
+    updateItem: updateItemMutation,
+    updateBulkItem: updateBulkItemMutation,
+    archive: archiveInvoiceMutation
   }
 })

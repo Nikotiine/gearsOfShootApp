@@ -1302,6 +1302,7 @@ export interface InvoiceSupplierDto {
   totalInvoiceItems: number
   totalAccountHT: number
   vat: number
+  invoiceStatus: string
 }
 
 export interface CreateItemInvoiceSupplierDto {
@@ -1339,11 +1340,16 @@ export interface UpdateInvoiceSupplierDto {
   id: number
 }
 
-export interface UpdateItemStatusDto {
+export interface UpdateBulkItemStatusDto {
+  ids: number[]
   status: string
 }
 
 export type ItemInvoiceSupplier = object
+
+export interface UpdateItemStatusDto {
+  status: string
+}
 
 export enum WeaponTypeDtoTypeEnum {
   Handgun = 'handgun',
@@ -3460,6 +3466,24 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
+     * @description Passe la commende en archive
+     *
+     * @tags Invoice
+     * @name SupplierInvoiceControllerArchive
+     * @summary Creation
+     * @request POST:/api/supplier-invoice/archive/{id}
+     * @secure
+     */
+    supplierInvoiceControllerArchive: (id: number, params: RequestParams = {}) =>
+      this.request<InvoiceSupplierDto, any>({
+        path: `/api/supplier-invoice/archive/${id}`,
+        method: 'POST',
+        secure: true,
+        format: 'json',
+        ...params
+      }),
+
+    /**
      * @description Edition d une commande
      *
      * @tags Invoice
@@ -3476,6 +3500,47 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       this.request<InvoiceSupplierDto, any>({
         path: `/api/supplier-invoice/${id}`,
         method: 'PUT',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Suppresion logique de la commande fournisseur
+     *
+     * @tags Invoice
+     * @name SupplierInvoiceControllerDelete
+     * @summary Suppresion logique
+     * @request DELETE:/api/supplier-invoice/{id}
+     * @secure
+     */
+    supplierInvoiceControllerDelete: (id: number, params: RequestParams = {}) =>
+      this.request<ApiDeleteResponseDto, any>({
+        path: `/api/supplier-invoice/${id}`,
+        method: 'DELETE',
+        secure: true,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Modification de status de plusieurs elements
+     *
+     * @tags invoice-item
+     * @name InvoiceItemControllerUpdateStatuses
+     * @summary Edition
+     * @request POST:/api/invoice-item
+     * @secure
+     */
+    invoiceItemControllerUpdateStatuses: (
+      data: UpdateBulkItemStatusDto,
+      params: RequestParams = {}
+    ) =>
+      this.request<ItemInvoiceSupplier[], any>({
+        path: `/api/invoice-item`,
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,

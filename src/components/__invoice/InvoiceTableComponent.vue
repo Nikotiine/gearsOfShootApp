@@ -30,7 +30,7 @@
       </template>
       <template #empty> {{ t(i18nPrefix + 'notFound') }} </template>
       <template #loading> {{ t(i18nPrefix + 'loading') }} {{ t('global.pleaseWait') }} </template>
-      <Column field="supplier.name" :header="t('global.model')" style="min-width: 12rem">
+      <Column field="supplier.name" :header="t('global.supplier')" style="min-width: 12rem">
         <template #body="{ data }">
           {{ data.supplier.name }}
         </template>
@@ -118,6 +118,30 @@
           />
         </template>
       </Column>
+      <Column
+        field="invoiceStatus"
+        filterField="invoiceStatus"
+        :header="t('global.status')"
+        style=""
+      >
+        <template #body="{ data }">
+          {{ t('orderStatus.' + data.invoiceStatus) }}
+        </template>
+
+        <template #filter="{ filterModel, filterCallback }">
+          <Select
+            v-model="filterModel.value"
+            @change="filterCallback()"
+            :options="getInvoiceStatus()"
+            optionLabel="label"
+            optionValue="name"
+            :placeholder="t('global.findByStatus')"
+            style="min-width: 12rem"
+            :showClear="true"
+          >
+          </Select>
+        </template>
+      </Column>
       <Column :header="t('global.action')" :showFilterMenu="false" style="min-width: 12rem">
         <template #body="{ data }">
           <div class="flex justify-around">
@@ -126,6 +150,7 @@
               type="ammunition"
               :reference="data.internalInvoiceReference"
               :id="data.id"
+              :archiveOption="data.invoiceStatus === 'RECEIVED'"
             />
           </div>
         </template>
@@ -153,6 +178,7 @@ import DatePicker from 'primevue/datepicker'
 import { RouterEnum } from '@/enum/router.enum'
 import { useRouter } from 'vue-router'
 import { DateFormatter } from '@/shared/utils/formatter.utils'
+import { getInvoiceStatus } from '@/shared/utils/order-status.utils'
 
 const store = useInvoiceStore()
 const supplierStore = useSupplierStore()
@@ -167,7 +193,8 @@ const filters = ref({
   },
   totalPriceHt: { value: null, matchMode: FilterMatchMode.EQUALS },
   totalInvoiceItems: { value: null, matchMode: FilterMatchMode.EQUALS },
-  'createdBy.lastName': { value: null, matchMode: FilterMatchMode.CONTAINS }
+  'createdBy.lastName': { value: null, matchMode: FilterMatchMode.CONTAINS },
+  invoiceStatus: { value: null, matchMode: FilterMatchMode.EQUALS }
 })
 const i18nPrefix = store.getI18NPrefix
 const { data: invoices, refetch, isError, isLoading } = store.getAll()
@@ -179,6 +206,10 @@ const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
       break
     case 'edit':
       router.push({ name: RouterEnum.AMMUNITION_EDIT, params: { id: id } })
+      break
+    case 'archive':
+      console.log(id)
+      store.archive.mutate(id)
       break
     case true:
       // store.delete(id)

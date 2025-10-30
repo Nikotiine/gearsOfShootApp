@@ -124,7 +124,11 @@
     "new": "Ajouter",
     "colors": "Couleurs",
     "invoice": "Commandes",
-    "createdBy": "Creer par"
+    "createdBy": "Creer par",
+    "archive": "Archiver",
+    "findBySupplier": "Chercher par fournisseur",
+    "findByStatus": "Chercher par status",
+    "supplier": "Fournisseur"
   },
   "handgun": {
     "list": "Liste des arme de poing de categorie : {key}",
@@ -628,7 +632,9 @@
     "received": "Commande termine",
     "pending": "Commande en cours",
     "statusUpdated": "Status de la commande modifie",
-    "statusUpdatedFailed": "Erreur de status"
+    "statusUpdatedFailed": "Erreur de status",
+    "archived": "Commande archivée",
+    "archivedFailed": "Erreur lors de l'archivation"
   },
   "orderStatus": {
     "VALIDATE_ORDER": "Commande a valider",
@@ -641,6 +647,7 @@
     "RIFFLE": "Arme longue",
     "OPTIC_COLLAR": "Collier",
     "name": "Statut de la commande",
-    "warning": "Attention, cette commande est en deja marque comme recue, voulez vous continuer ?"
+    "warning": "Attention, cette commande est en deja marque comme recue, voulez vous continuer ?",
+    "placeholder": "Choisir un status"
   }
 }

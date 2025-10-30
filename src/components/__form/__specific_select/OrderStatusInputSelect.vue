@@ -19,6 +19,7 @@ import { computed, ref } from 'vue'
 
 import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
 import InputGroup from 'primevue/inputgroup'
+import { getItemInvoiceStatus, type OrderStatus } from '@/shared/utils/order-status.utils'
 const {
   required = false,
   currentStatus,
@@ -28,19 +29,9 @@ const {
   currentStatus: string
   disable?: boolean
 }>()
-interface OrderStatus {
-  name: string
-  id: number
-  label: string
-}
+
 const emit = defineEmits(['onSelect'])
-const status = ref<OrderStatus[]>([
-  { name: 'IN_ORDER', id: 1, label: 'En commande' },
-  { name: 'SHIPPING', id: 2, label: 'Expedie' },
-  { name: 'RECEIVED', id: 3, label: 'Recue' },
-  { name: 'DELIVERED', id: 4, label: 'Delivree' },
-  { name: 'CANCELLED', id: 5, label: 'Annulée' }
-])
+const status = ref<OrderStatus[]>(getItemInvoiceStatus())
 
 const findStatus = computed(() => {
   const s = status.value.find((item) => item.name === currentStatus)
@@ -49,7 +40,9 @@ const findStatus = computed(() => {
 
 const onSelect = (id: number) => {
   const type = status.value.find((item) => item.id === id)
-  emit('onSelect', type.name)
+  if (type) {
+    emit('onSelect', type.name)
+  }
 }
 </script>
 
