@@ -49,6 +49,7 @@
   },
   "global": {
     "password": "Mot de passe",
+    "comment": "Commentaire",
     "status": "Statut",
     "price": "Prix",
     "yes": "Oui",
@@ -616,6 +617,7 @@
     "vat": "TVA",
     "dueDate": "Date de payement",
     "totalPriceHt": "Prix total HT",
+    "totalPriceTtc": "Prix TTC",
     "totalInvoiceItems": "Nombre d'objets",
     "list": "Liste des commandes",
     "detailTitle": "Commande N°",
@@ -634,14 +636,17 @@
     "statusUpdated": "Status de la commande modifie",
     "statusUpdatedFailed": "Erreur de status",
     "archived": "Commande archivée",
-    "archivedFailed": "Erreur lors de l'archivation"
+    "archivedFailed": "Erreur lors de l'archivation",
+    "notFound": "Aucune commande trouvée"
   },
   "orderStatus": {
     "VALIDATE_ORDER": "Commande a valider",
     "IN_ORDER": "Commande en cours",
     "SHIPPING": "Expedie",
+    "CANCELED": "Annulée",
     "RECEIVED": "Recue",
     "AMMUNITION": "Munition",
+    "ARCHIVE": "Archivée",
     "OPTIC": "Optique",
     "HANDGUN": "Arme de poing",
     "RIFFLE": "Arme longue",

@@ -10,6 +10,7 @@
       dataKey="id"
       filterDisplay="menu"
       :loading="isLoading"
+      @filter="onFilter"
       :globalFilterFields="[
         'supplier.name',
         'dueDate',
@@ -150,7 +151,7 @@
               type="ammunition"
               :reference="data.internalInvoiceReference"
               :id="data.id"
-              :archiveOption="data.invoiceStatus === 'RECEIVED'"
+              :invoice-status="data.invoiceStatus"
             />
           </div>
         </template>
@@ -179,6 +180,7 @@ import { RouterEnum } from '@/enum/router.enum'
 import { useRouter } from 'vue-router'
 import { DateFormatter } from '@/shared/utils/formatter.utils'
 import { getInvoiceStatus } from '@/shared/utils/order-status.utils'
+import { storeToRefs } from 'pinia'
 
 const store = useInvoiceStore()
 const supplierStore = useSupplierStore()
@@ -197,7 +199,13 @@ const filters = ref({
   invoiceStatus: { value: null, matchMode: FilterMatchMode.EQUALS }
 })
 const i18nPrefix = store.getI18NPrefix
-const { data: invoices, refetch, isError, isLoading } = store.getAll()
+const { statusFilter$ } = storeToRefs(store)
+
+const { data: invoices, isError, isLoading } = store.getAll()
+async function onFilter(event: any) {
+  console.log(event.filters?.invoiceStatus?.value)
+  statusFilter$.value = event.filters?.invoiceStatus?.value
+}
 const { data: suppliers$ } = supplierStore.getAll()
 const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
   switch (event) {
@@ -208,12 +216,10 @@ const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
       router.push({ name: RouterEnum.AMMUNITION_EDIT, params: { id: id } })
       break
     case 'archive':
-      console.log(id)
       store.archive.mutate(id)
       break
     case true:
-      // store.delete(id)
-      refetch()
+      store.delete(id)
       break
   }
 }

@@ -14,14 +14,14 @@ export const usePriceHistoryStore = defineStore('price-history-store', () => {
   // Refs
   const history = ref<PriceHistoryDto[]>([])
 
-  const _fetchAllPriceHistory = async (objectId?: string, type?: string) => {
+  const _fetchAllPriceHistory = async (objectId?: number, type?: string) => {
     if (!objectId || !type) return null
-    const res = await api.api.priceHistoryControllerFindByTypeAndObject(type, parseInt(objectId))
+    const res = await api.api.priceHistoryControllerFindByTypeAndObject(type, objectId)
     history.value = res.data
     return res.data
   }
 
-  const queryFindAllPriceHistory = (objectId?: string, type?: string) =>
+  const queryFindAllPriceHistory = (objectId?: number, type?: string) =>
     useQuery({
       queryKey: [_GET_ALL_FN, objectId, type],
       queryFn: async () => {

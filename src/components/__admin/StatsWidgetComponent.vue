@@ -54,32 +54,11 @@
         <span class="text-muted-color">newly registered</span>
       </div>
     </div>
-    <div class="col-span-12 lg:col-span-6 xl:col-span-3">
-      <div class="card mb-0 p-2 shadow shadow-gray-400 max-w-80 mx-auto">
-        <div class="flex justify-between mb-4">
-          <div>
-            <span class="block text-muted-color font-medium mb-4">Invoice</span>
-            <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">152 En cours</div>
-          </div>
-          <div
-            class="flex items-center justify-center bg-purple-100 dark:bg-purple-400/10 rounded-border cursor-pointer"
-            style="width: 2.5rem; height: 2.5rem"
-          >
-            <Button asChild icon="pi pi-check">
-              <RouterLink :to="{ name: RouterEnum.INVOICE_LIST }">
-                <i class="pi pi-comment text-purple-500 !text-xl"></i
-              ></RouterLink>
-            </Button>
-          </div>
-        </div>
-        <span class="text-primary font-medium">85 </span>
-        <span class="text-muted-color">responded</span>
-      </div>
-    </div>
+    <InvoiceWidget />
   </div>
 </template>
 <script setup lang="ts">
-import { RouterEnum } from '@/enum/router.enum.js'
+import InvoiceWidget from '@/components/__admin/__widgets/InvoiceWidget.vue'
 </script>
 
 <style scoped></style>

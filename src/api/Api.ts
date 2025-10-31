@@ -1305,6 +1305,13 @@ export interface InvoiceSupplierDto {
   invoiceStatus: string
 }
 
+export interface CountInvoicesDto {
+  inOrder: number
+  inShipping: number
+  received: number
+  archive: number
+}
+
 export interface CreateItemInvoiceSupplierDto {
   quantity: number
   object: string
@@ -3421,9 +3428,32 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @summary Liste complète
      * @request GET:/api/supplier-invoice/all
      */
-    supplierInvoiceControllerFindAll: (params: RequestParams = {}) =>
+    supplierInvoiceControllerFindAll: (
+      query?: {
+        /** Filtrer les factures selon leur statut */
+        status?: string
+      },
+      params: RequestParams = {}
+    ) =>
       this.request<InvoiceSupplierDto[], any>({
         path: `/api/supplier-invoice/all`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Compte les commandes suivant leur status
+     *
+     * @tags Invoice
+     * @name SupplierInvoiceControllerCountInvoice
+     * @summary Compte
+     * @request GET:/api/supplier-invoice/count
+     */
+    supplierInvoiceControllerCountInvoice: (params: RequestParams = {}) =>
+      this.request<CountInvoicesDto, any>({
+        path: `/api/supplier-invoice/count`,
         method: 'GET',
         format: 'json',
         ...params

@@ -21,3 +21,4 @@ export const getInvoiceStatus = (): OrderStatus[] => {
     { name: 'ARCHIVE', id: 5, label: 'Archivée' }
   ]
 }
+export type InvoiceOrderStatus = 'IN_ORDER' | 'SHIPPING' | 'RECEIVED' | 'CANCELED' | 'ARCHIVE'

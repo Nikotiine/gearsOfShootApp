@@ -1,5 +1,5 @@
 <template>
-  <div v-if="invoice" class="p-6 bg-gray-100 shadow-md">
+  <div v-if="invoice" class="p-6 bg-surface-900 dark:bg-gray-800 shadow-md">
     <div class="grid grid-cols-2 gap-4 mb-4">
       <!-- Informations de commande -->
       <div>
@@ -18,9 +18,14 @@
         </p>
         <p>
           <strong>{{ t('global.' + 'status') }} : </strong>
-          <span :class="allReceived ? 'text-green-400' : 'text-red-500'">
-            {{ allReceived ? t(i18nPrefix + 'received') : t(i18nPrefix + 'pending') }}</span
+          <span :class="GetClassTextColorByOrderStatus(invoice.invoiceStatus)">
+            {{ t('orderStatus.' + invoice.invoiceStatus) }}</span
           >
+        </p>
+        <p>
+          <strong>{{ t('global.comment') }}</strong
+          >: <br />
+          {{ invoice.comment }}
         </p>
       </div>
 
@@ -43,7 +48,11 @@
       responsiveLayout="scroll"
       class="mb-6"
     >
-      <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
+      <Column
+        selectionMode="multiple"
+        headerStyle="width: 3rem"
+        v-if="invoice.items.length > 1"
+      ></Column>
       <Column field="name" :header="t(i18nPrefix + 'item')">
         <template #body="{ data }">
           {{ data.factory.name }} : {{ data.name }} <br />
@@ -81,7 +90,7 @@
           <strong>{{ t(i18nPrefix + 'totalAccountHT') }}</strong>
           {{ NumberFormatter(invoice.totalAccountHT, 'euro') }}
         </p>
-        <!--      <p><strong>Tva :</strong> {{ NumberFormatter(invoice.vat, 'percent') }}</p>-->
+        <p><strong>Tva :</strong> {{ NumberFormatter(invoice.vat, 'percent') }}</p>
         <p>
           <strong>{{ t(i18nPrefix + 'totalRemaining') }}</strong>
           {{
@@ -93,10 +102,19 @@
       </div>
 
       <!-- Colonne droite : Total général -->
-      <div class="flex items-end justify-end text-lg font-semibold">
+      <div class="flex items-end justify-end text-lg font-semibold flex-col">
         <p>
           <strong>{{ t(i18nPrefix + 'totalPriceHt') }}</strong>
           {{ NumberFormatter(invoice.totalPriceHt, 'euro') }}
+        </p>
+        <p>
+          <strong>{{ t(i18nPrefix + 'totalPriceTtc') }}</strong>
+          {{
+            NumberFormatter(
+              invoice.totalPriceHt + (invoice.totalPriceHt * invoice.vat) / 100,
+              'euro'
+            )
+          }}
         </p>
       </div>
     </div>
@@ -122,6 +140,7 @@ import { computed, ref } from 'vue'
 import InvoiceEditStatusButton from '@/components/__invoice/InvoiceEditStatusButton.vue'
 import type { ItemInvoice } from '@/api/Api'
 import InvoiceEditBulkStatusButton from '@/components/__invoice/InvoiceEditBulkStatusButton.vue'
+import { GetClassTextColorByOrderStatus } from '@/shared/utils/colors.utils'
 
 const store = useInvoiceStore()
 const i18nPrefix = store.getI18NPrefix

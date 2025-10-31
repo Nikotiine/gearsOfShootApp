@@ -35,12 +35,12 @@ const {
   type,
   reference,
   id,
-  archiveOption = false
+  invoiceStatus = null
 } = defineProps<{
   type: ActionMenuType
   reference: string
   id: number
-  archiveOption?: boolean
+  invoiceStatus?: string | null
 }>()
 const emit = defineEmits<{
   (e: 'onClickAction', action: ActionMenuEmit | boolean, id: number): void
@@ -69,8 +69,9 @@ const items = computed<MenuItem[]>(() => {
     }
   ]
 
+  const archivableStatus = ['RECEIVED', 'CANCELED']
   // ✅ On ajoute dynamiquement l’option Archive
-  if (archiveOption) {
+  if (invoiceStatus && archivableStatus.includes(invoiceStatus)) {
     baseItems.push({
       label: t('global.archive'),
       icon: 'pi pi-folder',

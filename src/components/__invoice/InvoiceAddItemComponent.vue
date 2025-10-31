@@ -23,7 +23,7 @@ import PriceHistoryModal, {
   type PriceHistoryModalExposed
 } from '@/components/__modal/PriceHistoryModal.vue'
 import { useInvoiceStore } from '@/stores/invoice.store'
-import { useToastStore } from '@/stores/toast'
+
 const store = useInvoiceStore()
 
 const priceHistoryModalRef = ref<PriceHistoryModalExposed | null>(null)
@@ -32,7 +32,7 @@ const {
   object,
   description = ''
 } = defineProps<{
-  objectId: string
+  objectId: number
   object: PriceableObjectType
   description?: string
 }>()

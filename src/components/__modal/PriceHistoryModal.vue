@@ -73,7 +73,7 @@ const emit = defineEmits<{
   (e: 'onSelectItem', data: CreateItemInvoiceSupplierDto): void
 }>()
 const { id, type } = defineProps<{
-  id?: string
+  id?: number
   type?: PriceableObjectType
 }>()
 const visible = ref<boolean>(false)
