@@ -2,13 +2,14 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import { RouterEnum } from '@/enum/router.enum'
 import { WeaponEnum } from '@/enum/weapon.enum'
+import { adminGuard } from '@/router/guards/admin.guard'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      name: 'home',
+      name: RouterEnum.HOME,
       component: HomeView
     },
     {
@@ -24,7 +25,7 @@ const router = createRouter({
     {
       path: '/admin',
       component: () => import('../views/admin/AdminLayout.vue'),
-
+      beforeEnter: adminGuard,
       children: [
         {
           path: '',
@@ -347,6 +348,12 @@ const router = createRouter({
           name: RouterEnum.NOTFOUND_404,
           props: true,
           component: () => import('@/views/error/ErrorNotFoundView.vue')
+        },
+        {
+          path: '403',
+          name: RouterEnum.UNAUTHORIZED,
+          props: true,
+          component: () => import('@/views/error/ErrorUnauthorizedView.vue')
         }
       ]
     }
