@@ -556,7 +556,9 @@
     "0200": "Type d arme deja existante",
     "0201": "Arme deja existante",
     "0302": "Optique non trouve, veuillez recommencez",
-    "0600": "Marque deja existante"
+    "0600": "Marque deja existante",
+    "403": "Access refusé",
+    "summary": "Erreur"
   },
   "tooltip": {
     "caliber": "Ajouter un nouveau calibre",

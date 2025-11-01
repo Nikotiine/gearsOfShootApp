@@ -3,14 +3,14 @@
     <Card class="shadow-xl w-full max-w-md text-center">
       <template #title>
         <div class="flex flex-col items-center justify-center">
-          <div class="text-8xl font-bold text-primary mb-2">404</div>
-          <h1 class="text-2xl font-semibold mb-4">Aucune page trouvée</h1>
+          <div class="text-8xl font-bold text-primary mb-2">403</div>
+          <h1 class="text-2xl font-semibold mb-4">Accès refusé</h1>
         </div>
       </template>
 
       <template #content>
         <p class="text-gray-500 mb-6">
-          La page que vous cherchez ne semble pas exister ou n'est plus disponible.<br />
+          Vous n’avez pas l’autorisation d’accéder à cette page.<br />
           Si vous pensez qu’il s’agit d’une erreur, veuillez contacter un administrateur.
         </p>
         <Button
