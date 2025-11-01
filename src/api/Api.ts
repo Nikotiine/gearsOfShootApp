@@ -1298,6 +1298,18 @@ export interface InvoiceSupplierDto {
   internalInvoiceReference: string
   invoiceSupplierReference: string
   items: ItemInvoice[]
+  totalPriceHt: number
+  totalInvoiceItems: number
+  totalAccountHT: number
+  vat: number
+  invoiceStatus: string
+}
+
+export interface CountInvoicesDto {
+  inOrder: number
+  inShipping: number
+  received: number
+  archive: number
 }
 
 export interface CreateItemInvoiceSupplierDto {
@@ -1306,9 +1318,10 @@ export interface CreateItemInvoiceSupplierDto {
   objectId: number
   accountHT: number
   comment: string
+  description: string
   supplierPriceHT: number
   status: string
-  id: number
+  id: number | null
 }
 
 export interface CreateInvoiceSupplierDto {
@@ -1317,7 +1330,9 @@ export interface CreateInvoiceSupplierDto {
   /** @format date-time */
   dueDate: string
   shippingCost: number
+  vat: number
   items: CreateItemInvoiceSupplierDto[]
+  invoiceSupplierReference: string | null
 }
 
 export interface UpdateInvoiceSupplierDto {
@@ -1326,9 +1341,21 @@ export interface UpdateInvoiceSupplierDto {
   /** @format date-time */
   dueDate: string
   shippingCost: number
+  vat: number
   items: CreateItemInvoiceSupplierDto[]
-  invoiceSupplierReference: string
+  invoiceSupplierReference: string | null
   id: number
+}
+
+export interface UpdateBulkItemStatusDto {
+  ids: number[]
+  status: string
+}
+
+export type ItemInvoiceSupplier = object
+
+export interface UpdateItemStatusDto {
+  status: string
 }
 
 export enum WeaponTypeDtoTypeEnum {
@@ -3394,6 +3421,45 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
+     * @description Retourne la liste de tous les commandes
+     *
+     * @tags Invoice
+     * @name SupplierInvoiceControllerFindAll
+     * @summary Liste complète
+     * @request GET:/api/supplier-invoice/all
+     */
+    supplierInvoiceControllerFindAll: (
+      query?: {
+        /** Filtrer les factures selon leur statut */
+        status?: string
+      },
+      params: RequestParams = {}
+    ) =>
+      this.request<InvoiceSupplierDto[], any>({
+        path: `/api/supplier-invoice/all`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Compte les commandes suivant leur status
+     *
+     * @tags Invoice
+     * @name SupplierInvoiceControllerCountInvoice
+     * @summary Compte
+     * @request GET:/api/supplier-invoice/count
+     */
+    supplierInvoiceControllerCountInvoice: (params: RequestParams = {}) =>
+      this.request<CountInvoicesDto, any>({
+        path: `/api/supplier-invoice/count`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
      * @description Retourne la commnde fournisseur par son id
      *
      * @tags Invoice
@@ -3430,6 +3496,24 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
+     * @description Passe la commende en archive
+     *
+     * @tags Invoice
+     * @name SupplierInvoiceControllerArchive
+     * @summary Creation
+     * @request POST:/api/supplier-invoice/archive/{id}
+     * @secure
+     */
+    supplierInvoiceControllerArchive: (id: number, params: RequestParams = {}) =>
+      this.request<InvoiceSupplierDto, any>({
+        path: `/api/supplier-invoice/archive/${id}`,
+        method: 'POST',
+        secure: true,
+        format: 'json',
+        ...params
+      }),
+
+    /**
      * @description Edition d une commande
      *
      * @tags Invoice
@@ -3445,6 +3529,71 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
     ) =>
       this.request<InvoiceSupplierDto, any>({
         path: `/api/supplier-invoice/${id}`,
+        method: 'PUT',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Suppresion logique de la commande fournisseur
+     *
+     * @tags Invoice
+     * @name SupplierInvoiceControllerDelete
+     * @summary Suppresion logique
+     * @request DELETE:/api/supplier-invoice/{id}
+     * @secure
+     */
+    supplierInvoiceControllerDelete: (id: number, params: RequestParams = {}) =>
+      this.request<ApiDeleteResponseDto, any>({
+        path: `/api/supplier-invoice/${id}`,
+        method: 'DELETE',
+        secure: true,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Modification de status de plusieurs elements
+     *
+     * @tags invoice-item
+     * @name InvoiceItemControllerUpdateStatuses
+     * @summary Edition
+     * @request POST:/api/invoice-item
+     * @secure
+     */
+    invoiceItemControllerUpdateStatuses: (
+      data: UpdateBulkItemStatusDto,
+      params: RequestParams = {}
+    ) =>
+      this.request<ItemInvoiceSupplier[], any>({
+        path: `/api/invoice-item`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Edition d une commande
+     *
+     * @tags invoice-item
+     * @name InvoiceItemControllerUpdateStatus
+     * @summary Edition
+     * @request PUT:/api/invoice-item/{id}
+     * @secure
+     */
+    invoiceItemControllerUpdateStatus: (
+      id: number,
+      data: UpdateItemStatusDto,
+      params: RequestParams = {}
+    ) =>
+      this.request<ItemInvoiceSupplier, any>({
+        path: `/api/invoice-item/${id}`,
         method: 'PUT',
         body: data,
         secure: true,

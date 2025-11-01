@@ -7,7 +7,23 @@ export const useToastStore = defineStore('toast', () => {
   const { t } = useI18n()
   function successMessage(summary: string, message: string, key?: string) {
     toast.add({
+      severity: 'success',
+      summary: t(summary),
+      detail: t(message, { key: key }),
+      life: 3000
+    })
+  }
+  function infoMessage(summary: string, message: string, key?: string) {
+    toast.add({
       severity: 'info',
+      summary: t(summary),
+      detail: t(message, { key: key }),
+      life: 3000
+    })
+  }
+  function warnMessage(summary: string, message: string, key?: string) {
+    toast.add({
+      severity: 'warn',
       summary: t(summary),
       detail: t(message, { key: key }),
       life: 3000
@@ -16,5 +32,5 @@ export const useToastStore = defineStore('toast', () => {
   function errorMessage(summary: string, message: string) {
     toast.add({ severity: 'error', summary: t(summary), detail: t(message), life: 5000 })
   }
-  return { successMessage, errorMessage }
+  return { successMessage, errorMessage, infoMessage, warnMessage }
 })

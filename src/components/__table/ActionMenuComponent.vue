@@ -14,7 +14,7 @@
 <script setup lang="ts">
 import Button from 'primevue/button'
 import Menu from 'primevue/menu'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import type { MenuItem } from 'primevue/menuitem'
 import { useConfirmationStore } from '@/stores/confirmation.store'
 import { useI18n } from 'vue-i18n'
@@ -28,48 +28,64 @@ export type ActionMenuType =
   | 'factory'
   | 'rds'
   | 'collar'
-export type ActionMenuEmit = 'view' | 'edit'
+export type ActionMenuEmit = 'view' | 'edit' | 'archive'
 const { t } = useI18n()
 const confirmationStore = useConfirmationStore()
-const { type, reference, id } = defineProps<{
+const {
+  type,
+  reference,
+  id,
+  invoiceStatus = null
+} = defineProps<{
   type: ActionMenuType
   reference: string
   id: number
+  invoiceStatus?: string | null
 }>()
 const emit = defineEmits<{
   (e: 'onClickAction', action: ActionMenuEmit | boolean, id: number): void
 }>()
 
 const menu = ref()
-const items = ref<MenuItem[]>([
-  {
-    label: t('global.action'),
-    items: [
-      {
-        label: t('global.detail'),
-        icon: 'pi pi-eye',
-        command: () => {
-          emit('onClickAction', 'view', id)
-        }
-      },
-      {
-        label: t('global.edit'),
-        icon: 'pi pi-pencil',
-        command: () => {
-          emit('onClickAction', 'edit', id)
-        }
-      },
-      {
-        label: t('global.delete'),
-        icon: 'pi pi-trash',
-        command: async () => {
-          const confirmation = await confirmationStore.confirmDelete(type, reference)
-          emit('onClickAction', confirmation, id)
-        }
+const items = computed<MenuItem[]>(() => {
+  const baseItems: MenuItem[] = [
+    {
+      label: t('global.detail'),
+      icon: 'pi pi-eye',
+      command: () => emit('onClickAction', 'view', id)
+    },
+    {
+      label: t('global.edit'),
+      icon: 'pi pi-pencil',
+      command: () => emit('onClickAction', 'edit', id)
+    },
+    {
+      label: t('global.delete'),
+      icon: 'pi pi-trash',
+      command: async () => {
+        const confirmation = await confirmationStore.confirmDelete(type, reference)
+        emit('onClickAction', confirmation, id)
       }
-    ]
+    }
+  ]
+
+  const archivableStatus = ['RECEIVED', 'CANCELED']
+  // ✅ On ajoute dynamiquement l’option Archive
+  if (invoiceStatus && archivableStatus.includes(invoiceStatus)) {
+    baseItems.push({
+      label: t('global.archive'),
+      icon: 'pi pi-folder',
+      command: () => emit('onClickAction', 'archive', id)
+    })
   }
-])
+
+  return [
+    {
+      label: t('global.action'),
+      items: baseItems
+    }
+  ]
+})
 
 const toggle = (event: MouseEvent) => {
   menu.value.toggle(event)

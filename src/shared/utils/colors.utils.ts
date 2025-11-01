@@ -12,3 +12,22 @@ export function GetClassTextColorByQuantity(quantity?: number) {
     return 'text-red-500'
   }
 }
+export function GetClassTextColorByOrderStatus(status: string): string {
+  if (!status) {
+    return ''
+  }
+  switch (status) {
+    case 'IN_ORDER':
+      return 'text-orange-500'
+    case 'SHIPPING':
+      return 'text-green-600'
+    case 'RECEIVED':
+      return 'text-blue-500'
+    case 'ARCHIVE':
+      return 'text-black-600'
+    case 'CANCELED':
+      return 'text-red-500'
+    default:
+      return 'text-orange-500'
+  }
+}

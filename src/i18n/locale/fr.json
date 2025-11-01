@@ -49,6 +49,8 @@
   },
   "global": {
     "password": "Mot de passe",
+    "comment": "Commentaire",
+    "status": "Statut",
     "price": "Prix",
     "yes": "Oui",
     "no": "Non",
@@ -121,7 +123,13 @@
     "accessories": "Accessoires",
     "blackPowderWeapon": "Arme a poudre noire",
     "new": "Ajouter",
-    "colors": "Couleurs"
+    "colors": "Couleurs",
+    "invoice": "Commandes",
+    "createdBy": "Creer par",
+    "archive": "Archiver",
+    "findBySupplier": "Chercher par fournisseur",
+    "findByStatus": "Chercher par status",
+    "supplier": "Fournisseur"
   },
   "handgun": {
     "list": "Liste des arme de poing de categorie : {key}",
@@ -265,7 +273,8 @@
     "notFound": "Aucune munition trouvée",
     "loading": "Chargement des muntions en cours",
     "findByName": "Recherche par modele",
-    "stock": "Mise en stock"
+    "stock": "Mise en stock",
+    "detail": "Detail munition: {key}"
   },
   "admin": {
     "dashboard": {
@@ -488,7 +497,8 @@
     "createdAt": "Date de mise a jour",
     "notFound": "Aucun prix enregistré",
     "histories": "Historique des prix",
-    "supplier": "Fournisseur"
+    "supplier": "Fournisseur",
+    "addToInvoice": "Commander"
   },
   "stock": {
     "quantity": "Quantite actuelle en stock",
@@ -535,7 +545,8 @@
     "FFP": "Premier plan focal",
     "yrd": "yards",
     "db": "DB",
-    "euro": "€"
+    "euro": "€",
+    "percent": "%"
   },
   "error": {
     "0001": "Email deja utilisé",
@@ -596,5 +607,52 @@
     "weaponType": "Type d'arme",
     "threadSize": "Pas de vis",
     "commonReference": "Reference communes"
+  },
+  "invoice": {
+    "summary": "Commande",
+    "itemAdded": "Ajouter a la commande",
+    "alreadyItemInInvoice": "Deja dans la commande",
+    "shippingCost": "Frais de port",
+    "save": "Nouvelle commande fournisseur",
+    "vat": "TVA",
+    "dueDate": "Date de payement",
+    "totalPriceHt": "Prix total HT",
+    "totalPriceTtc": "Prix TTC",
+    "totalInvoiceItems": "Nombre d'objets",
+    "list": "Liste des commandes",
+    "detailTitle": "Commande N°",
+    "createdAt": "Date de la commande :",
+    "createdBy": "Commande passer par :",
+    "supplier": "Fournisseur",
+    "totalAccountHT": "Accompte total :",
+    "totalRemaining": "Reste à payer :",
+    "paymentCompleted": "Payement completé",
+    "detail": "Detail de la commande",
+    "item": "Article",
+    "unitPriceHt": "Prix unitaire (€)",
+    "totalPriceHT": "Prix total (€)",
+    "received": "Commande termine",
+    "pending": "Commande en cours",
+    "statusUpdated": "Status de la commande modifie",
+    "statusUpdatedFailed": "Erreur de status",
+    "archived": "Commande archivée",
+    "archivedFailed": "Erreur lors de l'archivation",
+    "notFound": "Aucune commande trouvée"
+  },
+  "orderStatus": {
+    "VALIDATE_ORDER": "Commande a valider",
+    "IN_ORDER": "Commande en cours",
+    "SHIPPING": "Expedie",
+    "CANCELED": "Annulée",
+    "RECEIVED": "Recue",
+    "AMMUNITION": "Munition",
+    "ARCHIVE": "Archivée",
+    "OPTIC": "Optique",
+    "HANDGUN": "Arme de poing",
+    "RIFFLE": "Arme longue",
+    "OPTIC_COLLAR": "Collier",
+    "name": "Statut de la commande",
+    "warning": "Attention, cette commande est en deja marque comme recue, voulez vous continuer ?",
+    "placeholder": "Choisir un status"
   }
 }

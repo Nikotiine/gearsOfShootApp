@@ -11,6 +11,7 @@ export type NumberFormatterType =
   | 'yrd'
   | 'db'
   | 'euro'
+  | 'percent'
 export function NumberFormatter(value: number | undefined, format: NumberFormatterType): string {
   const { t } = useI18n()
   if (value === 0 || !value) {

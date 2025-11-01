@@ -1,4 +1,4 @@
-import type { WeaponTypeDto } from '@/api/Api'
+import { type WeaponTypeDto, WeaponTypeDtoTypeEnum } from '@/api/Api'
 import { getReloadModeDto } from '@/shared/api-dto/get-reload-mode.dto'
 
 export const getWeaponTypeDto = (): WeaponTypeDto => {
@@ -6,6 +6,7 @@ export const getWeaponTypeDto = (): WeaponTypeDto => {
     id: 0,
     name: '',
     reference: '',
-    mode: getReloadModeDto()
+    mode: getReloadModeDto(),
+    type: WeaponTypeDtoTypeEnum.Riffle
   }
 }
