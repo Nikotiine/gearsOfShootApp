@@ -3,7 +3,7 @@
 </template>
 <script setup lang="ts">
 import { RouterEnum } from '@/enum/router.enum'
-import AmmunitionTableComponent from '@/views/ammunition/AmmunitionTableComponent.vue'
+import AmmunitionTableView from '@/views/ammunition/AmmunitionTableView.vue'
 import MagazineTableComponent from '@/components/__weaponMagazine/MagazineTableComponent.vue'
 
 import HandGunTableComponent from '@/components/__weapon/handgun/HandGunTableComponent.vue'
@@ -33,7 +33,7 @@ enum TableWithProps {
 
 const componentMap = {
   [TableWithProps.HANDGUN]: HandGunTableComponent,
-  [TableWithProps.AMMUNITION]: AmmunitionTableComponent,
+  [TableWithProps.AMMUNITION]: AmmunitionTableView,
   [TableWithProps.MAGAZINE]: MagazineTableComponent,
   [TableWithProps.RIFFLE]: RiffleTableComponent
 }

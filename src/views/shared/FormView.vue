@@ -6,7 +6,7 @@ import { useRoute } from 'vue-router'
 import { computed, ref, watch } from 'vue'
 import FormWrapper from '@/views/shared/FormWrapper.vue'
 import OpticCollarFormComponent from '@/components/__optic/OpticCollarFormComponent.vue'
-import AmmunitionFormComponent from '@/components/__ammunition/AmmunitionFormComponent.vue'
+import AmmunitionFormView from '@/views/ammunition/AmmunitionFormView.vue'
 import MagazineFormComponent from '@/components/__weaponMagazine/MagazineFormComponent.vue'
 import FactoryFormComponent from '@/components/__factory/FactoryFormComponent.vue'
 import OpticFormComponent from '@/components/__optic/OpticFormComponent.vue'
@@ -74,8 +74,8 @@ enum RouterFormEnum {
 const componentMap = {
   [RouterFormEnum.OPTIC_COLLAR_EDIT]: OpticCollarFormComponent,
   [RouterFormEnum.OPTIC_COLLAR_NEW]: OpticCollarFormComponent,
-  [RouterFormEnum.AMMUNITION_NEW]: AmmunitionFormComponent,
-  [RouterFormEnum.AMMUNITION_EDIT]: AmmunitionFormComponent,
+  [RouterFormEnum.AMMUNITION_NEW]: AmmunitionFormView,
+  [RouterFormEnum.AMMUNITION_EDIT]: AmmunitionFormView,
   [RouterFormEnum.MAGAZINE_NEW]: MagazineFormComponent,
   [RouterFormEnum.MAGAZINE_EDIT]: MagazineFormComponent,
   [RouterFormEnum.FACTORY_NEW]: FactoryFormComponent,

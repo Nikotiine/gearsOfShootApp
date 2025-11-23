@@ -32,7 +32,6 @@ export const useAmmunitionStore = defineStore('ammunition-store', () => {
   // Private Attibute
   const _I18N_PREFIX = 'ammunition'
   const _GET_ALL_FN = 'getAllAmmunition'
-  const _GET_ALL_BY_CATEGORY_FN = 'getAllAmmunitionByCategory'
   const _GET_BY_ID_FN = 'getAmmunitionById'
 
   // *******************Methodes***************
@@ -49,6 +48,9 @@ export const useAmmunitionStore = defineStore('ammunition-store', () => {
     }
   })
 
+  /**
+   * Find All avec filtre et pagination
+   */
   const queryFindAllFilteredAmmunitions = () =>
     useQuery({
       queryKey: [_GET_ALL_FN, queryFilter],
@@ -57,6 +59,26 @@ export const useAmmunitionStore = defineStore('ammunition-store', () => {
       },
       enabled: !!queryFilter.value
     })
+  const _fetchAllByCategory = async (
+    filters: AmmunitionQueryFilter
+  ): Promise<PaginatedResponseDto | null> => {
+    if (!filters) return null
+    const res = await api.api.ammunitionControllerFindAll(filters)
+    return res.data
+  }
+
+  const getByIdQuery = (id?: string) =>
+    useQuery({
+      queryKey: [_GET_BY_ID_FN, id],
+      queryFn: () => _fetchById(id),
+      enabled: !!id,
+      retry: 0
+    })
+  const _fetchById = async (id?: string): Promise<AmmunitionDto | null> => {
+    if (!id) return null
+    const res = await api.api.ammunitionControllerFindById(parseInt(id))
+    return res.data
+  }
 
   function useAmmunitionForm(id?: string) {
     const emptyForm: CreateAmmunitionDto = {
@@ -88,25 +110,6 @@ export const useAmmunitionStore = defineStore('ammunition-store', () => {
     )
   }
 
-  const getByIdQuery = (id?: string) =>
-    useQuery({
-      queryKey: [_GET_BY_ID_FN, id],
-      queryFn: () => _fetchById(id),
-      enabled: !!id,
-      retry: 0
-    })
-  const _fetchById = async (id?: string) => {
-    if (!id) return null
-    const res = await api.api.ammunitionControllerFindById(parseInt(id))
-    return res.data
-  }
-  const _fetchAllByCategory = async (
-    filters: AmmunitionQueryFilter
-  ): Promise<PaginatedResponseDto | null> => {
-    if (!filters) return null
-    const res = await api.api.ammunitionControllerFindAll(filters)
-    return res.data
-  }
   const _deleteAmmunitionMutation = useMutation({
     mutationFn: async (id: number) => {
       return await api.api.ammunitionControllerDelete(id)
