@@ -5,7 +5,7 @@
 import { RouterEnum } from '@/enum/router.enum'
 import OpticCollarTableComponent from '@/components/__optic/OpticCollarTableComponent.vue'
 import MagazineTableComponent from '@/components/__weaponMagazine/MagazineTableComponent.vue'
-import AmmunitionTableComponent from '@/components/__ammunition/AmmunitionTableComponent.vue'
+import AmmunitionTableComponent from '@/views/ammunition/AmmunitionTableComponent.vue'
 import FactoriesTableComponent from '@/components/__factory/FactoriesTableComponent.vue'
 import OpticTableComponent from '@/components/__optic/OpticTableComponent.vue'
 import SoundReducerTableComponent from '@/components/__accessory/rds/SoundReducerTableComponent.vue'

@@ -961,6 +961,26 @@ export interface AmmunitionDto {
   updatedAt: string
 }
 
+export interface PaginatedResponseDto {
+  /** Résultats paginés */
+  data: any[][]
+  /**
+   * Nombre total d’éléments disponibles
+   * @example 42
+   */
+  total: number
+  /**
+   * Nombre maximum de résultats renvoyés
+   * @example 10
+   */
+  limit: number
+  /**
+   * Décalage utilisé pour la pagination
+   * @example 0
+   */
+  offset: number
+}
+
 export interface CreateAmmunitionDto {
   /** @example "Sk Standard" */
   name: string
@@ -2786,14 +2806,44 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @description Retourne la liste des munitions filtre par calibre
      *
      * @tags Ammunition
-     * @name AmmunitionControllerFindByCategory
+     * @name AmmunitionControllerFindAll
      * @summary Filtré par categorie
-     * @request GET:/api/ammunition/by/category/{category}
+     * @request GET:/api/ammunition/all
      */
-    ammunitionControllerFindByCategory: (category: string, params: RequestParams = {}) =>
-      this.request<AmmunitionDto[], any>({
-        path: `/api/ammunition/by/category/${category}`,
+    ammunitionControllerFindAll: (
+      query?: {
+        /**
+         * Nombre maximum de résultats à renvoyer
+         * @example 10
+         */
+        limit?: number
+        /**
+         * Décalage pour la pagination
+         * @example 0
+         */
+        offset?: number
+        /** @example "B" */
+        reference?: string
+        /** @example "B" */
+        category?: string
+        /** @example "Glock" */
+        factory?: string
+        /** @example "9mm" */
+        caliber?: string
+        /** @example "B" */
+        name?: string
+      },
+      params: RequestParams = {}
+    ) =>
+      this.request<
+        PaginatedResponseDto & {
+          data?: AmmunitionDto[]
+        },
+        any
+      >({
+        path: `/api/ammunition/all`,
         method: 'GET',
+        query: query,
         format: 'json',
         ...params
       }),

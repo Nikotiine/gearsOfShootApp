@@ -3,6 +3,7 @@
     v-model:visible="visible"
     modal
     maximizable
+    @hide="onHide"
     :header="t('priceHistory.priceHistoryModalHeader')"
     :style="{ width: '50rem' }"
     :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
@@ -71,20 +72,18 @@ const store = usePriceHistoryStore()
 
 const emit = defineEmits<{
   (e: 'onSelectItem', data: CreateItemInvoiceSupplierDto): void
+  (e: 'onHide'): void
 }>()
 const { id, type } = defineProps<{
   id?: number
   type?: PriceableObjectType
 }>()
-const visible = ref<boolean>(false)
+const visible = ref<boolean>(true)
 const { data } = store.findAll(id, type)
 
-function show() {
-  visible.value = true
-}
-
-function hide() {
+function onHide(): void {
   visible.value = false
+  emit('onHide')
 }
 
 function onClickAction(data: PriceHistoryDto): void {
@@ -101,7 +100,6 @@ function onClickAction(data: PriceHistoryDto): void {
   }
   emit('onSelectItem', item)
 }
-defineExpose({ show, hide })
 </script>
 
 <style scoped></style>

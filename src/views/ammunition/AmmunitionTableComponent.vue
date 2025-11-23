@@ -4,13 +4,19 @@
     <div class="text-red-500 text-center" v-if="isError">{{ t('global.isLoadingError') }}</div>
     <DataTable
       v-model:filters="filters"
-      :value="data"
+      :value="data?.data"
       paginator
-      :rows="10"
+      :rows="queryFilter$.limit"
+      :total-records="data?.total"
+      :rowsPerPageOptions="[10, 20, 50]"
       dataKey="id"
+      lazy
+      currentPageReportTemplate="{first} to {last} of {totalRecords}"
       filterDisplay="row"
+      @filter="onFilterChange"
+      @page="onPageChange"
       :loading="storeAreLoading.value"
-      :globalFilterFields="['name', 'factory.name', 'caliber.name', 'reference']"
+      :globalFilterFields="['name', 'factory', 'caliber', 'reference']"
     >
       <template #header>
         <div class="flex justify-center">
@@ -27,7 +33,7 @@
       <Column
         field="name"
         :header="t('global.model')"
-        style="min-width: 12rem"
+        style="min-width: 10rem"
         :showFilterMenu="false"
       >
         <template #body="{ data }">
@@ -45,7 +51,7 @@
       <Column
         :header="t('global.factory')"
         field="factory.name"
-        filterField="factory.name"
+        filterField="factory"
         style="min-width: 12rem"
         :showFilterMenu="false"
       >
@@ -69,7 +75,7 @@
       </Column>
       <Column
         :header="t('global.caliber')"
-        filterField="caliber.name"
+        filterField="caliber"
         :showFilterMenu="false"
         style="min-width: 14rem"
       >
@@ -114,18 +120,21 @@
         filterField="inStock"
         :header="t('global.inStock')"
         :showFilterMenu="false"
-        style=""
+        style="max-width: 5rem"
       >
         <template #body="{ data }">
           {{ data.inStock }}
         </template>
 
         <template #filter="{ filterModel, filterCallback }">
-          <InputText
-            v-model="filterModel.value"
-            type="text"
+          <InputNumber
             @input="filterCallback()"
-            placeholder="Recherche par reference"
+            placeholder="En Stock"
+            v-model="filterModel.value"
+            inputId="minmax"
+            :min="0"
+            :max="100"
+            style="min-width: 5rem"
           />
         </template>
       </Column>
@@ -153,13 +162,14 @@
 import IconField from 'primevue/iconfield'
 import InputIcon from 'primevue/inputicon'
 import InputText from 'primevue/inputtext'
+
 import Select from 'primevue/select'
 import Column from 'primevue/column'
-import DataTable from 'primevue/datatable'
+import DataTable, { type DataTableFilterEvent, type DataTablePageEvent } from 'primevue/datatable'
 import { useAmmunitionStore } from '@/stores/ammunition.store'
 import { useCaliberStore } from '@/stores/caliber.store'
 import { useFactoryStore } from '@/stores/factory.store'
-import { computed, ref, watch } from 'vue'
+import { computed, onBeforeMount, ref, watch } from 'vue'
 import { FilterMatchMode } from '@primevue/core/api'
 import { useI18n } from 'vue-i18n'
 import { RouterEnum } from '@/enum/router.enum'
@@ -169,26 +179,34 @@ import ActionMenuComponent, {
 } from '@/components/__table/ActionMenuComponent.vue'
 import TableTitleComponent from '@/components/__table/TableTitleComponent.vue'
 import InvoiceAddItemComponent from '@/components/__invoice/InvoiceAddItemComponent.vue'
+import { storeToRefs } from 'pinia'
+import InputNumber from 'primevue/inputnumber'
 
 const { category } = defineProps<{
   category: string
 }>()
 const { t } = useI18n()
 const store = useAmmunitionStore()
+const { queryFilter$ } = storeToRefs(store)
+
+onBeforeMount(() => {
+  queryFilter$.value.category = category
+})
+
 const i18nPrefix = store.getI18NPrefix
 const router = useRouter()
 const caliberStore = useCaliberStore()
 const factoryStore = useFactoryStore()
 const { data: factories$ } = factoryStore.getFactoriesByType('ammunition')
 const currentCategory = ref<string>(category)
-const { data, refetch, isError, isLoading: storeIsLoading } = store.getByCategory(currentCategory)
+const { data, refetch, isError, isLoading: storeIsLoading } = store.getByCategory()
 const { data: calibers$, isLoading: gatAllCalibersIsSuccess } = caliberStore.getAll()
 
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-  'factory.name': { value: null, matchMode: FilterMatchMode.EQUALS },
-  'caliber.name': { value: null, matchMode: FilterMatchMode.EQUALS },
+  factory: { value: null, matchMode: FilterMatchMode.EQUALS },
+  caliber: { value: null, matchMode: FilterMatchMode.EQUALS },
   inStock: { value: null, matchMode: FilterMatchMode.EQUALS },
   reference: { value: null, matchMode: FilterMatchMode.STARTS_WITH }
 })
@@ -196,6 +214,20 @@ const filters = ref({
 const storeAreLoading = computed(() => {
   return gatAllCalibersIsSuccess || storeIsLoading
 })
+
+const onFilterChange = (event: DataTableFilterEvent) => {
+  const activeFilters = Object.fromEntries(
+    Object.entries(event.filters).map(([key, meta]: any) => [key, meta.value])
+  )
+  queryFilter$.value.factory = activeFilters.factory
+  queryFilter$.value.caliber = activeFilters.caliber
+  queryFilter$.value.name = activeFilters.name
+  queryFilter$.value.reference = activeFilters.reference
+}
+const onPageChange = (event: DataTablePageEvent) => {
+  queryFilter$.value.offset = event.first
+  queryFilter$.value.limit = event.rows
+}
 
 const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
   switch (event) {

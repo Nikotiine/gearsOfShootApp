@@ -58,7 +58,6 @@ export const useInvoiceStore = defineStore('invoice-store', () => {
       retry: 0
     })
   const _fetchAll = async () => {
-    console.log(statusFilter.value)
     const res = await api.api.supplierInvoiceControllerFindAll({ status: statusFilter.value })
     return res.data.map((invoice) => {
       return {
