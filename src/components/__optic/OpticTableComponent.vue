@@ -6,11 +6,17 @@
       v-model:filters="filters"
       :value="optics$?.data"
       paginator
-      :rows="10"
+      :rows="queryFilter$.limit"
+      :total-records="optics$?.total"
+      :rowsPerPageOptions="[10, 20, 50]"
       dataKey="id"
+      lazy
+      @filter="onFilterChange"
+      @page="onPageChange"
+      currentPageReportTemplate="{first} to {last} of {totalRecords}"
       filterDisplay="row"
       :loading="isLoading"
-      :globalFilterFields="['name', 'factory.name', 'type.name', 'reference']"
+      :globalFilterFields="['name', 'factory', 'type', 'reference']"
     >
       <template #header>
         <div class="flex justify-center">
@@ -45,7 +51,7 @@
       <Column
         :header="t('global.factory')"
         field="factory.name"
-        filterField="factory.name"
+        filterField="factory"
         style="min-width: 12rem"
         :showFilterMenu="false"
       >
@@ -69,7 +75,8 @@
       </Column>
       <Column
         :header="t(i18nPrefix + 'opticType')"
-        filterField="type.name"
+        field="type.name"
+        filterField="type"
         :showFilterMenu="false"
         style="min-width: 14rem"
       >
@@ -148,7 +155,7 @@
 import { useOpticStore } from '@/stores/optic.store'
 import IconField from 'primevue/iconfield'
 
-import DataTable from 'primevue/datatable'
+import DataTable, { type DataTableFilterEvent, type DataTablePageEvent } from 'primevue/datatable'
 import InputText from 'primevue/inputtext'
 import Column from 'primevue/column'
 import InputIcon from 'primevue/inputicon'
@@ -170,6 +177,7 @@ import TableTitleComponent from '@/components/__table/TableTitleComponent.vue'
 const { t } = useI18n()
 const router = useRouter()
 const store = useOpticStore()
+const { queryFilter$ } = storeToRefs(store)
 const factoryStore = useFactoryStore()
 const opticTypeStore = useOpticTypeStore()
 factoryStore.getFactoriesByType('optic')
@@ -182,12 +190,24 @@ const { opticTypes$ } = storeToRefs(opticTypeStore)
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-  'factory.name': { value: null, matchMode: FilterMatchMode.EQUALS },
-  'type.name': { value: null, matchMode: FilterMatchMode.EQUALS },
+  factory: { value: null, matchMode: FilterMatchMode.EQUALS },
+  type: { value: null, matchMode: FilterMatchMode.EQUALS },
   // 'focalPlane.name': { value: null, matchMode: FilterMatchMode.EQUALS },
   reference: { value: null, matchMode: FilterMatchMode.STARTS_WITH }
 })
-
+const onFilterChange = (event: DataTableFilterEvent) => {
+  const activeFilters = Object.fromEntries(
+    Object.entries(event.filters).map(([key, meta]: any) => [key, meta.value])
+  )
+  queryFilter$.value.factory = activeFilters.factory
+  queryFilter$.value.type = activeFilters.type
+  queryFilter$.value.name = activeFilters.name
+  queryFilter$.value.reference = activeFilters.reference
+}
+const onPageChange = (event: DataTablePageEvent) => {
+  queryFilter$.value.offset = event.first
+  queryFilter$.value.limit = event.rows
+}
 const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
   switch (event) {
     case 'view':

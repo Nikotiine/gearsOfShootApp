@@ -1056,6 +1056,29 @@ export interface TokenDto {
   accessToken: string
 }
 
+export interface OpticFilter {
+  /**
+   * Nombre maximum de résultats à renvoyer
+   * @example 10
+   */
+  limit?: number
+  /**
+   * Décalage pour la pagination
+   * @example 0
+   */
+  offset?: number
+  /** @example "Reference interne de l objet" */
+  reference?: string
+  /** @example "Nom de lunette" */
+  name?: string
+  /** @example "La marque" */
+  factory?: string
+  /** @example "Le type de lunette" */
+  type?: string
+  /** @example "Le type de plan focal" */
+  focalPlane?: string
+}
+
 export interface OpticUnitDto {
   id: number
   name: string
@@ -2771,22 +2794,6 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
-     * @description Retourne la liste des munitions filtre par calibre
-     *
-     * @tags Ammunition
-     * @name AmmunitionControllerFindByCaliber
-     * @summary Filtre par calibre
-     * @request GET:/api/ammunition/by/caliber/{id}
-     */
-    ammunitionControllerFindByCaliber: (caliberId: number, id: any, params: RequestParams = {}) =>
-      this.request<AmmunitionDto[], any>({
-        path: `/api/ammunition/by/caliber/${id}`,
-        method: 'GET',
-        format: 'json',
-        ...params
-      }),
-
-    /**
      * @description Retourne la munition trouver par son id
      *
      * @tags Ammunition
@@ -2822,15 +2829,15 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
          * @example 0
          */
         offset?: number
-        /** @example "B" */
+        /** @example "Reference interne de l objet" */
         reference?: string
-        /** @example "B" */
+        /** @example "La categorie d arme" */
         category?: string
-        /** @example "Glock" */
+        /** @example "La marque" */
         factory?: string
-        /** @example "9mm" */
+        /** @example "Le calibre" */
         caliber?: string
-        /** @example "B" */
+        /** @example "Le nom de l arme" */
         name?: string
       },
       params: RequestParams = {}
@@ -3162,10 +3169,22 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @summary Liste complète
      * @request GET:/api/optic/all
      */
-    opticControllerFindAllOptics: (params: RequestParams = {}) =>
-      this.request<OpticDto[], any>({
+    opticControllerFindAllOptics: (
+      query?: {
+        /** Filtre de recherche pour reponse paginé */
+        filters?: OpticFilter
+      },
+      params: RequestParams = {}
+    ) =>
+      this.request<
+        PaginatedResponseDto & {
+          data?: OpticDto[]
+        },
+        any
+      >({
         path: `/api/optic/all`,
         method: 'GET',
+        query: query,
         format: 'json',
         ...params
       }),
@@ -3191,7 +3210,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags Optic
      * @name OpticControllerCreate
-     * @summary Creation d une nouvelle optique
+     * @summary Creation
      * @request POST:/api/optic
      * @secure
      */

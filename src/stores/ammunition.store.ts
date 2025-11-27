@@ -28,7 +28,7 @@ export const useAmmunitionStore = defineStore('ammunition-store', () => {
   const { successMessage } = useToastStore()
   // Refs
   const ammunition = ref<AmmunitionDto>()
-  const queryFilter = ref<AmmunitionQueryFilter>({ ...getQueryFilter() })
+  const queryFilters = ref<AmmunitionQueryFilter>({ ...getQueryFilter() })
   // Private Attibute
   const _I18N_PREFIX = 'ammunition'
   const _GET_ALL_FN = 'getAllAmmunition'
@@ -53,11 +53,11 @@ export const useAmmunitionStore = defineStore('ammunition-store', () => {
    */
   const queryFindAllFilteredAmmunitions = () =>
     useQuery({
-      queryKey: [_GET_ALL_FN, queryFilter],
+      queryKey: [_GET_ALL_FN, queryFilters],
       queryFn: async () => {
-        return await _fetchAllByCategory(queryFilter.value)
+        return await _fetchAllByCategory(queryFilters.value)
       },
-      enabled: !!queryFilter.value
+      enabled: !!queryFilters.value
     })
   const _fetchAllByCategory = async (
     filters: AmmunitionQueryFilter
@@ -133,6 +133,6 @@ export const useAmmunitionStore = defineStore('ammunition-store', () => {
     ammunition$: ammunition,
     formBuilder: useAmmunitionForm,
     getI18NPrefix: getI18NPrefix(_I18N_PREFIX),
-    queryFilter$: queryFilter
+    queryFilter$: queryFilters
   }
 })

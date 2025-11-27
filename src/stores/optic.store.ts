@@ -6,8 +6,10 @@ import type {
   CreateOpticDto,
   FocalPlaneDto,
   OpticDto,
+  OpticFilter,
   OpticTypeDto,
   OpticUnitDto,
+  PaginatedResponseDto,
   UpdateOpticDto
 } from '@/api/Api'
 import { ref } from 'vue'
@@ -34,9 +36,15 @@ export const useOpticStore = defineStore('optic-store', () => {
   const opticUnits = ref<OpticUnitDto[]>([])
   const opticType = ref<OpticTypeDto[]>([])
   const focalPlanes = ref<FocalPlaneDto[]>([])
-  const optics = ref<OpticDto[]>([])
-  const optic = ref<OpticDto>()
-
+  const queryFilter = ref<OpticFilter>({
+    limit: 10,
+    offset: 0,
+    factory: '',
+    name: '',
+    type: '',
+    focalPlane: '',
+    reference: ''
+  })
   // Private Attibute
   const _I18N_PREFIX = 'optic'
 
@@ -47,13 +55,18 @@ export const useOpticStore = defineStore('optic-store', () => {
 
   const getAllOpticsQuery = () =>
     useQuery({
-      queryKey: [_GET_ALL_FN],
+      queryKey: [_GET_ALL_FN, queryFilter],
       queryFn: async () => {
-        const res = await api.api.opticControllerFindAllOptics()
-        optics.value = res.data
-        return res
-      }
+        return await _fetchAllOptics(queryFilter.value)
+      },
+      enabled: !!queryFilter.value
     })
+
+  const _fetchAllOptics = async (filters: OpticFilter): Promise<PaginatedResponseDto | null> => {
+    if (!filters) return null
+    const res = await api.api.opticControllerFindAllOptics({ filters })
+    return res.data
+  }
 
   const _createMutation = useMutation({
     mutationFn: async (optic: CreateOpticDto) => {
@@ -147,9 +160,8 @@ export const useOpticStore = defineStore('optic-store', () => {
     focalPlanes$: focalPlanes,
     getAll: getAllOpticsQuery,
     getById: getByIdQuery,
-    optic$: optic,
-    optics$: optics,
     formBuilder: useOpticForm,
-    getI18NPrefix: getI18NPrefix(_I18N_PREFIX)
+    getI18NPrefix: getI18NPrefix(_I18N_PREFIX),
+    queryFilter$: queryFilter
   }
 })
