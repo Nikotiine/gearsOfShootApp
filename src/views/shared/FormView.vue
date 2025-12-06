@@ -9,7 +9,7 @@ import OpticCollarFormComponent from '@/components/__optic/OpticCollarFormCompon
 import AmmunitionFormView from '@/views/ammunition/AmmunitionFormView.vue'
 import MagazineFormComponent from '@/components/__weaponMagazine/MagazineFormComponent.vue'
 import FactoryFormComponent from '@/components/__factory/FactoryFormComponent.vue'
-import OpticFormComponent from '@/components/__optic/OpticFormComponent.vue'
+import OpticFormComponent from '@/views/optic/OpticFormComponent.vue'
 import MaterialFormComponent from '@/components/__color_and_material/MaterialFormComponent.vue'
 import HeadTypeFormComponent from '@/components/__ammunition/HeadTypeFormComponent.vue'
 import BodyTypeFormComponent from '@/components/__ammunition/BodyTypeFormComponent.vue'

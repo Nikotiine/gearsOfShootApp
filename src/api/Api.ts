@@ -1084,6 +1084,12 @@ export interface OpticUnitDto {
   name: string
 }
 
+export interface OpticClickValueDto {
+  name: string
+  opticUnit: OpticUnitDto
+  id: number
+}
+
 export interface FocalPlaneDto {
   id: number
   name: string
@@ -1104,7 +1110,7 @@ export interface OpticDto {
   minZoom: number
   maxDrift: number
   maxElevation: number
-  valueOfOneClick: number
+  clickValue: OpticClickValueDto
   bodyDiameter: number
   lensDiameter: number
   minParallax: number
@@ -1139,7 +1145,7 @@ export interface CreateOpticDto {
   minZoom: number
   maxDrift: number
   maxElevation: number
-  valueOfOneClick: number
+  clickValue: OpticClickValueDto
   bodyDiameter: number
   lensDiameter: number
   minParallax: number
@@ -1165,7 +1171,7 @@ export interface UpdateOpticDto {
   minZoom: number
   maxDrift: number
   maxElevation: number
-  valueOfOneClick: number
+  clickValue: OpticClickValueDto
   bodyDiameter: number
   lensDiameter: number
   minParallax: number
@@ -3162,7 +3168,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
-     * @description Retourne la liste completes des optiques
+     * @description Retourne la liste complete des optiques
      *
      * @tags Optic
      * @name OpticControllerFindAllOptics
@@ -3458,6 +3464,22 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
     opticUnitControllerFindAll: (params: RequestParams = {}) =>
       this.request<OpticUnitDto[], any>({
         path: `/api/optic-unit/all`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne la liste complete des plans focal
+     *
+     * @tags optic-click
+     * @name OpticClickControllerFindAll
+     * @summary Liste complète
+     * @request GET:/api/optic-click/all
+     */
+    opticClickControllerFindAll: (params: RequestParams = {}) =>
+      this.request<OpticClickValueDto[], any>({
+        path: `/api/optic-click/all`,
         method: 'GET',
         format: 'json',
         ...params

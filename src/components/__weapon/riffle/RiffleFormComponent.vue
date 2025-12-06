@@ -324,7 +324,7 @@ import ColorInputSelect from '@/components/__form/__specific_select/ColorInputSe
 import ThreadedSizeInputSelect from '@/components/__form/__specific_select/ThreadedSizeInputSelect.vue'
 import MaterialInputSelect from '@/components/__form/__specific_select/MaterialInputSelect.vue'
 import MLcokOptionInputMultiSelect from '@/components/__form/__specific_mullti_select/MLcokOptionInputMultiSelect.vue'
-import OpticRailInputSelect from '@/components/__form/__specific_select/OpticRailInputSelect.vue'
+import OpticRailInputSelect from '@/components/__optic/__input/OpticRailInputSelect.vue'
 import { WeaponEnum } from '@/enum/weapon.enum'
 import WeaponTypeInputSelect from '@/components/__form/__specific_select/WeaponTypeInputSelect.vue'
 import LegalisationCategoryInputSelect from '@/components/__form/__specific_select/LegalisationCategoryInputSelect.vue'

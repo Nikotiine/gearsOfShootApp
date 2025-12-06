@@ -57,8 +57,10 @@ export const useAmmunitionStore = defineStore('ammunition-store', () => {
       queryFn: async () => {
         return await _fetchAllByCategory(queryFilters.value)
       },
-      enabled: !!queryFilters.value
+      enabled: !!queryFilters.value,
+      placeholderData: (old) => old
     })
+
   const _fetchAllByCategory = async (
     filters: AmmunitionQueryFilter
   ): Promise<PaginatedResponseDto | null> => {

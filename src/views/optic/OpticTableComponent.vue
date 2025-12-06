@@ -13,7 +13,6 @@
       lazy
       @filter="onFilterChange"
       @page="onPageChange"
-      currentPageReportTemplate="{first} to {last} of {totalRecords}"
       filterDisplay="row"
       :loading="isLoading"
       :globalFilterFields="['name', 'factory', 'type', 'reference']"
@@ -154,7 +153,6 @@
 <script setup lang="ts">
 import { useOpticStore } from '@/stores/optic.store'
 import IconField from 'primevue/iconfield'
-
 import DataTable, { type DataTableFilterEvent, type DataTablePageEvent } from 'primevue/datatable'
 import InputText from 'primevue/inputtext'
 import Column from 'primevue/column'
@@ -164,7 +162,6 @@ import { useI18n } from 'vue-i18n'
 import { FilterMatchMode } from '@primevue/core/api'
 import { ref } from 'vue'
 import { useFactoryStore } from '@/stores/factory.store'
-
 import ActionMenuComponent, {
   type ActionMenuEmit
 } from '@/components/__table/ActionMenuComponent.vue'

@@ -43,7 +43,12 @@
           @on-select="(event) => (form.opticUnit = event)"
         />
 
-        <InputGroup>
+        <OpticClickValueSelect
+          :initial-value="form.clickValue.id"
+          :optic-unit="form.opticUnit"
+          @select-value="(event) => (form.clickValue = event)"
+        />
+        <!--        <InputGroup>
           <input-group-required-icon :is-validate="form.valueOfOneClick > 0" />
           <input-group-select
             :options="clickValueOption"
@@ -56,7 +61,7 @@
             :initial-value="form.valueOfOneClick"
             :disabled="form.opticUnit.id === 0"
           />
-        </InputGroup>
+        </InputGroup>-->
 
         <InputGroup>
           <input-group-number
@@ -241,13 +246,11 @@
   </div>
 </template>
 <script setup lang="ts">
-//TODO: Refacto les input specifiques
 import { computed } from 'vue'
 import { useOpticStore } from '@/stores/optic.store'
 import InputGroup from 'primevue/inputgroup'
 import Textarea from 'primevue/textarea'
 import { useI18n } from 'vue-i18n'
-import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 import InputGroupText from '@/components/__form/InputGroupText.vue'
 import InputGroupNumber from '@/components/__form/InputGroupNumber.vue'
@@ -256,14 +259,15 @@ import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.v
 import type { FormStatus } from '@/types/form-status.type'
 import SaveButton from '@/components/__form/SaveButton.vue'
 import FactoryInputSelect from '@/components/__form/__specific_select/FactoryInputSelect.vue'
-import OpticTypeInputSelect from '@/components/__form/__specific_select/OpticTypeInputSelect.vue'
+import OpticTypeInputSelect from '@/components/__optic/__input/OpticTypeInputSelect.vue'
 import FocalPlaneInputSelect from '@/components/__form/__specific_select/FocalPlaneInputSelect.vue'
-import OpticUnitInputSelect from '@/components/__form/__specific_select/OpticUnitInputSelect.vue'
+import OpticUnitInputSelect from '@/components/__optic/__input/OpticUnitInputSelect.vue'
 import PriceHistoryForm from '@/components/__form/PriceHistoryForm.vue'
-import OpticRailInputSelect from '@/components/__form/__specific_select/OpticRailInputSelect.vue'
+import OpticRailInputSelect from '@/components/__optic/__input/OpticRailInputSelect.vue'
 import { useFormStore } from '@/stores/form.store'
 import FormTitleComponent from '@/components/__form/FormTitleComponent.vue'
 import EditStockComponent from '@/components/__stock/EditStockComponent.vue'
+import OpticClickValueSelect from '@/components/__optic/__input/OpticClickValueSelect.vue'
 
 const store = useOpticStore()
 const formStore = useFormStore()
@@ -284,26 +288,11 @@ const isFormValid = computed(() => {
     form.value.focalPlane.id > 0 &&
     form.value.bodyDiameter > 0 &&
     form.value.lensDiameter > 0 &&
-    form.value.valueOfOneClick > 0
+    form.value.clickValue.id > 0
   ) {
     isValid = true
   }
   return isValid
-})
-
-const clickValueOption = computed(() => {
-  const moaOptions = [
-    { id: 1, name: '1/8' },
-    { id: 2, name: '1/4' },
-    { id: 3, name: '1/2' }
-  ]
-  const mradOptions = [{ id: 1, name: '1/10' }]
-
-  if (form.value.opticUnit.name === 'MOA') {
-    return moaOptions
-  } else {
-    return mradOptions
-  }
 })
 </script>
 

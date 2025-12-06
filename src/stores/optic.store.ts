@@ -59,7 +59,8 @@ export const useOpticStore = defineStore('optic-store', () => {
       queryFn: async () => {
         return await _fetchAllOptics(queryFilter.value)
       },
-      enabled: !!queryFilter.value
+      enabled: !!queryFilter.value,
+      placeholderData: (old) => old
     })
 
   const _fetchAllOptics = async (filters: OpticFilter): Promise<PaginatedResponseDto | null> => {
@@ -127,7 +128,11 @@ export const useOpticStore = defineStore('optic-store', () => {
       minParallax: 0,
       maxParallax: 0,
       lensDiameter: 0,
-      valueOfOneClick: 0,
+      clickValue: {
+        id: 0,
+        name: '',
+        opticUnit: getOpticUnitDto()
+      },
       focalPlane: getFocalPlaneDto(),
       opticUnit: getOpticUnitDto(),
       opticType: getOpticTypeDto(),

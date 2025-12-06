@@ -343,7 +343,6 @@
     "findByName": "Recherhe par modele",
     "findByType": "Recherche par type",
     "noCollarsProvided": "Pas de colliers fournis"
-
   },
   "soundNoiseReducer": {
     "save": "Ajouter un nouveau RDS",
@@ -456,6 +455,10 @@
   "reloadMode": {
     "name": "Type de fonctionnement",
     "placeholder": "Choisir un type"
+  },
+  "clickValue": {
+    "name": "Valeur d'un click",
+    "placeholder": "Choisir une valeur"
   },
   "threadedSize": {
     "form": {
