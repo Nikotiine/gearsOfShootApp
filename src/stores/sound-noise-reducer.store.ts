@@ -5,7 +5,8 @@ import { useMutation, useQuery } from '@tanstack/vue-query'
 import type {
   SoundNoiseReducerDto,
   CreateSoundNoiseReducerDto,
-  UpdateSoundNoiseReducerDto
+  UpdateSoundNoiseReducerDto,
+  SoundNoiseFilter
 } from '@/api/Api'
 
 import { useFormHandler } from '@/shared/useFormHandler'
@@ -17,6 +18,8 @@ import { getFactoryDto } from '@/shared/api-dto/get-factory.dto'
 import { getThreadedSizeDto } from '@/shared/api-dto/get-threaded-size.dto'
 import { getPriceHistoryDto } from '@/shared/api-dto/get-price-history.dto'
 import { getI18NPrefix, I18NSuffix } from '@/enum/I18NSuffix.enum'
+import { ref } from 'vue'
+import { buildRdsFilter } from '@/shared/api-dto/query-filters.builder'
 
 export const useSoundReducerStore = defineStore('sound-noise-reducer-store', () => {
   // Appel API
@@ -25,22 +28,35 @@ export const useSoundReducerStore = defineStore('sound-noise-reducer-store', () 
   const { successMessage } = useToastStore()
   // Router
   const { push } = useRouter()
-
   // Private Attibute
   const _I18N_PREFIX = 'soundNoiseReducer'
-
   const _GET_ALL_FN = 'getAllSoundNoiseReducer'
   const _GET_BY_ID_FN = 'getSoundNoiseReducerById'
+  // Refs
+  const queryFilters = ref<SoundNoiseFilter>({ ...buildRdsFilter() })
   // *******************Methodes***************
+
+  const getAllQuery = () => {
+    return useQuery({
+      queryKey: [_GET_ALL_FN, queryFilters],
+      queryFn: () => _fetchAll(queryFilters.value),
+      retry: 0,
+      enabled: !!queryFilters.value,
+      placeholderData: (old) => old
+    })
+  }
+
+  const _fetchAll = async (filters: SoundNoiseFilter) => {
+    if (!filters) return null
+    const res = await api.api.soundReducerControllerFindAll({ filters })
+    return res.data
+  }
   const _fetchById = async (id?: string) => {
     if (!id) return null
     const res = await api.api.soundReducerControllerFindById(parseInt(id))
     return res.data
   }
-  const _fetchAll = async () => {
-    const res = await api.api.soundReducerControllerFindAll()
-    return res.data
-  }
+
   const _createMutation = useMutation({
     mutationFn: async (rds: CreateSoundNoiseReducerDto) => {
       return await api.api.soundReducerControllerCreate(rds)
@@ -77,13 +93,6 @@ export const useSoundReducerStore = defineStore('sound-noise-reducer-store', () 
       enabled: !!id,
       retry: 0
     })
-  const getAllQuery = () => {
-    return useQuery({
-      queryKey: [_GET_ALL_FN],
-      queryFn: () => _fetchAll(),
-      retry: 0
-    })
-  }
 
   function useSoundNoiseForm(id?: string) {
     const emptyForm: CreateSoundNoiseReducerDto = {
@@ -120,6 +129,7 @@ export const useSoundReducerStore = defineStore('sound-noise-reducer-store', () 
     getAll: getAllQuery,
     formBuilder: useSoundNoiseForm,
     getI18NPrefix: getI18NPrefix(_I18N_PREFIX),
-    delete: deleteFunction
+    delete: deleteFunction,
+    queryFilters$: queryFilters
   }
 })

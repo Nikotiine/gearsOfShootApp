@@ -6,10 +6,10 @@ import { RouterEnum } from '@/enum/router.enum'
 
 import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import SoundReducerDetailComponent from '@/components/__accessory/rds/SoundReducerDetailComponent.vue'
+import SoundReducerDetailView from '@/views/accessory/rds/SoundReducerDetailView.vue'
 import AmmunitionDetailView from '@/views/ammunition/AmmunitionDetailView.vue'
 import OpticCollarDetailComponent from '@/components/__optic/OpticCollarDetailComponent.vue'
-import OpticDetailComponent from '@/views/optic/OpticDetailComponent.vue'
+import OpticDetailView from '@/views/optic/OpticDetailView.vue'
 import RiffleDetailComponent from '@/components/__weapon/riffle/RiffleDetailComponent.vue'
 import HandGunDetailComponent from '@/components/__weapon/handgun/HandGunDetailComponent.vue'
 import MagazineDetailComponent from '@/components/__weaponMagazine/MagazineDetailComponent.vue'
@@ -42,10 +42,10 @@ enum DetailRoute {
   INVOICE_DETAIL = RouterEnum.INVOICE_DETAIL
 }
 const componentMap = {
-  [DetailRoute.RDS_DETAIL]: SoundReducerDetailComponent,
+  [DetailRoute.RDS_DETAIL]: SoundReducerDetailView,
   [DetailRoute.AMMUNITION_DETAIL]: AmmunitionDetailView,
   [DetailRoute.OPTIC_COLLAR_DETAIL]: OpticCollarDetailComponent,
-  [DetailRoute.OPTIC_DETAIL]: OpticDetailComponent,
+  [DetailRoute.OPTIC_DETAIL]: OpticDetailView,
   [DetailRoute.RIFFLE_DETAIL]: RiffleDetailComponent,
   [DetailRoute.HANDGUN_DETAIL]: HandGunDetailComponent,
   [DetailRoute.MAGAZINE_DETAIL]: MagazineDetailComponent,

@@ -365,7 +365,8 @@
     "chicane": "Nombre de chicanes",
     "estimatedNoiseReduction": "Reduction de bruit estimé",
     "findByName": "Recherche par modele",
-    "notFound": "Aucun reducteur de son trouvé"
+    "notFound": "Aucun reducteur de son trouvé",
+    "detail": "Detail RDS"
   },
   "factory": {
     "save": "Ajouter une nouvelle marque de type",

@@ -7,8 +7,8 @@ import OpticCollarTableComponent from '@/components/__optic/OpticCollarTableComp
 import MagazineTableComponent from '@/components/__weaponMagazine/MagazineTableComponent.vue'
 import AmmunitionTableView from '@/views/ammunition/AmmunitionTableView.vue'
 import FactoriesTableComponent from '@/components/__factory/FactoriesTableComponent.vue'
-import OpticTableComponent from '@/views/optic/OpticTableComponent.vue'
-import SoundReducerTableComponent from '@/components/__accessory/rds/SoundReducerTableComponent.vue'
+import OpticTableView from '@/views/optic/OpticTableView.vue'
+import SoundReducerTableView from '@/views/accessory/rds/SoundReducerTableView.vue'
 import { useRoute } from 'vue-router'
 import { computed, watch } from 'vue'
 import { useOpticCollarStore } from '@/stores/optic-collar.store'
@@ -39,8 +39,8 @@ const componentMap = {
   [TableRoute.MAGAZINE_LIST]: MagazineTableComponent,
   [TableRoute.AMMUNITION_LIST]: AmmunitionTableView,
   [TableRoute.FACTORY_LIST]: FactoriesTableComponent,
-  [TableRoute.RDS_LIST]: SoundReducerTableComponent,
-  [TableRoute.OPTIC_LIST]: OpticTableComponent,
+  [TableRoute.RDS_LIST]: SoundReducerTableView,
+  [TableRoute.OPTIC_LIST]: OpticTableView,
   [TableRoute.INVOICE_LIST]: InvoiceTableComponent
 }
 const storeMap = {

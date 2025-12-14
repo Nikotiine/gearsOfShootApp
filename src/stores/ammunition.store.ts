@@ -4,6 +4,7 @@ import { useToastStore } from '@/stores/toast'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import type {
   AmmunitionDto,
+  AmmunitionFilter,
   CreateAmmunitionDto,
   PaginatedResponseDto,
   UpdateAmmunitionDto
@@ -19,7 +20,7 @@ import { getBodyTypeDto } from '@/shared/api-dto/get-body-type.dto'
 import { getHeadTypeDto } from '@/shared/api-dto/get-head-type.dto'
 import { getPercussionTypeDto } from '@/shared/api-dto/get-percussion-type.dto'
 import { getPriceHistoryDto } from '@/shared/api-dto/get-price-history.dto'
-import { AmmunitionQueryFilter, getQueryFilter } from '@/shared/api-dto/query-filter.interface'
+import { buildAmmunitionFilters } from '@/shared/api-dto/query-filters.builder'
 
 export const useAmmunitionStore = defineStore('ammunition-store', () => {
   // Appel API
@@ -28,7 +29,7 @@ export const useAmmunitionStore = defineStore('ammunition-store', () => {
   const { successMessage } = useToastStore()
   // Refs
   const ammunition = ref<AmmunitionDto>()
-  const queryFilters = ref<AmmunitionQueryFilter>({ ...getQueryFilter() })
+  const queryFilters = ref<AmmunitionFilter>({ ...buildAmmunitionFilters() })
   // Private Attibute
   const _I18N_PREFIX = 'ammunition'
   const _GET_ALL_FN = 'getAllAmmunition'
@@ -62,10 +63,10 @@ export const useAmmunitionStore = defineStore('ammunition-store', () => {
     })
 
   const _fetchAllByCategory = async (
-    filters: AmmunitionQueryFilter
+    filters: AmmunitionFilter
   ): Promise<PaginatedResponseDto | null> => {
     if (!filters) return null
-    const res = await api.api.ammunitionControllerFindAll(filters)
+    const res = await api.api.ammunitionControllerFindAll({ filters })
     return res.data
   }
 

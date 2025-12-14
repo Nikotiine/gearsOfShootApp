@@ -9,7 +9,7 @@ import OpticCollarFormComponent from '@/components/__optic/OpticCollarFormCompon
 import AmmunitionFormView from '@/views/ammunition/AmmunitionFormView.vue'
 import MagazineFormComponent from '@/components/__weaponMagazine/MagazineFormComponent.vue'
 import FactoryFormComponent from '@/components/__factory/FactoryFormComponent.vue'
-import OpticFormComponent from '@/views/optic/OpticFormComponent.vue'
+import OpticFormView from '@/views/optic/OpticFormView.vue'
 import MaterialFormComponent from '@/components/__color_and_material/MaterialFormComponent.vue'
 import HeadTypeFormComponent from '@/components/__ammunition/HeadTypeFormComponent.vue'
 import BodyTypeFormComponent from '@/components/__ammunition/BodyTypeFormComponent.vue'
@@ -17,7 +17,7 @@ import ThreadedSizeFormComponent from '@/components/__threaded-size/ThreadedSize
 import WeaponTypeFormComponent from '@/components/__weapon/type/WeaponTypeFormComponent.vue'
 import CaliberFormComponent from '@/components/__caliber/CaliberFormComponent.vue'
 import ColorFormComponent from '@/components/__color_and_material/ColorFormComponent.vue'
-import SoundReducerFormComponent from '@/components/__accessory/rds/SoundReducerFormComponent.vue'
+import SoundReducerFormView from '@/views/accessory/rds/SoundReducerFormView.vue'
 import { RouterEnum } from '@/enum/router.enum'
 import HandGunFormComponent from '@/components/__weapon/handgun/HandGunFormComponent.vue'
 import RiffleFormComponent from '@/components/__weapon/riffle/RiffleFormComponent.vue'
@@ -80,8 +80,8 @@ const componentMap = {
   [RouterFormEnum.MAGAZINE_EDIT]: MagazineFormComponent,
   [RouterFormEnum.FACTORY_NEW]: FactoryFormComponent,
   [RouterFormEnum.FACTORY_EDIT]: FactoryFormComponent,
-  [RouterFormEnum.OPTIC_NEW]: OpticFormComponent,
-  [RouterFormEnum.OPTIC_EDIT]: OpticFormComponent,
+  [RouterFormEnum.OPTIC_NEW]: OpticFormView,
+  [RouterFormEnum.OPTIC_EDIT]: OpticFormView,
   [RouterFormEnum.COLOR_NEW]: ColorFormComponent,
   [RouterFormEnum.MATERIAL_NEW]: MaterialFormComponent,
   [RouterFormEnum.HEAD_TYPE_NEW]: HeadTypeFormComponent,
@@ -89,8 +89,8 @@ const componentMap = {
   [RouterFormEnum.THREADED_SIZE_NEW]: ThreadedSizeFormComponent,
   [RouterFormEnum.WEAPON_TYPE_NEW]: WeaponTypeFormComponent,
   [RouterFormEnum.CALIBER_NEW]: CaliberFormComponent,
-  [RouterFormEnum.RDS_NEW]: SoundReducerFormComponent,
-  [RouterFormEnum.RDS_EDIT]: SoundReducerFormComponent,
+  [RouterFormEnum.RDS_NEW]: SoundReducerFormView,
+  [RouterFormEnum.RDS_EDIT]: SoundReducerFormView,
 
   [RouterFormEnum.HANDGUN_NEW]: HandGunFormComponent,
   [RouterFormEnum.HANDGUN_EDIT]: HandGunFormComponent,

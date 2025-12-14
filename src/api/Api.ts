@@ -961,6 +961,29 @@ export interface AmmunitionDto {
   updatedAt: string
 }
 
+export interface AmmunitionFilter {
+  /**
+   * Nombre maximum de résultats à renvoyer
+   * @example 10
+   */
+  limit?: number
+  /**
+   * Décalage pour la pagination
+   * @example 0
+   */
+  offset?: number
+  /** @example "Reference interne de l objet" */
+  reference?: string
+  /** @example "La categorie d arme" */
+  category?: string
+  /** @example "La marque" */
+  factory?: string
+  /** @example "Le calibre" */
+  caliber?: string
+  /** @example "Le nom de l arme" */
+  name?: string
+}
+
 export interface PaginatedResponseDto {
   /** Résultats paginés */
   data: any[][]
@@ -1238,6 +1261,27 @@ export interface UpdateOpticCollarDto {
   priceHistory: CreatePriceHistoryDto
   inStock: number
   id: number
+}
+
+export interface SoundNoiseFilter {
+  /**
+   * Nombre maximum de résultats à renvoyer
+   * @example 10
+   */
+  limit?: number
+  /**
+   * Décalage pour la pagination
+   * @example 0
+   */
+  offset?: number
+  /** @example "Reference interne de l objet" */
+  reference?: string
+  /** @example "La marque" */
+  factory?: string
+  /** @example "Le calibre compatible" */
+  caliber?: string
+  /** @example "Le nom du rds" */
+  name?: string
 }
 
 export interface SoundNoiseReducerDto {
@@ -2825,26 +2869,8 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      */
     ammunitionControllerFindAll: (
       query?: {
-        /**
-         * Nombre maximum de résultats à renvoyer
-         * @example 10
-         */
-        limit?: number
-        /**
-         * Décalage pour la pagination
-         * @example 0
-         */
-        offset?: number
-        /** @example "Reference interne de l objet" */
-        reference?: string
-        /** @example "La categorie d arme" */
-        category?: string
-        /** @example "La marque" */
-        factory?: string
-        /** @example "Le calibre" */
-        caliber?: string
-        /** @example "Le nom de l arme" */
-        name?: string
+        /** Filtre de recherche pour reponse paginé */
+        filters?: AmmunitionFilter
       },
       params: RequestParams = {}
     ) =>
@@ -3493,10 +3519,22 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @summary Liste complète
      * @request GET:/api/sound-reducer/all
      */
-    soundReducerControllerFindAll: (params: RequestParams = {}) =>
-      this.request<SoundNoiseReducerDto[], any>({
+    soundReducerControllerFindAll: (
+      query?: {
+        /** Filtre de recherche pour reponse paginé */
+        filters?: SoundNoiseFilter
+      },
+      params: RequestParams = {}
+    ) =>
+      this.request<
+        PaginatedResponseDto & {
+          data?: SoundNoiseReducerDto[]
+        },
+        any
+      >({
         path: `/api/sound-reducer/all`,
         method: 'GET',
+        query: query,
         format: 'json',
         ...params
       }),

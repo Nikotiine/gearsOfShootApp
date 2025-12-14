@@ -6,6 +6,7 @@
       label="name"
       i18n-prefix="clickValue."
       required
+      placeholder="placeholder"
       input-id="valueOfOneClick"
       :initial-value="initialValue"
       :disabled="opticUnit.id === 0"

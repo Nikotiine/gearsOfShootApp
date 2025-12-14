@@ -23,6 +23,7 @@ import { getOpticUnitDto } from '@/shared/api-dto/get-optic-unit.dto'
 import { getOpticTypeDto } from '@/shared/api-dto/get-optic-type.dto'
 import { getPriceHistoryDto } from '@/shared/api-dto/get-price-history.dto'
 import { getI18NPrefix, I18NSuffix } from '@/enum/I18NSuffix.enum'
+import { buildOpticFilter } from '@/shared/api-dto/query-filters.builder'
 
 export const useOpticStore = defineStore('optic-store', () => {
   // Appel API
@@ -36,15 +37,7 @@ export const useOpticStore = defineStore('optic-store', () => {
   const opticUnits = ref<OpticUnitDto[]>([])
   const opticType = ref<OpticTypeDto[]>([])
   const focalPlanes = ref<FocalPlaneDto[]>([])
-  const queryFilter = ref<OpticFilter>({
-    limit: 10,
-    offset: 0,
-    factory: '',
-    name: '',
-    type: '',
-    focalPlane: '',
-    reference: ''
-  })
+  const queryFilters = ref<OpticFilter>({ ...buildOpticFilter() })
   // Private Attibute
   const _I18N_PREFIX = 'optic'
 
@@ -55,11 +48,11 @@ export const useOpticStore = defineStore('optic-store', () => {
 
   const getAllOpticsQuery = () =>
     useQuery({
-      queryKey: [_GET_ALL_FN, queryFilter],
+      queryKey: [_GET_ALL_FN, queryFilters],
       queryFn: async () => {
-        return await _fetchAllOptics(queryFilter.value)
+        return await _fetchAllOptics(queryFilters.value)
       },
-      enabled: !!queryFilter.value,
+      enabled: !!queryFilters.value,
       placeholderData: (old) => old
     })
 
@@ -167,6 +160,6 @@ export const useOpticStore = defineStore('optic-store', () => {
     getById: getByIdQuery,
     formBuilder: useOpticForm,
     getI18NPrefix: getI18NPrefix(_I18N_PREFIX),
-    queryFilter$: queryFilter
+    queryFilter$: queryFilters
   }
 })
