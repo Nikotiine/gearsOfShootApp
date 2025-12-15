@@ -8,7 +8,7 @@ import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import SoundReducerDetailView from '@/views/accessory/rds/SoundReducerDetailView.vue'
 import AmmunitionDetailView from '@/views/ammunition/AmmunitionDetailView.vue'
-import OpticCollarDetailComponent from '@/components/__optic/OpticCollarDetailComponent.vue'
+import OpticCollarDetailView from '@/views/optic/collar/OpticCollarDetailView.vue'
 import OpticDetailView from '@/views/optic/OpticDetailView.vue'
 import RiffleDetailComponent from '@/components/__weapon/riffle/RiffleDetailComponent.vue'
 import HandGunDetailComponent from '@/components/__weapon/handgun/HandGunDetailComponent.vue'
@@ -44,7 +44,7 @@ enum DetailRoute {
 const componentMap = {
   [DetailRoute.RDS_DETAIL]: SoundReducerDetailView,
   [DetailRoute.AMMUNITION_DETAIL]: AmmunitionDetailView,
-  [DetailRoute.OPTIC_COLLAR_DETAIL]: OpticCollarDetailComponent,
+  [DetailRoute.OPTIC_COLLAR_DETAIL]: OpticCollarDetailView,
   [DetailRoute.OPTIC_DETAIL]: OpticDetailView,
   [DetailRoute.RIFFLE_DETAIL]: RiffleDetailComponent,
   [DetailRoute.HANDGUN_DETAIL]: HandGunDetailComponent,

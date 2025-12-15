@@ -136,6 +136,6 @@ export const useAmmunitionStore = defineStore('ammunition-store', () => {
     ammunition$: ammunition,
     formBuilder: useAmmunitionForm,
     getI18NPrefix: getI18NPrefix(_I18N_PREFIX),
-    queryFilter$: queryFilters
+    queryFilters$: queryFilters
   }
 })

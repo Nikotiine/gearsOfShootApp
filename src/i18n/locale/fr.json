@@ -370,19 +370,20 @@
   },
   "factory": {
     "save": "Ajouter une nouvelle marque de type",
-    "form": {
-
-      "success": "Ajout d'un nouveau type confirme"
-    },
+    "created": "Ajout d'une nouvelle marque confirme",
+    "chooseType": "Choisir un type",
     "list": "Liste des marques",
     "type": "Marque specialisée",
     "summary": "Gestion des marques",
+    "notFound": "Aucune marque trouvée",
+    "loading": "Chargement des marques en cours",
     "types": {
       "ammunition": "Munition",
       "optic": "Optique",
       "weapon": "Arme",
       "rds": "Reducteur de son",
-      "magazine": "Chargeur"
+      "magazine": "Chargeur",
+      "accessory": "Accessoire"
     }
   },
   "color": {

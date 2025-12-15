@@ -5,10 +5,10 @@
 import { useRoute } from 'vue-router'
 import { computed, ref, watch } from 'vue'
 import FormWrapper from '@/views/shared/FormWrapper.vue'
-import OpticCollarFormComponent from '@/components/__optic/OpticCollarFormComponent.vue'
+import OpticCollarFormView from '@/views/optic/collar/OpticCollarFormView.vue'
 import AmmunitionFormView from '@/views/ammunition/AmmunitionFormView.vue'
 import MagazineFormComponent from '@/components/__weaponMagazine/MagazineFormComponent.vue'
-import FactoryFormComponent from '@/components/__factory/FactoryFormComponent.vue'
+import FactoryFormView from '@/views/factory/FactoryFormView.vue'
 import OpticFormView from '@/views/optic/OpticFormView.vue'
 import MaterialFormComponent from '@/components/__color_and_material/MaterialFormComponent.vue'
 import HeadTypeFormComponent from '@/components/__ammunition/HeadTypeFormComponent.vue'
@@ -72,14 +72,14 @@ enum RouterFormEnum {
 
 // Mapping entre les noms de route et les composants
 const componentMap = {
-  [RouterFormEnum.OPTIC_COLLAR_EDIT]: OpticCollarFormComponent,
-  [RouterFormEnum.OPTIC_COLLAR_NEW]: OpticCollarFormComponent,
+  [RouterFormEnum.OPTIC_COLLAR_EDIT]: OpticCollarFormView,
+  [RouterFormEnum.OPTIC_COLLAR_NEW]: OpticCollarFormView,
   [RouterFormEnum.AMMUNITION_NEW]: AmmunitionFormView,
   [RouterFormEnum.AMMUNITION_EDIT]: AmmunitionFormView,
   [RouterFormEnum.MAGAZINE_NEW]: MagazineFormComponent,
   [RouterFormEnum.MAGAZINE_EDIT]: MagazineFormComponent,
-  [RouterFormEnum.FACTORY_NEW]: FactoryFormComponent,
-  [RouterFormEnum.FACTORY_EDIT]: FactoryFormComponent,
+  [RouterFormEnum.FACTORY_NEW]: FactoryFormView,
+  [RouterFormEnum.FACTORY_EDIT]: FactoryFormView,
   [RouterFormEnum.OPTIC_NEW]: OpticFormView,
   [RouterFormEnum.OPTIC_EDIT]: OpticFormView,
   [RouterFormEnum.COLOR_NEW]: ColorFormComponent,

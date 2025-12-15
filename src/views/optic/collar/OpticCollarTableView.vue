@@ -4,13 +4,19 @@
     <div class="text-red-500 text-center" v-if="isError">{{ t('global.isLoadingError') }}</div>
     <DataTable
       v-model:filters="filters"
-      :value="collar$?.data"
+      :value="data?.data"
       paginator
-      :rows="10"
+      :rows="queryFilters$.limit"
+      :total-records="data?.total"
+      :rowsPerPageOptions="[10, 20, 50]"
       dataKey="id"
       filterDisplay="row"
+      currentPageReportTemplate="{first} to {last} of {totalRecords}"
+      lazy
       :loading="isLoading"
-      :globalFilterFields="['name', 'factory.name', 'railSize.name', 'reference']"
+      @filter="onFilterChange"
+      @page="onPageChange"
+      :globalFilterFields="['name', 'factory', 'railSize', 'reference']"
     >
       <template #header>
         <div class="flex justify-center">
@@ -47,7 +53,7 @@
       <Column
         :header="t('global.factory')"
         field="factory.name"
-        filterField="factory.name"
+        filterField="factory"
         style="min-width: 12rem"
         :showFilterMenu="false"
       >
@@ -71,7 +77,8 @@
       </Column>
       <Column
         :header="t(i18nPrefix + 'rail')"
-        filterField="railSize.name"
+        filterField="railSize"
+        field="railSize.name"
         :showFilterMenu="false"
         style="min-width: 14rem"
       >
@@ -129,7 +136,7 @@ import ActionMenuComponent, {
   type ActionMenuEmit
 } from '@/components/__table/ActionMenuComponent.vue'
 import IconField from 'primevue/iconfield'
-import DataTable from 'primevue/datatable'
+import DataTable, { type DataTableFilterEvent, type DataTablePageEvent } from 'primevue/datatable'
 import InputText from 'primevue/inputtext'
 import Column from 'primevue/column'
 import InputIcon from 'primevue/inputicon'
@@ -142,10 +149,12 @@ import { FilterMatchMode } from '@primevue/core/api'
 import { RouterEnum } from '@/enum/router.enum'
 import { useRouter } from 'vue-router'
 import TableTitleComponent from '@/components/__table/TableTitleComponent.vue'
+import { storeToRefs } from 'pinia'
 
 const store = useOpticCollarStore()
+const { queryFilters$ } = storeToRefs(store)
 const i18nPrefix = store.getI18NPrefix
-const { data: collar$, isSuccess, isError, isLoading, refetch } = store.getAll()
+const { data, isSuccess, isError, isLoading, refetch } = store.getAll()
 const { t } = useI18n()
 const factoryStore = useFactoryStore()
 const railSizeStore = useRailSizeStore()
@@ -155,8 +164,8 @@ const { data: railSize$ } = railSizeStore.getAll()
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-  'factory.name': { value: null, matchMode: FilterMatchMode.EQUALS },
-  'railSize.name': { value: null, matchMode: FilterMatchMode.EQUALS },
+  factory: { value: null, matchMode: FilterMatchMode.EQUALS },
+  railSize: { value: null, matchMode: FilterMatchMode.EQUALS },
   reference: { value: null, matchMode: FilterMatchMode.STARTS_WITH }
 })
 const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
@@ -172,6 +181,19 @@ const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
       refetch()
       break
   }
+}
+const onFilterChange = (event: DataTableFilterEvent) => {
+  const activeFilters = Object.fromEntries(
+    Object.entries(event.filters).map(([key, meta]: any) => [key, meta.value])
+  )
+  queryFilters$.value.factory = activeFilters.factory
+  queryFilters$.value.railSize = activeFilters.railSize
+  queryFilters$.value.name = activeFilters.name
+  queryFilters$.value.reference = activeFilters.reference
+}
+const onPageChange = (event: DataTablePageEvent) => {
+  queryFilters$.value.offset = event.first
+  queryFilters$.value.limit = event.rows
 }
 </script>
 

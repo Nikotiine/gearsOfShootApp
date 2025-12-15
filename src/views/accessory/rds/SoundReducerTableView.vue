@@ -29,9 +29,7 @@
         </div>
       </template>
       <template #empty> {{ t(i18nPrefix + 'notFound') }} </template>
-      <template #loading>
-        {{ t(i18nPrefix + 'loading') }} {{ t(i18nPrefix + 'pleaseWait') }}
-      </template>
+      <template #loading> {{ t(i18nPrefix + 'loading') }} {{ t('global.pleaseWait') }} </template>
       <Column
         field="name"
         :header="t('global.model')"

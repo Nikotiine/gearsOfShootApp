@@ -1,5 +1,5 @@
 import { useI18n } from 'vue-i18n'
-import type { FocalPlaneDto } from '@/api/Api'
+import type { FactoryDto, FactoryTypeDto, FocalPlaneDto } from '@/api/Api'
 
 export type NumberFormatterType =
   | 'mm'
@@ -75,4 +75,14 @@ export function DateFormatter(date: Date | string, format: 'short' | 'medium' | 
   }
 
   return new Intl.DateTimeFormat('fr-FR', options).format(new Date(date))
+}
+export function FactoryTypeFormatter(factories?: FactoryTypeDto[]) {
+  const { t } = useI18n()
+  if (!factories) return []
+  return factories.map((f) => {
+    return {
+      ...f,
+      label: t('factory.types.' + f.name)
+    }
+  })
 }

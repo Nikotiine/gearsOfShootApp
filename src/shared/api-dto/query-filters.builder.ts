@@ -1,4 +1,10 @@
-import type { AmmunitionFilter, OpticFilter, SoundNoiseFilter } from '@/api/Api'
+import type {
+  AmmunitionFilter,
+  FactoryFilter,
+  OpticCollarFilter,
+  OpticFilter,
+  SoundNoiseFilter
+} from '@/api/Api'
 
 export function buildAmmunitionFilters(): AmmunitionFilter {
   return {
@@ -30,5 +36,24 @@ export function buildRdsFilter(): SoundNoiseFilter {
     name: '',
     caliber: undefined,
     reference: ''
+  }
+}
+export function buildOpticCollarFilter(): OpticCollarFilter {
+  return {
+    limit: 10,
+    offset: 0,
+    factory: '',
+    name: '',
+    reference: '',
+    railSize: ''
+  }
+}
+export function buildFactoryFilter(): FactoryFilter {
+  return {
+    limit: 10,
+    offset: 0,
+    name: '',
+    reference: '',
+    type: ''
   }
 }

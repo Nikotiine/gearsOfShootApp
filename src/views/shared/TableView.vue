@@ -3,10 +3,10 @@
 </template>
 <script setup lang="ts">
 import { RouterEnum } from '@/enum/router.enum'
-import OpticCollarTableComponent from '@/components/__optic/OpticCollarTableComponent.vue'
+import OpticCollarTableView from '@/views/optic/collar/OpticCollarTableView.vue'
 import MagazineTableComponent from '@/components/__weaponMagazine/MagazineTableComponent.vue'
 import AmmunitionTableView from '@/views/ammunition/AmmunitionTableView.vue'
-import FactoriesTableComponent from '@/components/__factory/FactoriesTableComponent.vue'
+import FactoriesTableView from '@/views/factory/FactoriesTableView.vue'
 import OpticTableView from '@/views/optic/OpticTableView.vue'
 import SoundReducerTableView from '@/views/accessory/rds/SoundReducerTableView.vue'
 import { useRoute } from 'vue-router'
@@ -35,10 +35,10 @@ enum TableRoute {
   INVOICE_LIST = RouterEnum.INVOICE_LIST
 }
 const componentMap = {
-  [TableRoute.OPTIC_COLLAR_LIST]: OpticCollarTableComponent,
+  [TableRoute.OPTIC_COLLAR_LIST]: OpticCollarTableView,
   [TableRoute.MAGAZINE_LIST]: MagazineTableComponent,
   [TableRoute.AMMUNITION_LIST]: AmmunitionTableView,
-  [TableRoute.FACTORY_LIST]: FactoriesTableComponent,
+  [TableRoute.FACTORY_LIST]: FactoriesTableView,
   [TableRoute.RDS_LIST]: SoundReducerTableView,
   [TableRoute.OPTIC_LIST]: OpticTableView,
   [TableRoute.INVOICE_LIST]: InvoiceTableComponent

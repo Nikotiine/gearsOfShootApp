@@ -9,6 +9,45 @@
  * ---------------------------------------------------------------
  */
 
+export interface FactoryFilter {
+  /**
+   * Nombre maximum de résultats à renvoyer
+   * @example 10
+   */
+  limit?: number
+  /**
+   * Décalage pour la pagination
+   * @example 0
+   */
+  offset?: number
+  /** @example "Reference interne de l objet" */
+  reference?: string
+  /** @example "Libelle de la marque" */
+  name?: string
+  /** @example "Le type" */
+  type?: string
+}
+
+export interface PaginatedResponseDto {
+  /** Résultats paginés */
+  data: any[][]
+  /**
+   * Nombre total d’éléments disponibles
+   * @example 42
+   */
+  total: number
+  /**
+   * Nombre maximum de résultats renvoyés
+   * @example 10
+   */
+  limit: number
+  /**
+   * Décalage utilisé pour la pagination
+   * @example 0
+   */
+  offset: number
+}
+
 export interface FactoryTypeDto {
   /** @example "Arme" */
   name: string
@@ -25,26 +64,20 @@ export interface FactoryDto {
   name: string
 }
 
-export interface ListOfPrerequisitesFactoryDto {
-  types: FactoryTypeDto[]
-}
-
 export interface CreateFactoryDto {
   /** @example "Colt" */
   name: string
-  typeId: number
+  type: FactoryTypeDto
   /** @example "Une description de la marque et ses produits" */
   description: string
-  reference: string
 }
 
 export interface UpdateFactoryDto {
   /** @example "Colt" */
   name: string
-  typeId: number
+  type: FactoryTypeDto
   /** @example "Une description de la marque et ses produits" */
   description: string
-  reference: string
   id: number
 }
 
@@ -980,28 +1013,8 @@ export interface AmmunitionFilter {
   factory?: string
   /** @example "Le calibre" */
   caliber?: string
-  /** @example "Le nom de l arme" */
+  /** @example "Le nom du moodel de munition" */
   name?: string
-}
-
-export interface PaginatedResponseDto {
-  /** Résultats paginés */
-  data: any[][]
-  /**
-   * Nombre total d’éléments disponibles
-   * @example 42
-   */
-  total: number
-  /**
-   * Nombre maximum de résultats renvoyés
-   * @example 10
-   */
-  limit: number
-  /**
-   * Décalage utilisé pour la pagination
-   * @example 0
-   */
-  offset: number
 }
 
 export interface CreateAmmunitionDto {
@@ -1215,6 +1228,27 @@ export interface UpdateOpticDto {
 export interface CreateOpticTypeDto {
   name: string
   reference: string
+}
+
+export interface OpticCollarFilter {
+  /**
+   * Nombre maximum de résultats à renvoyer
+   * @example 10
+   */
+  limit?: number
+  /**
+   * Décalage pour la pagination
+   * @example 0
+   */
+  offset?: number
+  /** @example "Reference interne de l objet" */
+  reference?: string
+  /** @example "Nom du model de collier" */
+  name?: string
+  /** @example "La marque" */
+  factory?: string
+  /** @example "Le type de rail compatible" */
+  railSize?: string
 }
 
 export interface OpticCollarDto {
@@ -1641,10 +1675,22 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @summary Liste complète
      * @request GET:/api/factory/all
      */
-    factoryControllerFindAll: (params: RequestParams = {}) =>
-      this.request<FactoryDto[], any>({
+    factoryControllerFindAll: (
+      query?: {
+        /** Filtre de recherche pour reponse paginé */
+        filters?: FactoryFilter
+      },
+      params: RequestParams = {}
+    ) =>
+      this.request<
+        PaginatedResponseDto & {
+          data?: FactoryDto[]
+        },
+        any
+      >({
         path: `/api/factory/all`,
         method: 'GET',
+        query: query,
         format: 'json',
         ...params
       }),
@@ -1676,22 +1722,6 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
     factoryControllerFindByType: (type: string, params: RequestParams = {}) =>
       this.request<FactoryDto[], any>({
         path: `/api/factory/by/category/${type}`,
-        method: 'GET',
-        format: 'json',
-        ...params
-      }),
-
-    /**
-     * @description Retourne la liste des pre-requis necesssaire a la creation d une marque
-     *
-     * @tags Factory
-     * @name FactoryControllerFindPrerequisitesFactoryList
-     * @summary Pre-requis de creation
-     * @request GET:/api/factory/prerequisites
-     */
-    factoryControllerFindPrerequisitesFactoryList: (params: RequestParams = {}) =>
-      this.request<ListOfPrerequisitesFactoryDto, any>({
-        path: `/api/factory/prerequisites`,
         method: 'GET',
         format: 'json',
         ...params
@@ -2253,6 +2283,22 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
         path: `/api/optic-ready-plate/${id}`,
         method: 'DELETE',
         secure: true,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne la listes de toutes les marques sans distinction
+     *
+     * @tags FactoryType
+     * @name FactoryTypeControllerFindAll
+     * @summary Liste complète
+     * @request GET:/api/factory-type/all
+     */
+    factoryTypeControllerFindAll: (params: RequestParams = {}) =>
+      this.request<FactoryTypeDto[], any>({
+        path: `/api/factory-type/all`,
+        method: 'GET',
         format: 'json',
         ...params
       }),
@@ -3377,10 +3423,22 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @summary Liste complète
      * @request GET:/api/optic-collar/all
      */
-    opticCollarControllerFindAll: (params: RequestParams = {}) =>
-      this.request<OpticCollarDto[], any>({
+    opticCollarControllerFindAll: (
+      query?: {
+        /** Filtre de recherche pour reponse paginé */
+        filters?: OpticCollarFilter
+      },
+      params: RequestParams = {}
+    ) =>
+      this.request<
+        PaginatedResponseDto & {
+          data?: OpticCollarDto[]
+        },
+        any
+      >({
         path: `/api/optic-collar/all`,
         method: 'GET',
+        query: query,
         format: 'json',
         ...params
       }),

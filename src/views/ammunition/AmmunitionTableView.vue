@@ -6,7 +6,7 @@
       v-model:filters="filters"
       :value="data?.data"
       paginator
-      :rows="queryFilter$.limit"
+      :rows="queryFilters$.limit"
       :total-records="data?.total"
       :rowsPerPageOptions="[10, 20, 50]"
       dataKey="id"
@@ -187,10 +187,10 @@ const { category } = defineProps<{
 }>()
 const { t } = useI18n()
 const store = useAmmunitionStore()
-const { queryFilter$ } = storeToRefs(store)
+const { queryFilters$ } = storeToRefs(store)
 
 onBeforeMount(() => {
-  queryFilter$.value.category = category
+  queryFilters$.value.category = category
 })
 
 const i18nPrefix = store.getI18NPrefix
@@ -219,14 +219,14 @@ const onFilterChange = (event: DataTableFilterEvent) => {
   const activeFilters = Object.fromEntries(
     Object.entries(event.filters).map(([key, meta]: any) => [key, meta.value])
   )
-  queryFilter$.value.factory = activeFilters.factory
-  queryFilter$.value.caliber = activeFilters.caliber
-  queryFilter$.value.name = activeFilters.name
-  queryFilter$.value.reference = activeFilters.reference
+  queryFilters$.value.factory = activeFilters.factory
+  queryFilters$.value.caliber = activeFilters.caliber
+  queryFilters$.value.name = activeFilters.name
+  queryFilters$.value.reference = activeFilters.reference
 }
 const onPageChange = (event: DataTablePageEvent) => {
-  queryFilter$.value.offset = event.first
-  queryFilter$.value.limit = event.rows
+  queryFilters$.value.offset = event.first
+  queryFilters$.value.limit = event.rows
 }
 
 const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {

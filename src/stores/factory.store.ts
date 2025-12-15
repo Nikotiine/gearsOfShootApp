@@ -5,6 +5,7 @@ import { useMutation, useQuery } from '@tanstack/vue-query'
 import {
   type CreateFactoryDto,
   type FactoryDto,
+  type FactoryFilter,
   type FactoryTypeDto,
   type UpdateFactoryDto
 } from '@/api/Api'
@@ -12,6 +13,7 @@ import { ref } from 'vue'
 import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
 import { getI18NPrefix, I18NSuffix } from '@/enum/I18NSuffix.enum'
+import { buildFactoryFilter } from '@/shared/api-dto/query-filters.builder'
 
 export const useFactoryStore = defineStore('factory-store', () => {
   // Appel API
@@ -21,12 +23,13 @@ export const useFactoryStore = defineStore('factory-store', () => {
   // Refs
   const factories = ref<FactoryDto[]>([])
   const factoryTypes = ref<FactoryTypeDto[]>([])
-  const factoryType = ref<FactoryType>('weapon')
   const submitSuccess = ref(false)
+  const queryFilters = ref<FactoryFilter>({ ...buildFactoryFilter() })
 
   const _I18N_PREFIX = 'factory'
+  const _GET_ALL_FN = 'getAllFactories'
   const _GET_ALL_BY_TYPE_FN = 'getAllByTypeFactory'
-  const _PREREQUISITE_FN = 'prerequisite-factory'
+  const _PREREQUISITE_FN = 'getAllFactoryTypes'
   const _GET_BY_ID_FN = 'getFactoryById'
   // *******************Methodes***************
   const _createMutation = useMutation({
@@ -58,35 +61,48 @@ export const useFactoryStore = defineStore('factory-store', () => {
     const res = await api.api.factoryControllerFindById(parseInt(id))
     return res.data
   }
-  const getPrerequisitesFactoryList = useQuery({
-    queryKey: [_PREREQUISITE_FN],
-    queryFn: async () => {
-      const res = await api.api.factoryControllerFindPrerequisitesFactoryList()
-      factoryTypes.value = res.data.types
-      return res
-    }
-  })
+
+  const getFactoryTypes = () =>
+    useQuery({
+      queryKey: [_PREREQUISITE_FN],
+      queryFn: async () => {
+        const res = await api.api.factoryTypeControllerFindAll()
+        factoryTypes.value = res.data
+        return res.data
+      }
+    })
 
   const getFactoriesByType = (type?: FactoryType) => {
     return useQuery({
       queryKey: [_GET_ALL_BY_TYPE_FN, type],
       queryFn: async () => {
         return _fetchByType(type)
-      }
+      },
+      enabled: !!type
     })
   }
 
   const _fetchByType = async (type?: FactoryType) => {
     if (!type) {
-      return _fetchAll()
+      return _fetchAll(queryFilters.value)
     }
     const res = await api.api.factoryControllerFindByType(type)
     factories.value = res.data
     return res.data
   }
-  const _fetchAll = async () => {
-    const res = await api.api.factoryControllerFindAll()
-    factories.value = res.data
+
+  const queryFindAll = () =>
+    useQuery({
+      queryKey: [_GET_ALL_FN, queryFilters],
+      queryFn: async () => {
+        return await _fetchAll(queryFilters.value)
+      },
+      enabled: !!queryFilters.value,
+      placeholderData: (old) => old
+    })
+
+  const _fetchAll = async (filters: FactoryFilter) => {
+    const res = await api.api.factoryControllerFindAll({ filters })
     return res.data
   }
 
@@ -94,8 +110,10 @@ export const useFactoryStore = defineStore('factory-store', () => {
     const emptyForm: CreateFactoryDto = {
       name: '',
       description: '',
-      typeId: 1,
-      reference: ''
+      type: {
+        name: '',
+        id: 0
+      }
     }
     return useFormHandler<CreateFactoryDto, AxiosResponse<FactoryDto>>(
       emptyForm,
@@ -104,7 +122,7 @@ export const useFactoryStore = defineStore('factory-store', () => {
       _updateMutation,
       _I18N_PREFIX,
       _GET_BY_ID_FN,
-      _GET_ALL_BY_TYPE_FN,
+      _GET_ALL_FN,
       id,
       (data) => ({
         ...data,
@@ -126,25 +144,16 @@ export const useFactoryStore = defineStore('factory-store', () => {
     _deleteFactoryMutation.mutate(id)
   }
 
-  function setFactoryType(type: FactoryType): void {
-    factoryType.value = type
-  }
-
-  function getFactoryType(): FactoryType {
-    return factoryType.value
-  }
-
   return {
     formBuilder: useFactoryForm,
-    getFactoryTypes: getPrerequisitesFactoryList,
-    factoryTypes$: factoryTypes,
+    getFactoryTypes: getFactoryTypes,
+    getAll: queryFindAll,
     getFactoriesByType: getFactoriesByType,
     delete: deleteFunction,
     submitSuccess: submitSuccess,
     getI18NPrefix: getI18NPrefix(_I18N_PREFIX),
     factories$: factories,
-    setFactoryType,
-    getFactoryType
+    queryFilters$: queryFilters
   }
 })
 export type FactoryType = 'weapon' | 'ammunition' | 'optic' | 'magazine' | 'accessory'

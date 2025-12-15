@@ -23,7 +23,7 @@ import { useI18n } from 'vue-i18n'
 import WeaponTypeFormComponent from '@/components/__weapon/type/WeaponTypeFormComponent.vue'
 import { useWeaponTypeStore } from '@/stores/weapon-type.store'
 import CaliberFormComponent from '@/components/__caliber/CaliberFormComponent.vue'
-import FactoryFormComponent from '@/components/__factory/FactoryFormComponent.vue'
+import FactoryFormView from '@/views/factory/FactoryFormView.vue'
 import MaterialFormComponent from '@/components/__color_and_material/MaterialFormComponent.vue'
 import ColorFormComponent from '@/components/__color_and_material/ColorFormComponent.vue'
 import ThreadedSizeFormComponent from '@/components/__threaded-size/ThreadedSizeFormComponent.vue'
@@ -63,7 +63,7 @@ const componentMap = {
   stockHistory: StockHistoriesComponent,
   weaponType: WeaponTypeFormComponent,
   caliber: CaliberFormComponent,
-  factory: FactoryFormComponent,
+  factory: FactoryFormView,
   material: MaterialFormComponent,
   color: ColorFormComponent,
   threadSize: ThreadedSizeFormComponent,
