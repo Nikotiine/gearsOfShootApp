@@ -23,10 +23,11 @@
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
 import InputGroup from 'primevue/inputgroup'
-import { computed, ref, watch } from 'vue'
+import { computed, onBeforeMount, ref, watch } from 'vue'
 import { type FactoryType, useFactoryStore } from '@/stores/factory.store'
 import InputGroupAddonOpenDrawerButton from '@/components/__form/InputGroupAddonOpenDrawerButton.vue'
 import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.vue'
+import { storeToRefs } from 'pinia'
 
 const store = useFactoryStore()
 const emit = defineEmits(['onSelect'])
@@ -43,9 +44,12 @@ const {
   required?: boolean
 }>()
 const factoryId = ref<number>(initialValue)
-store.setFactoryType(factoryType)
-const { data } = store.getFactoriesByType(factoryType)
-const factoriesList = computed(() => data.value || [])
+const { queryFilters$ } = storeToRefs(store)
+onBeforeMount(() => {
+  queryFilters$.value.type = factoryType
+})
+const { data } = store.getAll()
+const factoriesList = computed(() => data.value?.data || [])
 const onSelect = (id: number) => {
   const factory = factoriesList.value.find((f) => f.id === id)
   emit('onSelect', factory)

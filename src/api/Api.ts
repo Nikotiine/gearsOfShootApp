@@ -196,6 +196,31 @@ export interface UpdateWeaponTypeDto {
   id: number
 }
 
+export interface MagazineFilter {
+  /**
+   * Nombre maximum de résultats à renvoyer
+   * @example 10
+   */
+  limit?: number
+  /**
+   * Décalage pour la pagination
+   * @example 0
+   */
+  offset?: number
+  /** @example "Reference interne de l objet" */
+  reference?: string
+  /** @example "Nom du chargeur" */
+  name?: string
+  /** @example "La marque" */
+  factory?: string
+  /** @example "La categorie de lu chargeur" */
+  category?: string
+  /** @example "Le calibre" */
+  caliber?: string
+  /** @example "La capacite" */
+  capacity?: number | null
+}
+
 export interface WeaponBarrelTypeDto {
   id: number
   name: string
@@ -1007,7 +1032,7 @@ export interface AmmunitionFilter {
   offset?: number
   /** @example "Reference interne de l objet" */
   reference?: string
-  /** @example "La categorie d arme" */
+  /** @example "La categorie de la munition" */
   category?: string
   /** @example "La marque" */
   factory?: string
@@ -2417,10 +2442,22 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @summary Liste complète
      * @request GET:/api/magazine/all
      */
-    magazineControllerFindAll: (params: RequestParams = {}) =>
-      this.request<WeaponMagazineDto[], any>({
+    magazineControllerFindAll: (
+      query?: {
+        /** Filtre de recherche pour reponse paginé */
+        filters?: MagazineFilter
+      },
+      params: RequestParams = {}
+    ) =>
+      this.request<
+        PaginatedResponseDto & {
+          data?: WeaponMagazineDto[]
+        },
+        any
+      >({
         path: `/api/magazine/all`,
         method: 'GET',
+        query: query,
         format: 'json',
         ...params
       }),
@@ -2934,7 +2971,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
-     * @description Creation d une nouvelle munition en base de donnée
+     * @description Creation d une nouvelle munition
      *
      * @tags Ammunition
      * @name AmmunitionControllerCreate
@@ -2954,7 +2991,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
-     * @description Edition d une  munition en base de donnée
+     * @description Edition d une munition
      *
      * @tags Ammunition
      * @name AmmunitionControllerEdit
@@ -2974,7 +3011,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
-     * @description Suppression logique d une  munition en base de donnée
+     * @description Suppression logique d une munition
      *
      * @tags Ammunition
      * @name AmmunitionControllerDelete
@@ -2992,7 +3029,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
-     * @description Retourne la liste de toutes les oviges disponible
+     * @description Retourne la liste de toutes les oviges disponibles
      *
      * @tags AmmunitionHeadType
      * @name AmmunitionHeadTypeControllerFindAllHeadTypes
@@ -3047,7 +3084,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
-     * @description Edition d un  type d ovige
+     * @description Edition d un type d ovige
      *
      * @tags AmmunitionHeadType
      * @name AmmunitionHeadTypeControllerEdit

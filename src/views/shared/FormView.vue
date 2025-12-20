@@ -7,7 +7,7 @@ import { computed, ref, watch } from 'vue'
 import FormWrapper from '@/views/shared/FormWrapper.vue'
 import OpticCollarFormView from '@/views/optic/collar/OpticCollarFormView.vue'
 import AmmunitionFormView from '@/views/ammunition/AmmunitionFormView.vue'
-import MagazineFormComponent from '@/components/__weaponMagazine/MagazineFormComponent.vue'
+import MagazineFormView from '@/views/weapon/magazine/MagazineFormView.vue'
 import FactoryFormView from '@/views/factory/FactoryFormView.vue'
 import OpticFormView from '@/views/optic/OpticFormView.vue'
 import MaterialFormComponent from '@/components/__color_and_material/MaterialFormComponent.vue'
@@ -76,8 +76,8 @@ const componentMap = {
   [RouterFormEnum.OPTIC_COLLAR_NEW]: OpticCollarFormView,
   [RouterFormEnum.AMMUNITION_NEW]: AmmunitionFormView,
   [RouterFormEnum.AMMUNITION_EDIT]: AmmunitionFormView,
-  [RouterFormEnum.MAGAZINE_NEW]: MagazineFormComponent,
-  [RouterFormEnum.MAGAZINE_EDIT]: MagazineFormComponent,
+  [RouterFormEnum.MAGAZINE_NEW]: MagazineFormView,
+  [RouterFormEnum.MAGAZINE_EDIT]: MagazineFormView,
   [RouterFormEnum.FACTORY_NEW]: FactoryFormView,
   [RouterFormEnum.FACTORY_EDIT]: FactoryFormView,
   [RouterFormEnum.OPTIC_NEW]: OpticFormView,

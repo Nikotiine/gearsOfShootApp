@@ -1,6 +1,7 @@
 import type {
   AmmunitionFilter,
   FactoryFilter,
+  MagazineFilter,
   OpticCollarFilter,
   OpticFilter,
   SoundNoiseFilter
@@ -55,5 +56,17 @@ export function buildFactoryFilter(): FactoryFilter {
     name: '',
     reference: '',
     type: ''
+  }
+}
+export function buildMagazineFilter(): MagazineFilter {
+  return {
+    limit: 10,
+    offset: 0,
+    factory: '',
+    name: '',
+    reference: '',
+    caliber: '',
+    category: '',
+    capacity: undefined
   }
 }

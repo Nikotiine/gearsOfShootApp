@@ -27,7 +27,7 @@ import FactoryFormView from '@/views/factory/FactoryFormView.vue'
 import MaterialFormComponent from '@/components/__color_and_material/MaterialFormComponent.vue'
 import ColorFormComponent from '@/components/__color_and_material/ColorFormComponent.vue'
 import ThreadedSizeFormComponent from '@/components/__threaded-size/ThreadedSizeFormComponent.vue'
-import MagazineFormComponent from '@/components/__weaponMagazine/MagazineFormComponent.vue'
+import MagazineFormView from '@/views/weapon/magazine/MagazineFormView.vue'
 import BodyTypeFormComponent from '@/components/__ammunition/BodyTypeFormComponent.vue'
 import HeadTypeFormComponent from '@/components/__ammunition/HeadTypeFormComponent.vue'
 import { useCaliberStore } from '@/stores/caliber.store'
@@ -67,7 +67,7 @@ const componentMap = {
   material: MaterialFormComponent,
   color: ColorFormComponent,
   threadSize: ThreadedSizeFormComponent,
-  magazine: MagazineFormComponent,
+  magazine: MagazineFormView,
   bodyType: BodyTypeFormComponent,
   headType: HeadTypeFormComponent
 }

@@ -4,7 +4,7 @@
 <script setup lang="ts">
 import { RouterEnum } from '@/enum/router.enum'
 import OpticCollarTableView from '@/views/optic/collar/OpticCollarTableView.vue'
-import MagazineTableComponent from '@/components/__weaponMagazine/MagazineTableComponent.vue'
+import MagazineTableView from '@/views/weapon/magazine/MagazineTableView.vue'
 import AmmunitionTableView from '@/views/ammunition/AmmunitionTableView.vue'
 import FactoriesTableView from '@/views/factory/FactoriesTableView.vue'
 import OpticTableView from '@/views/optic/OpticTableView.vue'
@@ -36,7 +36,7 @@ enum TableRoute {
 }
 const componentMap = {
   [TableRoute.OPTIC_COLLAR_LIST]: OpticCollarTableView,
-  [TableRoute.MAGAZINE_LIST]: MagazineTableComponent,
+  [TableRoute.MAGAZINE_LIST]: MagazineTableView,
   [TableRoute.AMMUNITION_LIST]: AmmunitionTableView,
   [TableRoute.FACTORY_LIST]: FactoriesTableView,
   [TableRoute.RDS_LIST]: SoundReducerTableView,
