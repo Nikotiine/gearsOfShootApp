@@ -9,6 +9,45 @@
  * ---------------------------------------------------------------
  */
 
+export interface FactoryFilter {
+  /**
+   * Nombre maximum de résultats à renvoyer
+   * @example 10
+   */
+  limit?: number
+  /**
+   * Décalage pour la pagination
+   * @example 0
+   */
+  offset?: number
+  /** @example "Reference interne de l objet" */
+  reference?: string
+  /** @example "Libelle de la marque" */
+  name?: string
+  /** @example "Le type" */
+  type?: string
+}
+
+export interface PaginatedResponseDto {
+  /** Résultats paginés */
+  data: any[][]
+  /**
+   * Nombre total d’éléments disponibles
+   * @example 42
+   */
+  total: number
+  /**
+   * Nombre maximum de résultats renvoyés
+   * @example 10
+   */
+  limit: number
+  /**
+   * Décalage utilisé pour la pagination
+   * @example 0
+   */
+  offset: number
+}
+
 export interface FactoryTypeDto {
   /** @example "Arme" */
   name: string
@@ -25,26 +64,20 @@ export interface FactoryDto {
   name: string
 }
 
-export interface ListOfPrerequisitesFactoryDto {
-  types: FactoryTypeDto[]
-}
-
 export interface CreateFactoryDto {
   /** @example "Colt" */
   name: string
-  typeId: number
+  type: FactoryTypeDto
   /** @example "Une description de la marque et ses produits" */
   description: string
-  reference: string
 }
 
 export interface UpdateFactoryDto {
   /** @example "Colt" */
   name: string
-  typeId: number
+  type: FactoryTypeDto
   /** @example "Une description de la marque et ses produits" */
   description: string
-  reference: string
   id: number
 }
 
@@ -161,6 +194,31 @@ export interface UpdateWeaponTypeDto {
   /** @example "handgun ou riffle" */
   type: string | null
   id: number
+}
+
+export interface MagazineFilter {
+  /**
+   * Nombre maximum de résultats à renvoyer
+   * @example 10
+   */
+  limit?: number
+  /**
+   * Décalage pour la pagination
+   * @example 0
+   */
+  offset?: number
+  /** @example "Reference interne de l objet" */
+  reference?: string
+  /** @example "Nom du chargeur" */
+  name?: string
+  /** @example "La marque" */
+  factory?: string
+  /** @example "La categorie de lu chargeur" */
+  category?: string
+  /** @example "Le calibre" */
+  caliber?: string
+  /** @example "La capacite" */
+  capacity?: number | null
 }
 
 export interface WeaponBarrelTypeDto {
@@ -961,6 +1019,29 @@ export interface AmmunitionDto {
   updatedAt: string
 }
 
+export interface AmmunitionFilter {
+  /**
+   * Nombre maximum de résultats à renvoyer
+   * @example 10
+   */
+  limit?: number
+  /**
+   * Décalage pour la pagination
+   * @example 0
+   */
+  offset?: number
+  /** @example "Reference interne de l objet" */
+  reference?: string
+  /** @example "La categorie de la munition" */
+  category?: string
+  /** @example "La marque" */
+  factory?: string
+  /** @example "Le calibre" */
+  caliber?: string
+  /** @example "Le nom du moodel de munition" */
+  name?: string
+}
+
 export interface CreateAmmunitionDto {
   /** @example "Sk Standard" */
   name: string
@@ -1036,9 +1117,38 @@ export interface TokenDto {
   accessToken: string
 }
 
+export interface OpticFilter {
+  /**
+   * Nombre maximum de résultats à renvoyer
+   * @example 10
+   */
+  limit?: number
+  /**
+   * Décalage pour la pagination
+   * @example 0
+   */
+  offset?: number
+  /** @example "Reference interne de l objet" */
+  reference?: string
+  /** @example "Nom de lunette" */
+  name?: string
+  /** @example "La marque" */
+  factory?: string
+  /** @example "Le type de lunette" */
+  type?: string
+  /** @example "Le type de plan focal" */
+  focalPlane?: string
+}
+
 export interface OpticUnitDto {
   id: number
   name: string
+}
+
+export interface OpticClickValueDto {
+  name: string
+  opticUnit: OpticUnitDto
+  id: number
 }
 
 export interface FocalPlaneDto {
@@ -1061,7 +1171,7 @@ export interface OpticDto {
   minZoom: number
   maxDrift: number
   maxElevation: number
-  valueOfOneClick: number
+  clickValue: OpticClickValueDto
   bodyDiameter: number
   lensDiameter: number
   minParallax: number
@@ -1096,7 +1206,7 @@ export interface CreateOpticDto {
   minZoom: number
   maxDrift: number
   maxElevation: number
-  valueOfOneClick: number
+  clickValue: OpticClickValueDto
   bodyDiameter: number
   lensDiameter: number
   minParallax: number
@@ -1122,7 +1232,7 @@ export interface UpdateOpticDto {
   minZoom: number
   maxDrift: number
   maxElevation: number
-  valueOfOneClick: number
+  clickValue: OpticClickValueDto
   bodyDiameter: number
   lensDiameter: number
   minParallax: number
@@ -1143,6 +1253,27 @@ export interface UpdateOpticDto {
 export interface CreateOpticTypeDto {
   name: string
   reference: string
+}
+
+export interface OpticCollarFilter {
+  /**
+   * Nombre maximum de résultats à renvoyer
+   * @example 10
+   */
+  limit?: number
+  /**
+   * Décalage pour la pagination
+   * @example 0
+   */
+  offset?: number
+  /** @example "Reference interne de l objet" */
+  reference?: string
+  /** @example "Nom du model de collier" */
+  name?: string
+  /** @example "La marque" */
+  factory?: string
+  /** @example "Le type de rail compatible" */
+  railSize?: string
 }
 
 export interface OpticCollarDto {
@@ -1189,6 +1320,27 @@ export interface UpdateOpticCollarDto {
   priceHistory: CreatePriceHistoryDto
   inStock: number
   id: number
+}
+
+export interface SoundNoiseFilter {
+  /**
+   * Nombre maximum de résultats à renvoyer
+   * @example 10
+   */
+  limit?: number
+  /**
+   * Décalage pour la pagination
+   * @example 0
+   */
+  offset?: number
+  /** @example "Reference interne de l objet" */
+  reference?: string
+  /** @example "La marque" */
+  factory?: string
+  /** @example "Le calibre compatible" */
+  caliber?: string
+  /** @example "Le nom du rds" */
+  name?: string
 }
 
 export interface SoundNoiseReducerDto {
@@ -1548,10 +1700,22 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @summary Liste complète
      * @request GET:/api/factory/all
      */
-    factoryControllerFindAll: (params: RequestParams = {}) =>
-      this.request<FactoryDto[], any>({
+    factoryControllerFindAll: (
+      query?: {
+        /** Filtre de recherche pour reponse paginé */
+        filters?: FactoryFilter
+      },
+      params: RequestParams = {}
+    ) =>
+      this.request<
+        PaginatedResponseDto & {
+          data?: FactoryDto[]
+        },
+        any
+      >({
         path: `/api/factory/all`,
         method: 'GET',
+        query: query,
         format: 'json',
         ...params
       }),
@@ -1583,22 +1747,6 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
     factoryControllerFindByType: (type: string, params: RequestParams = {}) =>
       this.request<FactoryDto[], any>({
         path: `/api/factory/by/category/${type}`,
-        method: 'GET',
-        format: 'json',
-        ...params
-      }),
-
-    /**
-     * @description Retourne la liste des pre-requis necesssaire a la creation d une marque
-     *
-     * @tags Factory
-     * @name FactoryControllerFindPrerequisitesFactoryList
-     * @summary Pre-requis de creation
-     * @request GET:/api/factory/prerequisites
-     */
-    factoryControllerFindPrerequisitesFactoryList: (params: RequestParams = {}) =>
-      this.request<ListOfPrerequisitesFactoryDto, any>({
-        path: `/api/factory/prerequisites`,
         method: 'GET',
         format: 'json',
         ...params
@@ -2165,6 +2313,22 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
+     * @description Retourne la listes de toutes les marques sans distinction
+     *
+     * @tags FactoryType
+     * @name FactoryTypeControllerFindAll
+     * @summary Liste complète
+     * @request GET:/api/factory-type/all
+     */
+    factoryTypeControllerFindAll: (params: RequestParams = {}) =>
+      this.request<FactoryTypeDto[], any>({
+        path: `/api/factory-type/all`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
      * @description Retourne la liste des diffents type d armes possible
      *
      * @tags Weapon type
@@ -2278,10 +2442,22 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @summary Liste complète
      * @request GET:/api/magazine/all
      */
-    magazineControllerFindAll: (params: RequestParams = {}) =>
-      this.request<WeaponMagazineDto[], any>({
+    magazineControllerFindAll: (
+      query?: {
+        /** Filtre de recherche pour reponse paginé */
+        filters?: MagazineFilter
+      },
+      params: RequestParams = {}
+    ) =>
+      this.request<
+        PaginatedResponseDto & {
+          data?: WeaponMagazineDto[]
+        },
+        any
+      >({
         path: `/api/magazine/all`,
         method: 'GET',
+        query: query,
         format: 'json',
         ...params
       }),
@@ -2751,22 +2927,6 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
-     * @description Retourne la liste des munitions filtre par calibre
-     *
-     * @tags Ammunition
-     * @name AmmunitionControllerFindByCaliber
-     * @summary Filtre par calibre
-     * @request GET:/api/ammunition/by/caliber/{id}
-     */
-    ammunitionControllerFindByCaliber: (caliberId: number, id: any, params: RequestParams = {}) =>
-      this.request<AmmunitionDto[], any>({
-        path: `/api/ammunition/by/caliber/${id}`,
-        method: 'GET',
-        format: 'json',
-        ...params
-      }),
-
-    /**
      * @description Retourne la munition trouver par son id
      *
      * @tags Ammunition
@@ -2786,20 +2946,32 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @description Retourne la liste des munitions filtre par calibre
      *
      * @tags Ammunition
-     * @name AmmunitionControllerFindByCategory
+     * @name AmmunitionControllerFindAll
      * @summary Filtré par categorie
-     * @request GET:/api/ammunition/by/category/{category}
+     * @request GET:/api/ammunition/all
      */
-    ammunitionControllerFindByCategory: (category: string, params: RequestParams = {}) =>
-      this.request<AmmunitionDto[], any>({
-        path: `/api/ammunition/by/category/${category}`,
+    ammunitionControllerFindAll: (
+      query?: {
+        /** Filtre de recherche pour reponse paginé */
+        filters?: AmmunitionFilter
+      },
+      params: RequestParams = {}
+    ) =>
+      this.request<
+        PaginatedResponseDto & {
+          data?: AmmunitionDto[]
+        },
+        any
+      >({
+        path: `/api/ammunition/all`,
         method: 'GET',
+        query: query,
         format: 'json',
         ...params
       }),
 
     /**
-     * @description Creation d une nouvelle munition en base de donnée
+     * @description Creation d une nouvelle munition
      *
      * @tags Ammunition
      * @name AmmunitionControllerCreate
@@ -2819,7 +2991,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
-     * @description Edition d une  munition en base de donnée
+     * @description Edition d une munition
      *
      * @tags Ammunition
      * @name AmmunitionControllerEdit
@@ -2839,7 +3011,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
-     * @description Suppression logique d une  munition en base de donnée
+     * @description Suppression logique d une munition
      *
      * @tags Ammunition
      * @name AmmunitionControllerDelete
@@ -2857,7 +3029,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
-     * @description Retourne la liste de toutes les oviges disponible
+     * @description Retourne la liste de toutes les oviges disponibles
      *
      * @tags AmmunitionHeadType
      * @name AmmunitionHeadTypeControllerFindAllHeadTypes
@@ -2912,7 +3084,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
-     * @description Edition d un  type d ovige
+     * @description Edition d un type d ovige
      *
      * @tags AmmunitionHeadType
      * @name AmmunitionHeadTypeControllerEdit
@@ -3105,17 +3277,29 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
-     * @description Retourne la liste completes des optiques
+     * @description Retourne la liste complete des optiques
      *
      * @tags Optic
      * @name OpticControllerFindAllOptics
      * @summary Liste complète
      * @request GET:/api/optic/all
      */
-    opticControllerFindAllOptics: (params: RequestParams = {}) =>
-      this.request<OpticDto[], any>({
+    opticControllerFindAllOptics: (
+      query?: {
+        /** Filtre de recherche pour reponse paginé */
+        filters?: OpticFilter
+      },
+      params: RequestParams = {}
+    ) =>
+      this.request<
+        PaginatedResponseDto & {
+          data?: OpticDto[]
+        },
+        any
+      >({
         path: `/api/optic/all`,
         method: 'GET',
+        query: query,
         format: 'json',
         ...params
       }),
@@ -3141,7 +3325,7 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      *
      * @tags Optic
      * @name OpticControllerCreate
-     * @summary Creation d une nouvelle optique
+     * @summary Creation
      * @request POST:/api/optic
      * @secure
      */
@@ -3276,10 +3460,22 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @summary Liste complète
      * @request GET:/api/optic-collar/all
      */
-    opticCollarControllerFindAll: (params: RequestParams = {}) =>
-      this.request<OpticCollarDto[], any>({
+    opticCollarControllerFindAll: (
+      query?: {
+        /** Filtre de recherche pour reponse paginé */
+        filters?: OpticCollarFilter
+      },
+      params: RequestParams = {}
+    ) =>
+      this.request<
+        PaginatedResponseDto & {
+          data?: OpticCollarDto[]
+        },
+        any
+      >({
         path: `/api/optic-collar/all`,
         method: 'GET',
+        query: query,
         format: 'json',
         ...params
       }),
@@ -3395,6 +3591,22 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
+     * @description Retourne la liste complete des plans focal
+     *
+     * @tags optic-click
+     * @name OpticClickControllerFindAll
+     * @summary Liste complète
+     * @request GET:/api/optic-click/all
+     */
+    opticClickControllerFindAll: (params: RequestParams = {}) =>
+      this.request<OpticClickValueDto[], any>({
+        path: `/api/optic-click/all`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
      * @description Retourne la liste de tous les reducteurs de son disponible
      *
      * @tags Sound-reducer
@@ -3402,10 +3614,22 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @summary Liste complète
      * @request GET:/api/sound-reducer/all
      */
-    soundReducerControllerFindAll: (params: RequestParams = {}) =>
-      this.request<SoundNoiseReducerDto[], any>({
+    soundReducerControllerFindAll: (
+      query?: {
+        /** Filtre de recherche pour reponse paginé */
+        filters?: SoundNoiseFilter
+      },
+      params: RequestParams = {}
+    ) =>
+      this.request<
+        PaginatedResponseDto & {
+          data?: SoundNoiseReducerDto[]
+        },
+        any
+      >({
         path: `/api/sound-reducer/all`,
         method: 'GET',
+        query: query,
         format: 'json',
         ...params
       }),

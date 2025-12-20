@@ -203,7 +203,6 @@ const { statusFilter$ } = storeToRefs(store)
 
 const { data: invoices, isError, isLoading } = store.getAll()
 async function onFilter(event: any) {
-  console.log(event.filters?.invoiceStatus?.value)
   statusFilter$.value = event.filters?.invoiceStatus?.value
 }
 const { data: suppliers$ } = supplierStore.getAll()

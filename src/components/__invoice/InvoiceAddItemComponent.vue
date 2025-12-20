@@ -10,7 +10,8 @@
     ref="priceHistoryModalRef"
     :id="objectId"
     :type="object"
-    v-if="objectId"
+    v-if="showModal"
+    @on-hide="() => (showModal = false)"
     @on-select-item="(event) => OnSelectItem(event)"
   />
 </template>
@@ -19,14 +20,11 @@ import Button from 'primevue/button'
 import type { CreateItemInvoiceSupplierDto } from '@/api/Api'
 import type { PriceableObjectType } from '@/types/priceable-object.type'
 import { ref } from 'vue'
-import PriceHistoryModal, {
-  type PriceHistoryModalExposed
-} from '@/components/__modal/PriceHistoryModal.vue'
+import PriceHistoryModal from '@/components/__modal/PriceHistoryModal.vue'
 import { useInvoiceStore } from '@/stores/invoice.store'
 
 const store = useInvoiceStore()
 
-const priceHistoryModalRef = ref<PriceHistoryModalExposed | null>(null)
 const {
   objectId,
   object,
@@ -36,11 +34,12 @@ const {
   object: PriceableObjectType
   description?: string
 }>()
+const showModal = ref<boolean>(false)
 const onClickAction = () => {
-  priceHistoryModalRef.value?.show()
+  showModal.value = true
 }
 const OnSelectItem = (item: CreateItemInvoiceSupplierDto) => {
-  priceHistoryModalRef.value?.hide()
+  showModal.value = false
   item.comment = description
   store.addItemInInvoice(item)
 }

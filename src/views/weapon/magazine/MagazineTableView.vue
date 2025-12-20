@@ -4,13 +4,19 @@
     <div class="text-red-500 text-center" v-if="isError">Error</div>
     <DataTable
       v-model:filters="filters"
-      :value="magazines$"
+      :value="data?.data"
       paginator
-      :rows="10"
+      :rows="queryFilters$.limit"
+      :total-records="data?.total"
+      :rowsPerPageOptions="[10, 20, 50]"
       dataKey="id"
+      lazy
+      currentPageReportTemplate="{first} to {last} of {totalRecords}"
       filterDisplay="row"
+      @filter="onFilterChange"
+      @page="onPageChange"
       :loading="isLoading"
-      :globalFilterFields="['reference', 'factory.name', 'caliber.name', 'capacity']"
+      :globalFilterFields="['reference', 'factory', 'caliber', 'capacity']"
     >
       <template #header>
         <div class="flex justify-center">
@@ -40,7 +46,7 @@
       <Column
         header="Marque"
         field="factory.name"
-        filterField="factory.name"
+        filterField="factory"
         style="min-width: 12rem"
         :showFilterMenu="false"
       >
@@ -64,7 +70,8 @@
       </Column>
       <Column
         header="Calibre"
-        filterField="caliber.name"
+        filterField="caliber"
+        field="caliber.name"
         :showFilterMenu="false"
         style="min-width: 14rem"
       >
@@ -85,7 +92,13 @@
           </Select>
         </template>
       </Column>
-      <Column field="capacity" header="Capacité" :showFilterMenu="false" style="min-width: 3rem">
+      <Column
+        field="capacity"
+        header="Capacité"
+        dataType="numeric"
+        :showFilterMenu="false"
+        style="min-width: 3rem"
+      >
         <template #body="{ data }">
           {{ data.capacity }}
         </template>
@@ -114,10 +127,9 @@
 </template>
 <script setup lang="ts">
 import { useWeaponMagazineStore } from '@/stores/weapon-magazine.store'
-import { ref, watch } from 'vue'
+import { onBeforeMount, ref } from 'vue'
 import IconField from 'primevue/iconfield'
-
-import DataTable from 'primevue/datatable'
+import DataTable, { type DataTableFilterEvent, type DataTablePageEvent } from 'primevue/datatable'
 import InputText from 'primevue/inputtext'
 import Column from 'primevue/column'
 import InputIcon from 'primevue/inputicon'
@@ -133,26 +145,29 @@ import ActionMenuComponent, {
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import TableTitleComponent from '@/components/__table/TableTitleComponent.vue'
-
-const router = useRouter()
+import { storeToRefs } from 'pinia'
 const { category } = defineProps<{
   category: string
 }>()
+const router = useRouter()
 const { t } = useI18n()
 const factoryStore = useFactoryStore()
 const { data: magazineFactory$ } = factoryStore.getFactoriesByType('magazine')
 const caliberStore = useCaliberStore()
 const { data: calibers$ } = caliberStore.getAll()
-const currentCategory = ref<string>(category)
 const store = useWeaponMagazineStore()
+const { queryFilters$ } = storeToRefs(store)
 const i18nPrefix = store.getI18NPrefix
-const { data: magazines$, isError, isLoading, refetch } = store.getByCategory(currentCategory)
+const { data, isError, isLoading, refetch } = store.getAll()
+onBeforeMount(() => {
+  queryFilters$.value.category = category
+})
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   reference: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-  'factory.name': { value: null, matchMode: FilterMatchMode.EQUALS },
-  'caliber.name': { value: null, matchMode: FilterMatchMode.EQUALS },
-  capacity: { value: null, matchMode: FilterMatchMode.STARTS_WITH }
+  factory: { value: null, matchMode: FilterMatchMode.EQUALS },
+  caliber: { value: null, matchMode: FilterMatchMode.EQUALS },
+  capacity: { value: null, matchMode: FilterMatchMode.EQUALS }
 })
 
 const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
@@ -169,15 +184,21 @@ const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
       break
   }
 }
-watch(
-  () => category,
-  (newCategory) => {
-    if (newCategory !== currentCategory.value) {
-      currentCategory.value = newCategory
-      refetch()
-    }
-  }
-)
+const onFilterChange = (event: DataTableFilterEvent) => {
+  const activeFilters = Object.fromEntries(
+    Object.entries(event.filters).map(([key, meta]: any) => [key, meta.value])
+  )
+  queryFilters$.value.factory = activeFilters.factory
+  queryFilters$.value.caliber = activeFilters.caliber
+  queryFilters$.value.name = activeFilters.name
+  queryFilters$.value.reference = activeFilters.reference
+  //TODO: Comprendre pk en input number ca marche avec 1 temps de retard
+  queryFilters$.value.capacity = activeFilters.capacity
+}
+const onPageChange = (event: DataTablePageEvent) => {
+  queryFilters$.value.offset = event.first
+  queryFilters$.value.limit = event.rows
+}
 </script>
 
 <style scoped></style>

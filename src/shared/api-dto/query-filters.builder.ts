@@ -1,0 +1,72 @@
+import type {
+  AmmunitionFilter,
+  FactoryFilter,
+  MagazineFilter,
+  OpticCollarFilter,
+  OpticFilter,
+  SoundNoiseFilter
+} from '@/api/Api'
+
+export function buildAmmunitionFilters(): AmmunitionFilter {
+  return {
+    category: undefined,
+    factory: undefined,
+    caliber: undefined,
+    limit: 10,
+    offset: 0,
+    name: undefined,
+    reference: undefined
+  }
+}
+export function buildOpticFilter(): OpticFilter {
+  return {
+    limit: 10,
+    offset: 0,
+    factory: '',
+    name: '',
+    type: '',
+    focalPlane: '',
+    reference: ''
+  }
+}
+export function buildRdsFilter(): SoundNoiseFilter {
+  return {
+    limit: 10,
+    offset: 0,
+    factory: '',
+    name: '',
+    caliber: undefined,
+    reference: ''
+  }
+}
+export function buildOpticCollarFilter(): OpticCollarFilter {
+  return {
+    limit: 10,
+    offset: 0,
+    factory: '',
+    name: '',
+    reference: '',
+    railSize: ''
+  }
+}
+export function buildFactoryFilter(): FactoryFilter {
+  return {
+    limit: 10,
+    offset: 0,
+    name: '',
+    reference: '',
+    type: ''
+  }
+}
+export function buildMagazineFilter(): MagazineFilter {
+  return {
+    limit: 10,
+    offset: 0,
+    factory: '',
+    name: '',
+    reference: '',
+    caliber: '',
+    category: '',
+    capacity: undefined
+  }
+}

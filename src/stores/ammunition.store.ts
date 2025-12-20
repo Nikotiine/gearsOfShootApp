@@ -2,8 +2,14 @@ import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
 import { useToastStore } from '@/stores/toast'
 import { useMutation, useQuery } from '@tanstack/vue-query'
-import type { AmmunitionDto, CreateAmmunitionDto, UpdateAmmunitionDto } from '@/api/Api'
-import { type Ref, ref } from 'vue'
+import type {
+  AmmunitionDto,
+  AmmunitionFilter,
+  CreateAmmunitionDto,
+  PaginatedResponseDto,
+  UpdateAmmunitionDto
+} from '@/api/Api'
+import { ref } from 'vue'
 import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
 import { getI18NPrefix, I18NSuffix } from '@/enum/I18NSuffix.enum'
@@ -14,19 +20,21 @@ import { getBodyTypeDto } from '@/shared/api-dto/get-body-type.dto'
 import { getHeadTypeDto } from '@/shared/api-dto/get-head-type.dto'
 import { getPercussionTypeDto } from '@/shared/api-dto/get-percussion-type.dto'
 import { getPriceHistoryDto } from '@/shared/api-dto/get-price-history.dto'
+import { buildAmmunitionFilters } from '@/shared/api-dto/query-filters.builder'
 
 export const useAmmunitionStore = defineStore('ammunition-store', () => {
   // Appel API
   const { api } = useApiStore()
   // TOAST
   const { successMessage } = useToastStore()
-  // I18N
+  // Refs
   const ammunition = ref<AmmunitionDto>()
+  const queryFilters = ref<AmmunitionFilter>({ ...buildAmmunitionFilters() })
   // Private Attibute
   const _I18N_PREFIX = 'ammunition'
-  // const _GET_ALL_FN = 'getAllAmmuntiion'
-  const _GET_ALL_BY_CATEGORY_FN = 'getAllAmmunitionByCategory'
+  const _GET_ALL_FN = 'getAllAmmunition'
   const _GET_BY_ID_FN = 'getAmmunitionById'
+
   // *******************Methodes***************
 
   const _createMutation = useMutation({
@@ -41,14 +49,39 @@ export const useAmmunitionStore = defineStore('ammunition-store', () => {
     }
   })
 
-  const queryFindAllAmmunitionByCategory = (category: Ref<string>) =>
+  /**
+   * Find All avec filtre et pagination
+   */
+  const queryFindAllFilteredAmmunitions = () =>
     useQuery({
-      queryKey: [_GET_ALL_BY_CATEGORY_FN, category.value],
+      queryKey: [_GET_ALL_FN, queryFilters],
       queryFn: async () => {
-        return await _fetchAllByCategory(category.value)
+        return await _fetchAllByCategory(queryFilters.value)
       },
-      enabled: !!category.value
+      enabled: !!queryFilters.value,
+      placeholderData: (old) => old
     })
+
+  const _fetchAllByCategory = async (
+    filters: AmmunitionFilter
+  ): Promise<PaginatedResponseDto | null> => {
+    if (!filters) return null
+    const res = await api.api.ammunitionControllerFindAll({ filters })
+    return res.data
+  }
+
+  const getByIdQuery = (id?: string) =>
+    useQuery({
+      queryKey: [_GET_BY_ID_FN, id],
+      queryFn: () => _fetchById(id),
+      enabled: !!id,
+      retry: 0
+    })
+  const _fetchById = async (id?: string): Promise<AmmunitionDto | null> => {
+    if (!id) return null
+    const res = await api.api.ammunitionControllerFindById(parseInt(id))
+    return res.data
+  }
 
   function useAmmunitionForm(id?: string) {
     const emptyForm: CreateAmmunitionDto = {
@@ -80,23 +113,6 @@ export const useAmmunitionStore = defineStore('ammunition-store', () => {
     )
   }
 
-  const getByIdQuery = (id?: string) =>
-    useQuery({
-      queryKey: [_GET_BY_ID_FN, id],
-      queryFn: () => _fetchById(id),
-      enabled: !!id,
-      retry: 0
-    })
-  const _fetchById = async (id?: string) => {
-    if (!id) return null
-    const res = await api.api.ammunitionControllerFindById(parseInt(id))
-    return res.data
-  }
-  const _fetchAllByCategory = async (category: string): Promise<AmmunitionDto[] | null> => {
-    if (!category) return null
-    const res = await api.api.ammunitionControllerFindByCategory(category)
-    return res.data
-  }
   const _deleteAmmunitionMutation = useMutation({
     mutationFn: async (id: number) => {
       return await api.api.ammunitionControllerDelete(id)
@@ -115,10 +131,11 @@ export const useAmmunitionStore = defineStore('ammunition-store', () => {
 
   return {
     delete: deleteFunction,
-    getByCategory: queryFindAllAmmunitionByCategory,
+    getByCategory: queryFindAllFilteredAmmunitions,
     getById: getByIdQuery,
     ammunition$: ammunition,
     formBuilder: useAmmunitionForm,
-    getI18NPrefix: getI18NPrefix(_I18N_PREFIX)
+    getI18NPrefix: getI18NPrefix(_I18N_PREFIX),
+    queryFilters$: queryFilters
   }
 })

@@ -343,7 +343,6 @@
     "findByName": "Recherhe par modele",
     "findByType": "Recherche par type",
     "noCollarsProvided": "Pas de colliers fournis"
-
   },
   "soundNoiseReducer": {
     "save": "Ajouter un nouveau RDS",
@@ -366,23 +365,25 @@
     "chicane": "Nombre de chicanes",
     "estimatedNoiseReduction": "Reduction de bruit estimé",
     "findByName": "Recherche par modele",
-    "notFound": "Aucun reducteur de son trouvé"
+    "notFound": "Aucun reducteur de son trouvé",
+    "detail": "Detail RDS"
   },
   "factory": {
     "save": "Ajouter une nouvelle marque de type",
-    "form": {
-
-      "success": "Ajout d'un nouveau type confirme"
-    },
+    "created": "Ajout d'une nouvelle marque confirme",
+    "chooseType": "Choisir un type",
     "list": "Liste des marques",
     "type": "Marque specialisée",
     "summary": "Gestion des marques",
+    "notFound": "Aucune marque trouvée",
+    "loading": "Chargement des marques en cours",
     "types": {
       "ammunition": "Munition",
       "optic": "Optique",
       "weapon": "Arme",
       "rds": "Reducteur de son",
-      "magazine": "Chargeur"
+      "magazine": "Chargeur",
+      "accessory": "Accessoire"
     }
   },
   "color": {
@@ -456,6 +457,10 @@
   "reloadMode": {
     "name": "Type de fonctionnement",
     "placeholder": "Choisir un type"
+  },
+  "clickValue": {
+    "name": "Valeur d'un click",
+    "placeholder": "Choisir une valeur"
   },
   "threadedSize": {
     "form": {

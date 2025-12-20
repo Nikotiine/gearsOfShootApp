@@ -2,7 +2,12 @@ import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
 import { useToastStore } from '@/stores/toast'
 import { useMutation, useQuery } from '@tanstack/vue-query'
-import type { CreateOpticCollarDto, OpticCollarDto, UpdateOpticCollarDto } from '@/api/Api'
+import type {
+  CreateOpticCollarDto,
+  OpticCollarDto,
+  OpticCollarFilter,
+  UpdateOpticCollarDto
+} from '@/api/Api'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { RouterEnum } from '@/enum/router.enum'
@@ -12,6 +17,7 @@ import { getFactoryDto } from '@/shared/api-dto/get-factory.dto'
 import { getOpticRailSizeDto } from '@/shared/api-dto/get-optic-rail-size.dto'
 import { getPriceHistoryDto } from '@/shared/api-dto/get-price-history.dto'
 import { getI18NPrefix, I18NSuffix } from '@/enum/I18NSuffix.enum'
+import { buildOpticCollarFilter } from '@/shared/api-dto/query-filters.builder'
 
 export const useOpticCollarStore = defineStore('optic-collar-store', () => {
   // Appel API
@@ -23,6 +29,7 @@ export const useOpticCollarStore = defineStore('optic-collar-store', () => {
   // Refs
   const collars = ref<OpticCollarDto[]>([])
   const collar = ref<OpticCollarDto>()
+  const queryFilters = ref<OpticCollarFilter>({ ...buildOpticCollarFilter() })
   // Private Attibute
   const _I18N_PREFIX = 'opticCollar'
   const _GET_ALL_FN = 'getAllOpticCollar'
@@ -46,13 +53,19 @@ export const useOpticCollarStore = defineStore('optic-collar-store', () => {
 
   const getAllQuery = () =>
     useQuery({
-      queryKey: [_GET_ALL_FN],
+      queryKey: [_GET_ALL_FN, queryFilters],
       queryFn: async () => {
-        const res = await api.api.opticCollarControllerFindAll()
-        collars.value = res.data
-        return res
-      }
+        return await _fetchAll(queryFilters.value)
+      },
+      enabled: !!queryFilters.value,
+      placeholderData: (old) => old
     })
+
+  const _fetchAll = async (filters: OpticCollarFilter) => {
+    if (!filters) return null
+    const res = await api.api.opticCollarControllerFindAll({ filters })
+    return res.data
+  }
 
   const _deleteMutation = useMutation({
     mutationFn: async (collarId: number) => {
@@ -116,6 +129,7 @@ export const useOpticCollarStore = defineStore('optic-collar-store', () => {
     delete: deleteFunction,
     collar$: collar,
     formBuilder: useOpticCollarForm,
-    getI18NPrefix: getI18NPrefix(_I18N_PREFIX)
+    getI18NPrefix: getI18NPrefix(_I18N_PREFIX),
+    queryFilters$: queryFilters
   }
 })

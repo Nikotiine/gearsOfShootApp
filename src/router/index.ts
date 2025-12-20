@@ -25,7 +25,7 @@ const router = createRouter({
     {
       path: '/admin',
       component: () => import('../views/admin/AdminLayout.vue'),
-      beforeEnter: adminGuard,
+      //beforeEnter: adminGuard,
       children: [
         {
           path: '',

@@ -2,7 +2,12 @@ import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
 import { useToastStore } from '@/stores/toast'
 import { useMutation, useQuery } from '@tanstack/vue-query'
-import type { CreateWeaponMagazineDto, UpdateWeaponMagazineDto, WeaponMagazineDto } from '@/api/Api'
+import type {
+  CreateWeaponMagazineDto,
+  MagazineFilter,
+  UpdateWeaponMagazineDto,
+  WeaponMagazineDto
+} from '@/api/Api'
 import { type Ref, ref } from 'vue'
 import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
@@ -13,6 +18,7 @@ import { getMaterialDto } from '@/shared/api-dto/get-material.dto'
 import { getFactoryDto } from '@/shared/api-dto/get-factory.dto'
 import { getPriceHistoryDto } from '@/shared/api-dto/get-price-history.dto'
 import { getI18NPrefix, I18NSuffix } from '@/enum/I18NSuffix.enum'
+import { buildMagazineFilter } from '@/shared/api-dto/query-filters.builder'
 
 export const useWeaponMagazineStore = defineStore('weapon-magazine-store', () => {
   // Appel API
@@ -24,6 +30,7 @@ export const useWeaponMagazineStore = defineStore('weapon-magazine-store', () =>
   const magazines = ref<WeaponMagazineDto[]>([])
   const magazine = ref<WeaponMagazineDto>()
   const submitSuccess = ref(false)
+  const queryFilters = ref<MagazineFilter>({ ...buildMagazineFilter() })
   // Private Attibute
   const _I18N_PREFIX = 'magazine'
   const _GET_ALL_BY_CATEGORY_FN = 'getAllMagazineByCategory'
@@ -48,16 +55,20 @@ export const useWeaponMagazineStore = defineStore('weapon-magazine-store', () =>
       enabled: !!factoryName.value
     })
 
-  const getAllQuery = (enabled: Ref<boolean>) =>
+  const getAllQuery = () =>
     useQuery({
-      queryKey: [_GET_ALL_FN],
+      queryKey: [_GET_ALL_FN, queryFilters],
       queryFn: async () => {
-        const res = await api.api.magazineControllerFindAll()
-        magazines.value = res.data
-        return res
+        return await _fetchAll(queryFilters.value)
       },
-      enabled: () => enabled.value
+      enabled: !!queryFilters.value,
+      placeholderData: (old) => old
     })
+
+  const _fetchAll = async (filters: MagazineFilter) => {
+    const res = await api.api.magazineControllerFindAll({ filters })
+    return res.data
+  }
 
   const getAllByCategoryQuery = (category: Ref<string>) =>
     useQuery({
@@ -174,6 +185,7 @@ export const useWeaponMagazineStore = defineStore('weapon-magazine-store', () =>
     fetchCompatibleWeapons,
     compatibleWeapons$: weapons,
     getI18NPrefix: getI18NPrefix(_I18N_PREFIX),
-    submitSuccess
+    submitSuccess,
+    queryFilters$: queryFilters
   }
 })

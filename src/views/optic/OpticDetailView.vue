@@ -117,7 +117,7 @@ const otherInformation = computed(() => {
     },
     {
       label: t('optic.clickValue'),
-      title: optic.value.valueOfOneClick
+      title: `${optic.value.clickValue.name} ${optic.value.clickValue.opticUnit.name}`
     },
     {
       label: t('global.length'),
