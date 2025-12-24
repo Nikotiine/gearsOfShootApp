@@ -10,7 +10,7 @@ import SoundReducerDetailView from '@/views/accessory/rds/SoundReducerDetailView
 import AmmunitionDetailView from '@/views/ammunition/AmmunitionDetailView.vue'
 import OpticCollarDetailView from '@/views/optic/collar/OpticCollarDetailView.vue'
 import OpticDetailView from '@/views/optic/OpticDetailView.vue'
-import RiffleDetailComponent from '@/components/__weapon/riffle/RiffleDetailComponent.vue'
+import RiffleDetailView from '@/views/weapon/riffle/RiffleDetailView.vue'
 import HandGunDetailView from '@/views/weapon/handgun/HandGunDetailView.vue'
 import MagazineDetailView from '@/views/weapon/magazine/MagazineDetailView.vue'
 import { useFormStore } from '@/stores/form.store'
@@ -46,7 +46,7 @@ const componentMap = {
   [DetailRoute.AMMUNITION_DETAIL]: AmmunitionDetailView,
   [DetailRoute.OPTIC_COLLAR_DETAIL]: OpticCollarDetailView,
   [DetailRoute.OPTIC_DETAIL]: OpticDetailView,
-  [DetailRoute.RIFFLE_DETAIL]: RiffleDetailComponent,
+  [DetailRoute.RIFFLE_DETAIL]: RiffleDetailView,
   [DetailRoute.HANDGUN_DETAIL]: HandGunDetailView,
   [DetailRoute.MAGAZINE_DETAIL]: MagazineDetailView,
   [DetailRoute.INVOICE_DETAIL]: InvoiceDetailComponent

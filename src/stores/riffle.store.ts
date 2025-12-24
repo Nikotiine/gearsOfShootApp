@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
-import type { CreateRiffleDto, RiffleDto, UpdateRiffleDto } from '@/api/Api'
+import type { CreateRiffleDto, RiffleDto, RiffleFilter, UpdateRiffleDto } from '@/api/Api'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import { useToastStore } from '@/stores/toast'
-import { type Ref, ref } from 'vue'
+import { ref } from 'vue'
 import { getI18NPrefix, I18NSuffix } from '@/enum/I18NSuffix.enum'
 import { getWeaponTypeDto } from '@/shared/api-dto/get-weapon-type.dto'
 import { getCaliberDto } from '@/shared/api-dto/get-caliber.dto'
@@ -14,6 +14,7 @@ import { getPercussionTypeDto } from '@/shared/api-dto/get-percussion-type.dto'
 import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
 import { getPriceHistoryDto } from '@/shared/api-dto/get-price-history.dto'
+import { buildRiffleFilter } from '@/shared/api-dto/query-filters.builder'
 
 export const useRiffleStore = defineStore('riffle-store', () => {
   // Appel API
@@ -24,13 +25,9 @@ export const useRiffleStore = defineStore('riffle-store', () => {
 
   // Refs
   const mutationSuccess = ref(false)
-
-  const riffles = ref<RiffleDto[]>([])
-  const riffle = ref<RiffleDto>()
+  const queryFilters = ref<RiffleFilter>({ ...buildRiffleFilter() })
   // Private Attibute
   const _I18N_PREFIX = 'riffle'
-
-  const _GET_ALL_BY_CATEGORY_FN = 'getAllRiffleByCategory'
   const _GET_ALL_FN = 'getAllRiffle'
   const _GET_BY_ID_FN = 'getRiffleById'
   // *******************Methodes***************
@@ -52,27 +49,22 @@ export const useRiffleStore = defineStore('riffle-store', () => {
     }
   })
 
-  const _getAllRiffleQuery = useQuery({
-    queryKey: [_GET_ALL_FN],
-    queryFn: async () => {
-      return await api.api.riffleControllerFindAll()
-    }
-  })
-
-  const getAllData = (): RiffleDto[] => {
-    return _getAllRiffleQuery.data.value?.data ?? []
-  }
-
-  const getAllRiffleByCategoryQuery = (category: Ref<string>) =>
+  const getAllRiffleQuery = () =>
     useQuery({
-      queryKey: [_GET_ALL_BY_CATEGORY_FN, category.value],
+      queryKey: [_GET_ALL_FN, queryFilters],
       queryFn: async () => {
-        const res = await api.api.riffleControllerFindAllByCategory(category.value)
-        riffles.value = res.data
-        return res
+        return await _fetchAll(queryFilters.value)
       },
-      enabled: !!category.value
+      enabled: !!queryFilters.value,
+      retry: 0,
+      placeholderData: (old) => old
     })
+
+  const _fetchAll = async (filters: RiffleFilter) => {
+    if (!filters) return null
+    const res = await api.api.riffleControllerFindAll({ filters })
+    return res.data
+  }
 
   const getByIdQuery = (id?: string) =>
     useQuery({
@@ -81,11 +73,13 @@ export const useRiffleStore = defineStore('riffle-store', () => {
       enabled: !!id,
       retry: 0
     })
+
   const _fetchById = async (id?: string) => {
     if (!id) return null
     const res = await api.api.riffleControllerFindById(parseInt(id))
     return res.data
   }
+
   const _deleteMutation = useMutation({
     mutationFn: async (id: number) => {
       return await api.api.riffleControllerDelete(id)
@@ -153,12 +147,10 @@ export const useRiffleStore = defineStore('riffle-store', () => {
 
   return {
     delete: deleteFunction,
-    getAllByCategory: getAllRiffleByCategoryQuery,
     getRiffleById: getByIdQuery,
-    riffles$: riffles,
-    riffle$: riffle,
-    getAll: getAllData,
+    getAll: getAllRiffleQuery,
     getI18NPrefix: getI18NPrefix(_I18N_PREFIX),
-    formBuilder: useRiffleForm
+    formBuilder: useRiffleForm,
+    queryFilters$: queryFilters
   }
 })

@@ -55,7 +55,7 @@ const { price, id, type } = defineProps<{
   id: string
   type: PriceableObjectType
 }>()
-const { data } = store.findAll(id, type)
+const { data } = store.findAll(parseInt(id), type)
 const priceInfo = computed(() => {
   if (!price) return undefined
   return [

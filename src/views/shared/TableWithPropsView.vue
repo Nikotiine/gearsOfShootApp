@@ -9,7 +9,7 @@ import MagazineTableView from '@/views/weapon/magazine/MagazineTableView.vue'
 import HandGunTableView from '@/views/weapon/handgun/HandGunTableView.vue'
 import { computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import RiffleTableComponent from '@/components/__weapon/riffle/RiffleTableComponent.vue'
+import RiffleTableView from '@/views/weapon/riffle/RiffleTableView.vue'
 import { useHandGunStore } from '@/stores/hand-gun.store'
 import { useWeaponMagazineStore } from '@/stores/weapon-magazine.store'
 import { useAmmunitionStore } from '@/stores/ammunition.store'
@@ -35,7 +35,7 @@ const componentMap = {
   [TableWithProps.HANDGUN]: HandGunTableView,
   [TableWithProps.AMMUNITION]: AmmunitionTableView,
   [TableWithProps.MAGAZINE]: MagazineTableView,
-  [TableWithProps.RIFFLE]: RiffleTableComponent
+  [TableWithProps.RIFFLE]: RiffleTableView
 }
 const storeMap = {
   [TableWithProps.HANDGUN]: useHandGunStore,
