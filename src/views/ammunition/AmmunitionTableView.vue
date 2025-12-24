@@ -8,15 +8,15 @@
       paginator
       :rows="queryFilters$.limit"
       :total-records="data?.total"
-      :rowsPerPageOptions="[10, 20, 50]"
+      :rowsPerPageOptions="rowsPerPageOptions"
       dataKey="id"
       lazy
       currentPageReportTemplate="{first} to {last} of {totalRecords}"
-      filterDisplay="row"
+      :filterDisplay="filterDisplay"
       @filter="onFilterChange"
       @page="onPageChange"
       :loading="storeAreLoading.value"
-      :globalFilterFields="['name', 'factory', 'caliber', 'reference']"
+      :globalFilterFields="globalFilterFields"
     >
       <template #header>
         <div class="flex justify-center">
@@ -50,7 +50,7 @@
       </Column>
       <Column
         :header="t('global.factory')"
-        field="factory.name"
+        field="factory.id"
         filterField="factory"
         style="min-width: 12rem"
         :showFilterMenu="false"
@@ -65,7 +65,7 @@
             @change="filterCallback()"
             :options="factories$"
             optionLabel="name"
-            optionValue="name"
+            optionValue="id"
             :placeholder="t('global.findByFactory')"
             style="min-width: 12rem"
             :showClear="true"
@@ -75,6 +75,7 @@
       </Column>
       <Column
         :header="t('global.caliber')"
+        field="caliber.id"
         filterField="caliber"
         :showFilterMenu="false"
         style="min-width: 14rem"
@@ -89,7 +90,7 @@
             :options="calibers$"
             placeholder="Calibre"
             optionLabel="name"
-            optionValue="name"
+            optionValue="id"
             style="min-width: 12rem"
             :showClear="true"
           >
@@ -127,14 +128,15 @@
         </template>
 
         <template #filter="{ filterModel, filterCallback }">
-          <InputNumber
+          <InputText
             @input="filterCallback()"
             placeholder="En Stock"
             v-model="filterModel.value"
             inputId="minmax"
             :min="0"
             :max="100"
-            style="min-width: 5rem"
+            :showFilterMenu="false"
+            style="max-width: 4rem"
           />
         </template>
       </Column>
@@ -162,7 +164,6 @@
 import IconField from 'primevue/iconfield'
 import InputIcon from 'primevue/inputicon'
 import InputText from 'primevue/inputtext'
-
 import Select from 'primevue/select'
 import Column from 'primevue/column'
 import DataTable, { type DataTableFilterEvent, type DataTablePageEvent } from 'primevue/datatable'
@@ -180,7 +181,6 @@ import ActionMenuComponent, {
 import TableTitleComponent from '@/components/__table/TableTitleComponent.vue'
 import InvoiceAddItemComponent from '@/components/__invoice/InvoiceAddItemComponent.vue'
 import { storeToRefs } from 'pinia'
-import InputNumber from 'primevue/inputnumber'
 
 const { category } = defineProps<{
   category: string
@@ -210,7 +210,9 @@ const filters = ref({
   inStock: { value: null, matchMode: FilterMatchMode.EQUALS },
   reference: { value: null, matchMode: FilterMatchMode.STARTS_WITH }
 })
-
+const globalFilterFields = ['name', 'factory', 'caliber', 'reference']
+const rowsPerPageOptions = [10, 20, 50]
+const filterDisplay = 'row'
 const storeAreLoading = computed(() => {
   return gatAllCalibersIsSuccess || storeIsLoading
 })
@@ -219,8 +221,8 @@ const onFilterChange = (event: DataTableFilterEvent) => {
   const activeFilters = Object.fromEntries(
     Object.entries(event.filters).map(([key, meta]: any) => [key, meta.value])
   )
-  queryFilters$.value.factory = activeFilters.factory
-  queryFilters$.value.caliber = activeFilters.caliber
+  queryFilters$.value.factoryId = activeFilters.factory
+  queryFilters$.value.caliberId = activeFilters.caliber
   queryFilters$.value.name = activeFilters.name
   queryFilters$.value.reference = activeFilters.reference
 }

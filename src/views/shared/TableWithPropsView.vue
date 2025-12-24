@@ -6,7 +6,7 @@ import { RouterEnum } from '@/enum/router.enum'
 import AmmunitionTableView from '@/views/ammunition/AmmunitionTableView.vue'
 import MagazineTableView from '@/views/weapon/magazine/MagazineTableView.vue'
 
-import HandGunTableComponent from '@/components/__weapon/handgun/HandGunTableComponent.vue'
+import HandGunTableView from '@/views/weapon/handgun/HandGunTableView.vue'
 import { computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import RiffleTableComponent from '@/components/__weapon/riffle/RiffleTableComponent.vue'
@@ -32,7 +32,7 @@ enum TableWithProps {
 }
 
 const componentMap = {
-  [TableWithProps.HANDGUN]: HandGunTableComponent,
+  [TableWithProps.HANDGUN]: HandGunTableView,
   [TableWithProps.AMMUNITION]: AmmunitionTableView,
   [TableWithProps.MAGAZINE]: MagazineTableView,
   [TableWithProps.RIFFLE]: RiffleTableComponent

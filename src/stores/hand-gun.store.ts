@@ -2,7 +2,14 @@ import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
 import { useToastStore } from '@/stores/toast'
 import { useMutation, useQuery } from '@tanstack/vue-query'
-import type { CreateHandGunDto, HandGunDto, UpdateHandGunDto } from '@/api/Api'
+import type {
+  AmmunitionFilter,
+  CreateHandGunDto,
+  HandGunDto,
+  HandGunFilter,
+  PaginatedResponseDto,
+  UpdateHandGunDto
+} from '@/api/Api'
 import { type Ref, ref } from 'vue'
 import { getI18NPrefix, I18NSuffix } from '@/enum/I18NSuffix.enum'
 import { useFormHandler } from '@/shared/useFormHandler'
@@ -15,6 +22,8 @@ import { getBarrelTypeDto } from '@/shared/api-dto/get-barrel-type.dto'
 import { getPercussionTypeDto } from '@/shared/api-dto/get-percussion-type.dto'
 import { getTriggerTypeDto } from '@/shared/api-dto/get-trigger-type.dto'
 import { getPriceHistoryDto } from '@/shared/api-dto/get-price-history.dto'
+import { buildAmmunitionFilters, buildHandGunFilter } from '@/shared/api-dto/query-filters.builder'
+import type { GetAllHandgunResponse } from '@/types/api-response.type'
 
 export const useHandGunStore = defineStore('hand-gun-store', () => {
   // Appel API
@@ -27,7 +36,7 @@ export const useHandGunStore = defineStore('hand-gun-store', () => {
   const mutationSuccess = ref(false)
   const handguns = ref<HandGunDto[]>([])
   const handgun = ref<HandGunDto | null>(null)
-
+  const queryFilters = ref<HandGunFilter>({ ...buildHandGunFilter() })
   // Private Attibute
   const _I18N_PREFIX = 'handgun'
   const _GET_ALL_BY_CATEGORY_FN = 'getAllHandGunByCategory'
@@ -63,15 +72,21 @@ export const useHandGunStore = defineStore('hand-gun-store', () => {
       enabled: !!category.value
     })
 
-  const _getAllHandgunQuery = useQuery({
-    queryKey: [_GET_ALL_FN],
-    queryFn: async () => {
-      return await api.api.handGunControllerFindAll()
-    }
-  })
+  const getAllHandgunQuery = () =>
+    useQuery<GetAllHandgunResponse>({
+      queryKey: [_GET_ALL_FN, queryFilters],
+      queryFn: async () => {
+        return _fetchAll(queryFilters.value)
+      },
+      enabled: !!queryFilters.value,
+      retry: 0,
+      placeholderData: (old) => old
+    })
 
-  const getAllFunction = () => {
-    return _getAllHandgunQuery.data.value?.data ?? []
+  const _fetchAll = async (filters: HandGunFilter): Promise<GetAllHandgunResponse> => {
+    if (!filters) return null
+    const res = await api.api.handGunControllerFindAll({ filters })
+    return res.data
   }
 
   const getByIdQuery = (id?: string) =>
@@ -163,8 +178,9 @@ export const useHandGunStore = defineStore('hand-gun-store', () => {
     getAllByCategory: getAllHandGunByCategoryQuery,
     getHandGunById: getByIdQuery,
     handgun$: handgun,
-    getAll: getAllFunction,
+    getAll: getAllHandgunQuery,
     handguns$: handguns,
-    getI18NPrefix: getI18NPrefix(_I18N_PREFIX)
+    getI18NPrefix: getI18NPrefix(_I18N_PREFIX),
+    queryFilters$: queryFilters
   }
 })

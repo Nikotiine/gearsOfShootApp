@@ -11,7 +11,7 @@ import AmmunitionDetailView from '@/views/ammunition/AmmunitionDetailView.vue'
 import OpticCollarDetailView from '@/views/optic/collar/OpticCollarDetailView.vue'
 import OpticDetailView from '@/views/optic/OpticDetailView.vue'
 import RiffleDetailComponent from '@/components/__weapon/riffle/RiffleDetailComponent.vue'
-import HandGunDetailComponent from '@/components/__weapon/handgun/HandGunDetailComponent.vue'
+import HandGunDetailView from '@/views/weapon/handgun/HandGunDetailView.vue'
 import MagazineDetailView from '@/views/weapon/magazine/MagazineDetailView.vue'
 import { useFormStore } from '@/stores/form.store'
 import InvoiceDetailComponent from '@/components/__invoice/InvoiceDetailComponent.vue'
@@ -47,7 +47,7 @@ const componentMap = {
   [DetailRoute.OPTIC_COLLAR_DETAIL]: OpticCollarDetailView,
   [DetailRoute.OPTIC_DETAIL]: OpticDetailView,
   [DetailRoute.RIFFLE_DETAIL]: RiffleDetailComponent,
-  [DetailRoute.HANDGUN_DETAIL]: HandGunDetailComponent,
+  [DetailRoute.HANDGUN_DETAIL]: HandGunDetailView,
   [DetailRoute.MAGAZINE_DETAIL]: MagazineDetailView,
   [DetailRoute.INVOICE_DETAIL]: InvoiceDetailComponent
 }

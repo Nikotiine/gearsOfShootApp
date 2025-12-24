@@ -19,7 +19,7 @@ import CaliberFormComponent from '@/components/__caliber/CaliberFormComponent.vu
 import ColorFormComponent from '@/components/__color_and_material/ColorFormComponent.vue'
 import SoundReducerFormView from '@/views/accessory/rds/SoundReducerFormView.vue'
 import { RouterEnum } from '@/enum/router.enum'
-import HandGunFormComponent from '@/components/__weapon/handgun/HandGunFormComponent.vue'
+import HandGunFormView from '@/views/weapon/handgun/HandGunFormView.vue'
 import RiffleFormComponent from '@/components/__weapon/riffle/RiffleFormComponent.vue'
 import InvoiceFormComponent from '@/components/__invoice/InvoiceFormComponent.vue'
 import { useBreadcrumbStore } from '@/stores/breadcrumb.store'
@@ -92,8 +92,8 @@ const componentMap = {
   [RouterFormEnum.RDS_NEW]: SoundReducerFormView,
   [RouterFormEnum.RDS_EDIT]: SoundReducerFormView,
 
-  [RouterFormEnum.HANDGUN_NEW]: HandGunFormComponent,
-  [RouterFormEnum.HANDGUN_EDIT]: HandGunFormComponent,
+  [RouterFormEnum.HANDGUN_NEW]: HandGunFormView,
+  [RouterFormEnum.HANDGUN_EDIT]: HandGunFormView,
   [RouterFormEnum.RIFFLE_NEW]: RiffleFormComponent,
   [RouterFormEnum.RIFFLE_EDIT]: RiffleFormComponent,
   [RouterFormEnum.INVOICE_NEW]: InvoiceFormComponent
