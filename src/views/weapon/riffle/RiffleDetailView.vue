@@ -31,7 +31,11 @@
         </TabPanel>
         <TabPanel value="3">
           <p>
-            {{ riffle.description.length > 0 ? riffle.description : t('global.notRegistered') }}
+            {{
+              riffle.description && riffle.description.length > 0
+                ? riffle.description
+                : t('global.notRegistered')
+            }}
           </p>
         </TabPanel>
         <TabPanel value="4">
@@ -212,7 +216,7 @@ const otherProps = computed(() => {
     }
   ]
 })
-const priceInfo = computed(() => {
+/*const priceInfo = computed(() => {
   if (!riffle.value || !riffle.value.priceHistory) return undefined
   return [
     {
@@ -228,7 +232,7 @@ const priceInfo = computed(() => {
       title: NumberFormatter(riffle.value.priceHistory.currentSalePrice, 'euro')
     }
   ]
-})
+})*/
 </script>
 
 <style scoped></style>

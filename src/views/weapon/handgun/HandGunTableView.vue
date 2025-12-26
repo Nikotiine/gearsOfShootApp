@@ -4,12 +4,18 @@
     <div class="text-red-500 text-center" v-if="isError">{{ t('global.isLoadingError') }}</div>
     <DataTable
       v-model:filters="filters"
-      :value="handgun$?.data"
+      :value="data?.data"
       paginator
-      :rows="10"
+      :rows="queryFilters$.limit"
+      :total-records="data?.total"
+      :rowsPerPageOptions="rowsPerPageOptions"
       dataKey="id"
-      filterDisplay="menu"
+      lazy
+      currentPageReportTemplate="{first} to {last} of {totalRecords}"
+      :filterDisplay="filterDisplay"
       :loading="isLoading"
+      @filter="onFilterChange"
+      @page="onPageChange"
       :globalFilterFields="globalFilterFields"
       columnResizeMode="fit"
     >
@@ -41,8 +47,8 @@
       </Column>
       <Column
         :header="t('global.factory')"
-        field="factory.name"
-        filterField="factory.name"
+        field="factory.id"
+        filterField="factory"
         style="max-width: 12rem"
       >
         <template #body="{ data }">
@@ -55,14 +61,14 @@
             @change="filterCallback()"
             :options="weaponFactory$"
             optionLabel="name"
-            optionValue="name"
+            optionValue="id"
             :placeholder="t('global.findByFactory')"
             :showClear="true"
           >
           </Select>
         </template>
       </Column>
-      <Column :header="t('global.caliber')" filterField="caliber.name">
+      <Column :header="t('global.caliber')" field="factory.id" filterField="caliber">
         <template #body="{ data }">
           {{ data.caliber.name }}
         </template>
@@ -73,7 +79,7 @@
             :options="calibers$"
             :placeholder="t('global.findByCaliber')"
             optionLabel="name"
-            optionValue="name"
+            optionValue="id"
             :showClear="true"
           >
           </Select>
@@ -114,9 +120,9 @@
 import { useHandGunStore } from '@/stores/hand-gun.store'
 import { useFactoryStore } from '@/stores/factory.store'
 import { useCaliberStore } from '@/stores/caliber.store'
-import { ref, watch } from 'vue'
+import { onBeforeMount, ref, watch } from 'vue'
 import { FilterMatchMode } from '@primevue/core/api'
-import DataTable from 'primevue/datatable'
+import DataTable, { type DataTableFilterEvent, type DataTablePageEvent } from 'primevue/datatable'
 import Column from 'primevue/column'
 import InputText from 'primevue/inputtext'
 import InputIcon from 'primevue/inputicon'
@@ -130,32 +136,41 @@ import { useRouter } from 'vue-router'
 import { type NewWeapon, useWeaponStore } from '@/stores/weapon'
 import TableTitleComponent from '@/components/__table/TableTitleComponent.vue'
 import { useI18n } from 'vue-i18n'
+import { storeToRefs } from 'pinia'
+import type { HandGunDto } from '@/api/Api'
 
 const { t } = useI18n()
 const { category } = defineProps<{
   category: string
 }>()
 const router = useRouter()
-
 const store = useHandGunStore()
-
-const i18nPrefix = store.getI18NPrefix
+const weaponStore = useWeaponStore()
 const factoryStore = useFactoryStore()
-const { data: weaponFactory$ } = factoryStore.getFactoriesByType('weapon')
 const caliberStore = useCaliberStore()
+const { queryFilters$ } = storeToRefs(store)
+onBeforeMount(() => {
+  queryFilters$.value.category = category
+})
+const i18nPrefix = store.getI18NPrefix
+const { data: weaponFactory$ } = factoryStore.getFactoriesByType('weapon')
 const { data: calibers$ } = caliberStore.getAll()
 
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-  'factory.name': { value: null, matchMode: FilterMatchMode.EQUALS },
-  'caliber.name': { value: null, matchMode: FilterMatchMode.EQUALS },
+  factory: { value: null, matchMode: FilterMatchMode.EQUALS },
+  caliber: { value: null, matchMode: FilterMatchMode.EQUALS },
   reference: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
   inStock: { value: null, matchMode: FilterMatchMode.STARTS_WITH }
 })
-const globalFilterFields = ['name', 'factory.name', 'caliber.name', 'reference']
+const globalFilterFields = ['name', 'factory', 'caliber', 'reference']
+const rowsPerPageOptions = [10, 20, 50]
+const filterDisplay = 'menu'
+
 const currentCategory = ref<string>(category)
-const { data: handgun$, isLoading, isError, refetch } = store.getAllByCategory(currentCategory)
+const { data, isLoading, isError, refetch } = store.getAll()
+
 watch(
   () => category,
   (newCategory) => {
@@ -165,7 +180,7 @@ watch(
     }
   }
 )
-const weaponStore = useWeaponStore()
+
 const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
   switch (event) {
     case 'view':
@@ -182,14 +197,27 @@ const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
   }
 }
 const onEditAction = (id: number) => {
-  const currentWeapon = handgun$.value?.data.find((h) => h.id === id)
-  if (currentWeapon) {
+  const currentHandgun = data.value?.data.find((handgun: HandGunDto) => handgun.id === id)
+  if (currentHandgun) {
     const data: NewWeapon = {
-      category: currentWeapon.category,
-      type: currentWeapon.type
+      category: currentHandgun.category,
+      type: currentHandgun.type
     }
     weaponStore.setOptions(data)
   }
+}
+const onFilterChange = (event: DataTableFilterEvent) => {
+  const activeFilters = Object.fromEntries(
+    Object.entries(event.filters).map(([key, meta]: any) => [key, meta.value])
+  )
+  queryFilters$.value.factoryId = activeFilters.factory
+  queryFilters$.value.caliberId = activeFilters.caliber
+  queryFilters$.value.name = activeFilters.name
+  queryFilters$.value.reference = activeFilters.reference
+}
+const onPageChange = (event: DataTablePageEvent) => {
+  queryFilters$.value.offset = event.first
+  queryFilters$.value.limit = event.rows
 }
 </script>
 

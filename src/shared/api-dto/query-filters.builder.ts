@@ -1,17 +1,19 @@
 import type {
   AmmunitionFilter,
   FactoryFilter,
+  HandGunFilter,
   MagazineFilter,
   OpticCollarFilter,
   OpticFilter,
+  RiffleFilter,
   SoundNoiseFilter
 } from '@/api/Api'
 
 export function buildAmmunitionFilters(): AmmunitionFilter {
   return {
     category: undefined,
-    factory: undefined,
-    caliber: undefined,
+    factoryId: undefined,
+    caliberId: undefined,
     limit: 10,
     offset: 0,
     name: undefined,
@@ -68,5 +70,38 @@ export function buildMagazineFilter(): MagazineFilter {
     caliber: '',
     category: '',
     capacity: undefined
+  }
+}
+export function buildRiffleFilter(): RiffleFilter {
+  return {
+    limit: 10,
+    offset: 0,
+    factoryId: undefined,
+    name: '',
+    reference: '',
+    category: '',
+    caliberId: undefined,
+    percussionTypeId: undefined,
+    isAdjustableBusk: undefined,
+    isAdjustableButt: undefined,
+    isThreadedBarrel: undefined,
+    railSizeId: undefined,
+    isOpenAim: undefined
+  }
+}
+export function buildHandGunFilter(): HandGunFilter {
+  return {
+    limit: 10,
+    offset: 0,
+    name: '',
+    reference: '',
+    category: '',
+    caliberId: undefined,
+    factoryId: undefined,
+    percussionTypeId: undefined,
+    isThreadedBarrel: undefined,
+    isOpticReady: undefined,
+    triggerTypeId: undefined,
+    slideMaterialId: undefined
   }
 }

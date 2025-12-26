@@ -218,7 +218,7 @@ export interface MagazineFilter {
   /** @example "Le calibre" */
   caliber?: string
   /** @example "La capacite" */
-  capacity?: number | null
+  capacity?: number
 }
 
 export interface WeaponBarrelTypeDto {
@@ -588,6 +588,46 @@ export interface UpdateWeaponMagazineDto {
   id: number
 }
 
+export interface HandGunFilter {
+  /**
+   * Nombre maximum de résultats à renvoyer
+   * @example 10
+   */
+  limit?: number
+  /**
+   * Décalage pour la pagination
+   * @example 0
+   */
+  offset?: number
+  /** @example "Reference interne de l objet" */
+  reference?: string
+  /**
+   * Nom de l arme
+   * @example "Sand Viper"
+   */
+  name?: string
+  /** Id de la marque */
+  factoryId?: number
+  /** Id du Calibre */
+  caliberId?: number
+  /** La categorie de la munition */
+  category?: string
+  /** Longueur mini du canon */
+  barrelLengthMin?: number
+  /** Longueur maxi du canon */
+  barrelLengthMax?: number
+  /** La categorie de la munition */
+  isThreadedBarrel?: boolean
+  /** Id du Calibre */
+  percussionTypeId?: number
+  /** Optic Ready ? */
+  isOpticReady?: boolean
+  /** Id du type de detente */
+  triggerTypeId?: number
+  /** Id du la matiere de la glissiere */
+  slideMaterialId?: number
+}
+
 export interface CreateHandGunDto {
   /**
    * Nom du model de l arme
@@ -765,6 +805,48 @@ export interface UpdateHandGunDto {
   priceHistory: CreatePriceHistoryDto
   inStock: number
   id: number
+}
+
+export interface RiffleFilter {
+  /**
+   * Nombre maximum de résultats à renvoyer
+   * @example 10
+   */
+  limit?: number
+  /**
+   * Décalage pour la pagination
+   * @example 0
+   */
+  offset?: number
+  /** @example "Reference interne de l objet" */
+  reference?: string
+  /**
+   * Nom de l arme
+   * @example "Sand Viper"
+   */
+  name?: string
+  /** Id de la marque */
+  factoryId?: number
+  /** Id du Calibre */
+  caliberId?: number
+  /** La categorie de la munition */
+  category?: string
+  /** Longueur mini du canon */
+  barrelLengthMin?: number
+  /** Longueur maxi du canon */
+  barrelLengthMax?: number
+  /** La categorie de la munition */
+  isThreadedBarrel?: boolean
+  /** Id du Calibre */
+  percussionTypeId?: number
+  /** Id du type de rail optique disponible */
+  railSizeId?: number
+  /** Crosse ajustable ? */
+  isAdjustableButt?: boolean
+  /** Busc ajustable ? */
+  isAdjustableBusk?: boolean
+  /** Vise mecanique ? */
+  isOpenAim?: boolean
 }
 
 export interface CreateRiffleDto {
@@ -1032,13 +1114,13 @@ export interface AmmunitionFilter {
   offset?: number
   /** @example "Reference interne de l objet" */
   reference?: string
-  /** @example "La categorie de la munition" */
+  /** La categorie de la munition */
   category?: string
-  /** @example "La marque" */
-  factory?: string
-  /** @example "Le calibre" */
-  caliber?: string
-  /** @example "Le nom du moodel de munition" */
+  /** Id de la marque */
+  factoryId?: number
+  /** Id du calibre */
+  caliberId?: number
+  /** Le nom du moodel de munition */
   name?: string
 }
 
@@ -1130,13 +1212,13 @@ export interface OpticFilter {
   offset?: number
   /** @example "Reference interne de l objet" */
   reference?: string
-  /** @example "Nom de lunette" */
+  /** Nom de lunette */
   name?: string
-  /** @example "La marque" */
+  /** La marque */
   factory?: string
-  /** @example "Le type de lunette" */
+  /** Le type de lunette */
   type?: string
-  /** @example "Le type de plan focal" */
+  /** Le type de plan focal */
   focalPlane?: string
 }
 
@@ -1268,11 +1350,11 @@ export interface OpticCollarFilter {
   offset?: number
   /** @example "Reference interne de l objet" */
   reference?: string
-  /** @example "Nom du model de collier" */
+  /** Nom du model de collier */
   name?: string
-  /** @example "La marque" */
+  /** La marque */
   factory?: string
-  /** @example "Le type de rail compatible" */
+  /** Le type de rail compatible */
   railSize?: string
 }
 
@@ -1335,11 +1417,11 @@ export interface SoundNoiseFilter {
   offset?: number
   /** @example "Reference interne de l objet" */
   reference?: string
-  /** @example "La marque" */
+  /** La marque */
   factory?: string
-  /** @example "Le calibre compatible" */
+  /** Le calibre compatible */
   caliber?: string
-  /** @example "Le nom du rds" */
+  /** Le nom du rds */
   name?: string
 }
 
@@ -1685,7 +1767,7 @@ export class HttpClient<SecurityDataType = unknown> {
 
 /**
  * @title Gears of shoot
- * @version 0.2.3
+ * @version 0.3.2
  * @contact
  *
  * Gears of shoot API
@@ -2580,10 +2662,22 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @summary Liste complète
      * @request GET:/api/hand-gun/all
      */
-    handGunControllerFindAll: (params: RequestParams = {}) =>
-      this.request<HandGunDto[], any>({
+    handGunControllerFindAll: (
+      query?: {
+        /** Filtre de recherche pour reponse paginé */
+        filters?: HandGunFilter
+      },
+      params: RequestParams = {}
+    ) =>
+      this.request<
+        PaginatedResponseDto & {
+          data?: HandGunDto[]
+        },
+        any
+      >({
         path: `/api/hand-gun/all`,
         method: 'GET',
+        query: query,
         format: 'json',
         ...params
       }),
@@ -2686,10 +2780,22 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @summary Liste complète
      * @request GET:/api/riffle/all
      */
-    riffleControllerFindAll: (params: RequestParams = {}) =>
-      this.request<RiffleDto[], any>({
+    riffleControllerFindAll: (
+      query?: {
+        /** Filtre de recherche pour reponse paginé */
+        filters?: RiffleFilter
+      },
+      params: RequestParams = {}
+    ) =>
+      this.request<
+        PaginatedResponseDto & {
+          data?: RiffleDto[]
+        },
+        any
+      >({
         path: `/api/riffle/all`,
         method: 'GET',
+        query: query,
         format: 'json',
         ...params
       }),

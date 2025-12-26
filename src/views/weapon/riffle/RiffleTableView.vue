@@ -4,13 +4,20 @@
     <div class="text-red-500 text-center" v-if="isError">Error</div>
     <DataTable
       v-model:filters="filters"
-      :value="riffles$?.data"
+      :value="data?.data"
       paginator
-      :rows="10"
+      :rows="queryFilters$.limit"
+      :total-records="data?.total"
+      :rowsPerPageOptions="rowsPerPageOptions"
       dataKey="id"
-      filterDisplay="row"
+      lazy
+      currentPageReportTemplate="{first} to {last} of {totalRecords}"
+      :filterDisplay="filterDisplay"
       :loading="datasIsloading"
-      :globalFilterFields="['name', 'factory.name', 'caliber.name', 'reference']"
+      :globalFilterFields="globalFilterFields"
+      @filter="onFilterChange"
+      @page="onPageChange"
+      columnResizeMode="fit"
     >
       <template #header>
         <div class="flex justify-center">
@@ -22,9 +29,14 @@
           </IconField>
         </div>
       </template>
-      <template #empty> Aucune arme trouvée. </template>
-      <template #loading> Loading customers data. Please wait. </template>
-      <Column field="name" header="Nom" style="min-width: 12rem" :showFilterMenu="false">
+      <template #empty> {{ t(i18nPrefix + 'notFound') }} </template>
+      <template #loading> {{ t(i18nPrefix + 'loading') }} {{ t('global.pleaseWait') }} </template>
+      <Column
+        field="name"
+        :header="t('global.model')"
+        style="min-width: 12rem"
+        :showFilterMenu="false"
+      >
         <template #body="{ data }">
           {{ data.name }}
         </template>
@@ -33,14 +45,14 @@
             v-model="filterModel.value"
             type="text"
             @input="filterCallback()"
-            placeholder="Recherche par nom"
+            :placeholder="t('global.findByName')"
           />
         </template>
       </Column>
       <Column
-        header="Marque"
-        field="factory.name"
-        filterField="factory.name"
+        :header="t('global.factory')"
+        field="factory.id"
+        filterField="factory"
         style="min-width: 12rem"
         :showFilterMenu="false"
       >
@@ -52,10 +64,10 @@
           <Select
             v-model="filterModel.value"
             @change="filterCallback()"
-            :options="weaponFoctory$"
+            :options="weaponFactory$"
             optionLabel="name"
-            optionValue="name"
-            placeholder="Marque"
+            optionValue="id"
+            :placeholder="t('global.findByFactory')"
             style="min-width: 12rem"
             :showClear="true"
           >
@@ -63,8 +75,9 @@
         </template>
       </Column>
       <Column
-        header="Calibre"
-        filterField="caliber.name"
+        :header="t('global.caliber')"
+        field="caliber.id"
+        filterField="caliber"
         :showFilterMenu="false"
         style="min-width: 14rem"
       >
@@ -76,16 +89,21 @@
             v-model="filterModel.value"
             @change="filterCallback()"
             :options="calibers$"
-            placeholder="Calibre"
+            :placeholder="t('global.findByCaliber')"
             optionLabel="name"
-            optionValue="name"
+            optionValue="id"
             style="min-width: 12rem"
             :showClear="true"
           >
           </Select>
         </template>
       </Column>
-      <Column field="reference" header="Status" :showFilterMenu="false" style="min-width: 12rem">
+      <Column
+        field="reference"
+        :header="t('global.reference')"
+        :showFilterMenu="false"
+        style="min-width: 12rem"
+      >
         <template #body="{ data }">
           {{ data.reference }}
         </template>
@@ -95,7 +113,7 @@
             v-model="filterModel.value"
             type="text"
             @input="filterCallback()"
-            placeholder="Recherche par reference"
+            :placeholder="t('global.findByReference')"
           />
         </template>
       </Column>
@@ -115,8 +133,8 @@
 <script setup lang="ts">
 import { useRiffleStore } from '@/stores/riffle.store'
 import { FilterMatchMode } from '@primevue/core/api'
-import { ref, watch } from 'vue'
-import DataTable from 'primevue/datatable'
+import { onBeforeMount, ref, watch } from 'vue'
+import DataTable, { type DataTableFilterEvent, type DataTablePageEvent } from 'primevue/datatable'
 import Column from 'primevue/column'
 import InputText from 'primevue/inputtext'
 import InputIcon from 'primevue/inputicon'
@@ -131,31 +149,40 @@ import { RouterEnum } from '@/enum/router.enum'
 import { type NewWeapon, useWeaponStore } from '@/stores/weapon'
 import { useRouter } from 'vue-router'
 import TableTitleComponent from '@/components/__table/TableTitleComponent.vue'
+import { storeToRefs } from 'pinia'
+import type { RiffleDto } from '@/api/Api'
+import { useI18n } from 'vue-i18n'
 
 const { category } = defineProps<{
   category: string
 }>()
 const store = useRiffleStore()
 const i18nPrefix = store.getI18NPrefix
+const { t } = useI18n()
 const factoryStore = useFactoryStore()
-const { data: weaponFoctory$ } = factoryStore.getFactoriesByType('weapon')
 const caliberStore = useCaliberStore()
+const weaponStore = useWeaponStore()
+const { queryFilters$ } = storeToRefs(store)
+const router = useRouter()
+onBeforeMount(() => {
+  queryFilters$.value.category = category
+})
+const { data: weaponFactory$ } = factoryStore.getFactoriesByType('weapon')
+
 const { data: calibers$ } = caliberStore.getAll()
 const currentCategory = ref<string>(category)
-const {
-  data: riffles$,
-  isLoading: datasIsloading,
-  isError,
-  refetch
-} = store.getAllByCategory(currentCategory)
+const { data, isLoading: datasIsloading, isError, refetch } = store.getAll()
 
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-  'factory.name': { value: null, matchMode: FilterMatchMode.EQUALS },
-  'caliber.name': { value: null, matchMode: FilterMatchMode.EQUALS },
+  factory: { value: null, matchMode: FilterMatchMode.EQUALS },
+  caliber: { value: null, matchMode: FilterMatchMode.EQUALS },
   reference: { value: null, matchMode: FilterMatchMode.STARTS_WITH }
 })
+const globalFilterFields = ['name', 'factory', 'caliber', 'reference']
+const rowsPerPageOptions = [10, 20, 50]
+const filterDisplay = 'menu'
 watch(
   () => category,
   (newCategory) => {
@@ -165,7 +192,6 @@ watch(
     }
   }
 )
-const router = useRouter()
 
 const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
   switch (event) {
@@ -182,9 +208,9 @@ const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
       break
   }
 }
-const weaponStore = useWeaponStore()
+
 const onEditAction = (id: number) => {
-  const currentWeapon = riffles$.value?.data.find((r) => r.id === id)
+  const currentWeapon = data.value?.data.find((r: RiffleDto) => r.id === id)
   if (currentWeapon) {
     const data: NewWeapon = {
       category: currentWeapon.category,
@@ -192,6 +218,19 @@ const onEditAction = (id: number) => {
     }
     weaponStore.setOptions(data)
   }
+}
+const onFilterChange = (event: DataTableFilterEvent) => {
+  const activeFilters = Object.fromEntries(
+    Object.entries(event.filters).map(([key, meta]: any) => [key, meta.value])
+  )
+  queryFilters$.value.factoryId = activeFilters.factory
+  queryFilters$.value.caliberId = activeFilters.caliber
+  queryFilters$.value.name = activeFilters.name
+  queryFilters$.value.reference = activeFilters.reference
+}
+const onPageChange = (event: DataTablePageEvent) => {
+  queryFilters$.value.offset = event.first
+  queryFilters$.value.limit = event.rows
 }
 </script>
 

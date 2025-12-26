@@ -2,8 +2,8 @@ import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
 import { useToastStore } from '@/stores/toast'
 import { useMutation, useQuery } from '@tanstack/vue-query'
-import type { CreateHandGunDto, HandGunDto, UpdateHandGunDto } from '@/api/Api'
-import { type Ref, ref } from 'vue'
+import type { CreateHandGunDto, HandGunDto, HandGunFilter, UpdateHandGunDto } from '@/api/Api'
+import { ref } from 'vue'
 import { getI18NPrefix, I18NSuffix } from '@/enum/I18NSuffix.enum'
 import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
@@ -15,6 +15,8 @@ import { getBarrelTypeDto } from '@/shared/api-dto/get-barrel-type.dto'
 import { getPercussionTypeDto } from '@/shared/api-dto/get-percussion-type.dto'
 import { getTriggerTypeDto } from '@/shared/api-dto/get-trigger-type.dto'
 import { getPriceHistoryDto } from '@/shared/api-dto/get-price-history.dto'
+import { buildHandGunFilter } from '@/shared/api-dto/query-filters.builder'
+import type { GetAllHandgunResponse } from '@/types/api-response.type'
 
 export const useHandGunStore = defineStore('hand-gun-store', () => {
   // Appel API
@@ -25,12 +27,9 @@ export const useHandGunStore = defineStore('hand-gun-store', () => {
 
   // Refs
   const mutationSuccess = ref(false)
-  const handguns = ref<HandGunDto[]>([])
-  const handgun = ref<HandGunDto | null>(null)
-
+  const queryFilters = ref<HandGunFilter>({ ...buildHandGunFilter() })
   // Private Attibute
   const _I18N_PREFIX = 'handgun'
-  const _GET_ALL_BY_CATEGORY_FN = 'getAllHandGunByCategory'
   const _GET_ALL_FN = 'getAllHandGun'
   const _GET_BY_ID_FN = 'getHandGunById'
   // *******************Methodes***************
@@ -52,45 +51,39 @@ export const useHandGunStore = defineStore('hand-gun-store', () => {
     }
   })
 
-  const getAllHandGunByCategoryQuery = (category: Ref<string>) =>
-    useQuery({
-      queryKey: [_GET_ALL_BY_CATEGORY_FN, category.value],
+  const getAllHandgunQuery = () =>
+    useQuery<GetAllHandgunResponse>({
+      queryKey: [_GET_ALL_FN, queryFilters],
       queryFn: async () => {
-        const res = await api.api.handGunControllerFindAllByCategory(category.value)
-        handguns.value = res.data
-        return res
+        return _fetchAll(queryFilters.value)
       },
-      enabled: !!category.value
+      enabled: !!queryFilters.value,
+      retry: 0,
+      placeholderData: (old) => old
     })
 
-  const _getAllHandgunQuery = useQuery({
-    queryKey: [_GET_ALL_FN],
-    queryFn: async () => {
-      return await api.api.handGunControllerFindAll()
-    }
-  })
-
-  const getAllFunction = () => {
-    return _getAllHandgunQuery.data.value?.data ?? []
+  const _fetchAll = async (filters: HandGunFilter): Promise<GetAllHandgunResponse> => {
+    if (!filters) return null
+    const res = await api.api.handGunControllerFindAll({ filters })
+    return res.data
   }
 
   const getByIdQuery = (id?: string) =>
     useQuery({
       queryKey: [_GET_BY_ID_FN, id],
-      queryFn: () => _fetchById(id),
+      queryFn: async () => _fetchById(id),
       enabled: !!id,
       retry: 0
     })
 
-  const _fetchById = async (id?: string) => {
+  const _fetchById = async (id?: string): Promise<HandGunDto | null> => {
     if (!id) {
       return null
     }
     const res = await api.api.handGunControllerFindById(parseInt(id))
-    handgun.value = res.data
-
     return res.data
   }
+
   const _deleteMutation = useMutation({
     mutationFn: async (opticId: number) => {
       return await api.api.handGunControllerDelete(opticId)
@@ -160,11 +153,9 @@ export const useHandGunStore = defineStore('hand-gun-store', () => {
   return {
     formBuilder: useHandGunForm,
     delete: deleteFunction,
-    getAllByCategory: getAllHandGunByCategoryQuery,
     getHandGunById: getByIdQuery,
-    handgun$: handgun,
-    getAll: getAllFunction,
-    handguns$: handguns,
-    getI18NPrefix: getI18NPrefix(_I18N_PREFIX)
+    getAll: getAllHandgunQuery,
+    getI18NPrefix: getI18NPrefix(_I18N_PREFIX),
+    queryFilters$: queryFilters
   }
 })
