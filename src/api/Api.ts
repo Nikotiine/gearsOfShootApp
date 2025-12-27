@@ -1598,6 +1598,15 @@ export interface UpdateItemStatusDto {
   status: string
 }
 
+export interface NewItemsDto {
+  name: string
+  price: number
+  id: number
+  type: string
+  sub: string
+  factory: string
+}
+
 export enum WeaponTypeDtoTypeEnum {
   Handgun = 'handgun',
   Riffle = 'riffle'
@@ -1767,7 +1776,7 @@ export class HttpClient<SecurityDataType = unknown> {
 
 /**
  * @title Gears of shoot
- * @version 0.3.2
+ * @version 0.3.3
  * @contact
  *
  * Gears of shoot API
@@ -4002,6 +4011,22 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
         body: data,
         secure: true,
         type: ContentType.Json,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne la liste des nouveaux objets mis en vente
+     *
+     * @tags Dashboard
+     * @name DashboardControllerGetAllNewArticles
+     * @summary Get all nouveaux article
+     * @request GET:/api/dashboard
+     */
+    dashboardControllerGetAllNewArticles: (params: RequestParams = {}) =>
+      this.request<NewItemsDto[], any>({
+        path: `/api/dashboard`,
+        method: 'GET',
         format: 'json',
         ...params
       })

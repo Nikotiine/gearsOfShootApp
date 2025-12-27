@@ -661,5 +661,8 @@
     "name": "Statut de la commande",
     "warning": "Attention, cette commande est en deja marque comme recue, voulez vous continuer ?",
     "placeholder": "Choisir un status"
+  },
+  "publicDashboard": {
+    "news": "Nouveautes"
   }
 }
