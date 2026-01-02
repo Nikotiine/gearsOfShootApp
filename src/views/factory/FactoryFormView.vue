@@ -42,7 +42,7 @@ import Textarea from 'primevue/textarea'
 
 import InputGroup from 'primevue/inputgroup'
 import { useFactoryStore } from '@/stores/factory.store'
-import { computed, ref, watch, watchEffect } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import InputGroupText from '@/components/__form/InputGroupText.vue'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'

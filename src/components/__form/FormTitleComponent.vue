@@ -9,6 +9,7 @@ import { useI18n } from 'vue-i18n'
 import { useFormStore } from '@/stores/form.store'
 import type { FormStatus } from '@/types/form-status.type'
 import { computed } from 'vue'
+
 const formStore = useFormStore()
 const formStatus: FormStatus = formStore.getFormStatus()
 const { i18nPrefix = 'global.', customStatus = undefined } = defineProps<{

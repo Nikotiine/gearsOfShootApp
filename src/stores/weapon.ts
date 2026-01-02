@@ -1,20 +1,5 @@
 import { defineStore } from 'pinia'
-import {
-  type CaliberDto,
-  type ColorDto,
-  type FactoryDto,
-  type LegislationCategoryDto,
-  type MaterialDto,
-  type MLockOptionDto,
-  type OpticReadyPlateDto,
-  type PercussionTypeDto,
-  type RailSizeDto,
-  type ThreadedSizeDto,
-  type WeaponBarrelTypeDto,
-  type WeaponTriggerTypeDto,
-  type WeaponTypeDto,
-  WeaponTypeDtoTypeEnum
-} from '@/api/Api'
+import { type LegislationCategoryDto, type WeaponTypeDto, WeaponTypeDtoTypeEnum } from '@/api/Api'
 
 import { ref } from 'vue'
 //TODO: Supprimer ce store

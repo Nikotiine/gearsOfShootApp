@@ -23,6 +23,7 @@ import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.v
 import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
 import { useOpticRailStore } from '@/stores/optic-rail.store'
 import { computed, ref, watch } from 'vue'
+
 const {
   initialValue = 0,
   disabled = false,

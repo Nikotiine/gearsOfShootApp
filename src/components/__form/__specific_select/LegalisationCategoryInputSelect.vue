@@ -23,6 +23,7 @@ import InputGroup from 'primevue/inputgroup'
 import { computed, ref, watch } from 'vue'
 import { useLegalisationCategoryStore } from '@/stores/legalisation-category.store'
 import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.vue'
+
 const {
   initialValue = 0,
   required = false,

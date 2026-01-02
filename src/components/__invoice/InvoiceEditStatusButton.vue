@@ -33,6 +33,7 @@ import OrderEditStatusModal, {
   type OrderEditStatusModalExposed
 } from '@/components/__modal/OrderEditStatusModal.vue'
 import { useInvoiceStore } from '@/stores/invoice.store'
+
 const store = useInvoiceStore()
 const { currentStatus, itemId } = defineProps<{
   currentStatus: string

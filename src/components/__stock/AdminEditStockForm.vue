@@ -40,6 +40,7 @@ import { useI18n } from 'vue-i18n'
 
 import { computed } from 'vue'
 import Button from 'primevue/button'
+
 const { t } = useI18n()
 const store = useStockStore()
 const { form, submit } = store.formBuilder()

@@ -17,7 +17,7 @@ import IftaLabel from 'primevue/iftalabel'
 import InputText from 'primevue/inputtext'
 import { useI18n } from 'vue-i18n'
 import { computed, ref, watch } from 'vue'
-import { useFormStore } from '@/stores/form.store'
+
 const requiredLabel: string = '(*)'
 
 const {

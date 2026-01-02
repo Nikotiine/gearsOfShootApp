@@ -142,9 +142,7 @@ import Select from 'primevue/select'
 import IconField from 'primevue/iconfield'
 import { useFactoryStore } from '@/stores/factory.store'
 import { useCaliberStore } from '@/stores/caliber.store'
-import ActionMenuComponent, {
-  type ActionMenuEmit
-} from '@/components/__table/ActionMenuComponent.vue'
+import ActionMenuComponent, { type ActionMenuEmit } from '@/components/__table/ActionMenuComponent.vue'
 import { RouterEnum } from '@/enum/router.enum'
 import { type NewWeapon, useWeaponStore } from '@/stores/weapon'
 import { useRouter } from 'vue-router'

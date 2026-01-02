@@ -1,7 +1,5 @@
 // axios.interceptor.ts
 import axios from 'axios'
-import { useRouter } from 'vue-router'
-import { RouterEnum } from '@/enum/router.enum'
 
 // Créer une instance Axios avec une configuration de base
 const axiosInstance = axios.create({

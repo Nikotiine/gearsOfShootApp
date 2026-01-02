@@ -14,6 +14,9 @@ export const getPriceHistoryDto = (): CreatePriceHistoryDto => {
       country: '',
       siret: '',
       phoneNumber: ''
-    }
+    },
+    discountedPrice: 0,
+    isDiscounted: false,
+    precentOfDiscount: 0
   }
 }

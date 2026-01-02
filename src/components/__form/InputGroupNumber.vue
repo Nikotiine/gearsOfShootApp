@@ -14,6 +14,7 @@
         @update:modelValue="onChange"
         :invalid="isInvalid"
         :disabled="disabled"
+        :readonly="readonly"
       />
       <label :for="inputId">{{ t(i18nPrefix + label) + isRequiredInput }}</label>
     </IftaLabel>
@@ -46,7 +47,8 @@ const {
   placeholder = 'defaultPlaceHolder',
   i18nPrefix = 'global.',
   addOn = null,
-  hideIcon = false
+  hideIcon = false,
+  readonly = false
 } = defineProps<{
   min?: number
   i18nPrefix?: string
@@ -60,6 +62,7 @@ const {
   initialValue?: number
   addOn?: NumberFormatterType
   hideIcon?: boolean
+  readonly?: boolean
 }>()
 
 const value = ref(initialValue)

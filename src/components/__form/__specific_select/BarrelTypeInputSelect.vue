@@ -22,6 +22,7 @@ import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.v
 import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
 import InputGroup from 'primevue/inputgroup'
 import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.vue'
+
 const store = useBarrelTypeStore()
 const { initialValue = 0, required = false } = defineProps<{
   initialValue?: number

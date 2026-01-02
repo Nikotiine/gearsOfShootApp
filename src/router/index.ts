@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import { RouterEnum } from '@/enum/router.enum'
 import { WeaponEnum } from '@/enum/weapon.enum'
-import { adminGuard } from '@/router/guards/admin.guard'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

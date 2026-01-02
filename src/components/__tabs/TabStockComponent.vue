@@ -40,6 +40,7 @@ import { DateFormatter } from '@/shared/utils/formatter.utils'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import { useI18n } from 'vue-i18n'
+
 const { stock } = defineProps<{
   stock: StockDto | null
 }>()

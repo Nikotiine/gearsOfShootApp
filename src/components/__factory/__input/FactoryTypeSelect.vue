@@ -22,8 +22,8 @@ import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.v
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
 import InputGroup from 'primevue/inputgroup'
-import { useI18n } from 'vue-i18n'
 import { FactoryTypeFormatter } from '@/shared/utils/formatter.utils'
+
 const store = useFactoryStore()
 const { data } = store.getFactoryTypes()
 const { initialValue = 0, required = false } = defineProps<{

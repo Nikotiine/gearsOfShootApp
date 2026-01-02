@@ -3,10 +3,10 @@ import { useApiStore } from '@/stores/api'
 import { useRouter } from 'vue-router'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import type {
-  SoundNoiseReducerDto,
   CreateSoundNoiseReducerDto,
-  UpdateSoundNoiseReducerDto,
-  SoundNoiseFilter
+  SoundNoiseFilter,
+  SoundNoiseReducerDto,
+  UpdateSoundNoiseReducerDto
 } from '@/api/Api'
 
 import { useFormHandler } from '@/shared/useFormHandler'

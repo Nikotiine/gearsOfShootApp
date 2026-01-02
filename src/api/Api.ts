@@ -252,6 +252,9 @@ export interface CreatePriceHistoryDto {
   recommendedSalePrice: number
   currentSalePrice: number
   supplier: SupplierDto
+  isDiscounted: boolean
+  discountedPrice: number
+  precentOfDiscount: number
 }
 
 export interface UserDto {
@@ -1049,6 +1052,9 @@ export interface PriceHistoryDto {
   recommendedSalePrice: number
   currentSalePrice: number
   supplier: SupplierDto
+  isDiscounted: boolean
+  discountedPrice: number
+  precentOfDiscount: number
   objectId: number
   object: string
   id: number
@@ -1277,6 +1283,7 @@ export interface OpticDto {
   updatedAt: string
   stock: StockDto | null
   reference: string
+  isDiscounted: boolean
 }
 
 export interface CreateOpticDto {
@@ -1605,6 +1612,19 @@ export interface NewItemsDto {
   type: string
   sub: string
   factory: string
+  discountedPrice: number
+}
+
+export interface DiscountedItemDto {
+  name: string
+  price: number
+  id: number
+  type: string
+  sub: string
+  factory: string
+  discountedPrice: number
+  isDiscounted: boolean
+  precentOfDiscount: number
 }
 
 export enum WeaponTypeDtoTypeEnum {
@@ -1622,13 +1642,7 @@ export enum CreateUserDtoRoleEnum {
   ADMIN = 'ADMIN'
 }
 
-import type {
-  AxiosInstance,
-  AxiosRequestConfig,
-  AxiosResponse,
-  HeadersDefaults,
-  ResponseType
-} from 'axios'
+import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, HeadersDefaults, ResponseType } from 'axios'
 import axios from 'axios'
 
 export type QueryParamsType = Record<string | number, any>
@@ -4021,11 +4035,27 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @tags Dashboard
      * @name DashboardControllerGetAllNewArticles
      * @summary Get all nouveaux article
-     * @request GET:/api/dashboard
+     * @request GET:/api/dashboard/new
      */
     dashboardControllerGetAllNewArticles: (params: RequestParams = {}) =>
       this.request<NewItemsDto[], any>({
-        path: `/api/dashboard`,
+        path: `/api/dashboard/new`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne la liste des discounts mis en vente
+     *
+     * @tags Dashboard
+     * @name DashboardControllerGetAllDiscountedItems
+     * @summary Get all discounts
+     * @request GET:/api/dashboard/discount
+     */
+    dashboardControllerGetAllDiscountedItems: (params: RequestParams = {}) =>
+      this.request<DiscountedItemDto[], any>({
+        path: `/api/dashboard/discount`,
         method: 'GET',
         format: 'json',
         ...params

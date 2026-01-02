@@ -16,6 +16,7 @@ import { useOpticReadyPlateStore } from '@/stores/optic-ready-plate.store'
 import InputGroupMultiSelect from '@/components/__form/InputGroupMultiSelect.vue'
 import { ref, watch } from 'vue'
 import type { OpticReadyPlateDto } from '@/api/Api'
+
 const {
   initialValue = [],
   clear = false,

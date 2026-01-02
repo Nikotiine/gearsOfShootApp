@@ -1,5 +1,5 @@
 import { useI18n } from 'vue-i18n'
-import type { FactoryDto, FactoryTypeDto, FocalPlaneDto } from '@/api/Api'
+import type { FactoryTypeDto, FocalPlaneDto } from '@/api/Api'
 
 export type NumberFormatterType =
   | 'mm'

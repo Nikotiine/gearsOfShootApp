@@ -2,12 +2,7 @@ import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
 import { useToastStore } from '@/stores/toast'
 import { useMutation, useQuery } from '@tanstack/vue-query'
-import type {
-  CreateOpticCollarDto,
-  OpticCollarDto,
-  OpticCollarFilter,
-  UpdateOpticCollarDto
-} from '@/api/Api'
+import type { CreateOpticCollarDto, OpticCollarDto, OpticCollarFilter, UpdateOpticCollarDto } from '@/api/Api'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { RouterEnum } from '@/enum/router.enum'

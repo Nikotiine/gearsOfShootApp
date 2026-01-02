@@ -1,13 +1,14 @@
 <template>
   <div class="card mt-4">
-    <h3 class="text-2xl text-center text-blue-500">{{ t(i18nPrefix + 'news') }}</h3>
+    <h3 class="text-2xl text-center text-blue-500">{{ t(i18nPrefix + 'discounted') }}</h3>
     <Carousel
       :value="items"
-      :numVisible="2"
+      :numVisible="3"
       :numScroll="1"
       :responsiveOptions="responsiveOptions$"
-      circular
-      :autoplayInterval="interval"
+      :circular="items.length > 3"
+      :autoplayInterval="items.length > 3 ? interval : null"
+      show-indicators
     >
       <template #item="slotProps">
         <div class="border border-surface-200 dark:border-surface-700 rounded m-2 p-4">
@@ -20,6 +21,10 @@
             </div>
             <div class="mt-0 font-medium text-red-300">
               {{ t('global.model') }}: {{ slotProps.data.name }}
+            </div>
+            <div class="mt-0 font-medium ml-auto">
+              {{ t(i18nPrefix + 'precentOfDiscount') }}
+              {{ NumberFormatter(slotProps.data.precentOfDiscount, 'percent') }}
             </div>
           </div>
 
@@ -34,7 +39,7 @@
               >
                 {{ t('global.price') }}: {{ NumberFormatter(slotProps.data.price, 'euro') }}
               </div>
-              <div class="mt-0 font-semibold text-xl" v-if="slotProps.data.discountedPrice">
+              <div class="mt-0 font-semibold text-xl">
                 {{ t('priceHistory.discountedPrice') }}:
                 {{ NumberFormatter(slotProps.data.discountedPrice, 'euro') }}
               </div>
@@ -56,10 +61,10 @@
 </template>
 <script setup lang="ts">
 import { usePublicDashboardStore } from '@/stores/public-dashboard.store'
+import { useI18n } from 'vue-i18n'
+import { computed } from 'vue'
 import Carousel from 'primevue/carousel'
 import Button from 'primevue/button'
-import { computed } from 'vue'
-import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { NumberFormatter } from '@/shared/utils/formatter.utils'
 import type { RoutableObjectType } from '@/types/routable.type'
@@ -67,10 +72,10 @@ import type { RoutableObjectType } from '@/types/routable.type'
 const store = usePublicDashboardStore()
 const i18nPrefix = store.getI18NPrefix
 const { t } = useI18n()
-const { data } = store.getAllNewItems()
-const interval: number = 10000
-
+const { data } = store.getAllDiscountItems()
 const { responsiveOptions$ } = storeToRefs(store)
+
+const interval: number = 10000
 const items = computed(() => {
   return data.value?.filter(Boolean) ?? []
 })
