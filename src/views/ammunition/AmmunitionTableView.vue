@@ -175,9 +175,7 @@ import { FilterMatchMode } from '@primevue/core/api'
 import { useI18n } from 'vue-i18n'
 import { RouterEnum } from '@/enum/router.enum'
 import { useRouter } from 'vue-router'
-import ActionMenuComponent, {
-  type ActionMenuEmit
-} from '@/components/__table/ActionMenuComponent.vue'
+import ActionMenuComponent, { type ActionMenuEmit } from '@/components/__table/ActionMenuComponent.vue'
 import TableTitleComponent from '@/components/__table/TableTitleComponent.vue'
 import InvoiceAddItemComponent from '@/components/__invoice/InvoiceAddItemComponent.vue'
 import { storeToRefs } from 'pinia'

@@ -30,6 +30,11 @@
         {{ NumberFormatter(data.currentSalePrice, 'euro') }}
       </template>
     </Column>
+    <Column :header="t('priceHistory.discountedPrice')">
+      <template #body="{ data }">
+        {{ NumberFormatter(data.discountedPrice, 'euro') }}
+      </template>
+    </Column>
     <Column field="createdBy.lastName" :header="t('auditInfo.createdBy')">
       <template #body="{ data }">
         {{ data.createdBy ? data.createdBy.lastName : t('global.notRegistered') }} -
@@ -48,6 +53,7 @@ import Column from 'primevue/column'
 import DataTable from 'primevue/datatable'
 import type { PriceableObjectType } from '@/types/priceable-object.type'
 import { usePriceHistoryStore } from '@/stores/price-history.store'
+
 const { t } = useI18n()
 const store = usePriceHistoryStore()
 const { price, id, type } = defineProps<{

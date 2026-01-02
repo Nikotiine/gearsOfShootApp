@@ -17,6 +17,7 @@ import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import { useWeaponTypeStore } from '@/stores/weapon-type.store'
 import { useI18n } from 'vue-i18n'
+
 const { t } = useI18n()
 const store = useWeaponTypeStore()
 const { data, isSuccess, isLoading } = store.getAll()

@@ -8,6 +8,7 @@ import Button from 'primevue/button'
 import { useI18n } from 'vue-i18n'
 import type { FormStatus } from '@/types/form-status.type'
 import { useFormStore } from '@/stores/form.store'
+
 const { t } = useI18n()
 const formStore = useFormStore()
 const status: FormStatus = formStore.getFormStatus()

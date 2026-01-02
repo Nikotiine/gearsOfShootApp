@@ -52,11 +52,7 @@
 import { useSoundReducerStore } from '@/stores/sound-noise-reducer.store'
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
-import {
-  BooleanFormatter,
-  NumberFormatter,
-  VerifyFieldIsNotNull
-} from '@/shared/utils/formatter.utils'
+import { BooleanFormatter, NumberFormatter, VerifyFieldIsNotNull } from '@/shared/utils/formatter.utils'
 import TabPanels from 'primevue/tabpanels'
 import Tab from 'primevue/tab'
 import TabCardComponent from '@/components/__tabs/TabCardComponent.vue'

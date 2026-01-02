@@ -18,7 +18,6 @@ import InvoiceDetailComponent from '@/components/__invoice/InvoiceDetailComponen
 import { useOpticCollarStore } from '@/stores/optic-collar.store'
 import { useWeaponMagazineStore } from '@/stores/weapon-magazine.store'
 import { useAmmunitionStore } from '@/stores/ammunition.store'
-import { useFactoryStore } from '@/stores/factory.store'
 import { useSoundReducerStore } from '@/stores/sound-noise-reducer.store'
 import { useOpticStore } from '@/stores/optic.store'
 import { useInvoiceStore } from '@/stores/invoice.store'
@@ -26,6 +25,7 @@ import { useRiffleStore } from '@/stores/riffle.store'
 import { useHandGunStore } from '@/stores/hand-gun.store'
 import { useBreadcrumbStore } from '@/stores/breadcrumb.store'
 import { useI18n } from 'vue-i18n'
+
 const route = useRoute()
 const breadcrumbStore = useBreadcrumbStore()
 const { t } = useI18n()

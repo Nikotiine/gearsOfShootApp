@@ -11,9 +11,10 @@ import type { MenuItem } from 'primevue/menuitem'
 import { ref } from 'vue'
 import { useConnexionStore } from '@/stores/connexion'
 import { useRegisterStore } from '@/stores/register'
+import { useI18n } from 'vue-i18n'
+
 const connexionStore = useConnexionStore()
 const registerStore = useRegisterStore()
-import { useI18n } from 'vue-i18n'
 const { t, locale } = useI18n()
 const items: MenuItem = ref([
   {

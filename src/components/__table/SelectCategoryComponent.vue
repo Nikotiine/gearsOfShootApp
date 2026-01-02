@@ -28,6 +28,7 @@ import { useLegalisationCategoryStore } from '@/stores/legalisation-category.sto
 import { ref } from 'vue'
 import Button from 'primevue/button'
 import { useI18n } from 'vue-i18n'
+
 const { t } = useI18n()
 const weaponCategoryStore = useLegalisationCategoryStore()
 const { data: categories$ } = weaponCategoryStore.getAll()

@@ -41,6 +41,7 @@ import Column from 'primevue/column'
 import { DateFormatter, NumberFormatter } from '@/shared/utils/formatter.utils'
 import { useI18n } from 'vue-i18n'
 import { GetClassTextColorByQuantity } from '@/shared/utils/colors.utils'
+
 const store = useStockStore()
 const { stockAndHistories } = storeToRefs(store)
 const { t } = useI18n()

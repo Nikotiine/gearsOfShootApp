@@ -1,14 +1,16 @@
-<script setup lang="ts">
-import { useUserStore } from '@/stores/user.store'
-
-const store = useUserStore()
-</script>
-
 <template>
   <main>
     <div class="">
-      <h1 class="text-2xl text-center">Gears of shoot</h1>
-      <p v-if="store.getUser">{{ store.getUser.value?.firstName }}</p>
+      <h1 class="text-2xl text-center mt-2">{{ t('app.title') }}</h1>
     </div>
+    <new-item-carousel />
+    <discount-item-carousel />
   </main>
 </template>
+<script setup lang="ts">
+import NewItemCarousel from '@/components/__dashboard/new-item-carousel.vue'
+import { useI18n } from 'vue-i18n'
+import DiscountItemCarousel from '@/components/__dashboard/discount-item-carousel.vue'
+
+const { t } = useI18n()
+</script>

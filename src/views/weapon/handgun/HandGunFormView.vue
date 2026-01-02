@@ -326,7 +326,8 @@ import PercussionTypeInputSelect from '@/components/__form/__specific_select/Per
 import BarrelTypeInputSelect from '@/components/__form/__specific_select/BarrelTypeInputSelect.vue'
 import ColorInputSelect from '@/components/__form/__specific_select/ColorInputSelect.vue'
 import MaterialInputSelect from '@/components/__form/__specific_select/MaterialInputSelect.vue'
-import OpticReadyPlateInputMulitSelect from '@/components/__form/__specific_mullti_select/OpticReadyPlateInputMulitSelect.vue'
+import OpticReadyPlateInputMulitSelect
+  from '@/components/__form/__specific_mullti_select/OpticReadyPlateInputMulitSelect.vue'
 import ThreadedSizeInputSelect from '@/components/__form/__specific_select/ThreadedSizeInputSelect.vue'
 import TriggerTypeInputSelect from '@/components/__form/__specific_select/TriggerTypeInputSelect.vue'
 import { WeaponEnum } from '@/enum/weapon.enum'

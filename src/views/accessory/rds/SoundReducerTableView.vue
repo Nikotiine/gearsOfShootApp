@@ -136,9 +136,7 @@ import InputIcon from 'primevue/inputicon'
 import Column from 'primevue/column'
 import DataTable, { type DataTableFilterEvent, type DataTablePageEvent } from 'primevue/datatable'
 import IconField from 'primevue/iconfield'
-import ActionMenuComponent, {
-  type ActionMenuEmit
-} from '@/components/__table/ActionMenuComponent.vue'
+import ActionMenuComponent, { type ActionMenuEmit } from '@/components/__table/ActionMenuComponent.vue'
 import { ref } from 'vue'
 import { FilterMatchMode } from '@primevue/core/api'
 import { RouterEnum } from '@/enum/router.enum'

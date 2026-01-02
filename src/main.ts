@@ -10,11 +10,12 @@ import ToastService from 'primevue/toastservice'
 import ConfirmationService from 'primevue/confirmationservice'
 import Aura from '@primevue/themes/aura'
 import i18n from '@/i18n'
-const app = createApp(App)
 import axiosInstance from '../axios.interceptor'
 import Tooltip from 'primevue/tooltip'
 import KeyFilter from 'primevue/keyfilter'
 import { capitalizeDirective } from '@/directive/capitalize.directive'
+
+const app = createApp(App)
 
 app.directive('tooltip', Tooltip)
 app.directive('keyfilter', KeyFilter)

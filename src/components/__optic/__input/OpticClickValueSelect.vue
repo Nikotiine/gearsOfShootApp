@@ -21,6 +21,7 @@ import InputGroup from 'primevue/inputgroup'
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 import { computed, ref, watch } from 'vue'
 import { useOpticClickValueStore } from '@/stores/optic-click-value.store'
+
 const { initialValue, opticUnit } = defineProps<{
   initialValue: number
   opticUnit: OpticUnitDto

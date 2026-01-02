@@ -62,6 +62,7 @@ import TabPanel from 'primevue/tabpanel'
 import AuditInfoComponent from '@/components/__detail/AuditInfoComponent.vue'
 import TabPriceComponent from '@/components/__tabs/TabPriceComponent.vue'
 import TabStockComponent from '@/components/__tabs/TabStockComponent.vue'
+
 const { t } = useI18n()
 const { id } = defineProps<{
   id: string

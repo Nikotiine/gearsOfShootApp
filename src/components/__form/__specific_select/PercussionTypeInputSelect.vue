@@ -19,6 +19,7 @@ import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
 import InputGroup from 'primevue/inputgroup'
 import { computed, ref, watch } from 'vue'
 import { usePercussionTypeStore } from '@/stores/percussion-type'
+
 const { initialValue = 0, required = false } = defineProps<{
   initialValue?: number
   required?: boolean

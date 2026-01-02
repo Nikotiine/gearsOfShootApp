@@ -40,6 +40,7 @@ import { useThreadedSizeStore } from '@/stores/threaded-size.store'
 import { useWeaponTypeStore } from '@/stores/weapon-type.store'
 import { useI18n } from 'vue-i18n'
 import type { FormStatus } from '@/types/form-status.type'
+
 const { t } = useI18n()
 const route = useRoute()
 const breadcrumbStore = useBreadcrumbStore()

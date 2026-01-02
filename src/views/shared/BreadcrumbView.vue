@@ -9,7 +9,6 @@
   </Breadcrumb>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue'
 import Breadcrumb from 'primevue/breadcrumb'
 import { type BreadCrumbState, useBreadcrumbStore } from '@/stores/breadcrumb.store'
 import { storeToRefs } from 'pinia'

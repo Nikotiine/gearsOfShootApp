@@ -21,6 +21,7 @@ import InputGroupAddon from 'primevue/inputgroupaddon'
 import Checkbox from 'primevue/checkbox'
 import { useI18n } from 'vue-i18n'
 import { computed, ref, watch } from 'vue'
+
 export type CheckboxSize = 'small' | 'medium' | 'large'
 const { t } = useI18n()
 const checkedTextColor: string = 'text-slate-500'

@@ -2,6 +2,9 @@
   "language": {
     "label": "Langage"
   },
+  "app": {
+    "title": "Le Sommelier"
+  },
   "topbar": {
     "sportShooting": "Tir sportif",
     "recreationalShooting": "Tir de loisir",
@@ -189,6 +192,7 @@
   },
   "riffle": {
     "list": "Listes des armes longues de categorie : {key}",
+    "detail": "Detail",
     "save": "Ajouter une arme longue",
     "summary": "Gestion des armes longues",
     "model": "Modele de l'arme",
@@ -503,7 +507,10 @@
     "notFound": "Aucun prix enregistré",
     "histories": "Historique des prix",
     "supplier": "Fournisseur",
-    "addToInvoice": "Commander"
+    "addToInvoice": "Commander",
+    "isDiscounted": "En promo ?",
+    "precentOfDiscount": "Pourcentage de reduction",
+    "discountedPrice": "Prix apres remise"
   },
   "stock": {
     "quantity": "Quantite actuelle en stock",
@@ -661,5 +668,10 @@
     "name": "Statut de la commande",
     "warning": "Attention, cette commande est en deja marque comme recue, voulez vous continuer ?",
     "placeholder": "Choisir un status"
+  },
+  "publicDashboard": {
+    "news": "Nouveautes",
+    "discounted": "En Promo",
+    "precentOfDiscount": "Reduction de :"
   }
 }

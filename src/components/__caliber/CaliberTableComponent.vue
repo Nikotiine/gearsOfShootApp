@@ -17,6 +17,7 @@ import { useCaliberStore } from '@/stores/caliber.store'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import { useI18n } from 'vue-i18n'
+
 const { t } = useI18n()
 const store = useCaliberStore()
 const { data: calibers$, isSuccess, isLoading } = store.getAll()

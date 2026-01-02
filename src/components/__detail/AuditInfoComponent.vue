@@ -19,6 +19,7 @@
 import type { UserDto } from '@/api/Api'
 import { DateFormatter } from '@/shared/utils/formatter.utils'
 import { useI18n } from 'vue-i18n'
+
 const { t } = useI18n()
 const { createdBy, updatedBy, createdAt, updateAt } = defineProps<{
   createdBy?: UserDto

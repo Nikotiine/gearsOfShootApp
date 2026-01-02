@@ -43,6 +43,7 @@ import { RouterEnum } from '@/enum/router.enum'
 import { useI18n } from 'vue-i18n'
 import { useInvoiceStore } from '@/stores/invoice.store'
 import { GetClassTextColorByOrderStatus } from '@/shared/utils/colors.utils'
+
 const { t } = useI18n()
 const store = useInvoiceStore()
 const { data } = store.count()

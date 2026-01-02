@@ -66,24 +66,20 @@
   <RegisterDialog />
 </template>
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-
+import { computed } from 'vue'
 import MegaMenu from 'primevue/megamenu'
 import Button from 'primevue/button'
-
 import SearchInput from '@/components/__layout/SearchInput.vue'
-
 import ConnexionDialog from '@/components/__dialog/ConnexionDialog.vue'
 import { useI18n } from 'vue-i18n'
-
 import RegisterDialog from '@/components/__dialog/RegisterDialog.vue'
-
 import { useSecurityStore } from '@/stores/security.store'
 import ConnexionSplitButton from '@/components/__layout/ConnexionSplitButton.vue'
 import ConnectedSplitButton from '@/components/__layout/ConnectedSplitButton.vue'
 import { useRouter } from 'vue-router'
 import InvoiceButtonComponent from '@/components/__invoice/InvoiceButtonComponent.vue'
 import { useUserStore } from '@/stores/user.store'
+
 const { push } = useRouter()
 const { t } = useI18n()
 const { isLogged } = useSecurityStore()
@@ -168,6 +164,9 @@ const items = computed(() => {
     {
       label: 'sportShooting',
       root: true,
+      command: () => {
+        push('/')
+      },
       items: [
         [
           {

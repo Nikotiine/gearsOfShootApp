@@ -15,6 +15,7 @@ import PriceHistoryModal, {
 } from '@/components/__modal/PriceHistoryModal.vue'
 import { ref } from 'vue'
 import type { PriceableObjectType } from '@/types/priceable-object.type'
+
 const priceHistoryModalRef = ref<PriceHistoryModalExposed | null>(null)
 const { t } = useI18n()
 const { id } = defineProps<{ id: string; type: PriceableObjectType }>()

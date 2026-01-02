@@ -139,13 +139,12 @@ import { useFactoryStore } from '@/stores/factory.store'
 import { useCaliberStore } from '@/stores/caliber.store'
 
 import { RouterEnum } from '@/enum/router.enum'
-import ActionMenuComponent, {
-  type ActionMenuEmit
-} from '@/components/__table/ActionMenuComponent.vue'
+import ActionMenuComponent, { type ActionMenuEmit } from '@/components/__table/ActionMenuComponent.vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import TableTitleComponent from '@/components/__table/TableTitleComponent.vue'
 import { storeToRefs } from 'pinia'
+
 const { category } = defineProps<{
   category: string
 }>()

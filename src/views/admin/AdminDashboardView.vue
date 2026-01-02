@@ -13,7 +13,6 @@ import { useI18n } from 'vue-i18n'
 import StatsWidgetComponent from '@/components/__admin/StatsWidgetComponent.vue'
 
 import RouterWidgetComponent from '@/components/__admin/RouterWidgetComponent.vue'
-import AdminNavbar from '@/components/__admin/AdminNavbar.vue'
 
 const { t } = useI18n()
 </script>

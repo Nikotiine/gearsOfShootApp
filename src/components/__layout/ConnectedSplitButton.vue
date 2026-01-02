@@ -13,6 +13,7 @@ import { ref } from 'vue'
 import { useSecurityStore } from '@/stores/security.store'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user.store'
+
 const { t, locale } = useI18n()
 const { push } = useRouter()
 const { logout } = useSecurityStore()

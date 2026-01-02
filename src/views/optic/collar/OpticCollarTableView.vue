@@ -132,9 +132,7 @@
 </template>
 <script setup lang="ts">
 import { useOpticCollarStore } from '@/stores/optic-collar.store'
-import ActionMenuComponent, {
-  type ActionMenuEmit
-} from '@/components/__table/ActionMenuComponent.vue'
+import ActionMenuComponent, { type ActionMenuEmit } from '@/components/__table/ActionMenuComponent.vue'
 import IconField from 'primevue/iconfield'
 import DataTable, { type DataTableFilterEvent, type DataTablePageEvent } from 'primevue/datatable'
 import InputText from 'primevue/inputtext'
