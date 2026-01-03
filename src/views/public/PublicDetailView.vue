@@ -1,87 +1,62 @@
 <template>
   <component :is="detailComponent" v-if="id" :id="id" :key="id" :isAdminRoute="isAdminRoute" />
 </template>
-<script setup lang="ts">
-import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 
-import { computed, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
+<script setup lang="ts">
+import { PublicRouterEnum } from '@/enum/router/public-router.enum'
 import SoundReducerDetailView from '@/views/accessory/rds/SoundReducerDetailView.vue'
 import AmmunitionDetailView from '@/views/ammunition/AmmunitionDetailView.vue'
-import OpticCollarDetailView from '@/views/optic/collar/OpticCollarDetailView.vue'
 import OpticDetailView from '@/views/optic/OpticDetailView.vue'
 import RiffleDetailView from '@/views/weapon/riffle/RiffleDetailView.vue'
 import HandGunDetailView from '@/views/weapon/handgun/HandGunDetailView.vue'
 import MagazineDetailView from '@/views/weapon/magazine/MagazineDetailView.vue'
-import { useFormStore } from '@/stores/form.store'
-import InvoiceDetailComponent from '@/components/__invoice/InvoiceDetailComponent.vue'
-import { useOpticCollarStore } from '@/stores/optic-collar.store'
 import { useWeaponMagazineStore } from '@/stores/weapon-magazine.store'
 import { useAmmunitionStore } from '@/stores/ammunition.store'
 import { useSoundReducerStore } from '@/stores/sound-noise-reducer.store'
 import { useOpticStore } from '@/stores/optic.store'
-import { useInvoiceStore } from '@/stores/invoice.store'
 import { useRiffleStore } from '@/stores/riffle.store'
 import { useHandGunStore } from '@/stores/hand-gun.store'
+import { computed, type Ref, ref } from 'vue'
+import { useRoute } from 'vue-router'
 import { useBreadcrumbStore } from '@/stores/breadcrumb.store'
-import { useI18n } from 'vue-i18n'
 
 const route = useRoute()
 const breadcrumbStore = useBreadcrumbStore()
-const { t } = useI18n()
-const formStore = useFormStore()
 const id = ref<string | undefined>(route.params.id ? (route.params.id as string) : undefined)
 enum DetailRoute {
-  RDS_DETAIL = AdminRouterEnum.RDS_DETAIL,
-  AMMUNITION_DETAIL = AdminRouterEnum.AMMUNITION_DETAIL,
-  OPTIC_COLLAR_DETAIL = AdminRouterEnum.OPTIC_COLLAR_DETAIL,
-  OPTIC_DETAIL = AdminRouterEnum.OPTIC_DETAIL,
-  RIFFLE_DETAIL = AdminRouterEnum.ADMIN_RIFFLE_DETAIL,
-  HANDGUN_DETAIL = AdminRouterEnum.ADMIN_HANDGUN_DETAIL,
-  MAGAZINE_DETAIL = AdminRouterEnum.MAGAZINE_DETAIL,
-  INVOICE_DETAIL = AdminRouterEnum.INVOICE_DETAIL
+  RDS_DETAIL = PublicRouterEnum.PUBLIC_RDS_DETAIL,
+  AMMUNITION_DETAIL = PublicRouterEnum.PUBLIC_AMMUNITION_DETAIL,
+  //OPTIC_COLLAR_DETAIL = PublicRouterEnum.PUBLIC_OPTIC_DETAIL,
+  OPTIC_DETAIL = PublicRouterEnum.PUBLIC_OPTIC_DETAIL,
+  RIFFLE_DETAIL = PublicRouterEnum.PUBLIC_RIFFLE_DETAIL,
+  HANDGUN_DETAIL = PublicRouterEnum.PUBLIC_HANDGUN_DETAIL,
+  MAGAZINE_DETAIL = PublicRouterEnum.PUBLIC_MAGAZINE_DETAIL
 }
 const componentMap = {
   [DetailRoute.RDS_DETAIL]: SoundReducerDetailView,
   [DetailRoute.AMMUNITION_DETAIL]: AmmunitionDetailView,
-  [DetailRoute.OPTIC_COLLAR_DETAIL]: OpticCollarDetailView,
+  // [DetailRoute.OPTIC_COLLAR_DETAIL]: OpticCollarDetailView,
   [DetailRoute.OPTIC_DETAIL]: OpticDetailView,
   [DetailRoute.RIFFLE_DETAIL]: RiffleDetailView,
   [DetailRoute.HANDGUN_DETAIL]: HandGunDetailView,
-  [DetailRoute.MAGAZINE_DETAIL]: MagazineDetailView,
-  [DetailRoute.INVOICE_DETAIL]: InvoiceDetailComponent
+  [DetailRoute.MAGAZINE_DETAIL]: MagazineDetailView
 }
-
 const storeMap = {
-  [DetailRoute.OPTIC_COLLAR_DETAIL]: useOpticCollarStore,
+  // [DetailRoute.OPTIC_COLLAR_DETAIL]: useOpticCollarStore,
   [DetailRoute.MAGAZINE_DETAIL]: useWeaponMagazineStore,
   [DetailRoute.AMMUNITION_DETAIL]: useAmmunitionStore,
   [DetailRoute.RDS_DETAIL]: useSoundReducerStore,
   [DetailRoute.OPTIC_DETAIL]: useOpticStore,
-  [DetailRoute.INVOICE_DETAIL]: useInvoiceStore,
+
   [DetailRoute.RIFFLE_DETAIL]: useRiffleStore,
   [DetailRoute.HANDGUN_DETAIL]: useHandGunStore
 }
+
 const detailComponent = computed(() => componentMap[route.name as DetailRoute])
 const currentStore = computed(() => {
   const storeFn = storeMap[route.name as DetailRoute]
   return storeFn ? storeFn() : null
 })
-formStore.setFormStatus('show')
-watch(
-  () => route.name,
-  () => {
-    if (currentStore.value) {
-      const i18nPrefix = currentStore.value.getI18NPrefix
-      breadcrumbStore.setStep({
-        label: t(i18nPrefix + 'detail'),
-        index: 2,
-        path: route.fullPath
-      })
-    }
-  },
-  { immediate: true }
-)
 const isAdminRoute = computed<boolean>(() => {
   return Boolean(route.meta.admin)
 })

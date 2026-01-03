@@ -5,8 +5,8 @@ import type { DiscountedItemDto, NewItemsDto } from '@/api/Api'
 import { getI18NPrefix } from '@/enum/I18NSuffix.enum'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 import type { RoutableObjectType } from '@/types/routable.type'
+import { PublicRouterEnum } from '@/enum/router/public-router.enum'
 
 export const usePublicDashboardStore = defineStore('public-dashboard', () => {
   const { api } = useApiStore()
@@ -36,13 +36,13 @@ export const usePublicDashboardStore = defineStore('public-dashboard', () => {
     }
   ])
   const router = useRouter()
-  const routerMap: Record<RoutableObjectType, AdminRouterEnum> = {
-    ammunition: AdminRouterEnum.AMMUNITION_DETAIL,
-    riffle: AdminRouterEnum.ADMIN_RIFFLE_DETAIL,
-    handgun: AdminRouterEnum.ADMIN_HANDGUN_DETAIL,
-    optic: AdminRouterEnum.OPTIC_DETAIL,
-    magazine: AdminRouterEnum.MAGAZINE_DETAIL,
-    rds: AdminRouterEnum.RDS_DETAIL
+  const routerMap: Record<RoutableObjectType, PublicRouterEnum> = {
+    ammunition: PublicRouterEnum.PUBLIC_AMMUNITION_DETAIL,
+    riffle: PublicRouterEnum.PUBLIC_RIFFLE_DETAIL,
+    handgun: PublicRouterEnum.PUBLIC_HANDGUN_DETAIL,
+    optic: PublicRouterEnum.PUBLIC_OPTIC_DETAIL,
+    magazine: PublicRouterEnum.PUBLIC_MAGAZINE_DETAIL,
+    rds: PublicRouterEnum.PUBLIC_RDS_DETAIL
   }
   /**
    * Redirige vers la page détail selon le type et l'id de l'objet.

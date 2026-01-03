@@ -11,8 +11,8 @@
           <Tab value="0">{{ t('global.importantInformation') }}</Tab>
           <Tab value="1">{{ t('global.description') }}</Tab>
           <Tab value="2">{{ t('global.associatedProducts') }}</Tab>
-          <Tab value="3">{{ t('global.price') }}</Tab>
-          <Tab value="4">{{ t('global.stock') }}</Tab>
+          <Tab value="3" v-if="isAdminRoute">{{ t('global.price') }}</Tab>
+          <Tab value="4" v-if="isAdminRoute">{{ t('global.stock') }}</Tab>
         </TabList>
         <TabPanels>
           <TabPanel value="0">
@@ -31,10 +31,10 @@
           <TabPanel value="2">
             <p>// Feature</p>
           </TabPanel>
-          <TabPanel value="3">
+          <TabPanel value="3" v-if="isAdminRoute">
             <tab-price-component :id="id" type="RDS" :price="rds.priceHistory" />
           </TabPanel>
-          <TabPanel value="4">
+          <TabPanel value="4" v-if="isAdminRoute">
             <tab-stock-component :stock="rds.stock" />
           </TabPanel>
         </TabPanels>
@@ -52,7 +52,11 @@
 import { useSoundReducerStore } from '@/stores/sound-noise-reducer.store'
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
-import { BooleanFormatter, NumberFormatter, VerifyFieldIsNotNull } from '@/shared/utils/formatter.utils'
+import {
+  BooleanFormatter,
+  NumberFormatter,
+  VerifyFieldIsNotNull
+} from '@/shared/utils/formatter.utils'
 import TabPanels from 'primevue/tabpanels'
 import Tab from 'primevue/tab'
 import TabCardComponent from '@/components/__tabs/TabCardComponent.vue'
@@ -64,8 +68,9 @@ import TabPriceComponent from '@/components/__tabs/TabPriceComponent.vue'
 import TabStockComponent from '@/components/__tabs/TabStockComponent.vue'
 
 const { t } = useI18n()
-const { id } = defineProps<{
+const { id, isAdminRoute = false } = defineProps<{
   id: string
+  isAdminRoute?: boolean
 }>()
 
 const store = useSoundReducerStore()
