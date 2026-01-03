@@ -38,8 +38,8 @@ export const usePublicDashboardStore = defineStore('public-dashboard', () => {
   const router = useRouter()
   const routerMap: Record<RoutableObjectType, RouterEnum> = {
     ammunition: RouterEnum.AMMUNITION_DETAIL,
-    riffle: RouterEnum.RIFFLE_DETAIL,
-    handgun: RouterEnum.HANDGUN_DETAIL,
+    riffle: RouterEnum.ADMIN_RIFFLE_DETAIL,
+    handgun: RouterEnum.ADMIN_HANDGUN_DETAIL,
     optic: RouterEnum.OPTIC_DETAIL,
     magazine: RouterEnum.MAGAZINE_DETAIL,
     rds: RouterEnum.RDS_DETAIL

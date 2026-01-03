@@ -128,7 +128,9 @@ import InputText from 'primevue/inputtext'
 import InputIcon from 'primevue/inputicon'
 import Select from 'primevue/select'
 import IconField from 'primevue/iconfield'
-import ActionMenuComponent, { type ActionMenuEmit } from '@/components/__table/ActionMenuComponent.vue'
+import ActionMenuComponent, {
+  type ActionMenuEmit
+} from '@/components/__table/ActionMenuComponent.vue'
 import { RouterEnum } from '@/enum/router.enum'
 import { useRouter } from 'vue-router'
 import { type NewWeapon, useWeaponStore } from '@/stores/weapon'
@@ -182,7 +184,7 @@ watch(
 const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
   switch (event) {
     case 'view':
-      router.push({ name: RouterEnum.HANDGUN_DETAIL, params: { id: id } })
+      router.push({ name: RouterEnum.ADMIN_HANDGUN_DETAIL, params: { id: id } })
       break
     case 'edit':
       onEditAction(id)
