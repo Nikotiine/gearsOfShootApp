@@ -8,7 +8,7 @@
 import Button from 'primevue/button'
 import OverlayBadge from 'primevue/overlaybadge'
 
-import { RouterEnum } from '@/enum/router.enum'
+import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 import { useInvoiceStore } from '@/stores/invoice.store'
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
@@ -25,7 +25,7 @@ const totalItemInInvoice = computed(() => {
 
 const goToInvoice = () => {
   if (totalItemInInvoice.value < 1) return
-  router.push({ name: RouterEnum.INVOICE_NEW })
+  router.push({ name: AdminRouterEnum.INVOICE_NEW })
 }
 </script>
 

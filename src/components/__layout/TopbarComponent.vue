@@ -186,7 +186,6 @@ const items = computed(() => {
         ],
         [
           {
-            label: 'toto',
             items: [
               { label: 'categoryBRiffle', icon: 'pi pi-shield', subtext: 'Subtext of item' },
               { label: 'categoryBHandgun', icon: 'pi pi-question', subtext: 'Subtext of item' },

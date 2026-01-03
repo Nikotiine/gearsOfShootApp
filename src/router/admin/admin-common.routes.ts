@@ -1,12 +1,12 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { RouterEnum } from '@/enum/router.enum'
+import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 
 export const colorRoutes: RouteRecordRaw = {
   path: 'color',
   children: [
     {
       path: 'new',
-      name: RouterEnum.COLOR_NEW,
+      name: AdminRouterEnum.COLOR_NEW,
       component: () => import('@/views/shared/FormView.vue')
     }
   ]
@@ -17,7 +17,7 @@ export const materialRoutes: RouteRecordRaw = {
   children: [
     {
       path: 'new',
-      name: RouterEnum.MATERIAL_NEW,
+      name: AdminRouterEnum.MATERIAL_NEW,
       component: () => import('@/views/shared/FormView.vue')
     }
   ]
@@ -28,7 +28,7 @@ export const headTypeRoutes: RouteRecordRaw = {
   children: [
     {
       path: 'new',
-      name: RouterEnum.HEAD_TYPE_NEW,
+      name: AdminRouterEnum.HEAD_TYPE_NEW,
       component: () => import('@/views/shared/FormView.vue')
     }
   ]
@@ -39,7 +39,7 @@ export const bodyTypeRoutes: RouteRecordRaw = {
   children: [
     {
       path: 'new',
-      name: RouterEnum.BODY_TYPE_NEW,
+      name: AdminRouterEnum.BODY_TYPE_NEW,
       component: () => import('@/views/shared/FormView.vue')
     }
   ]
@@ -50,7 +50,7 @@ export const weaponTypeRoutes: RouteRecordRaw = {
   children: [
     {
       path: 'new',
-      name: RouterEnum.WEAPON_TYPE_NEW,
+      name: AdminRouterEnum.WEAPON_TYPE_NEW,
       component: () => import('@/views/shared/FormView.vue')
     }
   ]
@@ -61,7 +61,7 @@ export const caliberRoutes: RouteRecordRaw = {
   children: [
     {
       path: 'new',
-      name: RouterEnum.CALIBER_NEW,
+      name: AdminRouterEnum.CALIBER_NEW,
       component: () => import('@/views/shared/FormView.vue')
     }
   ]
@@ -72,7 +72,7 @@ export const threadedSizeRoutes: RouteRecordRaw = {
   children: [
     {
       path: 'new',
-      name: RouterEnum.THREADED_SIZE_NEW,
+      name: AdminRouterEnum.THREADED_SIZE_NEW,
       component: () => import('@/views/shared/FormView.vue')
     }
   ]

@@ -11,7 +11,7 @@ import type {
 
 import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
-import { RouterEnum } from '@/enum/router.enum'
+import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 import { useToastStore } from '@/stores/toast'
 import { getCaliberDto } from '@/shared/api-dto/get-caliber.dto'
 import { getFactoryDto } from '@/shared/api-dto/get-factory.dto'
@@ -68,7 +68,7 @@ export const useSoundReducerStore = defineStore('sound-noise-reducer-store', () 
       return await api.api.soundReducerControllerEdit(rds.id, rds)
     },
     onSuccess() {
-      push({ name: RouterEnum.RDS_LIST })
+      push({ name: AdminRouterEnum.RDS_LIST })
     }
   })
   const _deleteMutation = useMutation({

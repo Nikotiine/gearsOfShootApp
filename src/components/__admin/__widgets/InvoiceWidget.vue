@@ -18,7 +18,7 @@
           style="width: 2.5rem; height: 2.5rem"
         >
           <Button asChild icon="pi pi-check">
-            <RouterLink :to="{ name: RouterEnum.INVOICE_LIST }">
+            <RouterLink :to="{ name: AdminRouterEnum.INVOICE_LIST }">
               <i class="pi pi-comment text-purple-500 !text-xl"></i
             ></RouterLink>
           </Button>
@@ -39,7 +39,7 @@
 </template>
 <script setup lang="ts">
 import Button from 'primevue/button'
-import { RouterEnum } from '@/enum/router.enum'
+import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 import { useI18n } from 'vue-i18n'
 import { useInvoiceStore } from '@/stores/invoice.store'
 import { GetClassTextColorByOrderStatus } from '@/shared/utils/colors.utils'

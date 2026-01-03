@@ -176,7 +176,7 @@ import { FilterMatchMode, FilterOperator } from '@primevue/core/api'
 import { useI18n } from 'vue-i18n'
 import { useSupplierStore } from '@/stores/supplier.store'
 import DatePicker from 'primevue/datepicker'
-import { RouterEnum } from '@/enum/router.enum'
+import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 import { useRouter } from 'vue-router'
 import { DateFormatter } from '@/shared/utils/formatter.utils'
 import { getInvoiceStatus } from '@/shared/utils/order-status.utils'
@@ -209,10 +209,10 @@ const { data: suppliers$ } = supplierStore.getAll()
 const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
   switch (event) {
     case 'view':
-      router.push({ name: RouterEnum.INVOICE_DETAIL, params: { id: id } })
+      router.push({ name: AdminRouterEnum.INVOICE_DETAIL, params: { id: id } })
       break
     case 'edit':
-      router.push({ name: RouterEnum.AMMUNITION_EDIT, params: { id: id } })
+      router.push({ name: AdminRouterEnum.AMMUNITION_EDIT, params: { id: id } })
       break
     case 'archive':
       store.archive.mutate(id)

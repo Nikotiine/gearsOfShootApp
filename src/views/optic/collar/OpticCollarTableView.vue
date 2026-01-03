@@ -132,7 +132,9 @@
 </template>
 <script setup lang="ts">
 import { useOpticCollarStore } from '@/stores/optic-collar.store'
-import ActionMenuComponent, { type ActionMenuEmit } from '@/components/__table/ActionMenuComponent.vue'
+import ActionMenuComponent, {
+  type ActionMenuEmit
+} from '@/components/__table/ActionMenuComponent.vue'
 import IconField from 'primevue/iconfield'
 import DataTable, { type DataTableFilterEvent, type DataTablePageEvent } from 'primevue/datatable'
 import InputText from 'primevue/inputtext'
@@ -144,7 +146,7 @@ import { useFactoryStore } from '@/stores/factory.store'
 import { useRailSizeStore } from '@/stores/rail-size.store'
 import { ref } from 'vue'
 import { FilterMatchMode } from '@primevue/core/api'
-import { RouterEnum } from '@/enum/router.enum'
+import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 import { useRouter } from 'vue-router'
 import TableTitleComponent from '@/components/__table/TableTitleComponent.vue'
 import { storeToRefs } from 'pinia'
@@ -169,10 +171,10 @@ const filters = ref({
 const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
   switch (event) {
     case 'view':
-      router.push({ name: RouterEnum.OPTIC_COLLAR_DETAIL, params: { id: id } })
+      router.push({ name: AdminRouterEnum.OPTIC_COLLAR_DETAIL, params: { id: id } })
       break
     case 'edit':
-      router.push({ name: RouterEnum.OPTIC_COLLAR_EDIT, params: { id: id } })
+      router.push({ name: AdminRouterEnum.OPTIC_COLLAR_EDIT, params: { id: id } })
       break
     case true:
       store.delete(id)

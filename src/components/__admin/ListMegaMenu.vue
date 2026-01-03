@@ -6,7 +6,7 @@ import MegaMenu from 'primevue/megamenu'
 import { ref } from 'vue'
 import type { MenuItem } from 'primevue/menuitem'
 import { LegislationCategory } from '@/stores/legalisation-category.store'
-import { RouterEnum } from '@/enum/router.enum'
+import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 
@@ -26,7 +26,7 @@ const items = ref<MenuItem[]>([
               label: t('global.handgun'),
               command: () => {
                 push({
-                  name: RouterEnum.HANDGUN_LIST,
+                  name: AdminRouterEnum.HANDGUN_LIST,
                   params: { category: LegislationCategory.B }
                 })
               }
@@ -35,7 +35,7 @@ const items = ref<MenuItem[]>([
               label: t('global.riffle'),
               command: () => {
                 push({
-                  name: RouterEnum.RIFFLE_LIST,
+                  name: AdminRouterEnum.RIFFLE_LIST,
                   params: { category: LegislationCategory.B }
                 })
               }
@@ -44,7 +44,7 @@ const items = ref<MenuItem[]>([
               label: t('global.magazine'),
               command: () => {
                 push({
-                  name: RouterEnum.MAGAZINE_LIST,
+                  name: AdminRouterEnum.MAGAZINE_LIST,
                   params: { category: LegislationCategory.B }
                 })
               }
@@ -53,7 +53,7 @@ const items = ref<MenuItem[]>([
               label: t('global.ammunition'),
               command: () => {
                 push({
-                  name: RouterEnum.AMMUNITION_LIST,
+                  name: AdminRouterEnum.AMMUNITION_LIST,
                   params: { category: LegislationCategory.B }
                 })
               }
@@ -69,7 +69,7 @@ const items = ref<MenuItem[]>([
               label: t('global.riffle'),
               command: () => {
                 push({
-                  name: RouterEnum.RIFFLE_LIST,
+                  name: AdminRouterEnum.RIFFLE_LIST,
                   params: { category: LegislationCategory.C }
                 })
               }
@@ -80,7 +80,7 @@ const items = ref<MenuItem[]>([
                 //TODO: A faire
                 console.log('A faire')
                 /* push({
-                  name: RouterEnum.WEAPON_LIST,
+                  name: AdminRouterEnum.WEAPON_LIST,
                   params: { type: WeaponEnum.RIFFLE, category: LegislationCategory.C }
                 })*/
               }
@@ -89,7 +89,7 @@ const items = ref<MenuItem[]>([
               label: t('global.magazine'),
               command: () => {
                 push({
-                  name: RouterEnum.MAGAZINE_LIST,
+                  name: AdminRouterEnum.MAGAZINE_LIST,
                   params: { category: LegislationCategory.C }
                 })
               }
@@ -98,7 +98,7 @@ const items = ref<MenuItem[]>([
               label: t('global.ammunition'),
               command: () => {
                 push({
-                  name: RouterEnum.AMMUNITION_LIST,
+                  name: AdminRouterEnum.AMMUNITION_LIST,
                   params: { category: LegislationCategory.C }
                 })
               }
@@ -114,7 +114,7 @@ const items = ref<MenuItem[]>([
               label: t('global.handgun'),
               command: () => {
                 push({
-                  name: RouterEnum.HANDGUN_LIST,
+                  name: AdminRouterEnum.HANDGUN_LIST,
                   params: { category: LegislationCategory.D }
                 })
               }
@@ -123,7 +123,7 @@ const items = ref<MenuItem[]>([
               label: t('global.riffle'),
               command: () => {
                 push({
-                  name: RouterEnum.RIFFLE_LIST,
+                  name: AdminRouterEnum.RIFFLE_LIST,
                   params: { category: LegislationCategory.D }
                 })
               }
@@ -132,7 +132,7 @@ const items = ref<MenuItem[]>([
               label: t('global.ammunition'),
               command: () => {
                 push({
-                  name: RouterEnum.AMMUNITION_LIST,
+                  name: AdminRouterEnum.AMMUNITION_LIST,
                   params: { category: LegislationCategory.D }
                 })
               }
@@ -144,13 +144,13 @@ const items = ref<MenuItem[]>([
         {
           label: 'Autre',
           items: [
-            { label: 'Optiques', command: () => push({ name: RouterEnum.OPTIC_LIST }) },
-            { label: 'Collier', command: () => push({ name: RouterEnum.OPTIC_COLLAR_LIST }) },
-            { label: 'RDS', command: () => push({ name: RouterEnum.RDS_LIST }) },
+            { label: 'Optiques', command: () => push({ name: AdminRouterEnum.OPTIC_LIST }) },
+            { label: 'Collier', command: () => push({ name: AdminRouterEnum.OPTIC_COLLAR_LIST }) },
+            { label: 'RDS', command: () => push({ name: AdminRouterEnum.RDS_LIST }) },
             {
               label: 'Marques',
               command: () => {
-                push({ name: RouterEnum.FACTORY_LIST })
+                push({ name: AdminRouterEnum.FACTORY_LIST })
               }
             }
           ]

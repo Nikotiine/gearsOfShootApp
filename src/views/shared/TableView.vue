@@ -2,7 +2,7 @@
   <component :is="formComponent" />
 </template>
 <script setup lang="ts">
-import { RouterEnum } from '@/enum/router.enum'
+import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 import OpticCollarTableView from '@/views/optic/collar/OpticCollarTableView.vue'
 import MagazineTableView from '@/views/weapon/magazine/MagazineTableView.vue'
 import AmmunitionTableView from '@/views/ammunition/AmmunitionTableView.vue'
@@ -26,13 +26,13 @@ const route = useRoute()
 const breadcrumbStore = useBreadcrumbStore()
 const { t } = useI18n()
 enum TableRoute {
-  OPTIC_LIST = RouterEnum.OPTIC_LIST,
-  RDS_LIST = RouterEnum.RDS_LIST,
-  FACTORY_LIST = RouterEnum.FACTORY_LIST,
-  AMMUNITION_LIST = RouterEnum.AMMUNITION_LIST,
-  MAGAZINE_LIST = RouterEnum.MAGAZINE_LIST,
-  OPTIC_COLLAR_LIST = RouterEnum.OPTIC_COLLAR_LIST,
-  INVOICE_LIST = RouterEnum.INVOICE_LIST
+  OPTIC_LIST = AdminRouterEnum.OPTIC_LIST,
+  RDS_LIST = AdminRouterEnum.RDS_LIST,
+  FACTORY_LIST = AdminRouterEnum.FACTORY_LIST,
+  AMMUNITION_LIST = AdminRouterEnum.AMMUNITION_LIST,
+  MAGAZINE_LIST = AdminRouterEnum.MAGAZINE_LIST,
+  OPTIC_COLLAR_LIST = AdminRouterEnum.OPTIC_COLLAR_LIST,
+  INVOICE_LIST = AdminRouterEnum.INVOICE_LIST
 }
 const componentMap = {
   [TableRoute.OPTIC_COLLAR_LIST]: OpticCollarTableView,

@@ -13,7 +13,7 @@ import type {
   UpdateOpticDto
 } from '@/api/Api'
 import { ref } from 'vue'
-import { RouterEnum } from '@/enum/router.enum'
+import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 import { useRouter } from 'vue-router'
 import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
@@ -73,7 +73,7 @@ export const useOpticStore = defineStore('optic-store', () => {
       return await api.api.opticControllerEdit(optic.id, optic)
     },
     onSuccess() {
-      push({ name: RouterEnum.OPTIC_LIST })
+      push({ name: AdminRouterEnum.OPTIC_LIST })
     }
   })
 

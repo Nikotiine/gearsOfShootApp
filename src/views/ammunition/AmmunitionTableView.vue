@@ -173,9 +173,11 @@ import { useFactoryStore } from '@/stores/factory.store'
 import { computed, onBeforeMount, ref, watch } from 'vue'
 import { FilterMatchMode } from '@primevue/core/api'
 import { useI18n } from 'vue-i18n'
-import { RouterEnum } from '@/enum/router.enum'
+import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 import { useRouter } from 'vue-router'
-import ActionMenuComponent, { type ActionMenuEmit } from '@/components/__table/ActionMenuComponent.vue'
+import ActionMenuComponent, {
+  type ActionMenuEmit
+} from '@/components/__table/ActionMenuComponent.vue'
 import TableTitleComponent from '@/components/__table/TableTitleComponent.vue'
 import InvoiceAddItemComponent from '@/components/__invoice/InvoiceAddItemComponent.vue'
 import { storeToRefs } from 'pinia'
@@ -232,10 +234,10 @@ const onPageChange = (event: DataTablePageEvent) => {
 const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
   switch (event) {
     case 'view':
-      router.push({ name: RouterEnum.AMMUNITION_DETAIL, params: { id: id } })
+      router.push({ name: AdminRouterEnum.AMMUNITION_DETAIL, params: { id: id } })
       break
     case 'edit':
-      router.push({ name: RouterEnum.AMMUNITION_EDIT, params: { id: id } })
+      router.push({ name: AdminRouterEnum.AMMUNITION_EDIT, params: { id: id } })
       break
     case true:
       store.delete(id)

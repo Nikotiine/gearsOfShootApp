@@ -1,7 +1,4 @@
-export enum RouterEnum {
-  HOME = 'HOME',
-  RIFFLE_DETAIL = 'RIFFLE_DETAIL',
-
+export enum AdminRouterEnum {
   MAGAZINE_LIST = 'MAGAZINE_LIST',
   MAGAZINE_DETAIL = 'MAGAZINE_DETAIL',
 

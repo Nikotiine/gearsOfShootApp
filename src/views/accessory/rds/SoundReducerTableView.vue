@@ -136,10 +136,12 @@ import InputIcon from 'primevue/inputicon'
 import Column from 'primevue/column'
 import DataTable, { type DataTableFilterEvent, type DataTablePageEvent } from 'primevue/datatable'
 import IconField from 'primevue/iconfield'
-import ActionMenuComponent, { type ActionMenuEmit } from '@/components/__table/ActionMenuComponent.vue'
+import ActionMenuComponent, {
+  type ActionMenuEmit
+} from '@/components/__table/ActionMenuComponent.vue'
 import { ref } from 'vue'
 import { FilterMatchMode } from '@primevue/core/api'
-import { RouterEnum } from '@/enum/router.enum'
+import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useFactoryStore } from '@/stores/factory.store'
@@ -167,10 +169,10 @@ const { data: calibers$ } = caliberStore.getAll()
 const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
   switch (event) {
     case 'view':
-      router.push({ name: RouterEnum.RDS_DETAIL, params: { id: id } })
+      router.push({ name: AdminRouterEnum.RDS_DETAIL, params: { id: id } })
       break
     case 'edit':
-      router.push({ name: RouterEnum.RDS_EDIT, params: { id: id } })
+      router.push({ name: AdminRouterEnum.RDS_EDIT, params: { id: id } })
       break
     case true:
       store.delete(id)

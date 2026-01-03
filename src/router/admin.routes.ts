@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { RouterEnum } from '@/enum/router.enum'
+import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 import { ammunitionRoutes } from '@/router/admin/admin-ammunition.routes'
 import { magazineRoutes } from '@/router/admin/admin-magazine.routes'
 import { opticRoutes } from '@/router/admin/admin-optic.routes'
@@ -25,12 +25,12 @@ export const adminRoutes: RouteRecordRaw = {
   children: [
     {
       path: '',
-      name: RouterEnum.ADMIN_DASHBOARD,
+      name: AdminRouterEnum.ADMIN_DASHBOARD,
       component: () => import('@/views/admin/AdminDashboardView.vue')
     },
     {
       path: 'gestion',
-      meta: { navbar: true },
+      meta: { navbar: true, admin: true },
       children: [
         ammunitionRoutes,
         magazineRoutes,

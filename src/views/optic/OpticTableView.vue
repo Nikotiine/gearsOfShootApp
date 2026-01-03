@@ -162,8 +162,10 @@ import { useI18n } from 'vue-i18n'
 import { FilterMatchMode } from '@primevue/core/api'
 import { ref } from 'vue'
 import { useFactoryStore } from '@/stores/factory.store'
-import ActionMenuComponent, { type ActionMenuEmit } from '@/components/__table/ActionMenuComponent.vue'
-import { RouterEnum } from '@/enum/router.enum'
+import ActionMenuComponent, {
+  type ActionMenuEmit
+} from '@/components/__table/ActionMenuComponent.vue'
+import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 import { useRouter } from 'vue-router'
 import { useOpticTypeStore } from '@/stores/optic-type.store'
 import { storeToRefs } from 'pinia'
@@ -206,10 +208,10 @@ const onPageChange = (event: DataTablePageEvent) => {
 const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
   switch (event) {
     case 'view':
-      router.push({ name: RouterEnum.OPTIC_DETAIL, params: { id: id } })
+      router.push({ name: AdminRouterEnum.OPTIC_DETAIL, params: { id: id } })
       break
     case 'edit':
-      router.push({ name: RouterEnum.OPTIC_EDIT, params: { id: id } })
+      router.push({ name: AdminRouterEnum.OPTIC_EDIT, params: { id: id } })
       break
     case true:
       store.delete(id)

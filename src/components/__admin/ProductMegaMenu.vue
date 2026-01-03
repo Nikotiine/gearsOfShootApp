@@ -4,7 +4,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import type { MenuItem } from 'primevue/menuitem'
-import { RouterEnum } from '@/enum/router.enum'
+import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import MegaMenu from 'primevue/megamenu'
@@ -24,25 +24,25 @@ const items = ref<MenuItem[]>([
             {
               label: t('global.handgun'),
               command: () => {
-                push({ name: RouterEnum.HANDGUN_NEW })
+                push({ name: AdminRouterEnum.HANDGUN_NEW })
               }
             },
             {
               label: t('global.riffle'),
               command: () => {
-                push({ name: RouterEnum.RIFFLE_NEW })
+                push({ name: AdminRouterEnum.RIFFLE_NEW })
               }
             },
             {
               label: t('global.ammunition'),
               command: () => {
-                push({ name: RouterEnum.AMMUNITION_NEW })
+                push({ name: AdminRouterEnum.AMMUNITION_NEW })
               }
             },
             {
               label: t('global.magazine'),
               command: () => {
-                push({ name: RouterEnum.MAGAZINE_NEW })
+                push({ name: AdminRouterEnum.MAGAZINE_NEW })
               }
             }
           ]
@@ -55,13 +55,13 @@ const items = ref<MenuItem[]>([
             {
               label: t('global.optic'),
               command: () => {
-                push({ name: RouterEnum.OPTIC_NEW })
+                push({ name: AdminRouterEnum.OPTIC_NEW })
               }
             },
             {
               label: t('global.collar'),
               command: () => {
-                push({ name: RouterEnum.OPTIC_COLLAR_NEW })
+                push({ name: AdminRouterEnum.OPTIC_COLLAR_NEW })
               }
             }
           ]
@@ -74,7 +74,7 @@ const items = ref<MenuItem[]>([
             {
               label: t('global.rds'),
               command: () => {
-                push({ name: RouterEnum.RDS_NEW })
+                push({ name: AdminRouterEnum.RDS_NEW })
               }
             }
           ]

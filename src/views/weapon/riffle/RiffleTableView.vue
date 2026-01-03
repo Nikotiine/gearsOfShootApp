@@ -145,7 +145,7 @@ import { useCaliberStore } from '@/stores/caliber.store'
 import ActionMenuComponent, {
   type ActionMenuEmit
 } from '@/components/__table/ActionMenuComponent.vue'
-import { RouterEnum } from '@/enum/router.enum'
+import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 import { type NewWeapon, useWeaponStore } from '@/stores/weapon'
 import { useRouter } from 'vue-router'
 import TableTitleComponent from '@/components/__table/TableTitleComponent.vue'
@@ -196,11 +196,11 @@ watch(
 const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
   switch (event) {
     case 'view':
-      router.push({ name: RouterEnum.ADMIN_RIFFLE_DETAIL, params: { id: id } })
+      router.push({ name: AdminRouterEnum.ADMIN_RIFFLE_DETAIL, params: { id: id } })
       break
     case 'edit':
       onEditAction(id)
-      router.push({ name: RouterEnum.RIFFLE_EDIT, params: { id: id } })
+      router.push({ name: AdminRouterEnum.RIFFLE_EDIT, params: { id: id } })
       break
     case true:
       store.delete(id)

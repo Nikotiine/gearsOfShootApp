@@ -1,28 +1,28 @@
-import { RouterEnum } from '@/enum/router.enum'
+import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 
 export const opticCollarRoutes = {
   path: 'optic-collar',
   children: [
     {
       path: 'new',
-      name: RouterEnum.OPTIC_COLLAR_NEW,
+      name: AdminRouterEnum.OPTIC_COLLAR_NEW,
       component: () => import('@/views/shared/FormView.vue')
     },
     {
       path: 'edit/:id',
       props: true,
-      name: RouterEnum.OPTIC_COLLAR_EDIT,
+      name: AdminRouterEnum.OPTIC_COLLAR_EDIT,
       component: () => import('@/views/shared/FormView.vue')
     },
     {
       path: 'list',
-      name: RouterEnum.OPTIC_COLLAR_LIST,
+      name: AdminRouterEnum.OPTIC_COLLAR_LIST,
       component: () => import('@/views/shared/TableView.vue')
     },
     {
       path: 'detail/:id',
       props: true,
-      name: RouterEnum.OPTIC_COLLAR_DETAIL,
+      name: AdminRouterEnum.OPTIC_COLLAR_DETAIL,
       component: () => import('@/views/shared/AdminDetailView.vue')
     }
   ]
