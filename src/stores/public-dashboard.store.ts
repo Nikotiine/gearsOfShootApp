@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
 import { useQuery } from '@tanstack/vue-query'
-import type { DiscountedItemDto, NewItemsDto } from '@/api/Api'
+import type { DiscountedItemDto, LegislationCategoryDto, NewItemsDto } from '@/api/Api'
 import { getI18NPrefix } from '@/enum/I18NSuffix.enum'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -49,8 +49,13 @@ export const usePublicDashboardStore = defineStore('public-dashboard', () => {
    *
    * @param type - Type de l'objet (optic, riffle, etc.)
    * @param id - Identifiant de l'objet
+   * @param category LegislationCategoryDto
    */
-  function redirectToDetail(type: RoutableObjectType, id: number): void {
+  function redirectToDetail(
+    type: RoutableObjectType,
+    id: number,
+    category?: LegislationCategoryDto
+  ): void {
     const routeName = routerMap[type]
 
     if (!routeName) {
@@ -60,7 +65,7 @@ export const usePublicDashboardStore = defineStore('public-dashboard', () => {
 
     router.push({
       name: routeName,
-      params: { id }
+      params: { id, category: category?.name }
     })
   }
   const queryFindAllNewItems = () =>

@@ -136,6 +136,8 @@
   },
   "handgun": {
     "list": "Liste des arme de poing de categorie : {key}",
+    "breadcrumbList": "Liste armes de poing Cat: {key}",
+    "detail": "Deatil arme de poing",
     "save": "Ajouter une arme de poing",
     "edit": "Modifier une arme de poing",
     "breadcrumb": "Arme de poing",
@@ -191,8 +193,9 @@
     }
   },
   "riffle": {
-    "list": "Listes des armes longues de categorie : {key}",
-    "detail": "Detail",
+    "list": "Liste des armes longues de categorie : {key}",
+    "breadcrumbList": "Liste armes longues Cat: {key}",
+    "detail": "Detail arme longue",
     "save": "Ajouter une arme longue",
     "summary": "Gestion des armes longues",
     "model": "Modele de l'arme",
@@ -672,6 +675,7 @@
   "publicDashboard": {
     "news": "Nouveautes",
     "discounted": "En Promo",
-    "precentOfDiscount": "Reduction de :"
+    "precentOfDiscount": "Reduction de :",
+    "home": "Accueil du site"
   }
 }

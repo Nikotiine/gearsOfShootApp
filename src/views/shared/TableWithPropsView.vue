@@ -48,7 +48,8 @@ const currentStore = computed(() => {
   const storeFn = storeMap[route.name as TableWithProps]
   return storeFn ? storeFn() : null
 })
-watch(
+console.log('ici', category)
+/*watch(
   () => route.name,
   () => {
     if (currentStore.value) {
@@ -61,7 +62,7 @@ watch(
     }
   },
   { immediate: true }
-)
+)*/
 </script>
 
 <style scoped></style>
