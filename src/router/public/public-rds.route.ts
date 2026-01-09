@@ -1,13 +1,13 @@
-import type { RouteRecordRaw } from 'vue-router'
-import { GlobalRouterEnum } from '@/enum/router/global-router.enum'
+import { type RouteRecordRaw } from 'vue-router'
 import { PublicRouterEnum } from '@/enum/router/public-router.enum'
+import { GlobalRouterEnum } from '@/enum/router/global-router.enum'
 import { useBreadcrumbStore } from '@/stores/breadcrumb.store'
 
-const parentPath: string = 'optiques'
-const prefix: string = 'optic'
-const routeListName = PublicRouterEnum.PUBLIC_OPTIC_LIST
-const routeDetailName = PublicRouterEnum.PUBLIC_AMMUNITION_DETAIL
-export const publicOpticRoute: RouteRecordRaw = {
+const parentPath: string = 'accessoire-armes/rds'
+const prefix: string = 'rds'
+const routeListName = PublicRouterEnum.PUBLIC_RDS_LIST
+const routeDetailName = PublicRouterEnum.PUBLIC_RDS_DETAIL
+export const publicRdsRoute: RouteRecordRaw = {
   path: parentPath,
   children: [
     {
@@ -28,7 +28,7 @@ export const publicOpticRoute: RouteRecordRaw = {
           ]
         }
       },
-      component: () => import('@/views/optic/OpticTableView.vue')
+      component: () => import('@/views/accessory/rds/SoundReducerTableView.vue')
     },
     {
       path: `${GlobalRouterEnum.PATH_DETAIL}/:id`,
@@ -58,7 +58,7 @@ export const publicOpticRoute: RouteRecordRaw = {
           ]
         }
       },
-      component: () => import('@/views/optic/OpticDetailView.vue')
+      component: () => import('@/views/accessory/rds/SoundReducerDetailView.vue')
     }
   ]
 }

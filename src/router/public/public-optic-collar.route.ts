@@ -1,13 +1,13 @@
+import { PublicRouterEnum } from '@/enum/router/public-router.enum'
 import type { RouteRecordRaw } from 'vue-router'
 import { GlobalRouterEnum } from '@/enum/router/global-router.enum'
-import { PublicRouterEnum } from '@/enum/router/public-router.enum'
 import { useBreadcrumbStore } from '@/stores/breadcrumb.store'
 
-const parentPath: string = 'optiques'
-const prefix: string = 'optic'
-const routeListName = PublicRouterEnum.PUBLIC_OPTIC_LIST
-const routeDetailName = PublicRouterEnum.PUBLIC_AMMUNITION_DETAIL
-export const publicOpticRoute: RouteRecordRaw = {
+const parentPath: string = 'montage-optique'
+const prefix: string = 'optic-collar'
+const routeListName = PublicRouterEnum.PUBLIC_OPTIC_COLLAR_LIST
+const routeDetailName = PublicRouterEnum.PUBLIC_OPTIC_COLLAR_DETAIL
+export const publicOpticCollarRoute: RouteRecordRaw = {
   path: parentPath,
   children: [
     {
@@ -28,7 +28,7 @@ export const publicOpticRoute: RouteRecordRaw = {
           ]
         }
       },
-      component: () => import('@/views/optic/OpticTableView.vue')
+      component: () => import('@/views/optic/collar/OpticCollarTableView.vue')
     },
     {
       path: `${GlobalRouterEnum.PATH_DETAIL}/:id`,
@@ -58,7 +58,7 @@ export const publicOpticRoute: RouteRecordRaw = {
           ]
         }
       },
-      component: () => import('@/views/optic/OpticDetailView.vue')
+      component: () => import('@/views/optic/collar/OpticCollarDetailView.vue')
     }
   ]
 }

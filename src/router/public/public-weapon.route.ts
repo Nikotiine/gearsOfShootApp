@@ -5,24 +5,28 @@ import { useBreadcrumbStore } from '@/stores/breadcrumb.store'
 import { GlobalRouterEnum } from '@/enum/router/global-router.enum'
 
 const parentPath: string = 'armes'
-const riffle: string = 'riffle'
-const handgun: string = 'handgun'
+const prefixRiffle: string = 'riffle'
+const prefixHandgun: string = 'handgun'
+const routeRiffleListName = PublicRouterEnum.PUBLIC_RIFFLE_LIST
+const routeRiffleDetailName = PublicRouterEnum.PUBLIC_RIFFLE_DETAIL
+const routeHandgunListName = PublicRouterEnum.PUBLIC_HANDGUN_LIST
+const routeHandgunDetailName = PublicRouterEnum.PUBLIC_HANDGUN_DETAIL
 export const publicWeaponRoutes: RouteRecordRaw = {
   path: parentPath,
   children: [
     {
       path: `${GlobalRouterEnum.PATH_LIST}/${WeaponEnum.RIFFLE}/:category`,
-      name: PublicRouterEnum.PUBLIC_RIFFLE_LIST,
+      name: routeRiffleListName,
       props: true,
       meta: {
         breadcrumb: (route: any) => {
           const store = useBreadcrumbStore()
           return [
             {
-              label: store.createListLabelWithCategory(riffle, route.params.category),
+              label: store.createListLabelWithCategory(prefixRiffle, route.params.category),
               index: 1,
               to: {
-                name: PublicRouterEnum.PUBLIC_RIFFLE_LIST,
+                name: routeRiffleListName,
                 params: {
                   category: route.params.category
                 }
@@ -35,17 +39,17 @@ export const publicWeaponRoutes: RouteRecordRaw = {
     },
     {
       path: `${GlobalRouterEnum.PATH_LIST}/${WeaponEnum.HAND_GUN}/:category`,
-      name: PublicRouterEnum.PUBLIC_HANDGUN_LIST,
+      name: routeHandgunListName,
       props: true,
       meta: {
         breadcrumb: (route: any) => {
           const store = useBreadcrumbStore()
           return [
             {
-              label: store.createListLabelWithCategory(handgun, route.params.category),
+              label: store.createListLabelWithCategory(prefixHandgun, route.params.category),
               index: 1,
               to: {
-                name: PublicRouterEnum.PUBLIC_HANDGUN_LIST,
+                name: routeHandgunListName,
                 params: {
                   category: route.params.category
                 }
@@ -58,27 +62,27 @@ export const publicWeaponRoutes: RouteRecordRaw = {
     },
     {
       path: `${GlobalRouterEnum.PATH_DETAIL}/${WeaponEnum.RIFFLE}/:category/:id`,
-      name: PublicRouterEnum.PUBLIC_RIFFLE_DETAIL,
+      name: routeRiffleDetailName,
       props: true,
       meta: {
         breadcrumb: (route: any) => {
           const store = useBreadcrumbStore()
           return [
             {
-              label: store.createListLabelWithCategory(riffle, route.params.category),
+              label: store.createListLabelWithCategory(prefixRiffle, route.params.category),
               index: 1,
               to: {
-                name: PublicRouterEnum.PUBLIC_RIFFLE_LIST,
+                name: routeRiffleListName,
                 params: {
                   category: route.params.category
                 }
               }
             },
             {
-              label: store.createLabel(riffle),
+              label: store.createLabel(prefixRiffle),
               index: 2,
               to: {
-                name: PublicRouterEnum.PUBLIC_RIFFLE_DETAIL,
+                name: routeRiffleDetailName,
                 params: {
                   category: route.params.category,
                   id: route.params.id
@@ -92,27 +96,27 @@ export const publicWeaponRoutes: RouteRecordRaw = {
     },
     {
       path: `${GlobalRouterEnum.PATH_DETAIL}/${WeaponEnum.HAND_GUN}/:category/:id`,
-      name: PublicRouterEnum.PUBLIC_HANDGUN_DETAIL,
+      name: routeHandgunDetailName,
       props: true,
       meta: {
         breadcrumb: (route: any) => {
           const store = useBreadcrumbStore()
           return [
             {
-              label: store.createListLabelWithCategory(handgun, route.params.category),
+              label: store.createListLabelWithCategory(prefixHandgun, route.params.category),
               index: 1,
               to: {
-                name: PublicRouterEnum.PUBLIC_HANDGUN_LIST,
+                name: routeHandgunListName,
                 params: {
                   category: route.params.category
                 }
               }
             },
             {
-              label: store.createLabel(handgun),
+              label: store.createLabel(prefixHandgun),
               index: 2,
               to: {
-                name: PublicRouterEnum.PUBLIC_HANDGUN_DETAIL,
+                name: routeHandgunDetailName,
                 params: {
                   category: route.params.category,
                   id: route.params.id

@@ -42,7 +42,8 @@ export const usePublicDashboardStore = defineStore('public-dashboard', () => {
     handgun: PublicRouterEnum.PUBLIC_HANDGUN_DETAIL,
     optic: PublicRouterEnum.PUBLIC_OPTIC_DETAIL,
     magazine: PublicRouterEnum.PUBLIC_MAGAZINE_DETAIL,
-    rds: PublicRouterEnum.PUBLIC_RDS_DETAIL
+    rds: PublicRouterEnum.PUBLIC_RDS_DETAIL,
+    'optic-collar': PublicRouterEnum.PUBLIC_OPTIC_COLLAR_DETAIL
   }
   /**
    * Redirige vers la page détail selon le type et l'id de l'objet.

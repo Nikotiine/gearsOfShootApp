@@ -1,37 +1,39 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { GlobalRouterEnum } from '@/enum/router/global-router.enum'
 import { PublicRouterEnum } from '@/enum/router/public-router.enum'
+import { GlobalRouterEnum } from '@/enum/router/global-router.enum'
 import { useBreadcrumbStore } from '@/stores/breadcrumb.store'
-
-const parentPath: string = 'optiques'
-const prefix: string = 'optic'
-const routeListName = PublicRouterEnum.PUBLIC_OPTIC_LIST
-const routeDetailName = PublicRouterEnum.PUBLIC_AMMUNITION_DETAIL
-export const publicOpticRoute: RouteRecordRaw = {
+const parentPath: string = 'chargeur'
+const prefix: string = 'magazine'
+const routeListName = PublicRouterEnum.PUBLIC_MAGAZINE_LIST
+const routeDetailName = PublicRouterEnum.PUBLIC_MAGAZINE_DETAIL
+export const publicMagazineRoute: RouteRecordRaw = {
   path: parentPath,
   children: [
     {
-      path: GlobalRouterEnum.PATH_LIST,
+      path: `${GlobalRouterEnum.PATH_LIST}/:category`,
       name: routeListName,
       props: true,
       meta: {
-        breadcrumb: () => {
+        breadcrumb: (route: any) => {
           const store = useBreadcrumbStore()
           return [
             {
               label: store.createLabel(prefix, 'breadcrumbList'),
               index: 1,
               to: {
-                name: routeListName
+                name: routeListName,
+                params: {
+                  category: route.params.category
+                }
               }
             }
           ]
         }
       },
-      component: () => import('@/views/optic/OpticTableView.vue')
+      component: () => import('@/views/weapon/magazine/MagazineTableView.vue')
     },
     {
-      path: `${GlobalRouterEnum.PATH_DETAIL}/:id`,
+      path: `${GlobalRouterEnum.PATH_DETAIL}/:category/:id`,
       name: routeDetailName,
       props: true,
       meta: {
@@ -42,7 +44,10 @@ export const publicOpticRoute: RouteRecordRaw = {
               label: store.createLabel(prefix, 'breadcrumbList'),
               index: 1,
               to: {
-                name: routeListName
+                name: routeListName,
+                params: {
+                  category: route.params.category
+                }
               }
             },
             {
@@ -58,7 +63,7 @@ export const publicOpticRoute: RouteRecordRaw = {
           ]
         }
       },
-      component: () => import('@/views/optic/OpticDetailView.vue')
+      component: () => import('@/views/weapon/magazine/MagazineDetailView.vue')
     }
   ]
 }
