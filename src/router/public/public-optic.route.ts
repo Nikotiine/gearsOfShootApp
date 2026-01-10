@@ -6,7 +6,7 @@ import { useBreadcrumbStore } from '@/stores/breadcrumb.store'
 const parentPath: string = 'optiques'
 const prefix: string = 'optic'
 const routeListName = PublicRouterEnum.PUBLIC_OPTIC_LIST
-const routeDetailName = PublicRouterEnum.PUBLIC_AMMUNITION_DETAIL
+const routeDetailName = PublicRouterEnum.PUBLIC_OPTIC_DETAIL
 export const publicOpticRoute: RouteRecordRaw = {
   path: parentPath,
   children: [

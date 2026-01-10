@@ -145,7 +145,14 @@
             type="optic"
             :reference="data.reference"
             :id="data.id"
-        /></template>
+            v-if="$route.meta.admin"
+          />
+          <public-action-menu-component
+            :id="data.id"
+            @on-click-action="onPublicClickAction"
+            v-else
+          />
+        </template>
       </Column>
     </DataTable>
   </div>
@@ -170,6 +177,10 @@ import { useRouter } from 'vue-router'
 import { useOpticTypeStore } from '@/stores/optic-type.store'
 import { storeToRefs } from 'pinia'
 import TableTitleComponent from '@/components/__table/TableTitleComponent.vue'
+import { PublicRouterEnum } from '@/enum/router/public-router.enum'
+import PublicActionMenuComponent, {
+  type PublicActionMenuCEmit
+} from '@/components/__table/PublicActionMenuComponent.vue'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -217,6 +228,18 @@ const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
       store.delete(id)
       refetch()
       break
+  }
+}
+const onPublicClickAction = (event: PublicActionMenuCEmit, id: number) => {
+  switch (event) {
+    case 'view':
+      router.push({
+        name: PublicRouterEnum.PUBLIC_OPTIC_DETAIL,
+        params: { id: id }
+      })
+      break
+    case 'add':
+      console.log('add')
   }
 }
 </script>

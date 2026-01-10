@@ -111,7 +111,14 @@
             type="handgun"
             :reference="data.reference"
             :id="data.id"
-        /></template>
+            v-if="$route.meta.admin"
+          />
+          <public-action-menu-component
+            :id="data.id"
+            @on-click-action="onPublicClickAction"
+            v-else
+          />
+        </template>
       </Column>
     </DataTable>
   </div>
@@ -138,6 +145,10 @@ import TableTitleComponent from '@/components/__table/TableTitleComponent.vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import type { HandGunDto } from '@/api/Api'
+import PublicActionMenuComponent, {
+  type PublicActionMenuCEmit
+} from '@/components/__table/PublicActionMenuComponent.vue'
+import { PublicRouterEnum } from '@/enum/router/public-router.enum'
 
 const { t } = useI18n()
 const { category } = defineProps<{
@@ -196,6 +207,19 @@ const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
       break
   }
 }
+const onPublicClickAction = (event: PublicActionMenuCEmit, id: number) => {
+  switch (event) {
+    case 'view':
+      router.push({
+        name: PublicRouterEnum.PUBLIC_HANDGUN_DETAIL,
+        params: { id: id, category: category }
+      })
+      break
+    case 'add':
+      console.log('add')
+  }
+}
+
 const onEditAction = (id: number) => {
   const currentHandgun = data.value?.data.find((handgun: HandGunDto) => handgun.id === id)
   if (currentHandgun) {

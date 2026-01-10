@@ -125,7 +125,14 @@
             type="handgun"
             :reference="data.reference"
             :id="data.id"
-        /></template>
+            v-if="$route.meta.admin"
+          />
+          <public-action-menu-component
+            :id="data.id"
+            @on-click-action="onPublicClickAction"
+            v-else
+          />
+        </template>
       </Column>
     </DataTable>
   </div>
@@ -153,6 +160,10 @@ import TableTitleComponent from '@/components/__table/TableTitleComponent.vue'
 import { storeToRefs } from 'pinia'
 import type { RiffleDto } from '@/api/Api'
 import { useI18n } from 'vue-i18n'
+import { PublicRouterEnum } from '@/enum/router/public-router.enum'
+import PublicActionMenuComponent, {
+  type PublicActionMenuCEmit
+} from '@/components/__table/PublicActionMenuComponent.vue'
 
 const { category } = defineProps<{
   category: string
@@ -207,6 +218,19 @@ const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
       store.delete(id)
       refetch()
       break
+  }
+}
+
+const onPublicClickAction = (event: PublicActionMenuCEmit, id: number) => {
+  switch (event) {
+    case 'view':
+      router.push({
+        name: PublicRouterEnum.PUBLIC_RIFFLE_DETAIL,
+        params: { id: id, category: category }
+      })
+      break
+    case 'add':
+      console.log('add')
   }
 }
 

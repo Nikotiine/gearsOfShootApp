@@ -125,7 +125,14 @@
             type="collar"
             :reference="data.reference"
             :id="data.id"
-        /></template>
+            v-if="$route.meta.admin"
+          />
+          <public-action-menu-component
+            :id="data.id"
+            @on-click-action="onPublicClickAction"
+            v-else
+          />
+        </template>
       </Column>
     </DataTable>
   </div>
@@ -150,6 +157,10 @@ import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 import { useRouter } from 'vue-router'
 import TableTitleComponent from '@/components/__table/TableTitleComponent.vue'
 import { storeToRefs } from 'pinia'
+import PublicActionMenuComponent, {
+  type PublicActionMenuCEmit
+} from '@/components/__table/PublicActionMenuComponent.vue'
+import { PublicRouterEnum } from '@/enum/router/public-router.enum'
 
 const store = useOpticCollarStore()
 const { queryFilters$ } = storeToRefs(store)
@@ -180,6 +191,19 @@ const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
       store.delete(id)
       refetch()
       break
+  }
+}
+
+const onPublicClickAction = (event: PublicActionMenuCEmit, id: number) => {
+  switch (event) {
+    case 'view':
+      router.push({
+        name: PublicRouterEnum.PUBLIC_OPTIC_COLLAR_DETAIL,
+        params: { id: id }
+      })
+      break
+    case 'add':
+      console.log('add')
   }
 }
 const onFilterChange = (event: DataTableFilterEvent) => {

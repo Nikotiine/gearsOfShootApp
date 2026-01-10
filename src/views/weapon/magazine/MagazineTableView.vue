@@ -119,6 +119,12 @@
             type="magazine"
             :reference="data.reference"
             :id="data.id"
+            v-if="$route.meta.admin"
+          />
+          <public-action-menu-component
+            :id="data.id"
+            @on-click-action="onPublicClickAction"
+            v-else
           />
         </template>
       </Column>
@@ -146,6 +152,10 @@ import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import TableTitleComponent from '@/components/__table/TableTitleComponent.vue'
 import { storeToRefs } from 'pinia'
+import PublicActionMenuComponent, {
+  type PublicActionMenuCEmit
+} from '@/components/__table/PublicActionMenuComponent.vue'
+import { PublicRouterEnum } from '@/enum/router/public-router.enum'
 
 const { category } = defineProps<{
   category: string
@@ -183,6 +193,18 @@ const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
       store.delete(id)
       refetch()
       break
+  }
+}
+const onPublicClickAction = (event: PublicActionMenuCEmit, id: number) => {
+  switch (event) {
+    case 'view':
+      router.push({
+        name: PublicRouterEnum.PUBLIC_MAGAZINE_DETAIL,
+        params: { id: id, category: category }
+      })
+      break
+    case 'add':
+      console.log('add')
   }
 }
 const onFilterChange = (event: DataTableFilterEvent) => {
