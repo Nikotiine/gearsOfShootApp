@@ -45,7 +45,7 @@
                 icon="pi pi-eye"
                 severity="info"
                 variant="outlined"
-                @click="onClick(slotProps.data.type, slotProps.data.id)"
+                @click="onClick(slotProps.data.type, slotProps.data.id, slotProps.data.category)"
               />
             </span>
           </div>
@@ -63,6 +63,7 @@ import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { NumberFormatter } from '@/shared/utils/formatter.utils'
 import type { RoutableObjectType } from '@/types/routable.type'
+import type { LegislationCategoryDto } from '@/api/Api'
 
 const store = usePublicDashboardStore()
 const i18nPrefix = store.getI18NPrefix
@@ -74,8 +75,8 @@ const { responsiveOptions$ } = storeToRefs(store)
 const items = computed(() => {
   return data.value?.filter(Boolean) ?? []
 })
-const onClick = (type: string, id: number) => {
-  store.redirectToDetail(type as RoutableObjectType, id)
+const onClick = (type: string, id: number, category?: LegislationCategoryDto) => {
+  store.redirectToDetail(type as RoutableObjectType, id, category)
 }
 </script>
 

@@ -119,6 +119,12 @@
             type="magazine"
             :reference="data.reference"
             :id="data.id"
+            v-if="$route.meta.admin"
+          />
+          <public-action-menu-component
+            :id="data.id"
+            @on-click-action="onPublicClickAction"
+            v-else
           />
         </template>
       </Column>
@@ -138,12 +144,18 @@ import { FilterMatchMode } from '@primevue/core/api'
 import { useFactoryStore } from '@/stores/factory.store'
 import { useCaliberStore } from '@/stores/caliber.store'
 
-import { RouterEnum } from '@/enum/router.enum'
-import ActionMenuComponent, { type ActionMenuEmit } from '@/components/__table/ActionMenuComponent.vue'
+import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
+import ActionMenuComponent, {
+  type ActionMenuEmit
+} from '@/components/__table/ActionMenuComponent.vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import TableTitleComponent from '@/components/__table/TableTitleComponent.vue'
 import { storeToRefs } from 'pinia'
+import PublicActionMenuComponent, {
+  type PublicActionMenuCEmit
+} from '@/components/__table/PublicActionMenuComponent.vue'
+import { PublicRouterEnum } from '@/enum/router/public-router.enum'
 
 const { category } = defineProps<{
   category: string
@@ -172,15 +184,27 @@ const filters = ref({
 const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
   switch (event) {
     case 'view':
-      router.push({ name: RouterEnum.MAGAZINE_DETAIL, params: { id: id } })
+      router.push({ name: AdminRouterEnum.MAGAZINE_DETAIL, params: { id: id } })
       break
     case 'edit':
-      router.push({ name: RouterEnum.MAGAZINE_EDIT, params: { id: id } })
+      router.push({ name: AdminRouterEnum.MAGAZINE_EDIT, params: { id: id } })
       break
     case true:
       store.delete(id)
       refetch()
       break
+  }
+}
+const onPublicClickAction = (event: PublicActionMenuCEmit, id: number) => {
+  switch (event) {
+    case 'view':
+      router.push({
+        name: PublicRouterEnum.PUBLIC_MAGAZINE_DETAIL,
+        params: { id: id, category: category }
+      })
+      break
+    case 'add':
+      console.log('add')
   }
 }
 const onFilterChange = (event: DataTableFilterEvent) => {

@@ -37,7 +37,7 @@
             </span>
             <span class="inline-flex flex-col gap-1">
               <span class="font-bold text-lg">{{ t('topbar.' + item.label) }}</span>
-              <span class="whitespace-nowrap">{{ item.subtext }}</span>
+              <span class="whitespace-nowrap">{{ t('topbar.' + item.subtext) }}</span>
             </span>
           </a>
           <div v-else class="flex flex-col items-start gap-4 p-2">
@@ -79,94 +79,18 @@ import ConnectedSplitButton from '@/components/__layout/ConnectedSplitButton.vue
 import { useRouter } from 'vue-router'
 import InvoiceButtonComponent from '@/components/__invoice/InvoiceButtonComponent.vue'
 import { useUserStore } from '@/stores/user.store'
+import { PublicRouterEnum } from '@/enum/router/public-router.enum'
 
 const { push } = useRouter()
 const { t } = useI18n()
 const { isLogged } = useSecurityStore()
 const { isAdmin } = useUserStore()
-/*const items = ref([
-  {
-    label: 'sportShooting',
-    root: true,
-    items: [
-      [
-        {
-          items: [
-            {
-              label: 'categoryC',
-              icon: 'pi pi-list',
-              subtext: 'Subtext of item',
-              command: () => {
-                push('/tir/sportif/categorie/c')
-              }
-            },
-            { label: 'ammoC', icon: 'pi pi-users', subtext: 'Subtext of item' },
-            { label: 'accessC', icon: 'pi pi-file', subtext: 'Subtext of item' }
-          ]
-        }
-      ],
-      [
-        {
-          items: [
-            { label: 'categoryBRiffle', icon: 'pi pi-shield', subtext: 'Subtext of item' },
-            { label: 'categoryBHandgun', icon: 'pi pi-question', subtext: 'Subtext of item' },
-            { label: 'categoryC', icon: 'pi pi-search', subtext: 'Subtext of item' },
-            { label: 'categoryC', icon: 'pi pi-search', subtext: 'Subtext of item' }
-          ]
-        }
-      ],
-      [
-        {
-          items: [
-            { label: 'categoryC', icon: 'pi pi-comments', subtext: 'Subtext of item' },
-            { label: 'categoryC', icon: 'pi pi-star', subtext: 'Subtext of item' },
-            { label: 'categoryC', icon: 'pi pi-globe', subtext: 'Subtext of item' }
-          ]
-        }
-      ]
-    ]
-  },
-  {
-    label: 'recreationalShooting',
-    root: true
-  }
-  /!* {
-    label: 'account',
-    root: true,
-    items: [
-      [
-        {
-          items: [
-            {
-              label: 'connexion',
-              icon: 'pi pi-list',
-              subtext: 'Subtext of item',
-              command: () => {
-                toggleConnexionDialog()
-              }
-            },
-            {
-              label: 'register',
-              icon: 'pi pi-users',
-              subtext: 'Subtext of item',
-              command: () => {
-                toggleRegisterDialog()
-              }
-            }
-          ]
-        }
-      ]
-    ]
-  }*!/
-])*/
+
 const items = computed(() => {
   const baseItems = [
     {
       label: 'sportShooting',
       root: true,
-      command: () => {
-        push('/')
-      },
       items: [
         [
           {
@@ -174,33 +98,87 @@ const items = computed(() => {
               {
                 label: 'categoryC',
                 icon: 'pi pi-list',
-                subtext: 'Subtext of item',
+                subtext: 'subRiffleCatC',
                 command: () => {
-                  push('/tir/sportif/categorie/c')
+                  push({ name: PublicRouterEnum.PUBLIC_RIFFLE_LIST, params: { category: 'C' } })
                 }
               },
-              { label: 'ammoC', icon: 'pi pi-users', subtext: 'Subtext of item' },
-              { label: 'accessC', icon: 'pi pi-file', subtext: 'Subtext of item' }
+              {
+                label: 'ammoC',
+                icon: 'pi pi-users',
+                subtext: 'subAmmoCatC',
+                command: () => {
+                  push({ name: PublicRouterEnum.PUBLIC_AMMUNITION_LIST, params: { category: 'C' } })
+                }
+              },
+              {
+                label: 'magazine',
+                icon: 'pi pi-file',
+                subtext: 'subMagazineCatC',
+                command: () => {
+                  push({ name: PublicRouterEnum.PUBLIC_MAGAZINE_LIST, params: { category: 'C' } })
+                }
+              }
             ]
           }
         ],
         [
           {
-            label: 'toto',
             items: [
-              { label: 'categoryBRiffle', icon: 'pi pi-shield', subtext: 'Subtext of item' },
-              { label: 'categoryBHandgun', icon: 'pi pi-question', subtext: 'Subtext of item' },
-              { label: 'categoryC', icon: 'pi pi-search', subtext: 'Subtext of item' },
-              { label: 'categoryC', icon: 'pi pi-search', subtext: 'Subtext of item' }
+              {
+                label: 'categoryBRiffle',
+                icon: 'pi pi-shield',
+                subtext: 'subRiffleCatB',
+                command: () => {
+                  push({ name: PublicRouterEnum.PUBLIC_RIFFLE_LIST, params: { category: 'B' } })
+                }
+              },
+              {
+                label: 'categoryBHandgun',
+                icon: 'pi pi-question',
+                subtext: 'subHandgunCatB',
+                command: () => {
+                  push({ name: PublicRouterEnum.PUBLIC_HANDGUN_LIST, params: { category: 'B' } })
+                }
+              },
+              {
+                label: 'ammoB',
+                icon: 'pi pi-search',
+                subtext: 'subAmmoCatB',
+                command: () => {
+                  push({ name: PublicRouterEnum.PUBLIC_AMMUNITION_LIST, params: { category: 'B' } })
+                }
+              },
+              {
+                label: 'magazine',
+                icon: 'pi pi-file',
+                subtext: 'subMagazineCatB',
+                command: () => {
+                  push({ name: PublicRouterEnum.PUBLIC_MAGAZINE_LIST, params: { category: 'B' } })
+                }
+              }
             ]
           }
         ],
         [
           {
             items: [
-              { label: 'categoryC', icon: 'pi pi-comments', subtext: 'Subtext of item' },
-              { label: 'categoryC', icon: 'pi pi-star', subtext: 'Subtext of item' },
-              { label: 'categoryC', icon: 'pi pi-globe', subtext: 'Subtext of item' }
+              {
+                label: 'optic',
+                icon: 'pi pi-comments',
+                subtext: 'subOptic',
+                command: () => {
+                  push({ name: PublicRouterEnum.PUBLIC_OPTIC_LIST })
+                }
+              },
+              {
+                label: 'opticCollar',
+                icon: 'pi pi-star',
+                subtext: 'subOpticCollar',
+                command: () => {
+                  push({ name: PublicRouterEnum.PUBLIC_OPTIC_COLLAR_LIST })
+                }
+              }
             ]
           }
         ]

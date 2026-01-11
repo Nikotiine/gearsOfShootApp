@@ -2,10 +2,15 @@ import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
 import { useToastStore } from '@/stores/toast'
 import { useMutation, useQuery } from '@tanstack/vue-query'
-import type { CreateOpticCollarDto, OpticCollarDto, OpticCollarFilter, UpdateOpticCollarDto } from '@/api/Api'
+import type {
+  CreateOpticCollarDto,
+  OpticCollarDto,
+  OpticCollarFilter,
+  UpdateOpticCollarDto
+} from '@/api/Api'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { RouterEnum } from '@/enum/router.enum'
+import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
 import { getFactoryDto } from '@/shared/api-dto/get-factory.dto'
@@ -42,7 +47,7 @@ export const useOpticCollarStore = defineStore('optic-collar-store', () => {
       return await api.api.opticCollarControllerEdit(collar.id, collar)
     },
     onSuccess: () => {
-      push({ name: RouterEnum.OPTIC_COLLAR_LIST })
+      push({ name: AdminRouterEnum.OPTIC_COLLAR_LIST })
     }
   })
 

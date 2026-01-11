@@ -7,7 +7,7 @@ import { useSecurityStore } from '@/stores/security.store'
 import { useToastStore } from '@/stores/toast'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user.store'
-import { RouterEnum } from '@/enum/router.enum'
+import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 
 /**
  * 📦 Store de gestion de la connexion utilisateur (`useConnexionStore`).
@@ -117,7 +117,7 @@ export const useConnexionStore = defineStore('connexion', () => {
       successMessage('connexion.summary', `connexion.login.success`)
       await getUserProfile()
       if (isAdmin.value) {
-        await router.push({ name: RouterEnum.ADMIN_DASHBOARD })
+        await router.push({ name: AdminRouterEnum.ADMIN_DASHBOARD })
       }
       toggleConnexionDialog()
     },

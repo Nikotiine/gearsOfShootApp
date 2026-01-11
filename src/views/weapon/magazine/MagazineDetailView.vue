@@ -9,8 +9,8 @@
         <Tab value="0">{{ t('global.importantInformation') }}</Tab>
         <Tab value="1">{{ t('global.description') }}</Tab>
         <Tab value="2">{{ t('global.associatedWeapons') }}</Tab>
-        <Tab value="3">{{ t('global.price') }}</Tab>
-        <Tab value="4">{{ t('global.stock') }}</Tab>
+        <Tab value="3" v-if="isAdminRoute">{{ t('global.price') }}</Tab>
+        <Tab value="4" v-if="isAdminRoute">{{ t('global.stock') }}</Tab>
       </TabList>
       <TabPanels>
         <TabPanel value="0">
@@ -26,10 +26,10 @@
           </p>
         </TabPanel>
         <TabPanel value="2"> //FEATURE </TabPanel>
-        <TabPanel value="3">
+        <TabPanel value="3" v-if="isAdminRoute">
           <tab-price-component :id="id" type="MAGAZINE" :price="magazine.priceHistory" />
         </TabPanel>
-        <TabPanel value="4">
+        <TabPanel value="4" v-if="isAdminRoute">
           <tab-stock-component :stock="magazine.stock" />
         </TabPanel>
       </TabPanels>
@@ -59,8 +59,9 @@ import TabStockComponent from '@/components/__tabs/TabStockComponent.vue'
 
 const store = useWeaponMagazineStore()
 const { t } = useI18n()
-const { id } = defineProps<{
+const { id, isAdminRoute = false } = defineProps<{
   id: string
+  isAdminRoute?: boolean
 }>()
 const { data: magazine } = store.getById(id)
 const importantInfo = computed(() => {

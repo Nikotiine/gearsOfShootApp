@@ -18,7 +18,7 @@ import WeaponTypeFormComponent from '@/components/__weapon/type/WeaponTypeFormCo
 import CaliberFormComponent from '@/components/__caliber/CaliberFormComponent.vue'
 import ColorFormComponent from '@/components/__color_and_material/ColorFormComponent.vue'
 import SoundReducerFormView from '@/views/accessory/rds/SoundReducerFormView.vue'
-import { RouterEnum } from '@/enum/router.enum'
+import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 import HandGunFormView from '@/views/weapon/handgun/HandGunFormView.vue'
 import RiffleFormView from '@/views/weapon/riffle/RiffleFormView.vue'
 import InvoiceFormComponent from '@/components/__invoice/InvoiceFormComponent.vue'
@@ -45,30 +45,30 @@ const { t } = useI18n()
 const route = useRoute()
 const breadcrumbStore = useBreadcrumbStore()
 enum RouterFormEnum {
-  OPTIC_COLLAR_NEW = RouterEnum.OPTIC_COLLAR_NEW,
-  OPTIC_COLLAR_EDIT = RouterEnum.OPTIC_COLLAR_EDIT,
-  AMMUNITION_NEW = RouterEnum.AMMUNITION_NEW,
-  AMMUNITION_EDIT = RouterEnum.AMMUNITION_EDIT,
-  MAGAZINE_EDIT = RouterEnum.MAGAZINE_EDIT,
-  MAGAZINE_NEW = RouterEnum.MAGAZINE_NEW,
-  FACTORY_NEW = RouterEnum.FACTORY_NEW,
-  OPTIC_EDIT = RouterEnum.OPTIC_EDIT,
-  OPTIC_NEW = RouterEnum.OPTIC_NEW,
-  RDS_EDIT = RouterEnum.RDS_EDIT,
-  RDS_NEW = RouterEnum.RDS_NEW,
-  COLOR_NEW = RouterEnum.COLOR_NEW,
-  MATERIAL_NEW = RouterEnum.MATERIAL_NEW,
-  HEAD_TYPE_NEW = RouterEnum.HEAD_TYPE_NEW,
-  BODY_TYPE_NEW = RouterEnum.BODY_TYPE_NEW,
-  THREADED_SIZE_NEW = RouterEnum.THREADED_SIZE_NEW,
-  WEAPON_TYPE_NEW = RouterEnum.WEAPON_TYPE_NEW,
-  CALIBER_NEW = RouterEnum.CALIBER_NEW,
-  FACTORY_EDIT = RouterEnum.FACTORY_EDIT,
-  HANDGUN_NEW = RouterEnum.HANDGUN_NEW,
-  HANDGUN_EDIT = RouterEnum.HANDGUN_EDIT,
-  RIFFLE_NEW = RouterEnum.RIFFLE_NEW,
-  RIFFLE_EDIT = RouterEnum.RIFFLE_EDIT,
-  INVOICE_NEW = RouterEnum.INVOICE_NEW
+  OPTIC_COLLAR_NEW = AdminRouterEnum.OPTIC_COLLAR_NEW,
+  OPTIC_COLLAR_EDIT = AdminRouterEnum.OPTIC_COLLAR_EDIT,
+  AMMUNITION_NEW = AdminRouterEnum.AMMUNITION_NEW,
+  AMMUNITION_EDIT = AdminRouterEnum.AMMUNITION_EDIT,
+  MAGAZINE_EDIT = AdminRouterEnum.MAGAZINE_EDIT,
+  MAGAZINE_NEW = AdminRouterEnum.MAGAZINE_NEW,
+  FACTORY_NEW = AdminRouterEnum.FACTORY_NEW,
+  OPTIC_EDIT = AdminRouterEnum.OPTIC_EDIT,
+  OPTIC_NEW = AdminRouterEnum.OPTIC_NEW,
+  RDS_EDIT = AdminRouterEnum.RDS_EDIT,
+  RDS_NEW = AdminRouterEnum.RDS_NEW,
+  COLOR_NEW = AdminRouterEnum.COLOR_NEW,
+  MATERIAL_NEW = AdminRouterEnum.MATERIAL_NEW,
+  HEAD_TYPE_NEW = AdminRouterEnum.HEAD_TYPE_NEW,
+  BODY_TYPE_NEW = AdminRouterEnum.BODY_TYPE_NEW,
+  THREADED_SIZE_NEW = AdminRouterEnum.THREADED_SIZE_NEW,
+  WEAPON_TYPE_NEW = AdminRouterEnum.WEAPON_TYPE_NEW,
+  CALIBER_NEW = AdminRouterEnum.CALIBER_NEW,
+  FACTORY_EDIT = AdminRouterEnum.FACTORY_EDIT,
+  HANDGUN_NEW = AdminRouterEnum.HANDGUN_NEW,
+  HANDGUN_EDIT = AdminRouterEnum.HANDGUN_EDIT,
+  RIFFLE_NEW = AdminRouterEnum.RIFFLE_NEW,
+  RIFFLE_EDIT = AdminRouterEnum.RIFFLE_EDIT,
+  INVOICE_NEW = AdminRouterEnum.INVOICE_NEW
 }
 
 // Mapping entre les noms de route et les composants

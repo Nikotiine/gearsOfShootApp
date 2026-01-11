@@ -8,9 +8,9 @@
   </main>
 </template>
 <script setup lang="ts">
-import NewItemCarousel from '@/components/__dashboard/new-item-carousel.vue'
+import NewItemCarousel from '@/components/__dashboard/NewItemCarousel.vue'
 import { useI18n } from 'vue-i18n'
-import DiscountItemCarousel from '@/components/__dashboard/discount-item-carousel.vue'
+import DiscountItemCarousel from '@/components/__dashboard/DiscountItemCarousel.vue'
 
 const { t } = useI18n()
 </script>

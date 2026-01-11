@@ -148,6 +148,12 @@
               type="ammunition"
               :reference="data.reference"
               :id="data.id"
+              v-if="$route.meta.admin"
+            />
+            <public-action-menu-component
+              :id="data.id"
+              @on-click-action="onPublicClickAction"
+              v-else
             />
             <InvoiceAddItemComponent
               object="AMMUNITION"
@@ -173,28 +179,34 @@ import { useFactoryStore } from '@/stores/factory.store'
 import { computed, onBeforeMount, ref, watch } from 'vue'
 import { FilterMatchMode } from '@primevue/core/api'
 import { useI18n } from 'vue-i18n'
-import { RouterEnum } from '@/enum/router.enum'
+import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 import { useRouter } from 'vue-router'
-import ActionMenuComponent, { type ActionMenuEmit } from '@/components/__table/ActionMenuComponent.vue'
+import ActionMenuComponent, {
+  type ActionMenuEmit
+} from '@/components/__table/ActionMenuComponent.vue'
 import TableTitleComponent from '@/components/__table/TableTitleComponent.vue'
 import InvoiceAddItemComponent from '@/components/__invoice/InvoiceAddItemComponent.vue'
 import { storeToRefs } from 'pinia'
+import { PublicRouterEnum } from '@/enum/router/public-router.enum'
+import PublicActionMenuComponent, {
+  type PublicActionMenuCEmit
+} from '@/components/__table/PublicActionMenuComponent.vue'
 
+const store = useAmmunitionStore()
+const caliberStore = useCaliberStore()
+const factoryStore = useFactoryStore()
+const router = useRouter()
+
+const { t } = useI18n()
 const { category } = defineProps<{
   category: string
 }>()
-const { t } = useI18n()
-const store = useAmmunitionStore()
 const { queryFilters$ } = storeToRefs(store)
-
 onBeforeMount(() => {
   queryFilters$.value.category = category
 })
-
 const i18nPrefix = store.getI18NPrefix
-const router = useRouter()
-const caliberStore = useCaliberStore()
-const factoryStore = useFactoryStore()
+
 const { data: factories$ } = factoryStore.getFactoriesByType('ammunition')
 const currentCategory = ref<string>(category)
 const { data, refetch, isError, isLoading: storeIsLoading } = store.getByCategory()
@@ -232,15 +244,27 @@ const onPageChange = (event: DataTablePageEvent) => {
 const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
   switch (event) {
     case 'view':
-      router.push({ name: RouterEnum.AMMUNITION_DETAIL, params: { id: id } })
+      router.push({ name: AdminRouterEnum.AMMUNITION_DETAIL, params: { id: id } })
       break
     case 'edit':
-      router.push({ name: RouterEnum.AMMUNITION_EDIT, params: { id: id } })
+      router.push({ name: AdminRouterEnum.AMMUNITION_EDIT, params: { id: id } })
       break
     case true:
       store.delete(id)
       refetch()
       break
+  }
+}
+const onPublicClickAction = (event: PublicActionMenuCEmit, id: number) => {
+  switch (event) {
+    case 'view':
+      router.push({
+        name: PublicRouterEnum.PUBLIC_AMMUNITION_DETAIL,
+        params: { id: id, category: category }
+      })
+      break
+    case 'add':
+      console.log('add')
   }
 }
 watch(

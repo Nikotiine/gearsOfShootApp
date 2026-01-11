@@ -108,8 +108,10 @@ import Select from 'primevue/select'
 import InputIcon from 'primevue/inputicon'
 import { FilterMatchMode } from '@primevue/core/api'
 import { computed, ref } from 'vue'
-import ActionMenuComponent, { type ActionMenuEmit } from '@/components/__table/ActionMenuComponent.vue'
-import { RouterEnum } from '@/enum/router.enum'
+import ActionMenuComponent, {
+  type ActionMenuEmit
+} from '@/components/__table/ActionMenuComponent.vue'
+import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 import { useRouter } from 'vue-router'
 import TableTitleComponent from '@/components/__table/TableTitleComponent.vue'
 import { FactoryTypeFormatter } from '@/shared/utils/formatter.utils'
@@ -139,10 +141,10 @@ const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
   switch (event) {
     //TODO : Faire la view
     case 'view':
-      router.push({ name: RouterEnum.AMMUNITION_DETAIL, params: { id: id } })
+      router.push({ name: AdminRouterEnum.AMMUNITION_DETAIL, params: { id: id } })
       break
     case 'edit':
-      router.push({ name: RouterEnum.FACTORY_EDIT, params: { id: id } })
+      router.push({ name: AdminRouterEnum.FACTORY_EDIT, params: { id: id } })
       break
     case true:
       store.delete(id)

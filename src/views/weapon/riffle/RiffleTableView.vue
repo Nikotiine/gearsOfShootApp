@@ -2,6 +2,7 @@
   <div class="card p-4">
     <table-title-component :i18n-prefix="i18nPrefix" :category="category" />
     <div class="text-red-500 text-center" v-if="isError">Error</div>
+    <!--    <div class="text-red-500 text-center" v-if="$route.meta.admin">Error</div>-->
     <DataTable
       v-model:filters="filters"
       :value="data?.data"
@@ -124,7 +125,14 @@
             type="handgun"
             :reference="data.reference"
             :id="data.id"
-        /></template>
+            v-if="$route.meta.admin"
+          />
+          <public-action-menu-component
+            :id="data.id"
+            @on-click-action="onPublicClickAction"
+            v-else
+          />
+        </template>
       </Column>
     </DataTable>
   </div>
@@ -142,14 +150,20 @@ import Select from 'primevue/select'
 import IconField from 'primevue/iconfield'
 import { useFactoryStore } from '@/stores/factory.store'
 import { useCaliberStore } from '@/stores/caliber.store'
-import ActionMenuComponent, { type ActionMenuEmit } from '@/components/__table/ActionMenuComponent.vue'
-import { RouterEnum } from '@/enum/router.enum'
+import ActionMenuComponent, {
+  type ActionMenuEmit
+} from '@/components/__table/ActionMenuComponent.vue'
+import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 import { type NewWeapon, useWeaponStore } from '@/stores/weapon'
 import { useRouter } from 'vue-router'
 import TableTitleComponent from '@/components/__table/TableTitleComponent.vue'
 import { storeToRefs } from 'pinia'
 import type { RiffleDto } from '@/api/Api'
 import { useI18n } from 'vue-i18n'
+import { PublicRouterEnum } from '@/enum/router/public-router.enum'
+import PublicActionMenuComponent, {
+  type PublicActionMenuCEmit
+} from '@/components/__table/PublicActionMenuComponent.vue'
 
 const { category } = defineProps<{
   category: string
@@ -194,16 +208,29 @@ watch(
 const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
   switch (event) {
     case 'view':
-      router.push({ name: RouterEnum.RIFFLE_DETAIL, params: { id: id } })
+      router.push({ name: AdminRouterEnum.ADMIN_RIFFLE_DETAIL, params: { id: id } })
       break
     case 'edit':
       onEditAction(id)
-      router.push({ name: RouterEnum.RIFFLE_EDIT, params: { id: id } })
+      router.push({ name: AdminRouterEnum.RIFFLE_EDIT, params: { id: id } })
       break
     case true:
       store.delete(id)
       refetch()
       break
+  }
+}
+
+const onPublicClickAction = (event: PublicActionMenuCEmit, id: number) => {
+  switch (event) {
+    case 'view':
+      router.push({
+        name: PublicRouterEnum.PUBLIC_RIFFLE_DETAIL,
+        params: { id: id, category: category }
+      })
+      break
+    case 'add':
+      console.log('add')
   }
 }
 

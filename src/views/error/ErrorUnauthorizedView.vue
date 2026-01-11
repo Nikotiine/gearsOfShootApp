@@ -27,12 +27,12 @@
 import { useRouter } from 'vue-router'
 import Card from 'primevue/card'
 import Button from 'primevue/button'
-import { RouterEnum } from '@/enum/router.enum'
+import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 
 const router = useRouter()
 
 const goHome = () => {
-  router.push({ name: RouterEnum.HOME })
+  router.push({ name: AdminRouterEnum.HOME })
 }
 </script>
 

@@ -1,6 +1,6 @@
 import type { NavigationGuardNext, RouteLocationNormalized } from 'vue-router'
 import { useUserStore } from '@/stores/user.store'
-import { RouterEnum } from '@/enum/router.enum'
+import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 import { useToastStore } from '@/stores/toast'
 
 /**
@@ -16,7 +16,7 @@ export function adminGuard(
   const { warnMessage } = useToastStore()
   if (!isAdmin.value) {
     warnMessage('error.summary', 'error.403')
-    return next({ name: RouterEnum.UNAUTHORIZED })
+    return next({ name: AdminRouterEnum.UNAUTHORIZED })
   }
 
   next()

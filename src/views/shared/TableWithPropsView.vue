@@ -2,7 +2,7 @@
   <component :is="component" :category="category" />
 </template>
 <script setup lang="ts">
-import { RouterEnum } from '@/enum/router.enum'
+import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 import AmmunitionTableView from '@/views/ammunition/AmmunitionTableView.vue'
 import MagazineTableView from '@/views/weapon/magazine/MagazineTableView.vue'
 
@@ -25,10 +25,10 @@ const { category } = defineProps<{
   category: string
 }>()
 enum TableWithProps {
-  AMMUNITION = RouterEnum.AMMUNITION_LIST,
-  MAGAZINE = RouterEnum.MAGAZINE_LIST,
-  HANDGUN = RouterEnum.HANDGUN_LIST,
-  RIFFLE = RouterEnum.RIFFLE_LIST
+  AMMUNITION = AdminRouterEnum.AMMUNITION_LIST,
+  MAGAZINE = AdminRouterEnum.MAGAZINE_LIST,
+  HANDGUN = AdminRouterEnum.HANDGUN_LIST,
+  RIFFLE = AdminRouterEnum.RIFFLE_LIST
 }
 
 const componentMap = {
@@ -48,7 +48,8 @@ const currentStore = computed(() => {
   const storeFn = storeMap[route.name as TableWithProps]
   return storeFn ? storeFn() : null
 })
-watch(
+console.log('ici', category)
+/*watch(
   () => route.name,
   () => {
     if (currentStore.value) {
@@ -61,7 +62,7 @@ watch(
     }
   },
   { immediate: true }
-)
+)*/
 </script>
 
 <style scoped></style>

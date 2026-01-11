@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
 import { useQuery } from '@tanstack/vue-query'
-import type { DiscountedItemDto, NewItemsDto } from '@/api/Api'
+import type { DiscountedItemDto, LegislationCategoryDto, NewItemsDto } from '@/api/Api'
 import { getI18NPrefix } from '@/enum/I18NSuffix.enum'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { RouterEnum } from '@/enum/router.enum'
 import type { RoutableObjectType } from '@/types/routable.type'
+import { PublicRouterEnum } from '@/enum/router/public-router.enum'
 
 export const usePublicDashboardStore = defineStore('public-dashboard', () => {
   const { api } = useApiStore()
@@ -36,21 +36,27 @@ export const usePublicDashboardStore = defineStore('public-dashboard', () => {
     }
   ])
   const router = useRouter()
-  const routerMap: Record<RoutableObjectType, RouterEnum> = {
-    ammunition: RouterEnum.AMMUNITION_DETAIL,
-    riffle: RouterEnum.RIFFLE_DETAIL,
-    handgun: RouterEnum.HANDGUN_DETAIL,
-    optic: RouterEnum.OPTIC_DETAIL,
-    magazine: RouterEnum.MAGAZINE_DETAIL,
-    rds: RouterEnum.RDS_DETAIL
+  const routerMap: Record<RoutableObjectType, PublicRouterEnum> = {
+    ammunition: PublicRouterEnum.PUBLIC_AMMUNITION_DETAIL,
+    riffle: PublicRouterEnum.PUBLIC_RIFFLE_DETAIL,
+    handgun: PublicRouterEnum.PUBLIC_HANDGUN_DETAIL,
+    optic: PublicRouterEnum.PUBLIC_OPTIC_DETAIL,
+    magazine: PublicRouterEnum.PUBLIC_MAGAZINE_DETAIL,
+    rds: PublicRouterEnum.PUBLIC_RDS_DETAIL,
+    'optic-collar': PublicRouterEnum.PUBLIC_OPTIC_COLLAR_DETAIL
   }
   /**
    * Redirige vers la page détail selon le type et l'id de l'objet.
    *
    * @param type - Type de l'objet (optic, riffle, etc.)
    * @param id - Identifiant de l'objet
+   * @param category LegislationCategoryDto
    */
-  function redirectToDetail(type: RoutableObjectType, id: number): void {
+  function redirectToDetail(
+    type: RoutableObjectType,
+    id: number,
+    category?: LegislationCategoryDto
+  ): void {
     const routeName = routerMap[type]
 
     if (!routeName) {
@@ -60,7 +66,7 @@ export const usePublicDashboardStore = defineStore('public-dashboard', () => {
 
     router.push({
       name: routeName,
-      params: { id }
+      params: { id, category: category?.name }
     })
   }
   const queryFindAllNewItems = () =>

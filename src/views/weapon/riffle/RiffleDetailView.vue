@@ -16,8 +16,8 @@
         <Tab value="2">{{ t('global.otherInformation') }}</Tab>
         <Tab value="3">{{ t('global.description') }}</Tab>
         <Tab value="4">{{ t('global.associatedProducts') }}</Tab>
-        <Tab value="5">{{ t('global.price') }}</Tab>
-        <Tab value="6">{{ t('global.stock') }}</Tab>
+        <Tab value="5" v-if="isAdminRoute">{{ t('global.price') }}</Tab>
+        <Tab value="6" v-if="isAdminRoute">{{ t('global.stock') }}</Tab>
       </TabList>
       <TabPanels>
         <TabPanel value="0">
@@ -41,15 +41,16 @@
         <TabPanel value="4">
           <p>// Feature</p>
         </TabPanel>
-        <TabPanel value="5">
+        <TabPanel value="5" v-if="isAdminRoute">
           <tab-price-component :id="id" type="RIFFLE" :price="riffle.priceHistory" />
         </TabPanel>
-        <TabPanel value="6">
+        <TabPanel value="6" v-if="isAdminRoute">
           <tab-stock-component :stock="riffle.stock" />
         </TabPanel>
       </TabPanels>
     </Tabs>
     <audit-info-component
+      v-if="isAdminRoute"
       :created-by="riffle.createdBy"
       :updated-by="riffle.updatedBy"
       :created-at="riffle.createdAt"
@@ -81,8 +82,9 @@ import TabStockComponent from '@/components/__tabs/TabStockComponent.vue'
 
 const { t } = useI18n()
 const store = useRiffleStore()
-const { id } = defineProps<{
+const { id, isAdminRoute = false } = defineProps<{
   id: string
+  isAdminRoute?: boolean
 }>()
 const { data: riffle } = store.getRiffleById(id)
 

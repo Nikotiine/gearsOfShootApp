@@ -393,6 +393,7 @@ export interface RiffleDto {
   createdAt: string
   /** @format date-time */
   updatedAt: string
+  isDiscounted: boolean
 }
 
 export interface WeaponTriggerTypeDto {
@@ -498,6 +499,7 @@ export interface HandGunDto {
   createdAt: string
   /** @format date-time */
   updatedAt: string
+  isDiscounted: boolean
 }
 
 export interface WeaponMagazineDto {
@@ -534,6 +536,7 @@ export interface WeaponMagazineDto {
   /** @format date-time */
   updatedAt: string
   stock: StockDto | null
+  isDiscounted: boolean
 }
 
 export interface CreateWeaponMagazineDto {
@@ -1105,6 +1108,7 @@ export interface AmmunitionDto {
   createdAt: string
   /** @format date-time */
   updatedAt: string
+  isDiscounted: boolean
 }
 
 export interface AmmunitionFilter {
@@ -1467,6 +1471,7 @@ export interface SoundNoiseReducerDto {
    */
   updatedAt: string
   stock: StockDto | null
+  isDiscounted: boolean
 }
 
 export interface CreateSoundNoiseReducerDto {
@@ -1613,6 +1618,7 @@ export interface NewItemsDto {
   sub: string
   factory: string
   discountedPrice: number
+  category: LegislationCategoryDto
 }
 
 export interface DiscountedItemDto {
@@ -1623,6 +1629,7 @@ export interface DiscountedItemDto {
   sub: string
   factory: string
   discountedPrice: number
+  category: LegislationCategoryDto
   isDiscounted: boolean
   precentOfDiscount: number
 }
@@ -1642,7 +1649,13 @@ export enum CreateUserDtoRoleEnum {
   ADMIN = 'ADMIN'
 }
 
-import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, HeadersDefaults, ResponseType } from 'axios'
+import type {
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse,
+  HeadersDefaults,
+  ResponseType
+} from 'axios'
 import axios from 'axios'
 
 export type QueryParamsType = Record<string | number, any>
@@ -1790,7 +1803,7 @@ export class HttpClient<SecurityDataType = unknown> {
 
 /**
  * @title Gears of shoot
- * @version 0.3.3
+ * @version 0.4.0
  * @contact
  *
  * Gears of shoot API
@@ -2722,22 +2735,6 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
-     * @description Retourne la liste des arme de poings filtree par categories
-     *
-     * @tags Hand-Gun
-     * @name HandGunControllerFindAllByCategory
-     * @summary Filtré par categorie
-     * @request GET:/api/hand-gun/by/category/{category}
-     */
-    handGunControllerFindAllByCategory: (category: string, params: RequestParams = {}) =>
-      this.request<HandGunDto[], any>({
-        path: `/api/hand-gun/by/category/${category}`,
-        method: 'GET',
-        format: 'json',
-        ...params
-      }),
-
-    /**
      * @description Ajout d une nouvelle arme de poing
      *
      * @tags Hand-Gun
@@ -2834,22 +2831,6 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
     riffleControllerFindById: (id: number, params: RequestParams = {}) =>
       this.request<RiffleDto, any>({
         path: `/api/riffle/by/id/${id}`,
-        method: 'GET',
-        format: 'json',
-        ...params
-      }),
-
-    /**
-     * @description Retourne la liste des arme de poings filtree par categories
-     *
-     * @tags Riffle
-     * @name RiffleControllerFindAllByCategory
-     * @summary Filtré par categorie
-     * @request GET:/api/riffle/by/category/{category}
-     */
-    riffleControllerFindAllByCategory: (category: string, params: RequestParams = {}) =>
-      this.request<RiffleDto[], any>({
-        path: `/api/riffle/by/category/${category}`,
         method: 'GET',
         format: 'json',
         ...params

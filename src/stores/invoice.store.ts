@@ -17,7 +17,7 @@ import type { AxiosResponse } from 'axios'
 import { getInvoiceDto } from '@/shared/api-dto/get-invoice.dto'
 import { useToastStore } from '@/stores/toast'
 import { useRouter } from 'vue-router'
-import { RouterEnum } from '@/enum/router.enum'
+import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 
 export const useInvoiceStore = defineStore('invoice-store', () => {
   // Appel API
@@ -103,7 +103,7 @@ export const useInvoiceStore = defineStore('invoice-store', () => {
       submitSuccess.value = true
       sessionStorage.removeItem(_STORAGE_KEY)
       tempInvoice.value = getInvoiceDto()
-      await router.push({ name: RouterEnum.ADMIN_DASHBOARD })
+      await router.push({ name: AdminRouterEnum.ADMIN_DASHBOARD })
     }
   })
 

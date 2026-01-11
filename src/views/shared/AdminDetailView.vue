@@ -1,8 +1,8 @@
 <template>
-  <component :is="detailComponent" v-if="id" :id="id" :key="id" />
+  <component :is="detailComponent" v-if="id" :id="id" :key="id" :isAdminRoute="isAdminRoute" />
 </template>
 <script setup lang="ts">
-import { RouterEnum } from '@/enum/router.enum'
+import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 
 import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
@@ -32,14 +32,14 @@ const { t } = useI18n()
 const formStore = useFormStore()
 const id = ref<string | undefined>(route.params.id ? (route.params.id as string) : undefined)
 enum DetailRoute {
-  RDS_DETAIL = RouterEnum.RDS_DETAIL,
-  AMMUNITION_DETAIL = RouterEnum.AMMUNITION_DETAIL,
-  OPTIC_COLLAR_DETAIL = RouterEnum.OPTIC_COLLAR_DETAIL,
-  OPTIC_DETAIL = RouterEnum.OPTIC_DETAIL,
-  RIFFLE_DETAIL = RouterEnum.RIFFLE_DETAIL,
-  HANDGUN_DETAIL = RouterEnum.HANDGUN_DETAIL,
-  MAGAZINE_DETAIL = RouterEnum.MAGAZINE_DETAIL,
-  INVOICE_DETAIL = RouterEnum.INVOICE_DETAIL
+  RDS_DETAIL = AdminRouterEnum.RDS_DETAIL,
+  AMMUNITION_DETAIL = AdminRouterEnum.AMMUNITION_DETAIL,
+  OPTIC_COLLAR_DETAIL = AdminRouterEnum.OPTIC_COLLAR_DETAIL,
+  OPTIC_DETAIL = AdminRouterEnum.OPTIC_DETAIL,
+  RIFFLE_DETAIL = AdminRouterEnum.ADMIN_RIFFLE_DETAIL,
+  HANDGUN_DETAIL = AdminRouterEnum.ADMIN_HANDGUN_DETAIL,
+  MAGAZINE_DETAIL = AdminRouterEnum.MAGAZINE_DETAIL,
+  INVOICE_DETAIL = AdminRouterEnum.INVOICE_DETAIL
 }
 const componentMap = {
   [DetailRoute.RDS_DETAIL]: SoundReducerDetailView,
@@ -82,6 +82,9 @@ watch(
   },
   { immediate: true }
 )
+const isAdminRoute = computed<boolean>(() => {
+  return Boolean(route.meta.admin)
+})
 </script>
 
 <style scoped></style>
