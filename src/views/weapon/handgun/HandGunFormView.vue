@@ -326,8 +326,7 @@ import PercussionTypeInputSelect from '@/components/__form/__specific_select/Per
 import BarrelTypeInputSelect from '@/components/__form/__specific_select/BarrelTypeInputSelect.vue'
 import ColorInputSelect from '@/components/__form/__specific_select/ColorInputSelect.vue'
 import MaterialInputSelect from '@/components/__form/__specific_select/MaterialInputSelect.vue'
-import OpticReadyPlateInputMulitSelect
-  from '@/components/__form/__specific_mullti_select/OpticReadyPlateInputMulitSelect.vue'
+import OpticReadyPlateInputMulitSelect from '@/components/__form/__specific_mullti_select/OpticReadyPlateInputMulitSelect.vue'
 import ThreadedSizeInputSelect from '@/components/__form/__specific_select/ThreadedSizeInputSelect.vue'
 import TriggerTypeInputSelect from '@/components/__form/__specific_select/TriggerTypeInputSelect.vue'
 import { WeaponEnum } from '@/enum/weapon.enum'
@@ -337,14 +336,15 @@ import PriceHistoryForm from '@/components/__form/PriceHistoryForm.vue'
 import { useFormStore } from '@/stores/form.store'
 import EditStockComponent from '@/components/__stock/EditStockComponent.vue'
 import FormTitleComponent from '@/components/__form/FormTitleComponent.vue'
-
+//TODO: Gerer le edit new status dans le titre
 const handGunStore = useHandGunStore()
 const i18nPrefix = handGunStore.getI18NPrefix
-
+const { id } = defineProps<{
+  id?: string
+}>()
 const { t } = useI18n()
 const buttonLabel = ref('global.save')
-const formStore = useFormStore()
-const id = formStore.getFormId()
+
 const isProvidedMagazine = ref(false)
 
 const resetMultiselect = ref(false)

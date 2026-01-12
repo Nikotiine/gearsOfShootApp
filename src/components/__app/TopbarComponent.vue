@@ -190,7 +190,7 @@ const items = computed(() => {
     }
   ]
 
-  if (isLogged.value) {
+  if (isLogged.value && isAdmin.value) {
     baseItems.push({
       label: 'admin',
       root: true,
@@ -199,7 +199,7 @@ const items = computed(() => {
           {
             items: [
               {
-                label: 'profile',
+                label: 'addNewRiffle',
                 icon: 'pi pi-user',
                 subtext: 'Voir mon profil',
                 command: () => {
@@ -207,7 +207,114 @@ const items = computed(() => {
                 }
               },
               {
-                label: 'logout',
+                label: 'addNewHandgun',
+                icon: 'pi pi-sign-out',
+                subtext: 'Se déconnecter',
+                command: () => {
+                  // appel à ton store pour logout
+                }
+              },
+              {
+                label: 'addNewMagazine',
+                icon: 'pi pi-sign-out',
+                subtext: 'Se déconnecter',
+                command: () => {
+                  // appel à ton store pour logout
+                }
+              },
+              {
+                label: 'addNewAmmo',
+                icon: 'pi pi-sign-out',
+                subtext: 'Se déconnecter',
+                command: () => {
+                  // appel à ton store pour logout
+                }
+              }
+            ]
+          }
+        ],
+        [
+          {
+            items: [
+              {
+                label: 'addNewOptic',
+                icon: 'pi pi-user',
+                subtext: 'Voir mon profil',
+                command: () => {
+                  push('/account/profile')
+                }
+              },
+              {
+                label: 'addNewOpticCollar',
+                icon: 'pi pi-sign-out',
+                subtext: 'Se déconnecter',
+                command: () => {
+                  // appel à ton store pour logout
+                }
+              }
+            ]
+          }
+        ],
+        [
+          {
+            items: [
+              {
+                label: 'addNewRds',
+                icon: 'pi pi-user',
+                subtext: 'Voir mon profil',
+                command: () => {
+                  push('/account/profile')
+                }
+              },
+              {
+                label: 'addNewAccessory',
+                icon: 'pi pi-sign-out',
+                subtext: 'Se déconnecter',
+                command: () => {
+                  // appel à ton store pour logout
+                }
+              }
+            ]
+          }
+        ],
+
+        [
+          {
+            items: [
+              {
+                label: 'addNewFactory',
+                icon: 'pi pi-user',
+                subtext: 'Voir mon profil',
+                command: () => {
+                  push('/account/profile')
+                }
+              },
+              {
+                label: 'addNewMaterial',
+                icon: 'pi pi-sign-out',
+                subtext: 'Se déconnecter',
+                command: () => {
+                  // appel à ton store pour logout
+                }
+              },
+              {
+                label: 'addNewColors',
+                icon: 'pi pi-sign-out',
+                subtext: 'Se déconnecter',
+                command: () => {
+                  // appel à ton store pour logout
+                }
+              },
+              {
+                label: 'addNewHeadType',
+                icon: 'pi pi-sign-out',
+                subtext: 'Se déconnecter',
+                command: () => {
+                  // appel à ton store pour logout
+                }
+              },
+              {
+                label: 'addNewBodyType',
                 icon: 'pi pi-sign-out',
                 subtext: 'Se déconnecter',
                 command: () => {

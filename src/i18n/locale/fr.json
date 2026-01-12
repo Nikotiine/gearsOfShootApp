@@ -28,7 +28,14 @@
     "subOptic": "Toutes nos optique",
     "subOpticCollar": "Toutes nos montage d'optique",
     "optic": "Optique",
-    "opticCollar": "Montage optique"
+    "opticCollar": "Montage optique",
+    "addSection": "Ajout produit",
+    "listSection": "Liste des produit",
+    "invoiceSection": "Commande interne",
+    "riffle": "Arme longue",
+    "subAddRiffle": "Ajout d'une arme longue",
+    "handgun": "Arme de poing",
+    "subAddHandgun": "Ajout d'une arme de poing"
   },
   "register": {
     "title": "Creer votre compte",
@@ -153,7 +160,7 @@
     "detail": "Deatil arme de poing",
     "save": "Ajouter une arme de poing",
     "edit": "Modifier une arme de poing",
-    "breadcrumb": "Arme de poing",
+    "breadcrumbAdd": "Ajout de poing",
     "summary": "Gestion des armes de poing",
     "notFound": "Aucune arme trouvée",
     "loading": "Chargement",
@@ -208,6 +215,7 @@
   "riffle": {
     "list": "Liste des armes longues de categorie : {key}",
     "breadcrumbList": "Liste armes longues Cat: {key}",
+    "breadcrumbAdd": "Ajout arme longue",
     "detail": "Detail arme longue",
     "save": "Ajouter une arme longue",
     "summary": "Gestion des armes longues",
@@ -247,7 +255,6 @@
     "updated": "Arme modifié avec succes",
     "deleted": "Arme supprimée",
     "form": {
-
       "isThreadedBarrel": "Filetage",
       "isProvidedMagazine": "Chargeur fournis",
       "qcSlot": "Connextion QC",
@@ -272,7 +279,7 @@
     "created": "Chargeur ajouté",
     "compatibleWeapons": "Armes compatibles",
     "updated": "Chargeur correctement modifié",
-    "list":"Liste des chargeurs de categorie : {key}",
+    "list": "Liste des chargeurs de categorie : {key}",
     "notFound": "Aucun chargeur trouvé",
     "loading": "Chargement des chargeurs en cours",
     "deleted": "Chargeur supprimé"
@@ -289,7 +296,7 @@
     "headType": "Type d'ovige",
     "bodyType": "Type de douille",
     "packaging": "Packaging",
-    "list":"Liste des munitions de categorie : {key}",
+    "list": "Liste des munitions de categorie : {key}",
     "notFound": "Aucune munition trouvée",
     "loading": "Chargement des muntions en cours",
     "findByName": "Recherche par modele",
@@ -297,6 +304,7 @@
     "detail": "Detail munition: {key}"
   },
   "admin": {
+    "home": "Dashboard",
     "dashboard": {
       "title": "Dashboard Admin"
     }
@@ -504,7 +512,7 @@
     "edit": "Modifier un collier",
     "created": "Ajout d'un nouveau collier confirmé",
     "updated": "Collier correctement modifié",
-    "list":  "Liste des colliers d'optique",
+    "list": "Liste des colliers d'optique",
     "deleted": "Collier supprimé",
     "notFound": "Aucun collier trouvé",
     "loading": "Chargement des colliers en cours",
@@ -569,7 +577,7 @@
     "pcs": "pieces",
     "speed": "m/s",
     "moa": "moa",
-    "SFP":"Second plan focal",
+    "SFP": "Second plan focal",
     "FFP": "Premier plan focal",
     "yrd": "yards",
     "db": "DB",
