@@ -1,30 +1,123 @@
 import type { RouteRecordRaw } from 'vue-router'
 import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
-
+import { GlobalRouterEnum } from '@/enum/router/global-router.enum'
+import { useBreadcrumbStore } from '@/stores/breadcrumb.store'
+const parentPath: string = 'optique'
+const prefix: string = 'optic'
+const routeListName = AdminRouterEnum.OPTIC_LIST
+const routeDetailName = AdminRouterEnum.OPTIC_DETAIL
+const routeFormName = AdminRouterEnum.OPTIC_NEW
+const routeEditName = AdminRouterEnum.OPTIC_EDIT
 export const opticRoutes: RouteRecordRaw = {
-  path: 'optic',
+  path: parentPath,
   children: [
     {
-      path: 'new',
-      name: AdminRouterEnum.OPTIC_NEW,
+      path: GlobalRouterEnum.PATH_NEW_PRODUCT,
+      name: routeFormName,
+      meta: {
+        breadcrumb: () => {
+          const store = useBreadcrumbStore()
+          return [
+            {
+              label: store.createLabel(prefix, 'breadcrumbAdd'),
+              index: 1,
+              to: {
+                name: routeFormName
+              }
+            }
+          ]
+        }
+      },
       component: () => import('@/views/shared/FormView.vue')
     },
     {
-      path: 'list',
-      name: AdminRouterEnum.OPTIC_LIST,
-      component: () => import('@/views/shared/TableView.vue')
+      path: GlobalRouterEnum.PATH_LIST,
+      name: routeListName,
+      meta: {
+        breadcrumb: () => {
+          const store = useBreadcrumbStore()
+          return [
+            {
+              label: store.createLabel(prefix, 'breadcrumbList'),
+              index: 1,
+              to: {
+                name: routeListName
+              }
+            }
+          ]
+        }
+      },
+      component: () => import('@/views/optic/OpticTableView.vue')
     },
     {
-      path: 'detail/:id',
-      name: AdminRouterEnum.OPTIC_DETAIL,
+      path: `${GlobalRouterEnum.PATH_DETAIL}/:id`,
+      name: routeDetailName,
       props: true,
-      component: () => import('@/views/shared/AdminDetailView.vue')
+      meta: {
+        breadcrumb: (route: any) => {
+          const store = useBreadcrumbStore()
+          return [
+            {
+              label: store.createLabel(prefix, 'breadcrumbList'),
+              index: 1,
+              to: {
+                name: routeListName
+              }
+            },
+            {
+              label: store.createLabel(prefix),
+              index: 2,
+              to: {
+                name: routeDetailName,
+                params: {
+                  id: route.params.id
+                }
+              }
+            }
+          ]
+        }
+      },
+      component: () => import('@/views/optic/OpticDetailView.vue')
     },
     {
-      path: 'edit/:id',
-      name: AdminRouterEnum.OPTIC_EDIT,
+      path: `${GlobalRouterEnum.PATH_EDIT_PRODUCT}/:id`,
+      name: routeEditName,
       props: true,
-      component: () => import('@/views/shared/FormView.vue')
+      meta: {
+        breadcrumb: (route: any) => {
+          const store = useBreadcrumbStore()
+          return [
+            {
+              label: store.createLabel(prefix, 'breadcrumbList'),
+              index: 1,
+              to: {
+                name: routeListName
+              }
+            },
+            {
+              label: store.createLabel(prefix),
+              index: 2,
+              to: {
+                name: routeDetailName,
+                params: {
+                  id: route.params.id
+                }
+              }
+            },
+            {
+              label: store.createLabel(prefix, 'breadcrumbEdit'),
+              index: 3,
+              to: {
+                name: routeEditName,
+                params: {
+                  id: route.params.id
+                }
+              }
+            }
+          ]
+        }
+      },
+      component: () => import('@/views/optic/OpticFormView.vue')
     }
   ]
 }

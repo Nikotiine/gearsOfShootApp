@@ -275,7 +275,9 @@ const i18nPrefix = store.getI18NPrefix
 
 const { t } = useI18n()
 
-const id = formStore.getFormId()
+const { id } = defineProps<{
+  id: string
+}>()
 const { form, submit } = store.formBuilder(id)
 
 const formStatus: FormStatus = formStore.getFormStatus()

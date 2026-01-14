@@ -169,7 +169,7 @@ const items = computed(() => {
                 icon: 'pi pi-comments',
                 subtext: 'subOptic',
                 command: () => {
-                  push({ name: PublicRouterEnum.PUBLIC_OPTIC_LIST })
+                  push({ name: AdminRouterEnum.OPTIC_NEW })
                 }
               },
               {
@@ -265,7 +265,7 @@ const items = computed(() => {
                 icon: 'pi pi-comments',
                 subtext: 'subOptic',
                 command: () => {
-                  push({ name: PublicRouterEnum.PUBLIC_OPTIC_LIST })
+                  push({ name: AdminRouterEnum.OPTIC_LIST })
                 }
               },
               {
@@ -273,7 +273,7 @@ const items = computed(() => {
                 icon: 'pi pi-star',
                 subtext: 'subOpticCollar',
                 command: () => {
-                  push({ name: PublicRouterEnum.PUBLIC_OPTIC_COLLAR_LIST })
+                  push({ name: AdminRouterEnum.OPTIC_COLLAR_LIST })
                 }
               }
             ]
