@@ -124,14 +124,15 @@ import BodyTypeInputSelect from '@/components/__form/__specific_select/BodyTypeI
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 import PriceHistoryForm from '@/components/__form/PriceHistoryForm.vue'
 import EditStockComponent from '@/components/__stock/EditStockComponent.vue'
-import { useFormStore } from '@/stores/form.store'
 import FormTitleComponent from '@/components/__form/FormTitleComponent.vue'
 
 const { t } = useI18n()
 const store = useAmmunitionStore()
-const formStore = useFormStore()
+
 const i18nPrefix = store.getI18NPrefix
-const id = formStore.getFormId()
+const { id } = defineProps<{
+  id: string
+}>()
 const { form, submit } = store.formBuilder(id)
 
 const isFormValid = computed(() => {
