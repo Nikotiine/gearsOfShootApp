@@ -1,31 +1,137 @@
 import type { RouteRecordRaw } from 'vue-router'
 import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
+import { GlobalRouterEnum } from '@/enum/router/global-router.enum'
+import { useBreadcrumbStore } from '@/stores/breadcrumb.store'
 
+const parentPath: string = 'chargeurs'
+const prefix: string = 'magazine'
+const routeFormName = AdminRouterEnum.MAGAZINE_NEW
+const routeListName = AdminRouterEnum.MAGAZINE_LIST
+const routeDetailName = AdminRouterEnum.MAGAZINE_DETAIL
+const routeEditName = AdminRouterEnum.MAGAZINE_EDIT
 export const magazineRoutes: RouteRecordRaw = {
-  path: 'magazine',
+  path: parentPath,
   children: [
     {
-      path: 'new',
-      name: AdminRouterEnum.MAGAZINE_NEW,
-      component: () => import('@/views/shared/FormView.vue')
+      path: GlobalRouterEnum.PATH_NEW_PRODUCT,
+      name: routeFormName,
+      meta: {
+        breadcrumb: () => {
+          const store = useBreadcrumbStore()
+          return [
+            {
+              label: store.createLabel(prefix, 'breadcrumbAdd'),
+              index: 1,
+              to: {
+                name: routeFormName
+              }
+            }
+          ]
+        }
+      },
+      component: () => import('@/views/weapon/magazine/MagazineFormView.vue')
     },
     {
-      path: 'list/:category',
-      name: AdminRouterEnum.MAGAZINE_LIST,
+      path: `${GlobalRouterEnum.PATH_LIST}/:category`,
+      name: routeListName,
       props: true,
-      component: () => import('@/views/shared/TableWithPropsView.vue')
+      meta: {
+        breadcrumb: (route: any) => {
+          const store = useBreadcrumbStore()
+          return [
+            {
+              label: store.createListLabelWithCategory(prefix, route.params.category),
+              index: 1,
+              to: {
+                name: routeListName,
+                params: {
+                  category: route.params.category
+                }
+              }
+            }
+          ]
+        }
+      },
+      component: () => import('@/views/weapon/magazine/MagazineTableView.vue')
     },
     {
-      path: 'detail/:id',
-      name: AdminRouterEnum.MAGAZINE_DETAIL,
+      path: `${GlobalRouterEnum.PATH_DETAIL}/:category/:id`,
+      name: routeDetailName,
       props: true,
-      component: () => import('@/views/shared/AdminDetailView.vue')
+      meta: {
+        breadcrumb: (route: any) => {
+          const store = useBreadcrumbStore()
+          return [
+            {
+              label: store.createListLabelWithCategory(prefix, route.params.category),
+              index: 1,
+              to: {
+                name: routeListName,
+                params: {
+                  category: route.params.category
+                }
+              }
+            },
+            {
+              label: store.createLabel(prefix),
+              index: 2,
+              to: {
+                name: routeDetailName,
+                params: {
+                  category: route.params.category,
+                  id: route.params.id
+                }
+              }
+            }
+          ]
+        }
+      },
+      component: () => import('@/views/weapon/magazine/MagazineDetailView.vue')
     },
     {
-      path: 'edit/:id',
-      name: AdminRouterEnum.MAGAZINE_EDIT,
+      path: `${GlobalRouterEnum.PATH_EDIT_PRODUCT}/:category/:id`,
+      name: routeEditName,
       props: true,
-      component: () => import('@/views/shared/FormView.vue')
+      meta: {
+        breadcrumb: (route: any) => {
+          const store = useBreadcrumbStore()
+          return [
+            {
+              label: store.createListLabelWithCategory(prefix, route.params.category),
+              index: 1,
+              to: {
+                name: routeListName,
+                params: {
+                  category: route.params.category
+                }
+              }
+            },
+            {
+              label: store.createLabel(prefix),
+              index: 2,
+              to: {
+                name: routeDetailName,
+                params: {
+                  category: route.params.category,
+                  id: route.params.id
+                }
+              }
+            },
+            {
+              label: store.createLabel(prefix, 'breadcrumbEdit'),
+              index: 3,
+              to: {
+                name: routeEditName,
+                params: {
+                  category: route.params.category,
+                  id: route.params.id
+                }
+              }
+            }
+          ]
+        }
+      },
+      component: () => import('@/views/weapon/magazine/MagazineFormView.vue')
     }
   ]
 }

@@ -79,7 +79,6 @@ import ConnectedSplitButton from '@/components/__layout/ConnectedSplitButton.vue
 import { useRouter } from 'vue-router'
 import InvoiceButtonComponent from '@/components/__invoice/InvoiceButtonComponent.vue'
 import { useUserStore } from '@/stores/user.store'
-import { PublicRouterEnum } from '@/enum/router/public-router.enum'
 import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 
 const { push } = useRouter()
@@ -117,7 +116,7 @@ const items = computed(() => {
                 icon: 'pi pi-file',
                 subtext: 'subMagazineCatC',
                 command: () => {
-                  push({ name: PublicRouterEnum.PUBLIC_MAGAZINE_LIST, params: { category: 'C' } })
+                  push({ name: AdminRouterEnum.MAGAZINE_NEW })
                 }
               }
             ]
@@ -131,7 +130,7 @@ const items = computed(() => {
                 icon: 'pi pi-shield',
                 subtext: 'subRiffleCatB',
                 command: () => {
-                  push({ name: PublicRouterEnum.PUBLIC_RIFFLE_LIST, params: { category: 'B' } })
+                  push({ name: AdminRouterEnum.RIFFLE_LIST, params: { category: 'B' } })
                 }
               },
               {
@@ -139,7 +138,7 @@ const items = computed(() => {
                 icon: 'pi pi-question',
                 subtext: 'subHandgunCatB',
                 command: () => {
-                  push({ name: PublicRouterEnum.PUBLIC_HANDGUN_LIST, params: { category: 'B' } })
+                  push({ name: AdminRouterEnum.HANDGUN_LIST, params: { category: 'B' } })
                 }
               },
               {
@@ -147,7 +146,7 @@ const items = computed(() => {
                 icon: 'pi pi-search',
                 subtext: 'subAmmoCatB',
                 command: () => {
-                  push({ name: PublicRouterEnum.PUBLIC_AMMUNITION_LIST, params: { category: 'B' } })
+                  push({ name: AdminRouterEnum.AMMUNITION_LIST, params: { category: 'B' } })
                 }
               },
               {
@@ -155,7 +154,7 @@ const items = computed(() => {
                 icon: 'pi pi-file',
                 subtext: 'subMagazineCatB',
                 command: () => {
-                  push({ name: PublicRouterEnum.PUBLIC_MAGAZINE_LIST, params: { category: 'B' } })
+                  push({ name: AdminRouterEnum.MAGAZINE_LIST, params: { category: 'B' } })
                 }
               }
             ]
@@ -177,7 +176,7 @@ const items = computed(() => {
                 icon: 'pi pi-star',
                 subtext: 'subOpticCollar',
                 command: () => {
-                  push({ name: PublicRouterEnum.PUBLIC_OPTIC_COLLAR_LIST })
+                  push({ name: AdminRouterEnum.OPTIC_COLLAR_NEW })
                 }
               }
             ]
@@ -213,7 +212,7 @@ const items = computed(() => {
                 icon: 'pi pi-file',
                 subtext: 'subMagazineCatC',
                 command: () => {
-                  push({ name: PublicRouterEnum.PUBLIC_MAGAZINE_LIST, params: { category: 'C' } })
+                  push({ name: AdminRouterEnum.MAGAZINE_LIST, params: { category: 'C' } })
                 }
               }
             ]
@@ -243,7 +242,7 @@ const items = computed(() => {
                 icon: 'pi pi-search',
                 subtext: 'subAmmoCatB',
                 command: () => {
-                  push({ name: PublicRouterEnum.PUBLIC_AMMUNITION_LIST, params: { category: 'B' } })
+                  push({ name: AdminRouterEnum.AMMUNITION_LIST, params: { category: 'B' } })
                 }
               },
               {
@@ -251,7 +250,7 @@ const items = computed(() => {
                 icon: 'pi pi-file',
                 subtext: 'subMagazineCatB',
                 command: () => {
-                  push({ name: PublicRouterEnum.PUBLIC_MAGAZINE_LIST, params: { category: 'B' } })
+                  push({ name: AdminRouterEnum.MAGAZINE_LIST, params: { category: 'B' } })
                 }
               }
             ]
