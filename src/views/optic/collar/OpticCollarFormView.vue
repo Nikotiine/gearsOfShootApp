@@ -1,5 +1,5 @@
 <template>
-  <form-title-component :i18n-prefix="i18nPrefix" />
+  <form-title-component :i18n-prefix="i18nPrefix" :custom-status="id ? 'edit' : 'save'" />
   <form @submit.prevent="submit">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
       <InputGroup>
@@ -66,7 +66,7 @@
       :object-id="id"
       @update:in-stock="(value) => (form.inStock = value)"
     />
-    <save-button :disabled="!isFormValid" />
+    <save-button :disabled="!isFormValid" :status="id ? 'edit' : 'save'" />
   </form>
 </template>
 <script setup lang="ts">
@@ -82,13 +82,13 @@ import SaveButton from '@/components/__form/SaveButton.vue'
 import FactoryInputSelect from '@/components/__form/__specific_select/FactoryInputSelect.vue'
 import OpticRailInputSelect from '@/components/__optic/__input/OpticRailInputSelect.vue'
 import PriceHistoryForm from '@/components/__form/PriceHistoryForm.vue'
-import { useFormStore } from '@/stores/form.store'
 import EditStockComponent from '@/components/__stock/EditStockComponent.vue'
 import FormTitleComponent from '@/components/__form/FormTitleComponent.vue'
 
 const store = useOpticCollarStore()
-const formStore = useFormStore()
-const id = formStore.getFormId()
+const { id } = defineProps<{
+  id: string
+}>()
 const { t } = useI18n()
 const i18nPrefix = store.getI18NPrefix
 

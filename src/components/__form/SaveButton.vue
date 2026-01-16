@@ -10,10 +10,10 @@ import type { FormStatus } from '@/types/form-status.type'
 import { useFormStore } from '@/stores/form.store'
 
 const { t } = useI18n()
-const formStore = useFormStore()
-const status: FormStatus = formStore.getFormStatus()
-const { disabled = false } = defineProps<{
+
+const { disabled = false, status } = defineProps<{
   disabled?: boolean
+  status: FormStatus
 }>()
 </script>
 

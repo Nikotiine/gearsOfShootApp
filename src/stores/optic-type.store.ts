@@ -6,7 +6,7 @@ import { getI18NPrefix } from '@/enum/I18NSuffix.enum'
 import { ref } from 'vue'
 import type { OpticTypeDto } from '@/api/Api'
 
-export const useOpticTypeStore = defineStore('optic-type-store', () => {
+export const useOpticTypeStore = defineStore('optic-weapon-type-store', () => {
   // Appel API
   const { api } = useApiStore()
 

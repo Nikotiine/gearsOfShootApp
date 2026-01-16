@@ -28,7 +28,31 @@
     "subOptic": "Toutes nos optique",
     "subOpticCollar": "Toutes nos montage d'optique",
     "optic": "Optique",
-    "opticCollar": "Montage optique"
+    "opticCollar": "Montage optique",
+    "addSection": "Ajout produit",
+    "listSection": "Liste des produit",
+    "invoiceSection": "Commande interne",
+    "riffle": "Arme longue",
+    "subAddRiffle": "Ajout d'une arme longue",
+    "handgun": "Arme de poing",
+    "subAddHandgun": "Ajout d'une arme de poing",
+    "subAddMagazine": "Ajout d'un chargeur",
+    "rdsAdd": "Ajout reducteur de son",
+    "rds": "Reducteur de son",
+    "factory": "Marque",
+    "factoryAdd": "Ajout d'une marque",
+    "rdsList": "Liste des RDS",
+    "internal": "Reference interne",
+    "threadedSize": "Pas de vis",
+    "threadedSizeAdd": "Ajouter pas de vis",
+    "caliberAdd": "Ajout d'un nouveau calibre",
+    "caliber": "Calibre",
+    "weaponType": "Type d'arme",
+    "weaponTypeAdd": "Ajout type d'arme",
+    "opticAdd": "Ajout lunette / point rouge",
+    "opticCollarAdd": "Ajout montage optique",
+    "ammunitionAdd": "Ajout munition",
+    "ammunition": "Munition"
   },
   "register": {
     "title": "Creer votre compte",
@@ -153,7 +177,7 @@
     "detail": "Deatil arme de poing",
     "save": "Ajouter une arme de poing",
     "edit": "Modifier une arme de poing",
-    "breadcrumb": "Arme de poing",
+    "breadcrumbAdd": "Ajout de poing",
     "summary": "Gestion des armes de poing",
     "notFound": "Aucune arme trouvée",
     "loading": "Chargement",
@@ -203,11 +227,14 @@
       "weaponModel": "Modele d'arme",
       "weaponVariation": "Variante du modele",
       "isPicatinyRailSlop": "Rail picatiny"
-    }
+    },
+    "breadcrumbEdit": "Modifier arme"
   },
   "riffle": {
     "list": "Liste des armes longues de categorie : {key}",
+    "edit": "Modifer arme longue",
     "breadcrumbList": "Liste armes longues Cat: {key}",
+    "breadcrumbAdd": "Ajout arme longue",
     "detail": "Detail arme longue",
     "save": "Ajouter une arme longue",
     "summary": "Gestion des armes longues",
@@ -247,7 +274,6 @@
     "updated": "Arme modifié avec succes",
     "deleted": "Arme supprimée",
     "form": {
-
       "isThreadedBarrel": "Filetage",
       "isProvidedMagazine": "Chargeur fournis",
       "qcSlot": "Connextion QC",
@@ -260,7 +286,8 @@
       "weaponModel": "Modele d'arme",
       "weaponVariation": "Variante du modele",
       "isPicatinyRailSlop": "Rail picatiny"
-    }
+    },
+    "breadcrumbEdit": "Modifier arme"
   },
   "magazine": {
     "summary": "gestion des chargeurs",
@@ -272,10 +299,14 @@
     "created": "Chargeur ajouté",
     "compatibleWeapons": "Armes compatibles",
     "updated": "Chargeur correctement modifié",
-    "list":"Liste des chargeurs de categorie : {key}",
+    "list": "Liste des chargeurs de categorie : {key}",
     "notFound": "Aucun chargeur trouvé",
     "loading": "Chargement des chargeurs en cours",
-    "deleted": "Chargeur supprimé"
+    "deleted": "Chargeur supprimé",
+    "breadcrumbAdd": "Ajout chargeur",
+    "breadcrumbList": "Liste chargeur",
+    "breadcrumbEdit": "Modifier chargeur",
+    "detail": "Detail chargeur"
   },
   "ammunition": {
     "summary": "Gestion des munitions",
@@ -289,14 +320,18 @@
     "headType": "Type d'ovige",
     "bodyType": "Type de douille",
     "packaging": "Packaging",
-    "list":"Liste des munitions de categorie : {key}",
+    "list": "Liste des munitions de categorie : {key}",
     "notFound": "Aucune munition trouvée",
     "loading": "Chargement des muntions en cours",
     "findByName": "Recherche par modele",
     "stock": "Mise en stock",
-    "detail": "Detail munition: {key}"
+    "detail": "Detail munition",
+    "breadcrumbAdd": "Ajout munition",
+    "breadcrumbList": "Liste Cat: {key}",
+    "breadcrumbEdit": "Edtion munition"
   },
   "admin": {
+    "home": "Dashboard",
     "dashboard": {
       "title": "Dashboard Admin"
     }
@@ -362,7 +397,9 @@
     "denomination": "Denomination du zoom",
     "findByName": "Recherhe par modele",
     "findByType": "Recherche par type",
-    "noCollarsProvided": "Pas de colliers fournis"
+    "noCollarsProvided": "Pas de colliers fournis",
+    "breadcrumbAdd": "Ajout optique",
+    "detail": "Detail optique"
   },
   "soundNoiseReducer": {
     "save": "Ajouter un nouveau RDS",
@@ -386,7 +423,10 @@
     "estimatedNoiseReduction": "Reduction de bruit estimé",
     "findByName": "Recherche par modele",
     "notFound": "Aucun reducteur de son trouvé",
-    "detail": "Detail RDS"
+    "detail": "Detail RDS",
+    "breadcrumbAdd": "Ajout RDS",
+    "breadcrumbList": "Liste RDS",
+    "breadcrumbEdit": "Modifier RDS"
   },
   "factory": {
     "save": "Ajouter une nouvelle marque de type",
@@ -504,13 +544,17 @@
     "edit": "Modifier un collier",
     "created": "Ajout d'un nouveau collier confirmé",
     "updated": "Collier correctement modifié",
-    "list":  "Liste des colliers d'optique",
+    "list": "Liste des colliers d'optique",
     "deleted": "Collier supprimé",
     "notFound": "Aucun collier trouvé",
     "loading": "Chargement des colliers en cours",
     "findByName": "Recherche par modele",
     "rail": "Taille du rail",
-    "findByRail": "Recherche par taille"
+    "findByRail": "Recherche par taille",
+    "breadcrumbList": "Liste montage",
+    "breadcrumbAdd": "Ajout montage",
+    "breadcrumbEdit": "Modifier montage",
+    "detail": "Detail montage"
   },
   "priceHistory": {
     "currentSalePrice": "Prix de vente actuel",
@@ -569,7 +613,7 @@
     "pcs": "pieces",
     "speed": "m/s",
     "moa": "moa",
-    "SFP":"Second plan focal",
+    "SFP": "Second plan focal",
     "FFP": "Premier plan focal",
     "yrd": "yards",
     "db": "DB",

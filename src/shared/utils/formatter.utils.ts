@@ -76,8 +76,7 @@ export function DateFormatter(date: Date | string, format: 'short' | 'medium' | 
 
   return new Intl.DateTimeFormat('fr-FR', options).format(new Date(date))
 }
-export function FactoryTypeFormatter(factories?: FactoryTypeDto[]) {
-  const { t } = useI18n()
+export function FactoryTypeFormatter(t: any, factories?: FactoryTypeDto[]) {
   if (!factories) return []
   return factories.map((f) => {
     return {

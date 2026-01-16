@@ -23,7 +23,8 @@ import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.v
 import InputGroupSelect from '@/components/__form/InputGroupSelect.vue'
 import InputGroup from 'primevue/inputgroup'
 import { FactoryTypeFormatter } from '@/shared/utils/formatter.utils'
-
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 const store = useFactoryStore()
 const { data } = store.getFactoryTypes()
 const { initialValue = 0, required = false } = defineProps<{
@@ -32,7 +33,7 @@ const { initialValue = 0, required = false } = defineProps<{
 }>()
 const factoryTypeId = ref<number>(initialValue)
 const i18nPrefix = store.getI18NPrefix
-const factoryTypeList = computed(() => FactoryTypeFormatter(data.value))
+const factoryTypeList = computed(() => FactoryTypeFormatter(t, data.value))
 const emit = defineEmits(['onSelect'])
 const onSelect = (id: number) => {
   const type = factoryTypeList.value.find((item) => item.id === id)

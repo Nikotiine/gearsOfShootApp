@@ -1,19 +1,20 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 import { GlobalRouterEnum } from '@/enum/router/global-router.enum'
+import { WeaponEnum } from '@/enum/weapon.enum'
 import { useBreadcrumbStore } from '@/stores/breadcrumb.store'
+import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
+const prefix: string = 'riffle'
+const parentPath: string = 'armes-longue'
+const routeFormName = AdminRouterEnum.RIFFLE_NEW
+const routeListName = AdminRouterEnum.RIFFLE_LIST
+const routeDetailName = AdminRouterEnum.ADMIN_RIFFLE_DETAIL
+const routeEditName = AdminRouterEnum.RIFFLE_EDIT
 
-const parentPath: string = 'chargeurs'
-const prefix: string = 'magazine'
-const routeFormName = AdminRouterEnum.MAGAZINE_NEW
-const routeListName = AdminRouterEnum.MAGAZINE_LIST
-const routeDetailName = AdminRouterEnum.MAGAZINE_DETAIL
-const routeEditName = AdminRouterEnum.MAGAZINE_EDIT
-export const adminMagazineRoutes: RouteRecordRaw = {
+export const adminRiffleRoute: RouteRecordRaw = {
   path: parentPath,
   children: [
     {
-      path: GlobalRouterEnum.PATH_NEW_PRODUCT,
+      path: `${GlobalRouterEnum.PATH_NEW_PRODUCT}/${WeaponEnum.RIFFLE}`,
       name: routeFormName,
       meta: {
         breadcrumb: () => {
@@ -29,10 +30,10 @@ export const adminMagazineRoutes: RouteRecordRaw = {
           ]
         }
       },
-      component: () => import('@/views/weapon/magazine/MagazineFormView.vue')
+      component: () => import('@/views/weapon/riffle/RiffleFormView.vue')
     },
     {
-      path: `${GlobalRouterEnum.PATH_LIST}/:category`,
+      path: `${GlobalRouterEnum.PATH_LIST}/${WeaponEnum.RIFFLE}/:category`,
       name: routeListName,
       props: true,
       meta: {
@@ -52,10 +53,10 @@ export const adminMagazineRoutes: RouteRecordRaw = {
           ]
         }
       },
-      component: () => import('@/views/weapon/magazine/MagazineTableView.vue')
+      component: () => import('@/views/weapon/riffle/RiffleTableView.vue')
     },
     {
-      path: `${GlobalRouterEnum.PATH_DETAIL}/:category/:id`,
+      path: `${GlobalRouterEnum.PATH_DETAIL}/${WeaponEnum.RIFFLE}/:category/:id`,
       name: routeDetailName,
       props: true,
       meta: {
@@ -86,10 +87,10 @@ export const adminMagazineRoutes: RouteRecordRaw = {
           ]
         }
       },
-      component: () => import('@/views/weapon/magazine/MagazineDetailView.vue')
+      component: () => import('@/views/weapon/riffle/RiffleDetailView.vue')
     },
     {
-      path: `${GlobalRouterEnum.PATH_EDIT_PRODUCT}/:category/:id`,
+      path: `${GlobalRouterEnum.PATH_EDIT_PRODUCT}/${WeaponEnum.RIFFLE}/:category/:id`,
       name: routeEditName,
       props: true,
       meta: {
@@ -131,7 +132,7 @@ export const adminMagazineRoutes: RouteRecordRaw = {
           ]
         }
       },
-      component: () => import('@/views/weapon/magazine/MagazineFormView.vue')
+      component: () => import('@/views/weapon/riffle/RiffleFormView.vue')
     }
   ]
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <form-title-component :i18n-prefix="i18nPrefix" />
+    <form-title-component :i18n-prefix="i18nPrefix" :custom-status="id ? 'edit' : 'save'" />
     <form @submit.prevent="submit">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 mt-10">
         <factory-input-select
@@ -48,20 +48,6 @@
           :optic-unit="form.opticUnit"
           @select-value="(event) => (form.clickValue = event)"
         />
-        <!--        <InputGroup>
-          <input-group-required-icon :is-validate="form.valueOfOneClick > 0" />
-          <input-group-select
-            :options="clickValueOption"
-            label="clickValue"
-            placeholder="clickValue"
-            :i18n-prefix="i18nPrefix"
-            @option-id="(event) => (form.valueOfOneClick = event)"
-            required
-            input-id="valueOfOneClick"
-            :initial-value="form.valueOfOneClick"
-            :disabled="form.opticUnit.id === 0"
-          />
-        </InputGroup>-->
 
         <InputGroup>
           <input-group-number
@@ -239,9 +225,8 @@
         :object-id="id"
         @update:in-stock="(value) => (form.inStock = value)"
       />
-      <div class="text-center">
-        <save-button :status="formStatus" :disabled="!isFormValid" />
-      </div>
+
+      <save-button :status="id ? 'edit' : 'save'" :disabled="!isFormValid" />
     </form>
   </div>
 </template>
@@ -256,7 +241,6 @@ import InputGroupText from '@/components/__form/InputGroupText.vue'
 import InputGroupNumber from '@/components/__form/InputGroupNumber.vue'
 import InputGroupCheckBox from '@/components/__form/InputGroupCheckBox.vue'
 import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.vue'
-import type { FormStatus } from '@/types/form-status.type'
 import SaveButton from '@/components/__form/SaveButton.vue'
 import FactoryInputSelect from '@/components/__form/__specific_select/FactoryInputSelect.vue'
 import OpticTypeInputSelect from '@/components/__optic/__input/OpticTypeInputSelect.vue'
@@ -264,21 +248,17 @@ import FocalPlaneInputSelect from '@/components/__form/__specific_select/FocalPl
 import OpticUnitInputSelect from '@/components/__optic/__input/OpticUnitInputSelect.vue'
 import PriceHistoryForm from '@/components/__form/PriceHistoryForm.vue'
 import OpticRailInputSelect from '@/components/__optic/__input/OpticRailInputSelect.vue'
-import { useFormStore } from '@/stores/form.store'
 import FormTitleComponent from '@/components/__form/FormTitleComponent.vue'
 import EditStockComponent from '@/components/__stock/EditStockComponent.vue'
 import OpticClickValueSelect from '@/components/__optic/__input/OpticClickValueSelect.vue'
 
 const store = useOpticStore()
-const formStore = useFormStore()
 const i18nPrefix = store.getI18NPrefix
-
 const { t } = useI18n()
-
-const id = formStore.getFormId()
+const { id } = defineProps<{
+  id: string
+}>()
 const { form, submit } = store.formBuilder(id)
-
-const formStatus: FormStatus = formStore.getFormStatus()
 const isFormValid = computed(() => {
   let isValid: boolean = false
   if (

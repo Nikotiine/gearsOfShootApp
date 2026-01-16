@@ -184,10 +184,10 @@ const filters = ref({
 const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
   switch (event) {
     case 'view':
-      router.push({ name: AdminRouterEnum.MAGAZINE_DETAIL, params: { id: id } })
+      router.push({ name: AdminRouterEnum.MAGAZINE_DETAIL, params: { id: id, category: category } })
       break
     case 'edit':
-      router.push({ name: AdminRouterEnum.MAGAZINE_EDIT, params: { id: id } })
+      router.push({ name: AdminRouterEnum.MAGAZINE_EDIT, params: { id: id, category: category } })
       break
     case true:
       store.delete(id)
@@ -215,7 +215,6 @@ const onFilterChange = (event: DataTableFilterEvent) => {
   queryFilters$.value.caliber = activeFilters.caliber
   queryFilters$.value.name = activeFilters.name
   queryFilters$.value.reference = activeFilters.reference
-  //TODO: Comprendre pk en input number ca marche avec 1 temps de retard
   queryFilters$.value.capacity = activeFilters.capacity
 }
 const onPageChange = (event: DataTablePageEvent) => {

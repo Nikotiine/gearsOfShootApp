@@ -1,22 +1,12 @@
 import type { RouteRecordRaw } from 'vue-router'
 import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 import { ammunitionRoutes } from '@/router/admin/admin-ammunition.routes'
-import { magazineRoutes } from '@/router/admin/admin-magazine.routes'
 import { opticRoutes } from '@/router/admin/admin-optic.routes'
 import { weaponRoutes } from '@/router/admin/admin-weapon.routes'
-import { factoryRoutes } from '@/router/admin/admin-factory.routes'
 import { invoiceRoutes } from '@/router/admin/admin-invoice.routes'
-import { rdsRoutes } from '@/router/admin/admin-acc-rds.routes'
 import { opticCollarRoutes } from '@/router/admin/admin-optic-collar.route'
-import {
-  bodyTypeRoutes,
-  caliberRoutes,
-  colorRoutes,
-  headTypeRoutes,
-  materialRoutes,
-  threadedSizeRoutes,
-  weaponTypeRoutes
-} from '@/router/admin/admin-common.routes'
+import { adminAccessoryRoute } from '@/router/admin/admin-accessory.route'
+import { adminInternalRefRoute } from '@/router/admin/admin-internal-ref.route'
 
 export const adminRoutes: RouteRecordRaw = {
   path: '/admin',
@@ -33,19 +23,11 @@ export const adminRoutes: RouteRecordRaw = {
       meta: { navbar: true, admin: true },
       children: [
         ammunitionRoutes,
-        magazineRoutes,
         opticRoutes,
         weaponRoutes,
-        factoryRoutes,
-        colorRoutes,
-        materialRoutes,
-        headTypeRoutes,
-        bodyTypeRoutes,
-        weaponTypeRoutes,
-        caliberRoutes,
-        threadedSizeRoutes,
+        adminInternalRefRoute,
         opticCollarRoutes,
-        rdsRoutes,
+        adminAccessoryRoute,
         invoiceRoutes
       ]
     }

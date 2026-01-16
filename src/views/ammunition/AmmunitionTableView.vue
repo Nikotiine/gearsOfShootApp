@@ -244,10 +244,13 @@ const onPageChange = (event: DataTablePageEvent) => {
 const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
   switch (event) {
     case 'view':
-      router.push({ name: AdminRouterEnum.AMMUNITION_DETAIL, params: { id: id } })
+      router.push({
+        name: AdminRouterEnum.AMMUNITION_DETAIL,
+        params: { id: id, category: category }
+      })
       break
     case 'edit':
-      router.push({ name: AdminRouterEnum.AMMUNITION_EDIT, params: { id: id } })
+      router.push({ name: AdminRouterEnum.AMMUNITION_EDIT, params: { id: id, category: category } })
       break
     case true:
       store.delete(id)

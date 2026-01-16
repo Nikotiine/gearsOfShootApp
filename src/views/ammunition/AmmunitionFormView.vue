@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <form-title-component :i18n-prefix="i18nPrefix" />
+    <form-title-component :i18n-prefix="i18nPrefix" :custom-status="id ? 'edit' : 'save'" />
     <form @submit.prevent="submit">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 p-4">
         <legalisation-category-input-select
@@ -100,9 +100,8 @@
         :object-id="id"
         @update:in-stock="(value) => (form.inStock = value)"
       />
-      <div class="text-center">
-        <save-button :disabled="!isFormValid" />
-      </div>
+
+      <save-button :disabled="!isFormValid" :status="id ? 'edit' : 'save'" />
     </form>
   </div>
 </template>
@@ -124,14 +123,15 @@ import BodyTypeInputSelect from '@/components/__form/__specific_select/BodyTypeI
 import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.vue'
 import PriceHistoryForm from '@/components/__form/PriceHistoryForm.vue'
 import EditStockComponent from '@/components/__stock/EditStockComponent.vue'
-import { useFormStore } from '@/stores/form.store'
 import FormTitleComponent from '@/components/__form/FormTitleComponent.vue'
 
 const { t } = useI18n()
 const store = useAmmunitionStore()
-const formStore = useFormStore()
+
 const i18nPrefix = store.getI18NPrefix
-const id = formStore.getFormId()
+const { id } = defineProps<{
+  id: string
+}>()
 const { form, submit } = store.formBuilder(id)
 
 const isFormValid = computed(() => {

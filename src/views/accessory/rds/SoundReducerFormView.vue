@@ -1,7 +1,5 @@
 <template>
-  <h2 class="text-center mt-2 text-2xl">
-    {{ t(i18nPrefix + formStatus) }}
-  </h2>
+  <form-title-component :i18n-prefix="i18nPrefix" :customStatus="id ? 'edit' : 'save'" />
   <form @submit.prevent="submit">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
       <InputGroup>
@@ -108,7 +106,7 @@
       :object-id="id"
       @update:in-stock="(value) => (form.inStock = value)"
     />
-    <save-button :status="formStatus" :disabled="!isFormValid" />
+    <save-button :status="id ? 'edit' : 'save'" :disabled="!isFormValid" />
   </form>
 </template>
 <script setup lang="ts">
@@ -120,26 +118,21 @@ import Textarea from 'primevue/textarea'
 import InputGroupOptionalIcon from '@/components/__form/InputGroupOptionalIcon.vue'
 import InputGroupNumber from '@/components/__form/InputGroupNumber.vue'
 import SaveButton from '@/components/__form/SaveButton.vue'
-import type { FormStatus } from '@/types/form-status.type'
-import { useI18n } from 'vue-i18n'
 import InputGroupCheckBox from '@/components/__form/InputGroupCheckBox.vue'
 import { computed } from 'vue'
 import FactoryInputSelect from '@/components/__form/__specific_select/FactoryInputSelect.vue'
 import CaliberInputSelect from '@/components/__form/__specific_select/CaliberInputSelect.vue'
 import ThreadedSizeInputSelect from '@/components/__form/__specific_select/ThreadedSizeInputSelect.vue'
 import PriceHistoryForm from '@/components/__form/PriceHistoryForm.vue'
-import { useFormStore } from '@/stores/form.store'
 import EditStockComponent from '@/components/__stock/EditStockComponent.vue'
+import FormTitleComponent from '@/components/__form/FormTitleComponent.vue'
 
-const { t } = useI18n()
 const store = useSoundReducerStore()
-
 const { id } = defineProps<{
   id?: string
 }>()
 const { form, submit } = store.formBuilder(id)
-const formStore = useFormStore()
-const formStatus: FormStatus = formStore.getFormStatus()
+
 const i18nPrefix = store.getI18NPrefix
 
 const isFormValid = computed(() => {

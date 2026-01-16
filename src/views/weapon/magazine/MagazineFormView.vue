@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <form-title-component :i18n-prefix="i18nPrefix" />
+    <form-title-component :i18n-prefix="i18nPrefix" :custom-status="id ? 'edit' : 'save'" />
     <form @submit.prevent="submit">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 mt-10">
         <factory-input-select
@@ -113,9 +113,7 @@
         :object-id="id"
         @update:in-stock="(value) => (form.inStock = value)"
       />
-      <div class="text-center">
-        <save-button :status="formStatus" :disabled="!isFormValid" />
-      </div>
+      <save-button :status="id ? 'edit' : 'save'" :disabled="!isFormValid" />
     </form>
   </div>
 </template>

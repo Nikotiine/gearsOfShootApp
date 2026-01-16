@@ -12,8 +12,8 @@
           <Tab value="1">{{ t('global.otherInformation') }}</Tab>
           <Tab value="2">{{ t('global.description') }}</Tab>
           <Tab value="3">{{ t('global.associatedProducts') }}</Tab>
-          <Tab value="4" v-if="isAdminRoute">{{ t('global.price') }}</Tab>
-          <Tab value="5" v-if="isAdminRoute">{{ t('global.stock') }}</Tab>
+          <Tab value="4" v-if="$route.meta.admin">{{ t('global.price') }}</Tab>
+          <Tab value="5" v-if="$route.meta.admin">{{ t('global.stock') }}</Tab>
         </TabList>
         <TabPanels>
           <TabPanel value="0">
@@ -32,12 +32,12 @@
             </p>
           </TabPanel>
           <TabPanel value="3">
-            <p>// Feature</p>
+            <p>//</p>
           </TabPanel>
-          <TabPanel value="4" v-if="isAdminRoute">
+          <TabPanel value="4" v-if="$route.meta.admin">
             <tab-price-component :id="id" type="OPTIC" :price="optic.priceHistory" />
           </TabPanel>
-          <TabPanel value="5" v-if="isAdminRoute">
+          <TabPanel value="5" v-if="$route.meta.admin">
             <tab-stock-component :stock="optic.stock" />
           </TabPanel>
         </TabPanels>
@@ -47,6 +47,7 @@
         :updated-by="optic.updatedBy"
         :created-at="optic.createdAt"
         :update-at="optic.updatedAt"
+        v-if="$route.meta.admin"
       />
     </div>
   </div>
@@ -74,9 +75,8 @@ import TabPriceComponent from '@/components/__tabs/TabPriceComponent.vue'
 
 const { t } = useI18n()
 const store = useOpticStore()
-const { id, isAdminRoute = false } = defineProps<{
+const { id } = defineProps<{
   id: string
-  isAdminRoute?: boolean
 }>()
 
 const { data: optic } = store.getById(id)

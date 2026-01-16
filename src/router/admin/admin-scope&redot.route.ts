@@ -1,15 +1,14 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 import { GlobalRouterEnum } from '@/enum/router/global-router.enum'
 import { useBreadcrumbStore } from '@/stores/breadcrumb.store'
-
-const parentPath: string = 'chargeurs'
-const prefix: string = 'magazine'
-const routeFormName = AdminRouterEnum.MAGAZINE_NEW
-const routeListName = AdminRouterEnum.MAGAZINE_LIST
-const routeDetailName = AdminRouterEnum.MAGAZINE_DETAIL
-const routeEditName = AdminRouterEnum.MAGAZINE_EDIT
-export const adminMagazineRoutes: RouteRecordRaw = {
+import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
+const parentPath: string = 'lunette&point-rouge'
+const prefix: string = 'optic'
+const routeListName = AdminRouterEnum.OPTIC_LIST
+const routeDetailName = AdminRouterEnum.OPTIC_DETAIL
+const routeFormName = AdminRouterEnum.OPTIC_NEW
+const routeEditName = AdminRouterEnum.OPTIC_EDIT
+export const adminScopeRedotRoute: RouteRecordRaw = {
   path: parentPath,
   children: [
     {
@@ -29,33 +28,29 @@ export const adminMagazineRoutes: RouteRecordRaw = {
           ]
         }
       },
-      component: () => import('@/views/weapon/magazine/MagazineFormView.vue')
+      component: () => import('@/views/optic/OpticFormView.vue')
     },
     {
-      path: `${GlobalRouterEnum.PATH_LIST}/:category`,
+      path: GlobalRouterEnum.PATH_LIST,
       name: routeListName,
-      props: true,
       meta: {
-        breadcrumb: (route: any) => {
+        breadcrumb: () => {
           const store = useBreadcrumbStore()
           return [
             {
-              label: store.createListLabelWithCategory(prefix, route.params.category),
+              label: store.createLabel(prefix, 'list'),
               index: 1,
               to: {
-                name: routeListName,
-                params: {
-                  category: route.params.category
-                }
+                name: routeListName
               }
             }
           ]
         }
       },
-      component: () => import('@/views/weapon/magazine/MagazineTableView.vue')
+      component: () => import('@/views/optic/OpticTableView.vue')
     },
     {
-      path: `${GlobalRouterEnum.PATH_DETAIL}/:category/:id`,
+      path: `${GlobalRouterEnum.PATH_DETAIL}/:id`,
       name: routeDetailName,
       props: true,
       meta: {
@@ -63,13 +58,10 @@ export const adminMagazineRoutes: RouteRecordRaw = {
           const store = useBreadcrumbStore()
           return [
             {
-              label: store.createListLabelWithCategory(prefix, route.params.category),
+              label: store.createLabel(prefix, 'list'),
               index: 1,
               to: {
-                name: routeListName,
-                params: {
-                  category: route.params.category
-                }
+                name: routeListName
               }
             },
             {
@@ -78,7 +70,6 @@ export const adminMagazineRoutes: RouteRecordRaw = {
               to: {
                 name: routeDetailName,
                 params: {
-                  category: route.params.category,
                   id: route.params.id
                 }
               }
@@ -86,10 +77,10 @@ export const adminMagazineRoutes: RouteRecordRaw = {
           ]
         }
       },
-      component: () => import('@/views/weapon/magazine/MagazineDetailView.vue')
+      component: () => import('@/views/optic/OpticDetailView.vue')
     },
     {
-      path: `${GlobalRouterEnum.PATH_EDIT_PRODUCT}/:category/:id`,
+      path: `${GlobalRouterEnum.PATH_EDIT_PRODUCT}/:id`,
       name: routeEditName,
       props: true,
       meta: {
@@ -97,13 +88,10 @@ export const adminMagazineRoutes: RouteRecordRaw = {
           const store = useBreadcrumbStore()
           return [
             {
-              label: store.createListLabelWithCategory(prefix, route.params.category),
+              label: store.createLabel(prefix, 'list'),
               index: 1,
               to: {
-                name: routeListName,
-                params: {
-                  category: route.params.category
-                }
+                name: routeListName
               }
             },
             {
@@ -112,18 +100,16 @@ export const adminMagazineRoutes: RouteRecordRaw = {
               to: {
                 name: routeDetailName,
                 params: {
-                  category: route.params.category,
                   id: route.params.id
                 }
               }
             },
             {
-              label: store.createLabel(prefix, 'breadcrumbEdit'),
+              label: store.createLabel(prefix, 'edit'),
               index: 3,
               to: {
                 name: routeEditName,
                 params: {
-                  category: route.params.category,
                   id: route.params.id
                 }
               }
@@ -131,7 +117,7 @@ export const adminMagazineRoutes: RouteRecordRaw = {
           ]
         }
       },
-      component: () => import('@/views/weapon/magazine/MagazineFormView.vue')
+      component: () => import('@/views/optic/OpticFormView.vue')
     }
   ]
 }

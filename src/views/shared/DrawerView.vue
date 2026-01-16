@@ -20,16 +20,16 @@ import AdminEditStockForm from '@/components/__stock/AdminEditStockForm.vue'
 import { useStockStore } from '@/stores/stock.store'
 import StockHistoriesComponent from '@/components/__stock/StockHistoriesComponent.vue'
 import { useI18n } from 'vue-i18n'
-import WeaponTypeFormComponent from '@/components/__weapon/type/WeaponTypeFormComponent.vue'
+import WeaponTypeFormView from '@/views/internal-ref/weapon-type/WeaponTypeFormView.vue'
 import { useWeaponTypeStore } from '@/stores/weapon-type.store'
-import CaliberFormComponent from '@/components/__caliber/CaliberFormComponent.vue'
+import CaliberFormView from '@/views/internal-ref/caliber/CaliberFormView.vue'
 import FactoryFormView from '@/views/factory/FactoryFormView.vue'
-import MaterialFormComponent from '@/components/__color_and_material/MaterialFormComponent.vue'
-import ColorFormComponent from '@/components/__color_and_material/ColorFormComponent.vue'
-import ThreadedSizeFormComponent from '@/components/__threaded-size/ThreadedSizeFormComponent.vue'
+import MaterialFormView from '@/views/internal-ref/material/MaterialFormView.vue'
+import ColorFormView from '@/views/internal-ref/color/ColorFormView.vue'
+import ThreadedSizeFormView from '@/views/internal-ref/threaded-size/ThreadedSizeFormView.vue'
 import MagazineFormView from '@/views/weapon/magazine/MagazineFormView.vue'
-import BodyTypeFormComponent from '@/components/__ammunition/BodyTypeFormComponent.vue'
-import HeadTypeFormComponent from '@/components/__ammunition/HeadTypeFormComponent.vue'
+import BodyTypeFormView from '@/views/internal-ref/ammunition/BodyTypeFormView.vue'
+import HeadTypeFormView from '@/views/internal-ref/ammunition/HeadTypeFormView.vue'
 import { useCaliberStore } from '@/stores/caliber.store'
 import { useFactoryStore } from '@/stores/factory.store'
 import { useMaterialStore } from '@/stores/material.store'
@@ -61,15 +61,15 @@ const { t } = useI18n()
 const componentMap = {
   stock: AdminEditStockForm,
   stockHistory: StockHistoriesComponent,
-  weaponType: WeaponTypeFormComponent,
-  caliber: CaliberFormComponent,
+  weaponType: WeaponTypeFormView,
+  caliber: CaliberFormView,
   factory: FactoryFormView,
-  material: MaterialFormComponent,
-  color: ColorFormComponent,
-  threadSize: ThreadedSizeFormComponent,
+  material: MaterialFormView,
+  color: ColorFormView,
+  threadSize: ThreadedSizeFormView,
   magazine: MagazineFormView,
-  bodyType: BodyTypeFormComponent,
-  headType: HeadTypeFormComponent
+  bodyType: BodyTypeFormView,
+  headType: HeadTypeFormView
 }
 const storeMap = {
   stock: useStockStore,
