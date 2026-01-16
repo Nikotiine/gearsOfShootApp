@@ -32,7 +32,7 @@
     </div>
 
     <div class="text-center">
-      <save-button :status="formStatus" :disabled="!isFormValid" />
+      <save-button :disabled="!isFormValid" />
     </div>
   </form>
 </template>
@@ -63,8 +63,6 @@ const { id } = defineProps<{
   id?: string
 }>()
 const { form, submit } = store.formBuilder(id)
-const formStore = useFormStore()
-const formStatus: FormStatus = formStore.getFormStatus()
 
 //***********************Validateur*************************
 const isFormValid = computed(() => {
@@ -76,7 +74,7 @@ const isFormValid = computed(() => {
 })
 
 /**
- * Surveille la langue pour la traductions des label des type de marques
+ * Surveille la langue pour la traductions des label des weapon-type de marques
  */
 watch(
   () => locale.value,

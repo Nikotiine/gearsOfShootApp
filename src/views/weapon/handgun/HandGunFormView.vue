@@ -1,5 +1,5 @@
 <template>
-  <form-title-component :i18n-prefix="i18nPrefix" />
+  <form-title-component :i18n-prefix="i18nPrefix" :customStatus="id ? 'edit' : 'save'" />
   <form @submit.prevent="submit">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 mt-10">
       <weapon-type-input-select
@@ -302,9 +302,7 @@
       :object-id="id"
       @update:in-stock="(value) => (form.inStock = value)"
     />
-    <div class="text-center">
-      <Button type="submit" :label="t(buttonLabel)" :disabled="!isValidForm"></Button>
-    </div>
+    <save-button :disabled="!isFormValid" :status="id ? 'edit' : 'save'" />
   </form>
 </template>
 
@@ -333,9 +331,9 @@ import { WeaponEnum } from '@/enum/weapon.enum'
 import WeaponTypeInputSelect from '@/components/__form/__specific_select/WeaponTypeInputSelect.vue'
 import LegalisationCategoryInputSelect from '@/components/__form/__specific_select/LegalisationCategoryInputSelect.vue'
 import PriceHistoryForm from '@/components/__form/PriceHistoryForm.vue'
-import { useFormStore } from '@/stores/form.store'
 import EditStockComponent from '@/components/__stock/EditStockComponent.vue'
 import FormTitleComponent from '@/components/__form/FormTitleComponent.vue'
+import SaveButton from '@/components/__form/SaveButton.vue'
 //TODO: Gerer le edit new status dans le titre
 const handGunStore = useHandGunStore()
 const i18nPrefix = handGunStore.getI18NPrefix
@@ -364,7 +362,7 @@ const isRevolver = computed(() => {
 /**
  * Validators du formulaire
  */
-const isValidForm = computed(() => {
+const isFormValid = computed(() => {
   let isValid: boolean = false
   if (
     form.value.name &&

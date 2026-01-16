@@ -9,8 +9,8 @@
         <Tab value="0">{{ t('global.importantInformation') }}</Tab>
         <Tab value="1">{{ t('global.description') }}</Tab>
         <Tab value="2">{{ t('global.associatedWeapons') }}</Tab>
-        <Tab value="3" v-if="isAdminRoute">{{ t('global.price') }}</Tab>
-        <Tab value="4" v-if="isAdminRoute">{{ t('global.stock') }}</Tab>
+        <Tab value="3" v-if="$route.meta.admin">{{ t('global.price') }}</Tab>
+        <Tab value="4" v-if="$route.meta.admin">{{ t('global.stock') }}</Tab>
       </TabList>
       <TabPanels>
         <TabPanel value="0">
@@ -26,10 +26,10 @@
           </p>
         </TabPanel>
         <TabPanel value="2"> //FEATURE </TabPanel>
-        <TabPanel value="3" v-if="isAdminRoute">
+        <TabPanel value="3" v-if="$route.meta.admin">
           <tab-price-component :id="id" type="MAGAZINE" :price="magazine.priceHistory" />
         </TabPanel>
-        <TabPanel value="4" v-if="isAdminRoute">
+        <TabPanel value="4" v-if="$route.meta.admin">
           <tab-stock-component :stock="magazine.stock" />
         </TabPanel>
       </TabPanels>
@@ -59,9 +59,8 @@ import TabStockComponent from '@/components/__tabs/TabStockComponent.vue'
 
 const store = useWeaponMagazineStore()
 const { t } = useI18n()
-const { id, isAdminRoute = false } = defineProps<{
+const { id } = defineProps<{
   id: string
-  isAdminRoute?: boolean
 }>()
 const { data: magazine } = store.getById(id)
 const importantInfo = computed(() => {
@@ -101,28 +100,6 @@ const importantInfo = computed(() => {
     }
   ]
 })
-
-/*const associatedWeapons = computed(() => {
-  if (!magazine.value) return undefined
-  let weapons: TabCardProps[] = []
-  if (magazine.value.riffles) {
-    weapons = magazine.value.riffles.map((riffle) => {
-      return {
-        label: t('global.model'),
-        title: `${riffle.factory.name} ${riffle.name} ${riffle.variation ? '-' + riffle.variation : ''}`
-      }
-    })
-  }
-  if (magazine.value.riffles) {
-    weapons = magazine.value.handguns.map((handgun) => {
-      return {
-        label: t('global.model'),
-        title: `${handgun.factory.name} ${handgun.name} ${handgun.variation ? '-' + handgun.variation : ''} (${handgun.type.name})`
-      }
-    })
-  }
-  return weapons
-})*/
 </script>
 
 <style scoped></style>

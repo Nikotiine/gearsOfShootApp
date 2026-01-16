@@ -114,47 +114,17 @@ const items = computed(() => {
               {
                 label: 'magazine',
                 icon: 'pi pi-file',
-                subtext: 'subMagazineCatC',
+                subtext: 'subAddMagazine',
                 command: () => {
                   push({ name: AdminRouterEnum.MAGAZINE_NEW })
                 }
-              }
-            ]
-          }
-        ],
-        [
-          {
-            items: [
+              },
               {
-                label: 'categoryBRiffle',
+                label: 'rds',
                 icon: 'pi pi-shield',
-                subtext: 'subRiffleCatB',
+                subtext: 'rdsAdd',
                 command: () => {
-                  push({ name: AdminRouterEnum.RIFFLE_LIST, params: { category: 'B' } })
-                }
-              },
-              {
-                label: 'categoryBHandgun',
-                icon: 'pi pi-question',
-                subtext: 'subHandgunCatB',
-                command: () => {
-                  push({ name: AdminRouterEnum.HANDGUN_LIST, params: { category: 'B' } })
-                }
-              },
-              {
-                label: 'ammoB',
-                icon: 'pi pi-search',
-                subtext: 'subAmmoCatB',
-                command: () => {
-                  push({ name: AdminRouterEnum.AMMUNITION_LIST, params: { category: 'B' } })
-                }
-              },
-              {
-                label: 'magazine',
-                icon: 'pi pi-file',
-                subtext: 'subMagazineCatB',
-                command: () => {
-                  push({ name: AdminRouterEnum.MAGAZINE_LIST, params: { category: 'B' } })
+                  push({ name: AdminRouterEnum.RDS_NEW })
                 }
               }
             ]
@@ -166,7 +136,7 @@ const items = computed(() => {
               {
                 label: 'optic',
                 icon: 'pi pi-comments',
-                subtext: 'subOptic',
+                subtext: 'opticAdd',
                 command: () => {
                   push({ name: AdminRouterEnum.OPTIC_NEW })
                 }
@@ -174,9 +144,23 @@ const items = computed(() => {
               {
                 label: 'opticCollar',
                 icon: 'pi pi-star',
-                subtext: 'subOpticCollar',
+                subtext: 'opticCollarAdd',
                 command: () => {
                   push({ name: AdminRouterEnum.OPTIC_COLLAR_NEW })
+                }
+              }
+            ]
+          }
+        ],
+        [
+          {
+            items: [
+              {
+                label: 'ammunition',
+                icon: 'pi pi-search',
+                subtext: 'ammunitionAdd',
+                command: () => {
+                  push({ name: AdminRouterEnum.AMMUNITION_NEW })
                 }
               }
             ]
@@ -200,11 +184,11 @@ const items = computed(() => {
                 }
               },
               {
-                label: 'handgun',
-                icon: 'pi pi-users',
-                subtext: 'subAddHandgun',
+                label: 'ammoC',
+                icon: 'pi pi-search',
+                subtext: 'subAmmoCatC',
                 command: () => {
-                  push({ name: AdminRouterEnum.HANDGUN_NEW })
+                  push({ name: AdminRouterEnum.AMMUNITION_LIST, params: { category: 'C' } })
                 }
               },
               {
@@ -273,6 +257,102 @@ const items = computed(() => {
                 subtext: 'subOpticCollar',
                 command: () => {
                   push({ name: AdminRouterEnum.OPTIC_COLLAR_LIST })
+                }
+              },
+              {
+                label: 'rds',
+                icon: 'pi pi-search',
+                subtext: 'rdsList',
+                command: () => {
+                  push({ name: AdminRouterEnum.RDS_LIST })
+                }
+              }
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      label: 'internal',
+      root: true,
+      items: [
+        [
+          {
+            items: [
+              {
+                label: 'factory',
+                icon: 'pi pi-question',
+                subtext: 'factoryAdd',
+                command: () => {
+                  push({ name: AdminRouterEnum.FACTORY_NEW })
+                }
+              },
+              {
+                label: 'threadedSize',
+                icon: 'pi pi-star',
+                subtext: 'threadedSizeAdd',
+                command: () => {
+                  push({ name: AdminRouterEnum.THREADED_SIZE_NEW })
+                }
+              },
+              {
+                label: 'caliber',
+                icon: 'pi pi-star',
+                subtext: 'caliberAdd',
+                command: () => {
+                  push({ name: AdminRouterEnum.CALIBER_NEW })
+                }
+              }
+            ]
+          }
+        ],
+        [
+          {
+            items: [
+              {
+                label: 'weaponType',
+                icon: 'pi pi-star',
+                subtext: 'weaponTypeAdd',
+                command: () => {
+                  push({ name: AdminRouterEnum.WEAPON_TYPE_NEW })
+                }
+              },
+              {
+                label: 'bodyType',
+                icon: 'pi pi-star',
+                subtext: 'bodyTypeAdd',
+                command: () => {
+                  push({ name: AdminRouterEnum.BODY_TYPE_NEW })
+                }
+              },
+              {
+                label: 'headType',
+                icon: 'pi pi-star',
+                subtext: 'headTypeAdd',
+                command: () => {
+                  push({ name: AdminRouterEnum.HEAD_TYPE_NEW })
+                }
+              }
+            ]
+          }
+        ],
+        [
+          {
+            items: [
+              {
+                label: 'color',
+                icon: 'pi pi-star',
+                subtext: 'colorAdd',
+                command: () => {
+                  push({ name: AdminRouterEnum.COLOR_NEW })
+                }
+              },
+              {
+                label: 'material',
+                icon: 'pi pi-star',
+                subtext: 'materialAdd',
+                command: () => {
+                  push({ name: AdminRouterEnum.MATERIAL_NEW })
                 }
               }
             ]

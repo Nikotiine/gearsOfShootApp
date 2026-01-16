@@ -7,7 +7,7 @@ import { getI18NPrefix } from '@/enum/I18NSuffix.enum'
 import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
 
-export const useHeadTypeStore = defineStore('head-type-store', () => {
+export const useHeadTypeStore = defineStore('head-weapon-type-store', () => {
   // Appel API
   const { api } = useApiStore()
 

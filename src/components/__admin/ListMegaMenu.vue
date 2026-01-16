@@ -81,7 +81,7 @@ const items = ref<MenuItem[]>([
                 console.log('A faire')
                 /* push({
                   name: AdminRouterEnum.WEAPON_LIST,
-                  params: { type: WeaponEnum.RIFFLE, category: LegislationCategory.C }
+                  params: { weapon-type: WeaponEnum.RIFFLE, category: LegislationCategory.C }
                 })*/
               }
             },

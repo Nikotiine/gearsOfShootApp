@@ -1,5 +1,5 @@
 <template>
-  <form-title-component :i18n-prefix="i18nPrefix" />
+  <form-title-component :i18n-prefix="i18nPrefix" :custom-status="id ? 'edit' : 'save'" />
   <form @submit.prevent="submit">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
       <InputGroup>
@@ -66,7 +66,7 @@
       :object-id="id"
       @update:in-stock="(value) => (form.inStock = value)"
     />
-    <save-button :disabled="!isFormValid" />
+    <save-button :disabled="!isFormValid" :status="id ? 'edit' : 'save'" />
   </form>
 </template>
 <script setup lang="ts">

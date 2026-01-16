@@ -6,7 +6,7 @@
           <span class="text-xl font-bold">{{ t('bodyType.existingList') }}</span>
         </div>
       </template>
-      <Column field="name" :header="t('bodyType.type')"></Column>
+      <Column field="name" :header="t('bodyType.weapon-type')"></Column>
       <Column field="ref" :header="t('global.ref')"></Column>
     </DataTable>
   </div>

@@ -54,6 +54,7 @@
       :updated-by="handgun.updatedBy"
       :created-at="handgun.createdAt"
       :update-at="handgun.updatedAt"
+      v-if="$route.meta.admin"
     />
   </div>
 </template>

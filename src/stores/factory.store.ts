@@ -67,7 +67,7 @@ export const useFactoryStore = defineStore('factory-store', () => {
       queryKey: [_PREREQUISITE_FN],
       queryFn: async () => {
         const res = await api.api.factoryTypeControllerFindAll()
-        factoryTypes.value = res.data
+        //factoryTypes.value = res.data
         return res.data
       }
     })

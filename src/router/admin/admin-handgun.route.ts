@@ -1,19 +1,19 @@
 import type { RouteRecordRaw } from 'vue-router'
 import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 import { GlobalRouterEnum } from '@/enum/router/global-router.enum'
+import { WeaponEnum } from '@/enum/weapon.enum'
 import { useBreadcrumbStore } from '@/stores/breadcrumb.store'
-
-const parentPath: string = 'chargeurs'
-const prefix: string = 'magazine'
-const routeFormName = AdminRouterEnum.MAGAZINE_NEW
-const routeListName = AdminRouterEnum.MAGAZINE_LIST
-const routeDetailName = AdminRouterEnum.MAGAZINE_DETAIL
-const routeEditName = AdminRouterEnum.MAGAZINE_EDIT
-export const adminMagazineRoutes: RouteRecordRaw = {
+const prefix: string = 'handgun'
+const parentPath: string = 'armes-de-poing'
+const routeFormName = AdminRouterEnum.HANDGUN_NEW
+const routeListName = AdminRouterEnum.HANDGUN_LIST
+const routeDetailName = AdminRouterEnum.ADMIN_HANDGUN_DETAIL
+const routeEditName = AdminRouterEnum.HANDGUN_EDIT
+export const adminHandgunRoutes: RouteRecordRaw = {
   path: parentPath,
   children: [
     {
-      path: GlobalRouterEnum.PATH_NEW_PRODUCT,
+      path: `${GlobalRouterEnum.PATH_NEW_PRODUCT}/${WeaponEnum.HAND_GUN}`,
       name: routeFormName,
       meta: {
         breadcrumb: () => {
@@ -29,10 +29,10 @@ export const adminMagazineRoutes: RouteRecordRaw = {
           ]
         }
       },
-      component: () => import('@/views/weapon/magazine/MagazineFormView.vue')
+      component: () => import('@/views/weapon/handgun/HandGunFormView.vue')
     },
     {
-      path: `${GlobalRouterEnum.PATH_LIST}/:category`,
+      path: `${GlobalRouterEnum.PATH_LIST}/${WeaponEnum.HAND_GUN}/:category`,
       name: routeListName,
       props: true,
       meta: {
@@ -52,10 +52,10 @@ export const adminMagazineRoutes: RouteRecordRaw = {
           ]
         }
       },
-      component: () => import('@/views/weapon/magazine/MagazineTableView.vue')
+      component: () => import('@/views/weapon/handgun/HandGunTableView.vue')
     },
     {
-      path: `${GlobalRouterEnum.PATH_DETAIL}/:category/:id`,
+      path: `${GlobalRouterEnum.PATH_DETAIL}/${WeaponEnum.HAND_GUN}/:category/:id`,
       name: routeDetailName,
       props: true,
       meta: {
@@ -86,10 +86,10 @@ export const adminMagazineRoutes: RouteRecordRaw = {
           ]
         }
       },
-      component: () => import('@/views/weapon/magazine/MagazineDetailView.vue')
+      component: () => import('@/views/weapon/handgun/HandGunDetailView.vue')
     },
     {
-      path: `${GlobalRouterEnum.PATH_EDIT_PRODUCT}/:category/:id`,
+      path: `${GlobalRouterEnum.PATH_EDIT_PRODUCT}/${WeaponEnum.HAND_GUN}/:category/:id`,
       name: routeEditName,
       props: true,
       meta: {
@@ -131,7 +131,7 @@ export const adminMagazineRoutes: RouteRecordRaw = {
           ]
         }
       },
-      component: () => import('@/views/weapon/magazine/MagazineFormView.vue')
+      component: () => import('@/views/weapon/handgun/HandGunFormView.vue')
     }
   ]
 }

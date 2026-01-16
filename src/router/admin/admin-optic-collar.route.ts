@@ -6,7 +6,7 @@ const routeFormName = AdminRouterEnum.OPTIC_COLLAR_NEW
 const routeEditName = AdminRouterEnum.OPTIC_COLLAR_EDIT
 const routeListName = AdminRouterEnum.OPTIC_COLLAR_LIST
 const routeDetailName = AdminRouterEnum.OPTIC_COLLAR_DETAIL
-const prefix = 'optic-collar'
+const prefix = 'opticCollar'
 export const opticCollarRoutes = {
   path: parentPath,
   children: [

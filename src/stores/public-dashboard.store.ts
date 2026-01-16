@@ -46,7 +46,7 @@ export const usePublicDashboardStore = defineStore('public-dashboard', () => {
     'optic-collar': PublicRouterEnum.PUBLIC_OPTIC_COLLAR_DETAIL
   }
   /**
-   * Redirige vers la page détail selon le type et l'id de l'objet.
+   * Redirige vers la page détail selon le weapon-type et l'id de l'objet.
    *
    * @param type - Type de l'objet (optic, riffle, etc.)
    * @param id - Identifiant de l'objet
