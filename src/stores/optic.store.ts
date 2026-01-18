@@ -56,7 +56,7 @@ export const useOpticStore = defineStore('optic-store', () => {
       placeholderData: (old) => old
     })
 
-  const _fetchAllOptics = async (filters: OpticFilter): Promise<PaginatedResponseDto | null> => {
+  const _fetchAllOptics = async (filters: OpticFilter) => {
     if (!filters) return null
     const res = await api.api.opticControllerFindAllOptics({ filters })
     return res.data

@@ -28,7 +28,7 @@ export const publicOpticRoute: RouteRecordRaw = {
           ]
         }
       },
-      component: () => import('@/views/optic/OpticTableView.vue')
+      component: () => import('@/views/optic/OpticDataView.vue')
     },
     {
       path: `${GlobalRouterEnum.PATH_DETAIL}/:id`,

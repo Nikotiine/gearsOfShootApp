@@ -7,9 +7,12 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import type { RoutableObjectType } from '@/types/routable.type'
 import { PublicRouterEnum } from '@/enum/router/public-router.enum'
+import { getRoutableMap } from '@/shared/utils/routable-object.utils'
+import { useRoutableObjectStore } from '@/stores/shared/routable-object.store'
 
 export const usePublicDashboardStore = defineStore('public-dashboard', () => {
   const { api } = useApiStore()
+  const routableObjectStore = useRoutableObjectStore()
   const _GET_ALL_NEW_FN = 'getAllNewItems'
   const _GET_ALL_DISCOUNT_FN = 'getAllNDiscountItems'
   const _I18N_PREFIX = 'publicDashboard'
@@ -35,40 +38,7 @@ export const usePublicDashboardStore = defineStore('public-dashboard', () => {
       numScroll: 1
     }
   ])
-  const router = useRouter()
-  const routerMap: Record<RoutableObjectType, PublicRouterEnum> = {
-    ammunition: PublicRouterEnum.PUBLIC_AMMUNITION_DETAIL,
-    riffle: PublicRouterEnum.PUBLIC_RIFFLE_DETAIL,
-    handgun: PublicRouterEnum.PUBLIC_HANDGUN_DETAIL,
-    optic: PublicRouterEnum.PUBLIC_OPTIC_DETAIL,
-    magazine: PublicRouterEnum.PUBLIC_MAGAZINE_DETAIL,
-    rds: PublicRouterEnum.PUBLIC_RDS_DETAIL,
-    'optic-collar': PublicRouterEnum.PUBLIC_OPTIC_COLLAR_DETAIL
-  }
-  /**
-   * Redirige vers la page détail selon le weapon-type et l'id de l'objet.
-   *
-   * @param type - Type de l'objet (optic, riffle, etc.)
-   * @param id - Identifiant de l'objet
-   * @param category LegislationCategoryDto
-   */
-  function redirectToDetail(
-    type: RoutableObjectType,
-    id: number,
-    category?: LegislationCategoryDto
-  ): void {
-    const routeName = routerMap[type]
 
-    if (!routeName) {
-      console.warn(`[Navigation] Route inconnue pour le type: ${type}`)
-      return
-    }
-
-    router.push({
-      name: routeName,
-      params: { id, category: category?.name }
-    })
-  }
   const queryFindAllNewItems = () =>
     useQuery({
       queryKey: [_GET_ALL_NEW_FN],
@@ -94,6 +64,6 @@ export const usePublicDashboardStore = defineStore('public-dashboard', () => {
     getAllDiscountItems: queryFindAllDiscountItems,
     getI18NPrefix: getI18NPrefix(_I18N_PREFIX),
     responsiveOptions$: responsiveOptions,
-    redirectToDetail: redirectToDetail
+    redirectToDetail: routableObjectStore.redirectToDetail
   }
 })

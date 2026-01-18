@@ -28,7 +28,7 @@ export const publicRdsRoute: RouteRecordRaw = {
           ]
         }
       },
-      component: () => import('@/views/accessory/rds/SoundReducerTableView.vue')
+      component: () => import('@/views/accessory/rds/SoundReducerDataView.vue')
     },
     {
       path: `${GlobalRouterEnum.PATH_DETAIL}/:id`,

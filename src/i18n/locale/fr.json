@@ -399,7 +399,8 @@
     "findByType": "Recherche par type",
     "noCollarsProvided": "Pas de colliers fournis",
     "breadcrumbAdd": "Ajout optique",
-    "detail": "Detail optique"
+    "detail": "Detail optique",
+    "breadcrumbList": "Toutes les optiques"
   },
   "soundNoiseReducer": {
     "save": "Ajouter un nouveau RDS",
@@ -734,5 +735,9 @@
     "discounted": "En Promo",
     "precentOfDiscount": "Reduction de :",
     "home": "Accueil du site"
+  },
+  "dataView": {
+    "orderLow": "Du - cher au + cher",
+    "orderHigh": "Du + cher au - cher"
   }
 }
