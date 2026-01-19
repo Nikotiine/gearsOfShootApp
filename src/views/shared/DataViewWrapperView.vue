@@ -7,16 +7,16 @@
             v-model="sortKey"
             :options="sortOptions"
             optionLabel="label"
-            placeholder="Sort By Price"
+            :placeholder="t(prefix + 'orderByPrice')"
             @change="onSortChange($event)"
             class="mr-4"
-            v-tooltip.top="'Trier par'"
+            v-tooltip.top="t(prefix + 'orderBy')"
           />
           <SelectButton
             v-model="layout"
             :options="options"
             :allowEmpty="false"
-            v-tooltip.top="'Changer d affichage'"
+            v-tooltip.top="t(prefix + 'changeDisplay')"
           >
             <template #option="{ option }">
               <i :class="[option === 'list' ? 'pi pi-bars' : 'pi pi-table']" />
@@ -28,7 +28,8 @@
         <div class="flex flex-col">
           <div v-for="(item, index) in slotProps.items" :key="index">
             <div
-              class="flex flex-col sm:flex-row sm:items-center p-6 gap-4"
+              @click="onClick(item.id, item.category)"
+              class="flex flex-col sm:flex-row sm:items-center p-6 gap-4 hover-card"
               :class="{ 'border-t border-surface-200 dark:border-surface-700': index !== 0 }"
             >
               <div class="md:w-40 relative">
@@ -39,7 +40,7 @@
                 />-->
                 <div class="absolute bg-black/70 rounded-border" style="left: 4px; top: 4px">
                   <Tag
-                    :value="item.stock === 0 ? 'Rupture' : 'En stock'"
+                    :value="item.stock === 0 ? t('global.outOfStock') : t('global.inStock')"
                     :severity="getSeverity(item)"
                   ></Tag>
                 </div>
@@ -77,7 +78,7 @@
                     <Button icon="pi pi-heart" variant="outlined"></Button>
                     <Button
                       icon="pi pi-shopping-cart"
-                      label="Buy Now"
+                      :label="t(prefix + 'addToCart')"
                       :disabled="item.stock === 0"
                       class="flex-auto md:flex-initial whitespace-nowrap"
                     ></Button>
@@ -96,7 +97,8 @@
             class="col-span-12 sm:col-span-6 md:col-span-4 xl:col-span-6 p-2"
           >
             <div
-              class="p-6 border border-surface-200 dark:border-surface-700 bg-surface-0 dark:bg-surface-900 rounded flex flex-col"
+              @click="onClick(item.id, item.category)"
+              class="p-6 border border-surface-200 dark:border-surface-700 bg-surface-0 dark:bg-surface-900 rounded flex flex-col hover-card"
             >
               <div class="bg-surface-50 flex justify-center rounded p-4">
                 <div class="relative mx-auto">
@@ -108,7 +110,7 @@
                   />-->
                   <div class="absolute bg-black/70 rounded-border" style="left: 4px; top: 4px">
                     <Tag
-                      :value="item.inStock === 0 ? 'Rupture' : 'En stock'"
+                      :value="item.stock === 0 ? t('global.outOfStock') : t('global.inStock')"
                       :severity="getSeverity(item)"
                     ></Tag>
                   </div>
@@ -142,7 +144,7 @@
                   <div class="flex gap-2">
                     <Button
                       icon="pi pi-shopping-cart"
-                      label="Buy Now"
+                      :label="t(prefix + 'addToCart')"
                       :disabled="item.stock === 0"
                       class="flex-auto whitespace-nowrap"
                     ></Button>
@@ -173,6 +175,8 @@ import DataView from 'primevue/dataview'
 import { useDataViewStore } from '@/stores/shared/dataview.store'
 import { storeToRefs } from 'pinia'
 import type { RoutableObjectType } from '@/types/routable.type'
+import type { LegislationCategoryDto } from '@/api/Api'
+import { useI18n } from 'vue-i18n'
 
 export interface DataViewProps {
   id: number
@@ -182,8 +186,11 @@ export interface DataViewProps {
   factoryName: string
   subTitle: string
   description?: string
+  category?: LegislationCategoryDto
 }
-const { data } = defineProps<{ data: DataViewProps[]; type: RoutableObjectType }>()
+const { t } = useI18n()
+const prefix = 'dataView.'
+const { data, type } = defineProps<{ data: DataViewProps[]; type: RoutableObjectType }>()
 const dataViewStore = useDataViewStore()
 const {
   sortOptions,
@@ -199,6 +206,20 @@ const onSortChange = (event: any) => {
 const getSeverity = (item: DataViewProps) => {
   return dataViewStore.getSeverity(item.stock)
 }
+const onClick = (id: number, category?: LegislationCategoryDto) => {
+  dataViewStore.redirectToDetail(type, id, category)
+}
 </script>
 
-<style scoped></style>
+<style scoped>
+.hover-card {
+  transition:
+    border 0.2s ease,
+    cursor 0.2s ease;
+}
+
+.hover-card:hover {
+  cursor: pointer;
+  border: 2px solid rgb(57, 126, 240);
+}
+</style>

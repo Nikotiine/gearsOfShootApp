@@ -30,7 +30,7 @@ export const publicMagazineRoute: RouteRecordRaw = {
           ]
         }
       },
-      component: () => import('@/views/weapon/magazine/MagazineTableView.vue')
+      component: () => import('@/views/weapon/magazine/MagazineDataView.vue')
     },
     {
       path: `${GlobalRouterEnum.PATH_DETAIL}/:category/:id`,

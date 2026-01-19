@@ -178,6 +178,14 @@ const items = computed(() => {
                 command: () => {
                   push({ name: PublicRouterEnum.PUBLIC_OPTIC_COLLAR_LIST })
                 }
+              },
+              {
+                label: 'rds',
+                icon: 'pi pi-star',
+                subtext: 'subOpticRds',
+                command: () => {
+                  push({ name: PublicRouterEnum.PUBLIC_RDS_LIST })
+                }
               }
             ]
           }

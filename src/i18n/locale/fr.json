@@ -169,7 +169,8 @@
     "archive": "Archiver",
     "findBySupplier": "Chercher par fournisseur",
     "findByStatus": "Chercher par status",
-    "supplier": "Fournisseur"
+    "supplier": "Fournisseur",
+    "outOfStock": "Rupture"
   },
   "handgun": {
     "list": "Liste des arme de poing de categorie : {key}",
@@ -738,6 +739,10 @@
   },
   "dataView": {
     "orderLow": "Du - cher au + cher",
-    "orderHigh": "Du + cher au - cher"
+    "orderHigh": "Du + cher au - cher",
+    "orderBy": "Trier par",
+    "orderByPrice": "Trier par prix",
+    "changeDisplay": "Modifier affichage",
+    "addToCart": "Ajouter au panier"
   }
 }
