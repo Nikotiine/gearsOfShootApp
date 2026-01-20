@@ -39,6 +39,7 @@
       :updated-by="magazine.updatedBy"
       :created-at="magazine.createdAt"
       :update-at="magazine.updatedAt"
+      v-if="$route.meta.admin"
     />
   </div>
 </template>

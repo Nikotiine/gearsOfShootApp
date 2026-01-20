@@ -20,20 +20,22 @@ onBeforeMount(() => {
   queryFilters$.value.category = category
 })
 const { data: magazine$, isError, isLoading, refetch } = store.getAll()
+
 const data = computed<DataViewProps[]>(() => {
   if (!magazine$.value) {
     return []
   }
-  return magazine$.value.data.map((ammo: WeaponMagazineDto) => {
+  return magazine$.value.data.map((magazine: WeaponMagazineDto) => {
     return {
-      id: ammo.id,
-      name: ammo.reference,
-      factoryName: ammo.factory.name,
-      category: ammo.category,
-      stock: ammo.inStock,
-      description: ammo.description ?? '',
-      subTitle: `Calibre ${ammo.caliber.name} `,
-      price: ammo.priceHistory.currentSalePrice
+      id: magazine.id,
+      name: magazine.reference,
+      factory: magazine.factory,
+      category: magazine.category,
+      stock: magazine.inStock,
+      description: magazine.description ?? '',
+      subTitle: `Calibre ${magazine.caliber.name} `,
+      price: magazine.priceHistory.currentSalePrice,
+      discountedPrice: magazine.priceHistory.discountedPrice
     }
   })
 })

@@ -24,9 +24,10 @@ const data = computed<DataViewProps[]>(() => {
       name: collar.name,
       stock: collar.inStock ?? 0,
       price: collar.priceHistory.currentSalePrice ?? 0,
-      factoryName: collar.factory.name ?? '',
+      factory: collar.factory,
       subTitle: `Rail: ${collar.railSize.name}`,
-      description: collar.description ?? ''
+      description: collar.description ?? '',
+      category: null
     }
   })
 })

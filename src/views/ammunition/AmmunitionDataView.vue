@@ -29,12 +29,13 @@ const data = computed<DataViewProps[]>(() => {
     return {
       id: ammo.id,
       name: ammo.name,
-      factoryName: ammo.factory.name,
+      factory: ammo.factory,
       category: ammo.category,
       stock: ammo.inStock,
       description: ammo.description ?? '',
-      subTitle: `Calibre ${ammo.caliber.name} `,
-      price: ammo.priceHistory.currentSalePrice
+      subTitle: `Calibre ${ammo.caliber.name}, Packaging: ${ammo.packaging}`,
+      price: ammo.priceHistory.currentSalePrice,
+      discountedPrice: ammo.priceHistory.discountedPrice
     }
   })
 })

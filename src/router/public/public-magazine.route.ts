@@ -18,7 +18,7 @@ export const publicMagazineRoute: RouteRecordRaw = {
           const store = useBreadcrumbStore()
           return [
             {
-              label: store.createLabel(prefix, 'breadcrumbList'),
+              label: store.createListLabelWithCategory(prefix, route.params.category),
               index: 1,
               to: {
                 name: routeListName,

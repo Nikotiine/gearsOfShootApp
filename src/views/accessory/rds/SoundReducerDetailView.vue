@@ -11,8 +11,8 @@
           <Tab value="0">{{ t('global.importantInformation') }}</Tab>
           <Tab value="1">{{ t('global.description') }}</Tab>
           <Tab value="2">{{ t('global.associatedProducts') }}</Tab>
-          <Tab value="3" v-if="isAdminRoute">{{ t('global.price') }}</Tab>
-          <Tab value="4" v-if="isAdminRoute">{{ t('global.stock') }}</Tab>
+          <Tab value="3" v-if="$route.meta.admin">{{ t('global.price') }}</Tab>
+          <Tab value="4" v-if="$route.meta.admin">{{ t('global.stock') }}</Tab>
         </TabList>
         <TabPanels>
           <TabPanel value="0">
@@ -31,10 +31,10 @@
           <TabPanel value="2">
             <p>// Feature</p>
           </TabPanel>
-          <TabPanel value="3" v-if="isAdminRoute">
+          <TabPanel value="3" v-if="$route.meta.admin">
             <tab-price-component :id="id" type="RDS" :price="rds.priceHistory" />
           </TabPanel>
-          <TabPanel value="4" v-if="isAdminRoute">
+          <TabPanel value="4" v-if="$route.meta.admin">
             <tab-stock-component :stock="rds.stock" />
           </TabPanel>
         </TabPanels>
@@ -44,6 +44,7 @@
         :updated-by="rds.updatedBy"
         :created-at="rds.createdAt"
         :update-at="rds.updatedAt"
+        v-if="$route.meta.admin"
       />
     </div>
   </div>
@@ -68,9 +69,8 @@ import TabPriceComponent from '@/components/__tabs/TabPriceComponent.vue'
 import TabStockComponent from '@/components/__tabs/TabStockComponent.vue'
 
 const { t } = useI18n()
-const { id, isAdminRoute = false } = defineProps<{
+const { id } = defineProps<{
   id: string
-  isAdminRoute?: boolean
 }>()
 
 const store = useSoundReducerStore()

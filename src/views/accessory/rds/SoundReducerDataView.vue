@@ -23,9 +23,10 @@ const data = computed<DataViewProps[]>(() => {
     name: rds.name ?? '',
     stock: rds.inStock ?? 0,
     price: rds.priceHistory.currentSalePrice ?? 0,
-    factoryName: rds.factory.name ?? '',
-    subTitle: `Pour calibre:${rds.caliber.name}`,
-    description: rds.description ?? ''
+    factory: rds.factory,
+    subTitle: `Calibre: ${rds.caliber.name}, Filetage: ${rds.threadedSize.size}`,
+    description: rds.description ?? '',
+    discountedPrice: rds.priceHistory.discountedPrice
   }))
 })
 </script>

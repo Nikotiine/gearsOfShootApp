@@ -92,6 +92,7 @@
     "comment": "Commentaire",
     "status": "Statut",
     "price": "Prix",
+    "discountedPrice": "Prix remisé",
     "yes": "Oui",
     "no": "Non",
     "cancel": "Annuler",
@@ -305,7 +306,7 @@
     "loading": "Chargement des chargeurs en cours",
     "deleted": "Chargeur supprimé",
     "breadcrumbAdd": "Ajout chargeur",
-    "breadcrumbList": "Liste chargeur",
+    "breadcrumbList": "Liste chargeurs Cat: {key}",
     "breadcrumbEdit": "Modifier chargeur",
     "detail": "Detail chargeur"
   },
@@ -328,7 +329,7 @@
     "stock": "Mise en stock",
     "detail": "Detail munition",
     "breadcrumbAdd": "Ajout munition",
-    "breadcrumbList": "Liste Cat: {key}",
+    "breadcrumbList": "Liste munitions Cat: {key}",
     "breadcrumbEdit": "Edtion munition"
   },
   "admin": {
@@ -643,7 +644,10 @@
     "magazine": "Ajouter un chargeur",
     "threadSize": "Ajouter une taille de filletage",
     "headType": "Ajouter un type d'ovige",
-    "bodyType": "Ajouter un type de douille"
+    "bodyType": "Ajouter un type de douille",
+    "isCatCItem": "Article sous a declaration",
+    "isCatBItem": "Article sous a autorisation",
+    "isCatDItem": "Vente uniquement aux majeurs"
   },
   "inputText": {
     "label": "Saisir un texte"
@@ -743,6 +747,7 @@
     "orderBy": "Trier par",
     "orderByPrice": "Trier par prix",
     "changeDisplay": "Modifier affichage",
-    "addToCart": "Ajouter au panier"
+    "addToCart": "Ajouter au panier",
+    "notItemToShow": "Aucun element à afficher"
   }
 }

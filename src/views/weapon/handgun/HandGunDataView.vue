@@ -24,16 +24,17 @@ const data = computed<DataViewProps[]>(() => {
   if (!handgun$.value) {
     return []
   }
-  return handgun$.value.data.map((ammo: HandGunDto) => {
+  return handgun$.value.data.map((handgun: HandGunDto) => {
     return {
-      id: ammo.id,
-      name: ammo.name,
-      factoryName: ammo.factory.name,
-      category: ammo.category,
-      stock: ammo.inStock,
-      description: ammo.description ?? '',
-      subTitle: `Calibre ${ammo.caliber.name} `,
-      price: ammo.priceHistory.currentSalePrice
+      id: handgun.id,
+      name: handgun.name,
+      factory: handgun.factory,
+      category: handgun.category,
+      stock: handgun.inStock,
+      description: handgun.description ?? '',
+      subTitle: `${handgun.type.name} - Calibre ${handgun.caliber.name} `,
+      price: handgun.priceHistory.currentSalePrice,
+      discountedPrice: handgun.priceHistory.discountedPrice
     }
   })
 })
