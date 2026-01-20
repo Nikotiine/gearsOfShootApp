@@ -35,7 +35,7 @@ export const publicWeaponRoutes: RouteRecordRaw = {
           ]
         }
       },
-      component: () => import('@/views/weapon/riffle/RiffleTableView.vue')
+      component: () => import('@/views/weapon/riffle/RiffleDataView.vue')
     },
     {
       path: `${GlobalRouterEnum.PATH_LIST}/${WeaponEnum.HAND_GUN}/:category`,
@@ -58,7 +58,7 @@ export const publicWeaponRoutes: RouteRecordRaw = {
           ]
         }
       },
-      component: () => import('@/views/weapon/handgun/HandGunTableView.vue')
+      component: () => import('@/views/weapon/handgun/HandGunDataView.vue')
     },
     {
       path: `${GlobalRouterEnum.PATH_DETAIL}/${WeaponEnum.RIFFLE}/:category/:id`,

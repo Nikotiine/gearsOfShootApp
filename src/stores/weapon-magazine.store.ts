@@ -52,7 +52,8 @@ export const useWeaponMagazineStore = defineStore('weapon-magazine-store', () =>
         magazines.value = res.data
         return res
       },
-      enabled: !!factoryName.value
+      enabled: !!factoryName.value,
+      placeholderData: (old) => old
     })
 
   const getAllQuery = () =>
@@ -154,25 +155,6 @@ export const useWeaponMagazineStore = defineStore('weapon-magazine-store', () =>
     _deleteMagazineMutation.mutate(id)
   }
 
-  const fetchCompatibleWeapons = async (category: string, type?: string) => {
-    if (!type) return null
-    // TODO: constantes
-    if (type === 'handgun') {
-      weapons.value = await _fetchHandgun(category)
-    }
-    if (type === 'riffle') {
-      weapons.value = await _fetchRiffle(category)
-    }
-  }
-  const _fetchRiffle = async (category: string) => {
-    const res = await api.api.riffleControllerFindAllByCategory(category)
-    return res.data
-  }
-  const _fetchHandgun = async (category: string) => {
-    const res = await api.api.handGunControllerFindAllByCategory(category)
-    return res.data
-  }
-
   return {
     getAll: getAllQuery,
     getById: getByIdQuery,
@@ -182,7 +164,6 @@ export const useWeaponMagazineStore = defineStore('weapon-magazine-store', () =>
     magazine$: magazine,
     delete: deleteFunction,
     builder: useWeaponForm,
-    fetchCompatibleWeapons,
     compatibleWeapons$: weapons,
     getI18NPrefix: getI18NPrefix(_I18N_PREFIX),
     submitSuccess,

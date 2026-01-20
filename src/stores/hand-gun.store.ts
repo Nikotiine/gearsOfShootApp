@@ -52,7 +52,7 @@ export const useHandGunStore = defineStore('hand-gun-store', () => {
   })
 
   const getAllHandgunQuery = () =>
-    useQuery<GetAllHandgunResponse>({
+    useQuery({
       queryKey: [_GET_ALL_FN, queryFilters],
       queryFn: async () => {
         return _fetchAll(queryFilters.value)
@@ -62,7 +62,7 @@ export const useHandGunStore = defineStore('hand-gun-store', () => {
       placeholderData: (old) => old
     })
 
-  const _fetchAll = async (filters: HandGunFilter): Promise<GetAllHandgunResponse> => {
+  const _fetchAll = async (filters: HandGunFilter) => {
     if (!filters) return null
     const res = await api.api.handGunControllerFindAll({ filters })
     return res.data

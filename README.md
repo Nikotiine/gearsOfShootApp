@@ -1,6 +1,18 @@
 # Front-end Gears of weapons
 
-This template should help get you started developing with Vue 3 in Vite.
+* Projet de site web: Armuerie en ligne
+* Gestion des stock 
+* Adminstation du site
+
+### Deps
+* VueJS3
+* TailWind CSS
+* PrimeVue
+* TanStack
+* Pinia
+* Node > 20
+* Vite > 7
+* Vue I18N
 
 ## Recommended IDE Setup
 
@@ -18,35 +30,37 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
 
 ```sh
 npm install
+npm i
 ```
-### Clone & install Back-end project
+### Cloner & installer le Back-end (node-js/nest-js)
 ```sh
 git clone https://github.com/Nikotiine/gearsOfShootApi.git
 ```
-### Compile and Hot-Reload for Development
+### Serveur de  Developement (configurer du 5173) ViteJS
 
 ```sh
 npm run dev
 ```
 
-### Update model form API
+### Mise à jour des models depuis API (open-api)
 ```sh
 npm run swagger:generate
+npm run sw:gen
 ```
 
-### Type-Check, Compile and Minify for Production
+### Production
 
 ```sh
 npm run build
 ```
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-### Tester c'est douter
+### Run Unit Tests with [Vitest](https://vitest.dev/) / pas de test
+#### Tester c'est douter
 ```sh
 npm run test:unit
 ```
 
-### Run End-to-End Tests with [Cypress](https://www.cypress.io/)
+### Run End-to-End Tests with [Cypress](https://www.cypress.io/) / pas de test
 ### Corriger c'est abdiquer
 ```sh
 npm run test:e2e:dev
@@ -68,3 +82,4 @@ npm run test:e2e
 npm run lint
 ```
 # gearsOfShootApp
+

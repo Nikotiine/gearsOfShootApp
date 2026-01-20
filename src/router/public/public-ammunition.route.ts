@@ -20,7 +20,7 @@ export const publicAmmunitionRoute: RouteRecordRaw = {
           const store = useBreadcrumbStore()
           return [
             {
-              label: store.createLabel(prefix, 'breadcrumbList'),
+              label: store.createListLabelWithCategory(prefix, route.params.category),
               index: 1,
               to: {
                 name: routeListName,
@@ -32,7 +32,7 @@ export const publicAmmunitionRoute: RouteRecordRaw = {
           ]
         }
       },
-      component: () => import('@/views/ammunition/AmmunitionTableView.vue')
+      component: () => import('@/views/ammunition/AmmunitionDataView.vue')
     },
     {
       path: `${GlobalRouterEnum.PATH_DETAIL}/:category/:id`,
@@ -43,7 +43,7 @@ export const publicAmmunitionRoute: RouteRecordRaw = {
           const store = useBreadcrumbStore()
           return [
             {
-              label: store.createLabel(prefix, 'breadcrumbList'),
+              label: store.createListLabelWithCategory(prefix, route.params.category),
               index: 1,
               to: {
                 name: routeListName,

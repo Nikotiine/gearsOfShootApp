@@ -111,15 +111,15 @@ const importantInfo = computed(() => {
       title: VerifyFieldIsNotNull(riffle.value.variation)
     },
     {
-      label: t('weapon.weaponType'),
+      label: t('riffle.weaponType'),
       title: riffle.value.type.name
     },
     {
-      label: t('weapon.weaponTypeMode'),
+      label: t('riffle.weaponTypeMode'),
       title: riffle.value.type.mode.name
     },
     {
-      label: t('weapon.providedMagazineQuantity'),
+      label: t('riffle.providedMagazineQuantity'),
       title: riffle.value.providedMagazineQuantity
     }
   ]
@@ -129,19 +129,19 @@ const barrelInfo = computed(() => {
   if (!riffle.value) return undefined
   return [
     {
-      label: t('weapon.percussionType'),
+      label: t('global.percussionType'),
       title: riffle.value.percussionType.name
     },
     {
-      label: t('weapon.barrelLength'),
+      label: t('riffle.barrelLength'),
       title: `${riffle.value.barrelLength} cm (${(riffle.value.barrelLength / 2.54).toFixed()} ${t('global.inches')})`
     },
     {
-      label: t('weapon.barrelSize'),
+      label: t('riffle.barrelSize'),
       title: NumberFormatter(riffle.value.barrelSize, 'mm')
     },
     {
-      label: t('weapon.isThreadedBarrel'),
+      label: t('riffle.isThreadedBarrel'),
       title: BooleanFormatter(riffle.value.isThreadedBarrel)
     },
     {
@@ -149,11 +149,11 @@ const barrelInfo = computed(() => {
       title: VerifyFieldIsNotNull(riffle.value.threadedSize?.size)
     },
     {
-      label: t('weapon.barrelType'),
+      label: t('riffle.barrelType'),
       title: riffle.value.barrelType.name
     },
     {
-      label: t('weapon.barrelColor'),
+      label: t('riffle.barrelColor'),
       title: VerifyFieldIsNotNull(riffle.value.barrelColor?.name)
     }
   ]
@@ -163,7 +163,7 @@ const otherProps = computed(() => {
   if (!riffle.value) return undefined
   return [
     {
-      label: t('weapon.isAdjustableTrigger'),
+      label: t('riffle.isAdjustableTrigger'),
       title:
         BooleanFormatter(riffle.value.isAdjustableTrigger) +
         ' ' +
@@ -174,45 +174,45 @@ const otherProps = computed(() => {
         )
     },
     {
-      label: t('weapon.buttMaterial'),
+      label: t('riffle.buttMaterial'),
       title: VerifyFieldIsNotNull(riffle.value.buttMaterial?.name)
     },
 
     {
-      label: t('weapon.buttColor'),
+      label: t('riffle.buttColor'),
       title: VerifyFieldIsNotNull(riffle.value.buttColor?.name)
     },
 
     {
-      label: t('weapon.isAdjustableButt'),
+      label: t('riffle.isAdjustableButt'),
       title: BooleanFormatter(riffle.value.isAdjustableButt)
     },
     {
-      label: t('weapon.isAdjustableBusk'),
+      label: t('riffle.isAdjustableBusk'),
       title: BooleanFormatter(riffle.value.isAdjustableBusk)
     },
     {
-      label: t('weapon.isOpenAim'),
+      label: t('riffle.isOpenAim'),
       title: BooleanFormatter(riffle.value.isOpenAim)
     },
     {
-      label: t('weapon.isAdjustableBackSight'),
+      label: t('riffle.isAdjustableBackSight'),
       title: BooleanFormatter(riffle.value.isAdjustableBackSight)
     },
     {
-      label: t('weapon.isAdjustableFrontSight'),
+      label: t('riffle.isAdjustableFrontSight'),
       title: BooleanFormatter(riffle.value.isAdjustableFrontSight)
     },
     {
-      label: t('weapon.qcSlot'),
+      label: t('riffle.qcSlot'),
       title: riffle.value.qcSlot
     },
     {
-      label: t('weapon.grenadierSlot'),
+      label: t('riffle.grenadierSlot'),
       title: riffle.value.grenadierSlot
     },
     {
-      label: t('weapon.isMlockCompatibility'),
+      label: t('riffle.isMlockCompatibility'),
       title: BooleanFormatter(riffle.value.isMlockCompatibility)
     }
   ]

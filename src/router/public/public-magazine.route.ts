@@ -18,7 +18,7 @@ export const publicMagazineRoute: RouteRecordRaw = {
           const store = useBreadcrumbStore()
           return [
             {
-              label: store.createLabel(prefix, 'breadcrumbList'),
+              label: store.createListLabelWithCategory(prefix, route.params.category),
               index: 1,
               to: {
                 name: routeListName,
@@ -30,7 +30,7 @@ export const publicMagazineRoute: RouteRecordRaw = {
           ]
         }
       },
-      component: () => import('@/views/weapon/magazine/MagazineTableView.vue')
+      component: () => import('@/views/weapon/magazine/MagazineDataView.vue')
     },
     {
       path: `${GlobalRouterEnum.PATH_DETAIL}/:category/:id`,

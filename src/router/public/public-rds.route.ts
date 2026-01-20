@@ -4,7 +4,7 @@ import { GlobalRouterEnum } from '@/enum/router/global-router.enum'
 import { useBreadcrumbStore } from '@/stores/breadcrumb.store'
 
 const parentPath: string = 'accessoire-armes/rds'
-const prefix: string = 'rds'
+const prefix: string = 'soundNoiseReducer'
 const routeListName = PublicRouterEnum.PUBLIC_RDS_LIST
 const routeDetailName = PublicRouterEnum.PUBLIC_RDS_DETAIL
 export const publicRdsRoute: RouteRecordRaw = {
@@ -28,7 +28,7 @@ export const publicRdsRoute: RouteRecordRaw = {
           ]
         }
       },
-      component: () => import('@/views/accessory/rds/SoundReducerTableView.vue')
+      component: () => import('@/views/accessory/rds/SoundReducerDataView.vue')
     },
     {
       path: `${GlobalRouterEnum.PATH_DETAIL}/:id`,

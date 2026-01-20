@@ -62,9 +62,7 @@ export const useAmmunitionStore = defineStore('ammunition-store', () => {
       placeholderData: (old) => old
     })
 
-  const _fetchAllByCategory = async (
-    filters: AmmunitionFilter
-  ): Promise<PaginatedResponseDto | null> => {
+  const _fetchAllByCategory = async (filters: AmmunitionFilter) => {
     if (!filters) return null
     const res = await api.api.ammunitionControllerFindAll({ filters })
     return res.data
