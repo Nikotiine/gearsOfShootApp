@@ -1,7 +1,7 @@
 <template>
   <Toast position="bottom-right" />
   <AdminTopBar v-if="isAdmin" />
-  <TopbarComponent v-else />
+  <PublicNavigationComponent v-else />
   <ConfirmDialog></ConfirmDialog>
   <div class="h-screen">
     <BreadcrumbView />
@@ -13,7 +13,7 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 import Toast from 'primevue/toast'
-import TopbarComponent from '@/components/__app/TopbarComponent.vue'
+import PublicNavigationComponent from '@/components/__app/PublicNavigationComponent.vue'
 import ConfirmDialog from 'primevue/confirmdialog'
 import BreadcrumbView from '@/views/shared/BreadcrumbView.vue'
 import { useUserStore } from '@/stores/user.store'
