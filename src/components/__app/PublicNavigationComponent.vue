@@ -104,6 +104,14 @@ const items = computed(() => {
                 }
               },
               {
+                label: 'categoryCHandgun',
+                icon: 'pi pi-question',
+                subtext: 'subHandgunCatC',
+                command: () => {
+                  push({ name: PublicRouterEnum.PUBLIC_HANDGUN_LIST, params: { category: 'B' } })
+                }
+              },
+              {
                 label: 'ammoC',
                 icon: 'pi pi-users',
                 subtext: 'subAmmoCatC',
@@ -163,7 +171,7 @@ const items = computed(() => {
         [
           {
             items: [
-              {
+              /*  {
                 label: 'optic',
                 icon: 'pi pi-comments',
                 subtext: 'subOptic',
@@ -186,7 +194,7 @@ const items = computed(() => {
                 command: () => {
                   push({ name: PublicRouterEnum.PUBLIC_RDS_LIST })
                 }
-              }
+              }*/
             ]
           }
         ]
@@ -194,48 +202,27 @@ const items = computed(() => {
     },
     {
       label: 'recreationalShooting',
-      root: true
-    }
-  ]
-
-  if (isLogged.value && isAdmin.value) {
-    baseItems.push({
-      label: 'admin',
       root: true,
       items: [
         [
           {
             items: [
               {
-                label: 'addNewRiffle',
-                icon: 'pi pi-user',
-                subtext: 'Voir mon profil',
+                label: 'airgunRiffle',
+                icon: 'pi pi-comments',
+                subtext: 'subAirgunRiffle',
+                disabled: true,
                 command: () => {
-                  push('/account/profile')
+                  //push({ name: PublicRouterEnum.PUBLIC_OPTIC_LIST })
                 }
               },
               {
-                label: 'addNewHandgun',
-                icon: 'pi pi-sign-out',
-                subtext: 'Se déconnecter',
+                label: 'airgunHandgun',
+                icon: 'pi pi-comments',
+                subtext: 'subAirgunHandgun',
+                disabled: true,
                 command: () => {
-                  // appel à ton store pour logout
-                }
-              },
-              {
-                label: 'addNewMagazine',
-                icon: 'pi pi-sign-out',
-                subtext: 'Se déconnecter',
-                command: () => {
-                  // appel à ton store pour logout
-                }
-              },
-              {
-                label: 'addNewAmmo',
-                icon: 'pi pi-sign-out',
-                subtext: 'Se déconnecter',
-                command: () => {
-                  // appel à ton store pour logout
+                  // push({ name: PublicRouterEnum.PUBLIC_OPTIC_LIST })
                 }
               }
             ]
@@ -245,19 +232,21 @@ const items = computed(() => {
           {
             items: [
               {
-                label: 'addNewOptic',
-                icon: 'pi pi-user',
-                subtext: 'Voir mon profil',
+                label: 'airsoftRiffle',
+                icon: 'pi pi-star',
+                subtext: 'subAirsoftRiffle',
+                disabled: true,
                 command: () => {
-                  push('/account/profile')
+                  // push({ name: PublicRouterEnum.PUBLIC_OPTIC_COLLAR_LIST })
                 }
               },
               {
-                label: 'addNewOpticCollar',
-                icon: 'pi pi-sign-out',
-                subtext: 'Se déconnecter',
+                label: 'airsoftHandgun',
+                icon: 'pi pi-star',
+                subtext: 'subOpticCollar',
+                disabled: true,
                 command: () => {
-                  // appel à ton store pour logout
+                  // push({ name: PublicRouterEnum.PUBLIC_OPTIC_COLLAR_LIST })
                 }
               }
             ]
@@ -267,74 +256,248 @@ const items = computed(() => {
           {
             items: [
               {
-                label: 'addNewRds',
-                icon: 'pi pi-user',
-                subtext: 'Voir mon profil',
+                label: 'ammunitionAirgun',
+                icon: 'pi pi-star',
+                subtext: 'subOpticCollar',
+                disabled: true,
                 command: () => {
-                  push('/account/profile')
+                  // push({ name: PublicRouterEnum.PUBLIC_OPTIC_COLLAR_LIST })
                 }
               },
               {
-                label: 'addNewAccessory',
-                icon: 'pi pi-sign-out',
-                subtext: 'Se déconnecter',
+                label: 'ammunitionAirsoft',
+                icon: 'pi pi-star',
+                subtext: 'subOpticCollar',
+                disabled: true,
                 command: () => {
-                  // appel à ton store pour logout
-                }
-              }
-            ]
-          }
-        ],
-
-        [
-          {
-            items: [
-              {
-                label: 'addNewFactory',
-                icon: 'pi pi-user',
-                subtext: 'Voir mon profil',
-                command: () => {
-                  push('/account/profile')
+                  // push({ name: PublicRouterEnum.PUBLIC_OPTIC_COLLAR_LIST })
                 }
               },
               {
-                label: 'addNewMaterial',
-                icon: 'pi pi-sign-out',
-                subtext: 'Se déconnecter',
+                label: 'co2',
+                icon: 'pi pi-star',
+                subtext: 'subCo2r',
+                disabled: true,
                 command: () => {
-                  // appel à ton store pour logout
-                }
-              },
-              {
-                label: 'addNewColors',
-                icon: 'pi pi-sign-out',
-                subtext: 'Se déconnecter',
-                command: () => {
-                  // appel à ton store pour logout
-                }
-              },
-              {
-                label: 'addNewHeadType',
-                icon: 'pi pi-sign-out',
-                subtext: 'Se déconnecter',
-                command: () => {
-                  // appel à ton store pour logout
-                }
-              },
-              {
-                label: 'addNewBodyType',
-                icon: 'pi pi-sign-out',
-                subtext: 'Se déconnecter',
-                command: () => {
-                  // appel à ton store pour logout
+                  // push({ name: PublicRouterEnum.PUBLIC_OPTIC_COLLAR_LIST })
                 }
               }
             ]
           }
         ]
       ]
-    })
-  }
+    },
+    {
+      label: 'optics',
+      root: true,
+      items: [
+        [
+          {
+            items: [
+              {
+                label: 'optic',
+                icon: 'pi pi-comments',
+                subtext: 'subOptic',
+                command: () => {
+                  push({ name: PublicRouterEnum.PUBLIC_OPTIC_LIST })
+                }
+              },
+              {
+                label: 'opticCollar',
+                icon: 'pi pi-star',
+                subtext: 'subOpticCollar',
+                command: () => {
+                  push({ name: PublicRouterEnum.PUBLIC_OPTIC_COLLAR_LIST })
+                }
+              },
+              {
+                label: 'opticRail',
+                icon: 'pi pi-star',
+                subtext: 'subOpticRail',
+                disabled: true,
+                command: () => {
+                  // push({ name: PublicRouterEnum.PUBLIC_OPTIC_COLLAR_LIST })
+                }
+              }
+            ]
+          }
+        ],
+        [
+          {
+            items: [
+              {
+                label: 'opticCleaning',
+                icon: 'pi pi-comments',
+                subtext: 'subOpticCleaning',
+                disabled: true,
+                command: () => {
+                  // push({ name: PublicRouterEnum.PUBLIC_OPTIC_LIST })
+                }
+              }
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      label: 'accessories',
+      root: true,
+      items: [
+        [
+          {
+            items: [
+              {
+                label: 'rds',
+                icon: 'pi pi-star',
+                subtext: 'subRds',
+                command: () => {
+                  push({ name: PublicRouterEnum.PUBLIC_RDS_LIST })
+                }
+              },
+              {
+                label: 'riffleParts',
+                icon: 'pi pi-star',
+                subtext: 'subRiffleParts',
+                disabled: true,
+                command: () => {
+                  // push({ name: PublicRouterEnum.PUBLIC_RDS_LIST })
+                }
+              },
+              {
+                label: 'bipod',
+                icon: 'pi pi-star',
+                subtext: 'subBipod',
+                disabled: true,
+                command: () => {
+                  // push({ name: PublicRouterEnum.PUBLIC_RDS_LIST })
+                }
+              },
+              {
+                label: 'grip',
+                icon: 'pi pi-star',
+                subtext: 'subGrip',
+                disabled: true,
+                command: () => {
+                  // push({ name: PublicRouterEnum.PUBLIC_RDS_LIST })
+                }
+              }
+            ]
+          }
+        ],
+        [
+          {
+            items: [
+              {
+                label: 'weaponsCleaning',
+                icon: 'pi pi-star',
+                subtext: 'subWeaponsCleaning',
+                disabled: true,
+                command: () => {
+                  // push({ name: PublicRouterEnum.PUBLIC_RDS_LIST })
+                }
+              },
+              {
+                label: 'weaponsCase',
+                icon: 'pi pi-star',
+                subtext: 'subWeaponsCase',
+                disabled: true,
+                command: () => {
+                  // push({ name: PublicRouterEnum.PUBLIC_RDS_LIST })
+                }
+              }
+            ]
+          }
+        ],
+        [
+          {
+            items: [
+              {
+                label: 'target',
+                icon: 'pi pi-star',
+                subtext: 'subTarget',
+                disabled: true,
+                command: () => {
+                  // push({ name: PublicRouterEnum.PUBLIC_RDS_LIST })
+                }
+              },
+              {
+                label: 'shooterAcc',
+                icon: 'pi pi-star',
+                subtext: 'subShooterAcc',
+                disabled: true,
+                command: () => {
+                  // push({ name: PublicRouterEnum.PUBLIC_RDS_LIST })
+                }
+              }
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      label: 'reloading',
+      root: true,
+      items: [
+        [
+          {
+            items: [
+              {
+                label: 'ammunitionHead',
+                icon: 'pi pi-comments',
+                subtext: 'subAmmunitionHead',
+                disabled: true,
+                command: () => {
+                  // push({ name: PublicRouterEnum.PUBLIC_OPTIC_LIST })
+                }
+              },
+              {
+                label: 'ammunitionBody',
+                icon: 'pi pi-star',
+                subtext: 'subAmmunitionBody',
+                disabled: true,
+                command: () => {
+                  //push({ name: PublicRouterEnum.PUBLIC_OPTIC_COLLAR_LIST })
+                }
+              },
+              {
+                label: 'powder',
+                icon: 'pi pi-star',
+                subtext: 'subPowder',
+                disabled: true,
+                command: () => {
+                  // push({ name: PublicRouterEnum.PUBLIC_OPTIC_COLLAR_LIST })
+                }
+              },
+              {
+                label: 'primer',
+                icon: 'pi pi-star',
+                subtext: 'subPrimer',
+                disabled: true,
+                command: () => {
+                  // push({ name: PublicRouterEnum.PUBLIC_OPTIC_COLLAR_LIST })
+                }
+              }
+            ]
+          }
+        ],
+        [
+          {
+            items: [
+              {
+                label: 'reloadingGear',
+                icon: 'pi pi-comments',
+                subtext: 'subReloadingGear',
+                disabled: true,
+                command: () => {
+                  // push({ name: PublicRouterEnum.PUBLIC_OPTIC_LIST })
+                }
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
 
   return baseItems
 })
