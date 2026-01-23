@@ -1,6 +1,6 @@
 <template>
   <Toast position="bottom-right" />
-  <AdminTopBar v-if="isAdmin" />
+  <AdminNavigationComponent v-if="isAdmin" />
   <PublicNavigationComponent v-else />
   <ConfirmDialog></ConfirmDialog>
   <div class="h-screen">
@@ -17,7 +17,7 @@ import PublicNavigationComponent from '@/components/__app/PublicNavigationCompon
 import ConfirmDialog from 'primevue/confirmdialog'
 import BreadcrumbView from '@/views/shared/BreadcrumbView.vue'
 import { useUserStore } from '@/stores/user.store'
-import AdminTopBar from '@/components/__app/AdminTopBar.vue'
+import AdminNavigationComponent from '@/components/__app/AdminNavigationComponent.vue'
 const { isAdmin } = useUserStore()
 </script>
 

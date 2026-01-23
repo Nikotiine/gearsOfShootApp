@@ -7,8 +7,8 @@
         <input-group-text
           @value="(value) => (form.name = value)"
           :min-length="3"
-          placeholder="global.name"
-          label="global.name"
+          placeholder="name"
+          label="name"
           required
           input-id="name"
           :initial-value="form.name"
@@ -19,8 +19,8 @@
         <input-group-text
           @value="(value) => (form.reference = value)"
           :min-length="3"
-          placeholder="global.ref"
-          label="global.ref"
+          placeholder="ref"
+          label="ref"
           required
           input-id="reference"
           :initial-value="form.reference"

@@ -32,8 +32,9 @@
     "subOpticCollar": "Toutes nos montage d'optique",
     "optic": "Optique",
     "optics": "Rayon optiques",
+    "opticsAndAccessories": "Optiques et accessoires",
     "opticCollar": "Montage optique",
-    "addSection": "Ajout produit",
+    "catBAndCatCItem": "Categorie B et C",
     "listSection": "Liste des produit",
     "invoiceSection": "Commande interne",
     "riffle": "Arme longue",
@@ -97,7 +98,24 @@
     "reloadingGear": "Machine rechargement",
     "subReloadingGear": "Trieuse ....",
     "primer": "Amorce",
-    "subPrimer": "Amorces tout calibre"
+    "subPrimer": "Amorces tout calibre",
+    "invoiceAndUsers": "Facturation et Utilisateurs",
+    "orders": "Facture clients",
+    "sibOrders": "Les commandes des clients",
+    "invoices": "Commande magasin",
+    "subInvoice": "Commandes internes",
+    "users": "Utlisateurs",
+    "subUsers": "Utilisateur enregisrer",
+    "headType": "Type de douille",
+    "bodyType": "Type d'ogive",
+    "factoryList": "Liste des marques",
+    "subFactoryList": "Liste de toutes les marques disponible",
+    "color": "Couleur",
+    "colorAdd": "Ajouter une nouvelle couleur",
+    "material": "Materieux",
+    "materialAdd": "Ajouter nouveau materiau",
+    "caliberList": "Liste des calibres",
+    "subCaliberList": "La liste de calibres disponible"
   },
   "register": {
     "title": "Creer votre compte",
@@ -390,7 +408,8 @@
     "existingList": "Liste de types existants",
     "type": "Type de douille",
     "ref": "Reference",
-    "summary": "Gestion des douilles"
+    "summary": "Gestion des douilles",
+    "breadcrumbAdd": "Ajouter type de douille"
   },
   "headType": {
     "name": "Type d'ovige",
@@ -401,7 +420,8 @@
     },
     "existingList": "Liste de ogives existantes",
     "type": "Type d'oviges",
-    "summary": "Gestion des oviges"
+    "summary": "Gestion des oviges",
+    "breadcrumbAdd": "Ajouter type d'ovige"
   },
   "weaponType": {
     "form": {
@@ -413,7 +433,8 @@
     "summary": "Gestion des type d'arme",
     "mode": "Mode de fonctionnement",
     "name": "Type d'armes",
-    "placeholder": "Choisir un type"
+    "placeholder": "Choisir un type",
+    "breadcrumbAdd": "Ajouter type d'arme"
   },
   "optic": {
     "summary": "Gestion des optiques",
@@ -492,7 +513,9 @@
       "rds": "Reducteur de son",
       "magazine": "Chargeur",
       "accessory": "Accessoire"
-    }
+    },
+    "breadcrumbAdd": "Ajouter une marque",
+    "breadcrumbList": "Liste des marques"
   },
   "color": {
     "summary": "Gestion des couleurs",
@@ -504,7 +527,8 @@
     "form": {
       "success": "Ajout d'une nouvelle couleur",
       "addTitle": "Ajouter une nouvelle couleur"
-    }
+    },
+    "breadcrumbAdd": "Ajouter couleur"
   },
   "material": {
     "summary": "Gestion des matieres",
@@ -516,7 +540,8 @@
     "form": {
       "success": "Ajout d'une nouvelle matiere",
       "addTitle": "Ajouter une nouvelle matiere"
-    }
+    },
+    "breadcrumbAdd": "Ajouter maeteriau"
   },
   "caliber": {
     "name": "Calibre",
@@ -528,7 +553,8 @@
     },
     "existingList": "Liste des calibres existantes",
     "type": "Type d'armes",
-    "summary": "Gestion des type d'arme"
+    "summary": "Gestion des type d'arme",
+    "breadcrumbAdd": "Ajouter calibre"
   },
   "legalisationCategory": {
     "name": "Categorie",
@@ -578,7 +604,8 @@
     "existingList": "Liste des filletage existants",
     "type": "Type d'armes",
     "summary": "Gestion des type d'arme",
-    "size": "Taille du pas de vis"
+    "size": "Taille du pas de vis",
+    "breadcrumbAdd": "Ajouter nouveau pas de vis"
   },
   "triggerType": {
     "name": "Type de detente"
@@ -762,7 +789,8 @@
     "statusUpdatedFailed": "Erreur de status",
     "archived": "Commande archivée",
     "archivedFailed": "Erreur lors de l'archivation",
-    "notFound": "Aucune commande trouvée"
+    "notFound": "Aucune commande trouvée",
+    "breadcrumbList": "Listes des commandes magasin"
   },
   "orderStatus": {
     "VALIDATE_ORDER": "Commande a valider",
