@@ -7,8 +7,9 @@
         <input-group-text
           @value="(value) => (form.size = value)"
           :min-length="3"
-          placeholder="threadedSize.size"
-          label="threadedSize.size"
+          placeholder="size"
+          label="size"
+          :i18n-prefix="i18nPrefix"
           required
           input-id="size"
           :initial-value="form.size"
@@ -20,8 +21,8 @@
         <input-group-text
           @value="(value) => (form.reference = value)"
           :min-length="3"
-          placeholder="global.ref"
-          label="global.ref"
+          placeholder="ref"
+          label="ref"
           required
           input-id="reference"
           :initial-value="form.reference"
@@ -45,7 +46,7 @@ import InputGroupRequiredIcon from '@/components/__form/InputGroupRequiredIcon.v
 const { t } = useI18n()
 const store = useThreadedSizeStore()
 const { form, submit } = store.formBuilder()
-
+const i18nPrefix = store.getI18NPrefix
 //***********************Validateur*************************
 const isFormValid = computed(() => {
   return !!form.value.size

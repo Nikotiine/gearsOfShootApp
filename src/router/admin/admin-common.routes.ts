@@ -54,7 +54,7 @@ export const materialRoutes: RouteRecordRaw = {
 }
 
 export const headTypeRoutes: RouteRecordRaw = {
-  path: 'headType',
+  path: 'type-ovige',
   children: [
     {
       path: GlobalRouterEnum.PATH_NEW_REF,

@@ -26,11 +26,10 @@
           @value="(value) => (form.reference = value)"
           :min-length="3"
           placeholder="ref"
-          label="reference"
+          label="ref"
           required
-          input-id="reference"
+          input-id="ref"
           :initial-value="form.reference"
-          :i18n-prefix="i18nPrefix"
         />
       </InputGroup>
       <weapon-reload-mode-input-select
