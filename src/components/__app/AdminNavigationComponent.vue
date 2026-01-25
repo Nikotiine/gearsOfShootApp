@@ -583,9 +583,8 @@ const items = computed(() => {
                 label: 'users',
                 icon: 'pi pi-shield',
                 subtext: 'subUsers',
-                disabled: true,
                 command: () => {
-                  // push({ name: AdminRouterEnum.RIFFLE_LIST, params: { category: 'B' } })
+                  push({ name: AdminRouterEnum.USERS_LIST })
                 }
               }
               /* {

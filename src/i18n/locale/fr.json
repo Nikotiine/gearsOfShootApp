@@ -117,7 +117,7 @@
     "caliberList": "Liste des calibres",
     "subCaliberList": "La liste de calibres disponible"
   },
-  "register": {
+  "users": {
     "title": "Creer votre compte",
     "subtitle": "Renseigner les differents champs",
     "firstName": "Prénom",
@@ -129,7 +129,16 @@
     "zipCode": "Code postal",
     "success": "Merci de d'activer vote compte",
     "summary": "Creation de compte",
-    "create": "Creation"
+    "create": "Creation",
+    "role": "Role",
+    "costumeRoles": "Type de client",
+    "findByCostumerRoles": "Type de licence",
+    "findByRole": "Par role",
+    "findByLastName": "Par nom",
+    "findByEmail": "Par Email",
+    "costumerRoles": "Type de licence",
+    "list": "Liste des utilisateurs",
+    "breadcrumbList": "Liste utilisateurs"
   },
   "connexion": {
     "title": "Connexion à votre compte",
@@ -155,6 +164,7 @@
     "comment": "Commentaire",
     "status": "Statut",
     "price": "Prix",
+    "email": "Email",
     "discountedPrice": "Prix remisé",
     "yes": "Oui",
     "no": "Non",

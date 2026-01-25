@@ -7,6 +7,7 @@ import { invoiceRoutes } from '@/router/admin/admin-invoice.routes'
 import { opticCollarRoutes } from '@/router/admin/admin-optic-collar.route'
 import { adminAccessoryRoute } from '@/router/admin/admin-accessory.route'
 import { adminInternalRefRoute } from '@/router/admin/admin-internal-ref.route'
+import { userRoutes } from '@/router/admin/admin-users.routes'
 
 export const adminRoutes: RouteRecordRaw = {
   path: '/admin',
@@ -28,7 +29,8 @@ export const adminRoutes: RouteRecordRaw = {
         adminInternalRefRoute,
         opticCollarRoutes,
         adminAccessoryRoute,
-        invoiceRoutes
+        invoiceRoutes,
+        userRoutes
       ]
     }
   ]

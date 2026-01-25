@@ -6,7 +6,8 @@ import type {
   OpticCollarFilter,
   OpticFilter,
   RiffleFilter,
-  SoundNoiseFilter
+  SoundNoiseFilter,
+  UserFilter
 } from '@/api/Api'
 
 export function buildAmmunitionFilters(): AmmunitionFilter {
@@ -103,5 +104,16 @@ export function buildHandGunFilter(): HandGunFilter {
     isOpticReady: undefined,
     triggerTypeId: undefined,
     slideMaterialId: undefined
+  }
+}
+
+export function buildUsersFilter(): UserFilter {
+  return {
+    limit: 10,
+    offset: 0,
+    costumerRole: '',
+    role: 'USER',
+    email: '',
+    lastName: ''
   }
 }
