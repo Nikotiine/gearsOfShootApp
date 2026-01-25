@@ -10,7 +10,7 @@ import {
 } from '@/api/Api'
 import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
-import { getI18NPrefix } from '@/enum/I18NSuffix.enum'
+import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
 
 export const useWeaponTypeStore = defineStore('weapon-weapon-type-store', () => {
   // Appel API
@@ -22,7 +22,7 @@ export const useWeaponTypeStore = defineStore('weapon-weapon-type-store', () => 
 
   const modes = ref<WeaponReloadModeDto[]>([])
   // Private Attibute
-  const _I18N_PREFIX = 'weaponType'
+  const _I18N_PREFIX = I18nPrefix.WEAPON_TYPE
   const _GET_ALL_FN = 'getAllWeaponType'
   const _GET_BY_ID_FN = 'getWeaponTypeById'
 
@@ -105,6 +105,6 @@ export const useWeaponTypeStore = defineStore('weapon-weapon-type-store', () => 
     submitSuccess,
     prerequisiteList: queryPrerequisitesWeaponTypeQuery,
     modes$: modes,
-    getI18NPrefix: getI18NPrefix(_I18N_PREFIX)
+    getI18NPrefix: _I18N_PREFIX
   }
 })

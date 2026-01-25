@@ -1,36 +1,36 @@
 <template>
   <TabCardComponent :props="priceInfo" v-if="priceInfo" />
   <h3 class="text-center field-capitalise-underlined-semi-bold text-xl">
-    {{ t('priceHistory.histories') }}
+    {{ t(i18nPrefix + 'histories') }}
   </h3>
   <DataTable :value="data" columnResizeMode="fit" class="mt-4">
-    <template #empty> {{ t('priceHistory.notFound') }} </template>
-    <Column :header="t('priceHistory.createdAt')">
+    <template #empty> {{ t(i18nPrefix + 'notFound') }} </template>
+    <Column :header="t(i18nPrefix + 'createdAt')">
       <template #body="{ data }">
         {{ DateFormatter(data.createdAt, 'short') }}
       </template>
     </Column>
-    <Column :header="t('priceHistory.supplierPrice')">
+    <Column :header="t(i18nPrefix + 'supplierPrice')">
       <template #body="{ data }">
         {{ NumberFormatter(data.supplierPrice, 'euro') }}
       </template>
     </Column>
-    <Column :header="t('priceHistory.supplier')">
+    <Column :header="t(i18nPrefix + 'supplier')">
       <template #body="{ data }">
         {{ data.supplier.name }}
       </template>
     </Column>
-    <Column :header="t('priceHistory.recommendedSalePrice')">
+    <Column :header="t(i18nPrefix + 'recommendedSalePrice')">
       <template #body="{ data }">
         {{ NumberFormatter(data.recommendedSalePrice, 'euro') }}
       </template>
     </Column>
-    <Column :header="t('priceHistory.currentSalePrice')">
+    <Column :header="t(i18nPrefix + 'currentSalePrice')">
       <template #body="{ data }">
         {{ NumberFormatter(data.currentSalePrice, 'euro') }}
       </template>
     </Column>
-    <Column :header="t('priceHistory.discountedPrice')">
+    <Column :header="t(i18nPrefix + 'discountedPrice')">
       <template #body="{ data }">
         {{ NumberFormatter(data.discountedPrice, 'euro') }}
       </template>
@@ -61,24 +61,25 @@ const { price, id, type } = defineProps<{
   id: string
   type: PriceableObjectType
 }>()
+const i18nPrefix = store.getI18NPrefix
 const { data } = store.findAll(parseInt(id), type)
 const priceInfo = computed(() => {
   if (!price) return undefined
   return [
     {
-      label: t('priceHistory.supplierPrice'),
+      label: t(i18nPrefix + 'supplierPrice'),
       title: NumberFormatter(price.supplierPrice, 'euro')
     },
     {
-      label: t('priceHistory.recommendedSalePrice'),
+      label: t(i18nPrefix + 'recommendedSalePrice'),
       title: NumberFormatter(price.recommendedSalePrice, 'euro')
     },
     {
-      label: t('priceHistory.currentSalePrice'),
+      label: t(i18nPrefix + 'currentSalePrice'),
       title: NumberFormatter(price.currentSalePrice, 'euro')
     },
     {
-      label: t('priceHistory.supplier'),
+      label: t(i18nPrefix + 'supplier'),
       title: price.supplier.name
     }
   ]

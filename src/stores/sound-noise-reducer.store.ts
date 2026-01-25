@@ -17,9 +17,10 @@ import { getCaliberDto } from '@/shared/api-dto/get-caliber.dto'
 import { getFactoryDto } from '@/shared/api-dto/get-factory.dto'
 import { getThreadedSizeDto } from '@/shared/api-dto/get-threaded-size.dto'
 import { getPriceHistoryDto } from '@/shared/api-dto/get-price-history.dto'
-import { getI18NPrefix, I18NSuffix } from '@/enum/I18NSuffix.enum'
+import { I18NSuffix } from '@/enum/I18NSuffix.enum'
 import { ref } from 'vue'
 import { buildRdsFilter } from '@/shared/api-dto/query-filters.builder'
+import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
 
 export const useSoundReducerStore = defineStore('sound-noise-reducer-store', () => {
   // Appel API
@@ -29,7 +30,7 @@ export const useSoundReducerStore = defineStore('sound-noise-reducer-store', () 
   // Router
   const { push } = useRouter()
   // Private Attibute
-  const _I18N_PREFIX = 'soundNoiseReducer'
+  const _I18N_PREFIX = I18nPrefix.RDS
   const _GET_ALL_FN = 'getAllSoundNoiseReducer'
   const _GET_BY_ID_FN = 'getSoundNoiseReducerById'
   // Refs
@@ -76,10 +77,7 @@ export const useSoundReducerStore = defineStore('sound-noise-reducer-store', () 
       return await api.api.opticCollarControllerDelete(opticId)
     },
     onSuccess() {
-      successMessage(
-        getI18NPrefix(_I18N_PREFIX) + I18NSuffix.SUMMARY,
-        getI18NPrefix(_I18N_PREFIX) + I18NSuffix.DELETED
-      )
+      successMessage(_I18N_PREFIX + I18NSuffix.SUMMARY, _I18N_PREFIX + I18NSuffix.DELETED)
     }
   })
 
@@ -128,7 +126,7 @@ export const useSoundReducerStore = defineStore('sound-noise-reducer-store', () 
     getById: getByIdQuery,
     getAll: getAllQuery,
     formBuilder: useSoundNoiseForm,
-    getI18NPrefix: getI18NPrefix(_I18N_PREFIX),
+    getI18NPrefix: _I18N_PREFIX,
     delete: deleteFunction,
     queryFilters$: queryFilters
   }

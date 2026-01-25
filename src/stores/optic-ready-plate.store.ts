@@ -5,13 +5,13 @@ import { useMutation, useQuery } from '@tanstack/vue-query'
 import type { CreateOpticReadyPlateDto, OpticReadyPlateDto } from '@/api/Api'
 import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
-import { getI18NPrefix } from '@/enum/I18NSuffix.enum'
+import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
 
 export const useOpticReadyPlateStore = defineStore('optic-ready-plate-store', () => {
   const { api } = useApiStore()
   // Refs
   const mutationSuccess = ref(false)
-  const _I18N_PREFIX = 'opticReadyPlate'
+  const _I18N_PREFIX = I18nPrefix.OPTIC_READY_PLATE
   const _GET_ALL_FN = 'getAllOpticReadyPlate'
   const _GET_BY_ID_FN = 'getOpticReadyPlateById'
   // *******************Methodes***************
@@ -79,6 +79,6 @@ export const useOpticReadyPlateStore = defineStore('optic-ready-plate-store', ()
     formBuilder: useOpticReadyPlateForm,
     getAll: getAllQuery,
     mutationSuccess,
-    getI18NPrefix: getI18NPrefix(_I18N_PREFIX)
+    getI18NPrefix: _I18N_PREFIX
   }
 })

@@ -2,7 +2,8 @@ import type { RouteRecordRaw } from 'vue-router'
 import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 import { GlobalRouterEnum } from '@/enum/router/global-router.enum'
 import { useBreadcrumbStore } from '@/stores/breadcrumb.store'
-const prefix: string = 'soundNoiseReducer'
+import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
+const prefix: string = I18nPrefix.RDS
 const parentPath: string = 'reducteur-de-son'
 const routeFormName = AdminRouterEnum.RDS_NEW
 const routeListName = AdminRouterEnum.RDS_LIST

@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
 import { useQuery } from '@tanstack/vue-query'
-import { getI18NPrefix } from '@/enum/I18NSuffix.enum'
+import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
 
 export const useLegalisationCategoryStore = defineStore('legalisation-category-store', () => {
   const { api } = useApiStore()
   // Private Attibute
-  const _I18N_PREFIX = 'legalisationCategory'
+  const _I18N_PREFIX = I18nPrefix.LEGALISATION_CATEGORY
   const _GET_ALL_FN = 'getAllWeaponCategories'
   // const _GET_BY_ID_FN = 'getSoundNoiseReducerById'
   const getAllQuery = () =>
@@ -22,7 +22,7 @@ export const useLegalisationCategoryStore = defineStore('legalisation-category-s
 
   return {
     getAll: getAllQuery,
-    getI18NPrefix: getI18NPrefix(_I18N_PREFIX)
+    getI18NPrefix: _I18N_PREFIX
   }
 })
 export enum LegislationCategory {

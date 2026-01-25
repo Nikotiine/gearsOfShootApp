@@ -2,8 +2,9 @@ import type { RouteRecordRaw } from 'vue-router'
 import { GlobalRouterEnum } from '@/enum/router/global-router.enum'
 import { useBreadcrumbStore } from '@/stores/breadcrumb.store'
 import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
+import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
 const parentPath: string = 'lunette&point-rouge'
-const prefix: string = 'optic'
+const prefix: string = I18nPrefix.OPTIC
 const routeListName = AdminRouterEnum.OPTIC_LIST
 const routeDetailName = AdminRouterEnum.OPTIC_DETAIL
 const routeFormName = AdminRouterEnum.OPTIC_NEW

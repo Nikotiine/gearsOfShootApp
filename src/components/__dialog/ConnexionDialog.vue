@@ -3,11 +3,11 @@
     <Dialog
       v-model:visible="isVisible$"
       modal
-      :header="t('connexion.title')"
+      :header="t(i18nPrefix + 'title')"
       :style="{ width: '25rem' }"
     >
       <span class="text-surface-500 dark:text-surface-400 block mb-8">{{
-        t('connexion.subtitle')
+        t(i18nPrefix + 'subtitle')
       }}</span>
       <form @submit.prevent="submit">
         <div class="flex items-center gap-4 mb-4">
@@ -35,7 +35,7 @@
             severity="secondary"
             @click="store.toggleConnexionDialog"
           ></Button>
-          <Button type="submit" :label="t('connexion.send')" :disabled="!isFormValid"></Button>
+          <Button type="submit" :label="t(i18nPrefix + 'send')" :disabled="!isFormValid"></Button>
         </div>
       </form>
     </Dialog>
@@ -56,7 +56,7 @@ const store = useConnexionStore()
 const { isVisible$, form$ } = storeToRefs(store)
 const { t } = useI18n()
 const { test } = useEmailValidator()
-
+const i18nPrefix = store.getI18nPrefix
 const submit = () => {
   store.login.mutate(form$.value)
 }

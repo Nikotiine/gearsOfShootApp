@@ -27,7 +27,7 @@
             class="flex items-center cursor-pointer px-4 py-2 overflow-hidden relative font-semibold text-lg uppercase"
             style="border-radius: 2rem"
           >
-            <span>{{ t('topbar.' + item.label) }}</span>
+            <span>{{ t(i18nPrefix + item.label) }}</span>
           </a>
           <a v-else-if="!item.image" class="flex items-center p-4 cursor-pointer mb-2 gap-3">
             <span
@@ -36,8 +36,8 @@
               <i :class="[item.icon, 'text-lg']"></i>
             </span>
             <span class="inline-flex flex-col gap-1">
-              <span class="font-bold text-lg">{{ t('topbar.' + item.label) }}</span>
-              <span class="whitespace-nowrap">{{ t('topbar.' + item.subtext) }}</span>
+              <span class="font-bold text-lg">{{ t(i18nPrefix + item.label) }}</span>
+              <span class="whitespace-nowrap">{{ t(i18nPrefix + item.subtext) }}</span>
             </span>
           </a>
           <div v-else class="flex flex-col items-start gap-4 p-2">
@@ -79,11 +79,13 @@ import { useRouter } from 'vue-router'
 import InvoiceButtonComponent from '@/components/__invoice/InvoiceButtonComponent.vue'
 import { useUserStore } from '@/stores/user.store'
 import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
+import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
 
 const { push } = useRouter()
 const { t } = useI18n()
 const { isLogged } = useSecurityStore()
 const { isAdmin } = useUserStore()
+const i18nPrefix = I18nPrefix.TOPBAR
 
 const items = computed(() => {
   return [

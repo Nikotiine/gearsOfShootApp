@@ -2,9 +2,9 @@ import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
 
 import { useQuery } from '@tanstack/vue-query'
-import { getI18NPrefix } from '@/enum/I18NSuffix.enum'
 import { ref } from 'vue'
 import type { OpticTypeDto } from '@/api/Api'
+import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
 
 export const useOpticTypeStore = defineStore('optic-weapon-type-store', () => {
   // Appel API
@@ -13,7 +13,7 @@ export const useOpticTypeStore = defineStore('optic-weapon-type-store', () => {
   // Refs
   const opticTypes = ref<OpticTypeDto[]>([])
   // Private Attibute
-  const _I18N_PREFIX = 'opticType'
+  const _I18N_PREFIX = I18nPrefix.OPTIC_TYPE
   const _GET_ALL_FN = 'getAllOpticType'
   const getAllQuery = () =>
     useQuery({
@@ -28,7 +28,7 @@ export const useOpticTypeStore = defineStore('optic-weapon-type-store', () => {
   }
   return {
     getAll: getAllQuery,
-    getI18NPrefix: getI18NPrefix(_I18N_PREFIX),
+    getI18NPrefix: _I18N_PREFIX,
     opticTypes$: opticTypes
   }
 })

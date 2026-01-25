@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { getI18NPrefix, I18NSuffix } from '@/enum/I18NSuffix.enum'
+import { I18NSuffix } from '@/enum/I18NSuffix.enum'
 import type { CreateStockDto, StockDto } from '@/api/Api'
 import { useApiStore } from '@/stores/api'
 import { useMutation, useQuery } from '@tanstack/vue-query'
@@ -7,12 +7,13 @@ import { ref } from 'vue'
 import { useToastStore } from '@/stores/toast'
 import { MovementType } from '@/enum/movement.enum'
 import type { StockableObjectType } from '@/types/priceable-object.type'
+import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
 
 export const useStockStore = defineStore('stock-store', () => {
   const { api } = useApiStore()
   const { successMessage, errorMessage } = useToastStore()
   // Private Attibute
-  const _I18N_PREFIX = 'stock'
+  const _I18N_PREFIX = I18nPrefix.STOCK
   const _GET_BY_OBJECT_AND_OBJECTID_FN = 'getByObjectAndObjectId'
 
   const objectId = ref<number>(0)
@@ -44,16 +45,13 @@ export const useStockStore = defineStore('stock-store', () => {
             submitSuccess.value = true
             await _fetchByObjectAndObjectId(object.value, objectId.value.toString())
             successMessage(
-              getI18NPrefix(_I18N_PREFIX) + I18NSuffix.SUMMARY,
-              getI18NPrefix(_I18N_PREFIX) + I18NSuffix.UPDATED,
+              _I18N_PREFIX + I18NSuffix.SUMMARY,
+              _I18N_PREFIX + I18NSuffix.UPDATED,
               data.data.quantity.toString()
             )
           },
           onError(error: any) {
-            errorMessage(
-              getI18NPrefix(_I18N_PREFIX) + I18NSuffix.SUMMARY,
-              'error.' + error.response.data.message
-            )
+            errorMessage(_I18N_PREFIX + I18NSuffix.SUMMARY, 'error.' + error.response.data.message)
           }
         }
       )
@@ -91,7 +89,7 @@ export const useStockStore = defineStore('stock-store', () => {
     })
 
   return {
-    getI18NPrefix: getI18NPrefix(_I18N_PREFIX),
+    getI18NPrefix: _I18N_PREFIX,
     formBuilder: useStockForm,
     setObjectId: setObjectId,
     setObject: setObject,

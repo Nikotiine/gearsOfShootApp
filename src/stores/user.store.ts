@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 
-import { type FactoryFilter, type UserDto, UserDtoRoleEnum, type UserFilter } from '@/api/Api'
+import { type UserDto, UserDtoRoleEnum, type UserFilter } from '@/api/Api'
 import { useApiStore } from '@/stores/api'
 import { buildUsersFilter } from '@/shared/api-dto/query-filters.builder'
 import { useQuery } from '@tanstack/vue-query'

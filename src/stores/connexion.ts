@@ -8,6 +8,7 @@ import { useToastStore } from '@/stores/toast'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user.store'
 import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
+import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
 
 /**
  * 📦 Store de gestion de la connexion utilisateur (`useConnexionStore`).
@@ -130,6 +131,7 @@ export const useConnexionStore = defineStore('connexion', () => {
     isVisible$: isVisible,
     toggleConnexionDialog,
     login: loginMutation,
-    form$: form
+    form$: form,
+    getI18nPrefix: I18nPrefix.CONNEXION
   }
 })

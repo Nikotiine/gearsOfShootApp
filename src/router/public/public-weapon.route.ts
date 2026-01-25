@@ -3,10 +3,11 @@ import { WeaponEnum } from '@/enum/weapon.enum'
 import { PublicRouterEnum } from '@/enum/router/public-router.enum'
 import { useBreadcrumbStore } from '@/stores/breadcrumb.store'
 import { GlobalRouterEnum } from '@/enum/router/global-router.enum'
+import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
 
 const parentPath: string = 'armes'
-const prefixRiffle: string = 'riffle'
-const prefixHandgun: string = 'handgun'
+const prefixRiffle: string = I18nPrefix.RIFFLE
+const prefixHandgun: string = I18nPrefix.HANDGUN
 const routeRiffleListName = PublicRouterEnum.PUBLIC_RIFFLE_LIST
 const routeRiffleDetailName = PublicRouterEnum.PUBLIC_RIFFLE_DETAIL
 const routeHandgunListName = PublicRouterEnum.PUBLIC_HANDGUN_LIST

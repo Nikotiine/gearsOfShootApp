@@ -4,7 +4,7 @@ import { useToastStore } from '@/stores/toast'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import type { CreateHandGunDto, HandGunDto, HandGunFilter, UpdateHandGunDto } from '@/api/Api'
 import { ref } from 'vue'
-import { getI18NPrefix, I18NSuffix } from '@/enum/I18NSuffix.enum'
+import { I18NSuffix } from '@/enum/I18NSuffix.enum'
 import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
 import { getWeaponTypeDto } from '@/shared/api-dto/get-weapon-type.dto'
@@ -16,7 +16,7 @@ import { getPercussionTypeDto } from '@/shared/api-dto/get-percussion-type.dto'
 import { getTriggerTypeDto } from '@/shared/api-dto/get-trigger-type.dto'
 import { getPriceHistoryDto } from '@/shared/api-dto/get-price-history.dto'
 import { buildHandGunFilter } from '@/shared/api-dto/query-filters.builder'
-import type { GetAllHandgunResponse } from '@/types/api-response.type'
+import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
 
 export const useHandGunStore = defineStore('hand-gun-store', () => {
   // Appel API
@@ -29,7 +29,7 @@ export const useHandGunStore = defineStore('hand-gun-store', () => {
   const mutationSuccess = ref(false)
   const queryFilters = ref<HandGunFilter>({ ...buildHandGunFilter() })
   // Private Attibute
-  const _I18N_PREFIX = 'handgun'
+  const _I18N_PREFIX = I18nPrefix.HANDGUN
   const _GET_ALL_FN = 'getAllHandGun'
   const _GET_BY_ID_FN = 'getHandGunById'
   // *******************Methodes***************
@@ -89,10 +89,7 @@ export const useHandGunStore = defineStore('hand-gun-store', () => {
       return await api.api.handGunControllerDelete(opticId)
     },
     onSuccess() {
-      successMessage(
-        getI18NPrefix(_I18N_PREFIX) + I18NSuffix.SUMMARY,
-        getI18NPrefix(_I18N_PREFIX) + I18NSuffix.DELETED
-      )
+      successMessage(_I18N_PREFIX + I18NSuffix.SUMMARY, _I18N_PREFIX + I18NSuffix.DELETED)
     }
   })
 
@@ -155,7 +152,7 @@ export const useHandGunStore = defineStore('hand-gun-store', () => {
     delete: deleteFunction,
     getHandGunById: getByIdQuery,
     getAll: getAllHandgunQuery,
-    getI18NPrefix: getI18NPrefix(_I18N_PREFIX),
+    getI18NPrefix: _I18N_PREFIX,
     queryFilters$: queryFilters
   }
 })

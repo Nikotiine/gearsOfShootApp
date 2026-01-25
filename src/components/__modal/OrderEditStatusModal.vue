@@ -19,7 +19,7 @@
         aria-label="Filter"
         severity="danger"
         class="ml-2"
-        label="Oui"
+        :label="t('global.yes')"
         @click="disableSelectStatus$ = false"
       />
     </div>

@@ -3,7 +3,8 @@ import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 import { GlobalRouterEnum } from '@/enum/router/global-router.enum'
 import { WeaponEnum } from '@/enum/weapon.enum'
 import { useBreadcrumbStore } from '@/stores/breadcrumb.store'
-const prefix: string = 'handgun'
+import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
+const prefix: string = I18nPrefix.HANDGUN
 const parentPath: string = 'armes-de-poing'
 const routeFormName = AdminRouterEnum.HANDGUN_NEW
 const routeListName = AdminRouterEnum.HANDGUN_LIST

@@ -9,7 +9,6 @@ import type {
   OpticFilter,
   OpticTypeDto,
   OpticUnitDto,
-  PaginatedResponseDto,
   UpdateOpticDto
 } from '@/api/Api'
 import { ref } from 'vue'
@@ -22,8 +21,9 @@ import { getFocalPlaneDto } from '@/shared/api-dto/get-focal-plane.dto'
 import { getOpticUnitDto } from '@/shared/api-dto/get-optic-unit.dto'
 import { getOpticTypeDto } from '@/shared/api-dto/get-optic-type.dto'
 import { getPriceHistoryDto } from '@/shared/api-dto/get-price-history.dto'
-import { getI18NPrefix, I18NSuffix } from '@/enum/I18NSuffix.enum'
+import { I18NSuffix } from '@/enum/I18NSuffix.enum'
 import { buildOpticFilter } from '@/shared/api-dto/query-filters.builder'
+import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
 
 export const useOpticStore = defineStore('optic-store', () => {
   // Appel API
@@ -39,7 +39,7 @@ export const useOpticStore = defineStore('optic-store', () => {
   const focalPlanes = ref<FocalPlaneDto[]>([])
   const queryFilters = ref<OpticFilter>({ ...buildOpticFilter() })
   // Private Attibute
-  const _I18N_PREFIX = 'optic'
+  const _I18N_PREFIX = I18nPrefix.OPTIC
 
   const _GET_ALL_FN = 'getAllOptic'
   const _GET_BY_ID_FN = 'getOpticById'
@@ -82,10 +82,7 @@ export const useOpticStore = defineStore('optic-store', () => {
       return await api.api.opticControllerDelete(opticId)
     },
     onSuccess() {
-      successMessage(
-        getI18NPrefix(_I18N_PREFIX) + I18NSuffix.SUMMARY,
-        getI18NPrefix(_I18N_PREFIX) + I18NSuffix.DELETED
-      )
+      successMessage(_I18N_PREFIX + I18NSuffix.SUMMARY, _I18N_PREFIX + I18NSuffix.DELETED)
     }
   })
 
@@ -159,7 +156,7 @@ export const useOpticStore = defineStore('optic-store', () => {
     getAll: getAllOpticsQuery,
     getById: getByIdQuery,
     formBuilder: useOpticForm,
-    getI18NPrefix: getI18NPrefix(_I18N_PREFIX),
+    getI18NPrefix: _I18N_PREFIX,
     queryFilter$: queryFilters
   }
 })

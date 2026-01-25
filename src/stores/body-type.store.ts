@@ -3,9 +3,9 @@ import { useApiStore } from '@/stores/api'
 import { ref } from 'vue'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import type { AmmunitionBodyTypeDto, CreateAmmunitionBodyTypeDto } from '@/api/Api'
-import { getI18NPrefix } from '@/enum/I18NSuffix.enum'
 import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
+import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
 
 export const useBodyTypeStore = defineStore('body-weapon-type-store', () => {
   // Appel API
@@ -16,7 +16,7 @@ export const useBodyTypeStore = defineStore('body-weapon-type-store', () => {
   const submitSuccess = ref(false)
 
   // Private Attibute
-  const _I18N_PREFIX = 'bodyType'
+  const _I18N_PREFIX = I18nPrefix.BODY_TYPE
   const _GET_ALL_FN = 'getAllBodyType'
   const _GET_BY_ID_FN = 'getBodyTypeById'
   // *******************Methodes***************
@@ -83,6 +83,6 @@ export const useBodyTypeStore = defineStore('body-weapon-type-store', () => {
     formBuilder: useBodyTypeForm,
     getAll: getAllQuery,
     submitSuccess,
-    getI18NPrefix: getI18NPrefix(_I18N_PREFIX)
+    getI18NPrefix: _I18N_PREFIX
   }
 })

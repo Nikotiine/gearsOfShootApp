@@ -2,8 +2,9 @@ import type { RouteRecordRaw } from 'vue-router'
 import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 import { GlobalRouterEnum } from '@/enum/router/global-router.enum'
 import { useBreadcrumbStore } from '@/stores/breadcrumb.store'
+import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
 const parentPath: string = 'facture-commande'
-const prefix: string = 'invoice'
+const prefix: string = I18nPrefix.INVOICE
 const routeFormName = AdminRouterEnum.INVOICE_NEW
 const routeListName = AdminRouterEnum.INVOICE_LIST
 const routeDetailName = AdminRouterEnum.INVOICE_DETAIL

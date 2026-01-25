@@ -3,7 +3,8 @@ import { GlobalRouterEnum } from '@/enum/router/global-router.enum'
 import { WeaponEnum } from '@/enum/weapon.enum'
 import { useBreadcrumbStore } from '@/stores/breadcrumb.store'
 import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
-const prefix: string = 'riffle'
+import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
+const prefix: string = I18nPrefix.RIFFLE
 const parentPath: string = 'armes-longue'
 const routeFormName = AdminRouterEnum.RIFFLE_NEW
 const routeListName = AdminRouterEnum.RIFFLE_LIST

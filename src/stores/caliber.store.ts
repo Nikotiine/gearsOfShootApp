@@ -5,7 +5,7 @@ import { ref } from 'vue'
 import type { CaliberDto, CreateCaliberDto } from '@/api/Api'
 import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
-import { getI18NPrefix } from '@/enum/I18NSuffix.enum'
+import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
 
 export const useCaliberStore = defineStore('caliber-store', () => {
   // Appel API
@@ -13,7 +13,7 @@ export const useCaliberStore = defineStore('caliber-store', () => {
   // Refs
   const submitSuccess = ref(false)
   // Private Attibute
-  const _I18N_PREFIX = 'caliber'
+  const _I18N_PREFIX = I18nPrefix.CALIBER
   const _GET_ALL_FN = 'getAllCaliber'
   const _GET_BY_ID_FN = 'getCaliberById'
 
@@ -81,6 +81,6 @@ export const useCaliberStore = defineStore('caliber-store', () => {
     getAll: getAllCalibersQuery,
     formBuilder: useCaliberForm,
     submitSuccess,
-    getI18NPrefix: getI18NPrefix(_I18N_PREFIX)
+    getI18NPrefix: _I18N_PREFIX
   }
 })

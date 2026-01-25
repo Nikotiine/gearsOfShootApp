@@ -1,21 +1,17 @@
 import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
 import { useQuery } from '@tanstack/vue-query'
-import type { DiscountedItemDto, LegislationCategoryDto, NewItemsDto } from '@/api/Api'
-import { getI18NPrefix } from '@/enum/I18NSuffix.enum'
+import type { DiscountedItemDto, NewItemsDto } from '@/api/Api'
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import type { RoutableObjectType } from '@/types/routable.type'
-import { PublicRouterEnum } from '@/enum/router/public-router.enum'
-import { getRoutableMap } from '@/shared/utils/routable-object.utils'
 import { useRoutableObjectStore } from '@/stores/shared/routable-object.store'
+import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
 
 export const usePublicDashboardStore = defineStore('public-dashboard', () => {
   const { api } = useApiStore()
   const routableObjectStore = useRoutableObjectStore()
   const _GET_ALL_NEW_FN = 'getAllNewItems'
   const _GET_ALL_DISCOUNT_FN = 'getAllNDiscountItems'
-  const _I18N_PREFIX = 'publicDashboard'
+  const _I18N_PREFIX = I18nPrefix.PUBLIC_DASHBOARD
   const responsiveOptions = ref([
     {
       breakpoint: '1400px',
@@ -62,7 +58,7 @@ export const usePublicDashboardStore = defineStore('public-dashboard', () => {
   return {
     getAllNewItems: queryFindAllNewItems,
     getAllDiscountItems: queryFindAllDiscountItems,
-    getI18NPrefix: getI18NPrefix(_I18N_PREFIX),
+    getI18NPrefix: _I18N_PREFIX,
     responsiveOptions$: responsiveOptions,
     redirectToDetail: routableObjectStore.redirectToDetail
   }
