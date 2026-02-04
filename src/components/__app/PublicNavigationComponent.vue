@@ -50,7 +50,7 @@
           <div class="flex items-center gap-2">
             <SearchInput />
             <!--            <LanguageSplitButton />-->
-            <InvoiceButtonComponent v-if="isAdmin" />
+            <cart-button-component />
             <div v-if="!isLogged">
               <ConnexionSplitButton />
             </div>
@@ -81,6 +81,7 @@ import InvoiceButtonComponent from '@/components/__invoice/InvoiceButtonComponen
 import { useUserStore } from '@/stores/user.store'
 import { PublicRouterEnum } from '@/enum/router/public-router.enum'
 import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
+import CartButtonComponent from '@/components/cart/CartButtonComponent.vue'
 
 const { push } = useRouter()
 const { t } = useI18n()

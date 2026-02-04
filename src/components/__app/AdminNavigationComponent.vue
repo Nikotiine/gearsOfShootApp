@@ -50,7 +50,7 @@
           <div class="flex items-center gap-2">
             <!--     <SearchInput />
              <LanguageSplitButton />-->
-            <InvoiceButtonComponent v-if="isAdmin" />
+            <InvoiceButtonComponent />
             <div v-if="!isLogged">
               <ConnexionSplitButton />
             </div>

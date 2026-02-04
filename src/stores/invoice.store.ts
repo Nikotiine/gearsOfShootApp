@@ -21,6 +21,8 @@ import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
 
 export const useInvoiceStore = defineStore('invoice-store', () => {
+  // PRIVATE TYPE
+  type UpdateItemVars = { itemId: number; status: string }
   // Appel API
   const { api } = useApiStore()
   const queryClient = useQueryClient()
@@ -49,8 +51,6 @@ export const useInvoiceStore = defineStore('invoice-store', () => {
     return tempInvoice.value
   })
 
-  // PRIVATE TYPE
-  type UpdateItemVars = { itemId: number; status: string }
   // QUERY
   const getAllInvoicesQuery = () =>
     useQuery({
@@ -124,15 +124,9 @@ export const useInvoiceStore = defineStore('invoice-store', () => {
       return await api.api.invoiceItemControllerUpdateStatus(itemId, { status: status })
     },
     onSuccess: async () => {
-      /*  const prefix = getI18NPrefix(_I18N_PREFIX)
-  submitSuccess.value = true
-  await queryClient.invalidateQueries({ queryKey: [_GET_BY_ID_FN] })
-  toastStore.successMessage(prefix + I18NSuffix.SUMMARY, prefix + 'statusUpdated')*/
       await _successInvoiceStatusMutation(_GET_BY_ID_FN, 'statusUpdated')
     },
     onError: async () => {
-      /* const prefix = getI18NPrefix(_I18N_PREFIX)
-      toastStore.errorMessage(prefix + I18NSuffix.SUMMARY, prefix + 'statusUpdatedFailed')*/
       _failedInvoiceStatusMutation('statusUpdatedFailed')
     }
   })
@@ -144,15 +138,9 @@ export const useInvoiceStore = defineStore('invoice-store', () => {
       return await api.api.invoiceItemControllerUpdateStatuses(body)
     },
     onSuccess: async () => {
-      /*  const prefix = getI18NPrefix(_I18N_PREFIX)
-      submitSuccess.value = true
-      await queryClient.invalidateQueries({ queryKey: [_GET_BY_ID_FN] })
-      toastStore.successMessage(prefix + I18NSuffix.SUMMARY, prefix + 'statusUpdated')*/
       await _successInvoiceStatusMutation(_GET_BY_ID_FN, 'statusUpdated')
     },
     onError: () => {
-      /* const prefix = getI18NPrefix(_I18N_PREFIX)
-      toastStore.errorMessage(prefix + I18NSuffix.SUMMARY, prefix + 'statusUpdatedFailed')*/
       _failedInvoiceStatusMutation('statusUpdatedFailed')
     }
   })
@@ -163,15 +151,9 @@ export const useInvoiceStore = defineStore('invoice-store', () => {
       return await api.api.supplierInvoiceControllerArchive(id)
     },
     onSuccess: async () => {
-      /*      const prefix = getI18NPrefix(_I18N_PREFIX)
-      submitSuccess.value = true
-      await queryClient.invalidateQueries({ queryKey: [_GET_ALL_FN] })
-      toastStore.successMessage(prefix + I18NSuffix.SUMMARY, prefix + 'archived')*/
       await _successInvoiceStatusMutation(_GET_ALL_FN, 'archived')
     },
     onError: async () => {
-      /*  const prefix = getI18NPrefix(_I18N_PREFIX)
-      toastStore.errorMessage(prefix + I18NSuffix.SUMMARY, prefix + 'archivedFailed')*/
       _failedInvoiceStatusMutation('archivedFailed')
     }
   })

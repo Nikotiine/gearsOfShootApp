@@ -11,6 +11,7 @@ export enum I18nPrefix {
   HANDGUN = 'handgun.',
   HEADTYPE = 'headType.',
   INVOICE = 'invoice.',
+  ORDER = 'order.',
   LEGALISATION_CATEGORY = 'legalisationCategory.',
   MLOCK = 'mLockOption.',
   MATERIAL = 'material.',

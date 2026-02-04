@@ -1633,6 +1633,19 @@ export interface UpdateItemStatusDto {
   status: string
 }
 
+export interface CreateClientOrderItem {
+  objectId: number
+  quantity: number
+  object: string
+  price: number
+}
+
+export interface CreateClientOrderDTO {
+  shippingCost: number
+  vat: number
+  items: CreateClientOrderItem[]
+}
+
 export interface NewItemsDto {
   name: string
   price: number
@@ -4062,6 +4075,26 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       this.request<ItemInvoiceSupplier, any>({
         path: `/api/invoice-item/${id}`,
         method: 'PUT',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Ajout d une nouvelle commande client
+     *
+     * @tags clientOrder
+     * @name ClientOrderControllerCreate
+     * @summary Creation
+     * @request POST:/api/client-order
+     * @secure
+     */
+    clientOrderControllerCreate: (data: CreateClientOrderDTO, params: RequestParams = {}) =>
+      this.request<CreateClientOrderDTO, any>({
+        path: `/api/client-order`,
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
