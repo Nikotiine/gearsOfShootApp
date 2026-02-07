@@ -262,11 +262,7 @@ export interface UserDto {
   email: string
   firstName: string
   lastName: string
-  address: string
   phone: string
-  city: string
-  state: string
-  zipCode: string
   role: UserDtoRoleEnum
   costumerRoles: UserDtoCostumerRolesEnum
 }
@@ -1193,11 +1189,7 @@ export interface CreateUserDto {
   password: string
   firstName: string
   lastName: string
-  address: string
   phone: string
-  city: string
-  state: string
-  zipCode: string
   role: CreateUserDtoRoleEnum
 }
 
@@ -1633,6 +1625,23 @@ export interface UpdateItemStatusDto {
   status: string
 }
 
+export interface ClientOrderFilter {
+  /**
+   * Nombre maximum de résultats à renvoyer
+   * @example 10
+   */
+  limit?: number
+  /**
+   * Décalage pour la pagination
+   * @example 0
+   */
+  offset?: number
+  /** @example "Reference interne de l objet" */
+  reference?: string
+  /** Le nom du rds */
+  invoiceStatus?: string
+}
+
 export interface CreateClientOrderItem {
   objectId: number
   quantity: number
@@ -1640,7 +1649,14 @@ export interface CreateClientOrderItem {
   price: number
 }
 
-export interface CreateClientOrderDTO {
+export interface ClientOrderDto {
+  shippingCost: number
+  vat: number
+  items: CreateClientOrderItem[]
+  id: number
+}
+
+export interface CreateClientOrderDto {
   shippingCost: number
   vat: number
   items: CreateClientOrderItem[]
@@ -4083,6 +4099,52 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
+     * @description Retourne la liste de tous les reducteurs de son disponible
+     *
+     * @tags clientOrder
+     * @name ClientOrderControllerFindAll
+     * @summary Liste complète
+     * @request GET:/api/client-order/all
+     */
+    clientOrderControllerFindAll: (
+      query?: {
+        /** Filtre de recherche pour reponse paginé */
+        filters?: ClientOrderFilter
+      },
+      params: RequestParams = {}
+    ) =>
+      this.request<
+        PaginatedResponseDto & {
+          data?: ClientOrderDto[]
+        },
+        any
+      >({
+        path: `/api/client-order/all`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne le detail de la commande client
+     *
+     * @tags clientOrder
+     * @name ClientOrderControllerFindById
+     * @summary Filtré par id
+     * @request GET:/api/client-order/by/id/{id}
+     * @secure
+     */
+    clientOrderControllerFindById: (id: number, params: RequestParams = {}) =>
+      this.request<ClientOrderDto, any>({
+        path: `/api/client-order/by/id/${id}`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params
+      }),
+
+    /**
      * @description Ajout d une nouvelle commande client
      *
      * @tags clientOrder
@@ -4091,10 +4153,30 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @request POST:/api/client-order
      * @secure
      */
-    clientOrderControllerCreate: (data: CreateClientOrderDTO, params: RequestParams = {}) =>
-      this.request<CreateClientOrderDTO, any>({
+    clientOrderControllerCreate: (data: CreateClientOrderDto, params: RequestParams = {}) =>
+      this.request<ClientOrderDto, any>({
         path: `/api/client-order`,
         method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Edition de la commande
+     *
+     * @tags clientOrder
+     * @name ClientOrderControllerEdit
+     * @summary Edition
+     * @request PUT:/api/client-order/{id}
+     * @secure
+     */
+    clientOrderControllerEdit: (id: number, data: ClientOrderDto, params: RequestParams = {}) =>
+      this.request<ClientOrderDto, any>({
+        path: `/api/client-order/${id}`,
+        method: 'PUT',
         body: data,
         secure: true,
         type: ContentType.Json,

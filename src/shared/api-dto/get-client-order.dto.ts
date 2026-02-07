@@ -1,6 +1,6 @@
-import type { CreateClientOrderDTO } from '@/api/Api'
+import type { CreateClientOrderDto } from '@/api/Api'
 
-export const getClientOrderDto = (): CreateClientOrderDTO => {
+export const getClientOrderDto = (): CreateClientOrderDto => {
   return {
     items: [],
     vat: 20,

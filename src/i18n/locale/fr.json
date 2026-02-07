@@ -832,5 +832,8 @@
     "changeDisplay": "Modifier affichage",
     "addToCart": "Ajouter au panier",
     "notItemToShow": "Aucun element à afficher"
+  },
+  "order": {
+    "cart": "panier"
   }
 }

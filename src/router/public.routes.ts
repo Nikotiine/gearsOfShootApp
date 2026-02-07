@@ -5,6 +5,7 @@ import { publicAmmunitionRoute } from '@/router/public/public-ammunition.route'
 import { publicRdsRoute } from '@/router/public/public-rds.route'
 import { publicMagazineRoute } from '@/router/public/public-magazine.route'
 import { publicOpticCollarRoute } from '@/router/public/public-optic-collar.route'
+import { publicCartRoute } from '@/router/public/public-cart.route'
 
 export const publicRoutes: RouteRecordRaw = {
   path: '/tir-sportif',
@@ -16,6 +17,7 @@ export const publicRoutes: RouteRecordRaw = {
     publicAmmunitionRoute,
     publicRdsRoute,
     publicMagazineRoute,
-    publicOpticCollarRoute
+    publicOpticCollarRoute,
+    publicCartRoute
   ]
 }

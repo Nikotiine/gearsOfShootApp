@@ -1,5 +1,6 @@
 import type {
   AmmunitionFilter,
+  ClientOrderFilter,
   FactoryFilter,
   HandGunFilter,
   MagazineFilter,
@@ -115,5 +116,13 @@ export function buildUsersFilter(): UserFilter {
     role: 'USER',
     email: '',
     lastName: ''
+  }
+}
+
+export function buildOrderFilter(): ClientOrderFilter {
+  return {
+    limit: 10,
+    offset: 0,
+    invoiceStatus: 'IN_ORDER'
   }
 }

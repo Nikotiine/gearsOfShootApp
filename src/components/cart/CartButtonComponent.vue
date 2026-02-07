@@ -10,16 +10,18 @@ import OverlayBadge from 'primevue/overlaybadge'
 import { useCartStore } from '@/stores/shared/cart.store'
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
-import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
+import { useRouter } from 'vue-router'
+import { PublicRouterEnum } from '@/enum/router/public-router.enum'
+
 const store = useCartStore()
+const router = useRouter()
 const { cart$ } = storeToRefs(store)
 const totalItemInOrder = computed(() => {
   return cart$.value?.items.length ?? 0
 })
 const goToCart = () => {
   if (totalItemInOrder.value < 1) return
-  console.log('gotototo')
-  // router.push({ name: AdminRouterEnum.INVOICE_NEW })
+  router.push({ name: PublicRouterEnum.CART })
 }
 </script>
 
