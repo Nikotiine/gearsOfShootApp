@@ -1,1 +1,1 @@
-export type FormStatus = 'save' | 'edit' | 'show'
+export type FormStatus = 'save' | 'edit' | 'show' | 'next'

@@ -4,10 +4,11 @@ import type {
   ClientOrderDto,
   ClientOrderFilter,
   CreateClientOrderDto,
-  CreateClientOrderItem
+  CreateClientOrderItem,
+  RouteToDto
 } from '@/api/Api'
 import { I18NSuffix } from '@/enum/I18NSuffix.enum'
-import { useToastStore } from '@/stores/toast'
+import { useToastStore } from '@/stores/shared/toast'
 import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
 import type { DataViewProps } from '@/views/shared/DataViewWrapperView.vue'
 import { getClientOrderDto } from '@/shared/api-dto/get-client-order.dto'
@@ -23,6 +24,7 @@ export const useCartStore = defineStore('cart-store', () => {
   const _GET_ALL_FN = 'getAllOrders'
   const { api } = useApiStore()
   const _I18N_PREFIX = I18nPrefix.ORDER
+
   const toastStore = useToastStore()
   const _cart$ = ref<CreateClientOrderDto>({ ...getClientOrderDto() })
   const queryFilters = ref<ClientOrderFilter>({ ...buildOrderFilter() })
@@ -47,10 +49,27 @@ export const useCartStore = defineStore('cart-store', () => {
         )
         return
       }
+      toastStore.infoMessage(_I18N_PREFIX + I18NSuffix.SUMMARY, _I18N_PREFIX + 'addItem')
       const formatedItem = mapItemDataViewPropsToOrderItem(item)
       _cart$.value.items.push(formatedItem)
       sessionStorage.setItem(_STORAGE_KEY, JSON.stringify(_cart$.value))
     }
+  }
+
+  function updateSavedCart(cart: CreateClientOrderDto) {
+    _cart$.value = cart
+    sessionStorage.setItem(_STORAGE_KEY, JSON.stringify(_cart$.value))
+  }
+
+  function removeFromCart(item: CreateClientOrderItem) {
+    const index = _cart$.value.items.findIndex(
+      (inItem) => inItem.objectId === item.objectId && inItem.object === item.object
+    )
+    if (index > -1) {
+      _cart$.value.items.splice(index, 1)
+      toastStore.infoMessage(_I18N_PREFIX + I18NSuffix.SUMMARY, _I18N_PREFIX + 'removeItem')
+    }
+    sessionStorage.setItem(_STORAGE_KEY, JSON.stringify(_cart$.value))
   }
 
   function mapItemDataViewPropsToOrderItem(item: DataViewProps): CreateClientOrderItem {
@@ -58,7 +77,13 @@ export const useCartStore = defineStore('cart-store', () => {
       object: item.object,
       price: item.price,
       objectId: item.id,
-      quantity: 1
+      quantity: 1,
+      to: item.to as unknown as RouteToDto,
+      name: `${item.name} `,
+      factory: item.factory,
+      comment: `${item.subTitle}`,
+      category: item.category ?? null,
+      totalPrice: 0
     }
   }
   const getByIdQuery = (id?: string) =>
@@ -132,6 +157,8 @@ export const useCartStore = defineStore('cart-store', () => {
     addToCart,
     cart$,
     formBuilder: useOrderForm,
-    getI18NPrefix: _I18N_PREFIX
+    getI18NPrefix: _I18N_PREFIX,
+    removeFromCart,
+    updateSavedCart
   }
 })

@@ -171,6 +171,9 @@
     "cancel": "Annuler",
     "french": "Francais",
     "english": "Anglais",
+    "pleaseConnect": "Pour continuer veillez vus connecter",
+    "next": "Suivant",
+    "noCategory": "Vente libre",
     "name": "Nom",
     "ref": "Reference",
     "save": "Sauvegarder",
@@ -729,7 +732,8 @@
     "bodyType": "Ajouter un type de douille",
     "isCatCItem": "Article sous a declaration",
     "isCatBItem": "Article sous a autorisation",
-    "isCatDItem": "Vente uniquement aux majeurs"
+    "isCatDItem": "Vente uniquement aux majeurs",
+    "isNoCategory": "Vente libre"
   },
   "inputText": {
     "label": "Saisir un texte"
@@ -809,11 +813,16 @@
     "CANCELED": "Annulée",
     "RECEIVED": "Recue",
     "AMMUNITION": "Munition",
+    "ammunition": "Munition",
     "ARCHIVE": "Archivée",
     "OPTIC": "Optique",
+    "optic": "Optique",
     "HANDGUN": "Arme de poing",
+    "handgun": "Arme de poing",
     "RIFFLE": "Arme longue",
+    "riffle": "Arme longue",
     "OPTIC_COLLAR": "Collier",
+    "opticCollar": "Collier",
     "name": "Statut de la commande",
     "warning": "Attention, cette commande est en deja marque comme recue, voulez vous continuer ?",
     "placeholder": "Choisir un status"
@@ -834,6 +843,14 @@
     "notItemToShow": "Aucun element à afficher"
   },
   "order": {
-    "cart": "panier"
+    "cart": "Mon panier",
+    "emptyCart": "Votre panier est vide",
+    "summary": "Panier",
+    "removeItem": "Article retirer du panier",
+    "addItem": "Article ajouter au panier",
+    "object": "Rayon",
+    "comment": "Details",
+    "totalPriceItem": "Prix total",
+    "save": "Mon panier en cours"
   }
 }

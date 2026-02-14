@@ -120,18 +120,20 @@
       </Column>
       <Column header="Actions" :showFilterMenu="false" style="min-width: 12rem">
         <template #body="{ data }">
-          <action-menu-component
-            @on-click-action="onClickAction"
-            type="handgun"
-            :reference="data.reference"
-            :id="data.id"
-            v-if="$route.meta.admin"
-          />
-          <public-action-menu-component
-            :id="data.id"
-            @on-click-action="onPublicClickAction"
-            v-else
-          />
+          <div class="flex justify-around">
+            <action-menu-component
+              @on-click-action="onClickAction"
+              type="handgun"
+              :reference="data.reference"
+              :id="data.id"
+              v-if="$route.meta.admin"
+            />
+            <InvoiceAddItemComponent
+              object="RIFFLE"
+              :object-id="data.id"
+              :description="`Marque:${data.factory.name} Model:${data.name} Calibre:${data.caliber.name}`"
+            />
+          </div>
         </template>
       </Column>
     </DataTable>
@@ -164,6 +166,7 @@ import { PublicRouterEnum } from '@/enum/router/public-router.enum'
 import PublicActionMenuComponent, {
   type PublicActionMenuCEmit
 } from '@/components/__table/PublicActionMenuComponent.vue'
+import InvoiceAddItemComponent from '@/components/__invoice/InvoiceAddItemComponent.vue'
 
 const { category } = defineProps<{
   category: string
@@ -218,19 +221,6 @@ const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
       store.delete(id)
       refetch()
       break
-  }
-}
-
-const onPublicClickAction = (event: PublicActionMenuCEmit, id: number) => {
-  switch (event) {
-    case 'view':
-      router.push({
-        name: PublicRouterEnum.PUBLIC_RIFFLE_DETAIL,
-        params: { id: id, category: category }
-      })
-      break
-    case 'add':
-      console.log('add')
   }
 }
 

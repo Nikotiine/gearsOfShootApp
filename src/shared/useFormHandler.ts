@@ -1,6 +1,6 @@
 import { ref, watch } from 'vue'
 import { type UseMutationReturnType, useQuery, useQueryClient } from '@tanstack/vue-query'
-import { useToastStore } from '@/stores/toast'
+import { useToastStore } from '@/stores/shared/toast'
 import { I18NSuffix } from '@/enum/I18NSuffix.enum'
 
 export function useFormHandler<TForm extends object, TMutationResponse, TError = Error>(

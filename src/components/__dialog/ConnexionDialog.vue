@@ -51,7 +51,7 @@ import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
 import { useEmailValidator } from '@/stores/email.validator'
 import { storeToRefs } from 'pinia'
-
+//TODO: Mettre u btn pour register depuis ce composant
 const store = useConnexionStore()
 const { isVisible$, form$ } = storeToRefs(store)
 const { t } = useI18n()

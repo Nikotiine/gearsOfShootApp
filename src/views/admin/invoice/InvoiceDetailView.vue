@@ -1,5 +1,5 @@
 <template>
-  <div v-if="invoice && isAdminRoute" class="p-6 bg-surface-900 dark:bg-gray-800 shadow-md">
+  <div v-if="invoice && $route.meta.admin" class="p-6 bg-surface-900 dark:bg-gray-800 shadow-md">
     <div class="grid grid-cols-2 gap-4 mb-4">
       <!-- Informations de commande -->
       <div>
@@ -145,9 +145,8 @@ import { GetClassTextColorByOrderStatus } from '@/shared/utils/colors.utils'
 const store = useInvoiceStore()
 const i18nPrefix = store.getI18NPrefix
 const { t } = useI18n()
-const { id, isAdminRoute = false } = defineProps<{
+const { id } = defineProps<{
   id: string
-  isAdminRoute?: boolean
 }>()
 const { data: invoice } = store.getById(id)
 const selectedItems = ref<ItemInvoice[]>([])

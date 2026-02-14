@@ -15,7 +15,7 @@ import type {
 import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
 import { getInvoiceDto } from '@/shared/api-dto/get-invoice.dto'
-import { useToastStore } from '@/stores/toast'
+import { useToastStore } from '@/stores/shared/toast'
 import { useRouter } from 'vue-router'
 import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 import { I18nPrefix } from '@/i18n/i18n-prefix.enum'

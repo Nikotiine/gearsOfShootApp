@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
-import { useToastStore } from '@/stores/toast'
+import { useToastStore } from '@/stores/shared/toast'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import type {
   CreateOpticDto,

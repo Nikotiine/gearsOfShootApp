@@ -10,6 +10,7 @@ import { computed, onBeforeMount, watch } from 'vue'
 import type { RiffleDto } from '@/api/Api'
 import DataViewWrapperView, { type DataViewProps } from '@/views/shared/DataViewWrapperView.vue'
 import TableTitleComponent from '@/components/__table/TableTitleComponent.vue'
+import { PublicRouterEnum } from '@/enum/router/public-router.enum'
 
 const { category } = defineProps<{
   category: string
@@ -31,11 +32,19 @@ const data = computed<DataViewProps[]>(() => {
       name: riffle.name,
       factory: riffle.factory,
       category: riffle.category,
-      stock: riffle.inStock,
+      stock: riffle.inStock ?? 0,
       description: riffle.description ?? '',
       subTitle: `${riffle.type.name} - Calibre ${riffle.caliber.name} `,
       price: riffle.priceHistory.currentSalePrice,
-      discountedPrice: riffle.priceHistory.discountedPrice
+      discountedPrice: riffle.priceHistory.discountedPrice,
+      object: 'riffle',
+      to: {
+        name: PublicRouterEnum.PUBLIC_RIFFLE_DETAIL,
+        params: {
+          id: riffle.id,
+          category: riffle.category.name
+        }
+      }
     }
   })
 })

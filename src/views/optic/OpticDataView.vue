@@ -25,7 +25,7 @@ const data = computed<DataViewProps[]>(() => {
       stock: optic.inStock ?? 0,
       price: optic.priceHistory.currentSalePrice ?? 0,
       factory: optic.factory,
-      subTitle: `Type: ${optic.opticType.name}`,
+      subTitle: `Type: ${optic.opticType.name}| ${optic.minZoom}-${optic.maxZoom}x${optic.lensDiameter}`,
       description: optic.description ?? '',
       discountedPrice: optic.priceHistory.discountedPrice,
       category: undefined,

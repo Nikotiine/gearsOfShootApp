@@ -1642,11 +1642,27 @@ export interface ClientOrderFilter {
   invoiceStatus?: string
 }
 
+export interface RouteParamsDto {
+  id: number
+}
+
+export interface RouteToDto {
+  name: string
+  params: RouteParamsDto
+}
+
 export interface CreateClientOrderItem {
   objectId: number
   quantity: number
   object: string
   price: number
+  to: RouteToDto
+  name: string
+  factory: FactoryDto
+  comment: string
+  totalPrice: number
+  /** @example "C" */
+  category: LegislationCategoryDto | null
 }
 
 export interface ClientOrderDto {

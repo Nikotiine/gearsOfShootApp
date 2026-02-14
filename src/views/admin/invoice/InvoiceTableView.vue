@@ -212,7 +212,7 @@ const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
       router.push({ name: AdminRouterEnum.INVOICE_DETAIL, params: { id: id } })
       break
     case 'edit':
-      router.push({ name: AdminRouterEnum.AMMUNITION_EDIT, params: { id: id } })
+      router.push({ name: AdminRouterEnum.INVOICE_EDIT, params: { id: id } })
       break
     case 'archive':
       store.archive.mutate(id)
