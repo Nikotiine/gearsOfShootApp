@@ -13,19 +13,19 @@
   </div>
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 p-4" v-else>
     <p>
-      {{ t('stock.quantity') }}
+      {{ t(i18nPrefix + 'quantity') }}
       <span :class="GetClassTextColorByQuantity(currentStock)">{{
         NumberFormatter(currentStock, 'pcs')
       }}</span>
     </p>
     <p>
-      {{ t('stock.onOrder') }}
+      {{ t(i18nPrefix + 'onOrder') }}
       <span>On mettra en commande pour la gestion du stock</span>
     </p>
     <div class="flex flex-col">
       <Button
         type="button"
-        :label="t('stock.edit')"
+        :label="t(i18nPrefix + 'edit')"
         class="mx-auto p-0"
         text
         @click="showDrawer('stock')"
@@ -33,7 +33,7 @@
       ></Button>
       <Button
         type="button"
-        :label="t('stock.showHistory')"
+        :label="t(i18nPrefix + 'showHistory')"
         class="mx-auto p-0"
         text
         @click="showDrawer('stockHistory', 'top')"
@@ -60,16 +60,17 @@ import DrawerView, {
 } from '@/views/shared/DrawerView.vue'
 import { useFormStore } from '@/stores/form.store'
 import type { StockableObjectType } from '@/types/priceable-object.type'
-import { useStockStore } from '@/stores/stock.store'
+
 import { storeToRefs } from 'pinia'
 import { GetClassTextColorByQuantity } from '@/shared/utils/colors.utils'
+import { useStockStore } from '@/stores/stock.store'
 
 const { t } = useI18n()
 const store = useStockStore()
 const formStore = useFormStore()
 const formStatus: FormStatus = formStore.getFormStatus()
 const emit = defineEmits(['update:inStock'])
-const i18nPrefix = 'stock.'
+const i18nPrefix = store.getI18NPrefix
 const { inStock, objectId, object } = defineProps<{
   inStock: number
   objectId?: string

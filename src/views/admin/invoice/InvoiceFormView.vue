@@ -95,7 +95,7 @@
       />
     </div>
     <div class="text-center">
-      <save-button :disabled="!isFormValid" />
+      <save-button :disabled="!isFormValid" status="save" />
     </div>
   </form>
 </template>

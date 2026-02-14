@@ -1,12 +1,13 @@
 import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 import { useBreadcrumbStore } from '@/stores/breadcrumb.store'
 import { GlobalRouterEnum } from '@/enum/router/global-router.enum'
+import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
 const parentPath = 'montage-optique'
 const routeFormName = AdminRouterEnum.OPTIC_COLLAR_NEW
 const routeEditName = AdminRouterEnum.OPTIC_COLLAR_EDIT
 const routeListName = AdminRouterEnum.OPTIC_COLLAR_LIST
 const routeDetailName = AdminRouterEnum.OPTIC_COLLAR_DETAIL
-const prefix = 'opticCollar'
+const prefix = I18nPrefix.OPTIC_COLLAR
 export const opticCollarRoutes = {
   path: parentPath,
   children: [

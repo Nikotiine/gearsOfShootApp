@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
-import { useToastStore } from '@/stores/toast'
+import { useToastStore } from '@/stores/shared/toast'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import type {
   CreateWeaponMagazineDto,
@@ -17,8 +17,9 @@ import { getCaliberDto } from '@/shared/api-dto/get-caliber.dto'
 import { getMaterialDto } from '@/shared/api-dto/get-material.dto'
 import { getFactoryDto } from '@/shared/api-dto/get-factory.dto'
 import { getPriceHistoryDto } from '@/shared/api-dto/get-price-history.dto'
-import { getI18NPrefix, I18NSuffix } from '@/enum/I18NSuffix.enum'
+import { I18NSuffix } from '@/enum/I18NSuffix.enum'
 import { buildMagazineFilter } from '@/shared/api-dto/query-filters.builder'
+import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
 
 export const useWeaponMagazineStore = defineStore('weapon-magazine-store', () => {
   // Appel API
@@ -32,7 +33,7 @@ export const useWeaponMagazineStore = defineStore('weapon-magazine-store', () =>
   const submitSuccess = ref(false)
   const queryFilters = ref<MagazineFilter>({ ...buildMagazineFilter() })
   // Private Attibute
-  const _I18N_PREFIX = 'magazine'
+  const _I18N_PREFIX = I18nPrefix.WEAPON_MAGAZINE
   const _GET_ALL_BY_CATEGORY_FN = 'getAllMagazineByCategory'
   const _GET_ALL_BY_FACTORY_FN = 'getAllMagazineByFactory'
   const _GET_ALL_FN = 'getAllMagazine'
@@ -145,10 +146,7 @@ export const useWeaponMagazineStore = defineStore('weapon-magazine-store', () =>
       return await api.api.magazineControllerDelete(id)
     },
     onSuccess() {
-      successMessage(
-        getI18NPrefix(_I18N_PREFIX) + I18NSuffix.SUMMARY,
-        getI18NPrefix(_I18N_PREFIX) + I18NSuffix.DELETED
-      )
+      successMessage(_I18N_PREFIX + I18NSuffix.SUMMARY, _I18N_PREFIX + I18NSuffix.DELETED)
     }
   })
   const deleteFunction = (id: number) => {
@@ -165,7 +163,7 @@ export const useWeaponMagazineStore = defineStore('weapon-magazine-store', () =>
     delete: deleteFunction,
     builder: useWeaponForm,
     compatibleWeapons$: weapons,
-    getI18NPrefix: getI18NPrefix(_I18N_PREFIX),
+    getI18NPrefix: _I18N_PREFIX,
     submitSuccess,
     queryFilters$: queryFilters
   }

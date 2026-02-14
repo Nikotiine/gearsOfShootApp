@@ -2,9 +2,10 @@ import type { RouteRecordRaw } from 'vue-router'
 import { GlobalRouterEnum } from '@/enum/router/global-router.enum'
 import { PublicRouterEnum } from '@/enum/router/public-router.enum'
 import { useBreadcrumbStore } from '@/stores/breadcrumb.store'
+import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
 
 const parentPath: string = 'optiques'
-const prefix: string = 'optic'
+const prefix: string = I18nPrefix.OPTIC
 const routeListName = PublicRouterEnum.PUBLIC_OPTIC_LIST
 const routeDetailName = PublicRouterEnum.PUBLIC_OPTIC_DETAIL
 export const publicOpticRoute: RouteRecordRaw = {

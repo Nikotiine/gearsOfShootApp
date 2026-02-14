@@ -4,42 +4,42 @@
     modal
     maximizable
     @hide="onHide"
-    :header="t('priceHistory.priceHistoryModalHeader')"
+    :header="t(i18nPrefix + 'priceHistoryModalHeader')"
     :style="{ width: '50rem' }"
     :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
   >
     <div class="card">
       <DataTable :value="data">
-        <template #empty> {{ t('priceHistory.notFound') }} </template>
-        <Column :header="t('priceHistory.createdAt')">
+        <template #empty> {{ t(i18nPrefix + 'notFound') }} </template>
+        <Column :header="t(i18nPrefix + 'createdAt')">
           <template #body="{ data }">
             {{ DateFormatter(data.createdAt, 'short') }}
           </template>
         </Column>
-        <Column :header="t('priceHistory.supplierPrice')">
+        <Column :header="t(i18nPrefix + 'supplierPrice')">
           <template #body="{ data }">
             {{ NumberFormatter(data.supplierPrice, 'euro') }}
           </template>
         </Column>
-        <Column :header="t('priceHistory.recommendedSalePrice')">
+        <Column :header="t(i18nPrefix + 'recommendedSalePrice')">
           <template #body="{ data }">
             {{ NumberFormatter(data.recommendedSalePrice, 'euro') }}
           </template>
         </Column>
-        <Column :header="t('priceHistory.currentSalePrice')">
+        <Column :header="t(i18nPrefix + 'currentSalePrice')">
           <template #body="{ data }">
             {{ NumberFormatter(data.currentSalePrice, 'euro') }}
           </template>
         </Column>
-        <Column :header="t('priceHistory.currentSalePrice')">
+        <Column :header="t(i18nPrefix + 'currentSalePrice')">
           <template #body="{ data }">
             {{ data.supplier.name }}
           </template>
         </Column>
-        <Column :header="t('priceHistory.currentSalePrice')">
+        <Column :header="t(i18nPrefix + 'currentSalePrice')">
           <template #body="{ data }">
             <Button
-              :label="t('priceHistory.addToInvoice')"
+              :label="t(i18nPrefix + 'addToInvoice')"
               severity="info"
               @click="onClickAction(data)"
               text
@@ -69,6 +69,7 @@ export interface PriceHistoryModalExposed {
 }
 const { t } = useI18n()
 const store = usePriceHistoryStore()
+const i18nPrefix = store.getI18NPrefix
 
 const emit = defineEmits<{
   (e: 'onSelectItem', data: CreateItemInvoiceSupplierDto): void

@@ -1,18 +1,17 @@
 import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
-import { useToastStore } from '@/stores/toast'
+import { useToastStore } from '@/stores/shared/toast'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import type {
   AmmunitionDto,
   AmmunitionFilter,
   CreateAmmunitionDto,
-  PaginatedResponseDto,
   UpdateAmmunitionDto
 } from '@/api/Api'
 import { ref } from 'vue'
 import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
-import { getI18NPrefix, I18NSuffix } from '@/enum/I18NSuffix.enum'
+import { I18NSuffix } from '@/enum/I18NSuffix.enum'
 import { getCaliberDto } from '@/shared/api-dto/get-caliber.dto'
 import { getFactoryDto } from '@/shared/api-dto/get-factory.dto'
 import { getLegalisationCategoryDto } from '@/shared/api-dto/get-legalisation-category.dto'
@@ -21,6 +20,7 @@ import { getHeadTypeDto } from '@/shared/api-dto/get-head-type.dto'
 import { getPercussionTypeDto } from '@/shared/api-dto/get-percussion-type.dto'
 import { getPriceHistoryDto } from '@/shared/api-dto/get-price-history.dto'
 import { buildAmmunitionFilters } from '@/shared/api-dto/query-filters.builder'
+import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
 
 export const useAmmunitionStore = defineStore('ammunition-store', () => {
   // Appel API
@@ -31,7 +31,7 @@ export const useAmmunitionStore = defineStore('ammunition-store', () => {
   const ammunition = ref<AmmunitionDto>()
   const queryFilters = ref<AmmunitionFilter>({ ...buildAmmunitionFilters() })
   // Private Attibute
-  const _I18N_PREFIX = 'ammunition'
+  const _I18N_PREFIX = I18nPrefix.AMMUNITION
   const _GET_ALL_FN = 'getAllAmmunition'
   const _GET_BY_ID_FN = 'getAmmunitionById'
 
@@ -116,10 +116,7 @@ export const useAmmunitionStore = defineStore('ammunition-store', () => {
       return await api.api.ammunitionControllerDelete(id)
     },
     onSuccess() {
-      successMessage(
-        getI18NPrefix(_I18N_PREFIX) + I18NSuffix.SUMMARY,
-        getI18NPrefix(_I18N_PREFIX) + I18NSuffix.DELETED
-      )
+      successMessage(_I18N_PREFIX + I18NSuffix.SUMMARY, _I18N_PREFIX + I18NSuffix.DELETED)
     }
   })
 
@@ -133,7 +130,7 @@ export const useAmmunitionStore = defineStore('ammunition-store', () => {
     getById: getByIdQuery,
     ammunition$: ammunition,
     formBuilder: useAmmunitionForm,
-    getI18NPrefix: getI18NPrefix(_I18N_PREFIX),
+    getI18NPrefix: _I18N_PREFIX,
     queryFilters$: queryFilters
   }
 })

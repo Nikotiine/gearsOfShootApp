@@ -2,8 +2,9 @@ import type { RouteRecordRaw } from 'vue-router'
 import { PublicRouterEnum } from '@/enum/router/public-router.enum'
 import { GlobalRouterEnum } from '@/enum/router/global-router.enum'
 import { useBreadcrumbStore } from '@/stores/breadcrumb.store'
+import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
 const parentPath: string = 'chargeur'
-const prefix: string = 'magazine'
+const prefix: string = I18nPrefix.WEAPON_MAGAZINE
 const routeListName = PublicRouterEnum.PUBLIC_MAGAZINE_LIST
 const routeDetailName = PublicRouterEnum.PUBLIC_MAGAZINE_DETAIL
 export const publicMagazineRoute: RouteRecordRaw = {

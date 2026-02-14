@@ -1,5 +1,5 @@
 <template>
-  <Breadcrumb :home="isAdmin ? adminHome : publicHome" :model="items">
+  <Breadcrumb :model="items">
     <template #item="{ item, props }">
       <a v-bind="props.action" @click="gotToStep(item)" class="cursor-pointer">
         <span :class="[item.icon, 'text-color']" />
@@ -21,7 +21,7 @@ const store = useBreadcrumbStore()
 const { isAdmin } = useUserStore()
 const gotToStep = store.goToStep
 const { breadcrumbs: items } = storeToRefs(store)
-const publicHome = ref<BreadCrumbState>({
+/*const publicHome = ref<BreadCrumbState>({
   label: store.createLabel('publicDashboard', 'home'),
   index: 0,
   to: {
@@ -36,7 +36,7 @@ const adminHome = ref<BreadCrumbState>({
     name: AdminRouterEnum.ADMIN_DASHBOARD
   },
   icon: 'pi pi-home'
-})
+})*/
 </script>
 
 <style scoped></style>

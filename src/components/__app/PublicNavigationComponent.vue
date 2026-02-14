@@ -27,7 +27,7 @@
             class="flex items-center cursor-pointer px-4 py-2 overflow-hidden relative font-semibold text-lg uppercase"
             style="border-radius: 2rem"
           >
-            <span>{{ t('topbar.' + item.label) }}</span>
+            <span>{{ t(i18nPrefix + item.label) }}</span>
           </a>
           <a v-else-if="!item.image" class="flex items-center p-4 cursor-pointer mb-2 gap-3">
             <span
@@ -36,8 +36,8 @@
               <i :class="[item.icon, 'text-lg']"></i>
             </span>
             <span class="inline-flex flex-col gap-1">
-              <span class="font-bold text-lg">{{ t('topbar.' + item.label) }}</span>
-              <span class="whitespace-nowrap">{{ t('topbar.' + item.subtext) }}</span>
+              <span class="font-bold text-lg">{{ t(i18nPrefix + item.label) }}</span>
+              <span class="whitespace-nowrap">{{ t(i18nPrefix + item.subtext) }}</span>
             </span>
           </a>
           <div v-else class="flex flex-col items-start gap-4 p-2">
@@ -50,7 +50,7 @@
           <div class="flex items-center gap-2">
             <SearchInput />
             <!--            <LanguageSplitButton />-->
-            <InvoiceButtonComponent v-if="isAdmin" />
+            <cart-button-component />
             <div v-if="!isLogged">
               <ConnexionSplitButton />
             </div>
@@ -73,19 +73,21 @@ import SearchInput from '@/components/__layout/SearchInput.vue'
 import ConnexionDialog from '@/components/__dialog/ConnexionDialog.vue'
 import { useI18n } from 'vue-i18n'
 import RegisterDialog from '@/components/__dialog/RegisterDialog.vue'
-import { useSecurityStore } from '@/stores/security.store'
+import { useSecurityStore } from '@/stores/shared/security.store'
 import ConnexionSplitButton from '@/components/__layout/ConnexionSplitButton.vue'
 import ConnectedSplitButton from '@/components/__layout/ConnectedSplitButton.vue'
 import { useRouter } from 'vue-router'
 import InvoiceButtonComponent from '@/components/__invoice/InvoiceButtonComponent.vue'
 import { useUserStore } from '@/stores/user.store'
 import { PublicRouterEnum } from '@/enum/router/public-router.enum'
+import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
+import CartButtonComponent from '@/components/cart/CartButtonComponent.vue'
 
 const { push } = useRouter()
 const { t } = useI18n()
 const { isLogged } = useSecurityStore()
 const { isAdmin } = useUserStore()
-
+const i18nPrefix = I18nPrefix.TOPBAR
 const items = computed(() => {
   const baseItems = [
     {

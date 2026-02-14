@@ -1,14 +1,14 @@
 import { ref, watch } from 'vue'
 import { type UseMutationReturnType, useQuery, useQueryClient } from '@tanstack/vue-query'
-import { useToastStore } from '@/stores/toast'
-import { getI18NPrefix, I18NSuffix } from '@/enum/I18NSuffix.enum'
+import { useToastStore } from '@/stores/shared/toast'
+import { I18NSuffix } from '@/enum/I18NSuffix.enum'
 
 export function useFormHandler<TForm extends object, TMutationResponse, TError = Error>(
   emptyForm: TForm,
   getByIdQuery: (id?: string) => ReturnType<typeof useQuery>,
   createMutation: UseMutationReturnType<TMutationResponse, TError, TForm, unknown>,
   updateMutation: UseMutationReturnType<TMutationResponse, TError, TForm & { id: number }, unknown>,
-  storeName: string,
+  prefix: string,
   getByIdQueryKey: string,
   getAllQueryKey: string | undefined,
   id?: string,
@@ -16,7 +16,7 @@ export function useFormHandler<TForm extends object, TMutationResponse, TError =
 ) {
   const queryClient = useQueryClient()
   const form = ref<TForm>({ ...emptyForm })
-  const prefix = getI18NPrefix(storeName)
+  // const prefix = getI18NPrefix(storeName)
   const { successMessage, errorMessage } = useToastStore()
   const resetForm = () => {
     form.value = { ...emptyForm }

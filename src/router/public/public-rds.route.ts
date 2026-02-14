@@ -2,9 +2,10 @@ import { type RouteRecordRaw } from 'vue-router'
 import { PublicRouterEnum } from '@/enum/router/public-router.enum'
 import { GlobalRouterEnum } from '@/enum/router/global-router.enum'
 import { useBreadcrumbStore } from '@/stores/breadcrumb.store'
+import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
 
 const parentPath: string = 'accessoire-armes/rds'
-const prefix: string = 'soundNoiseReducer'
+const prefix: string = I18nPrefix.RDS
 const routeListName = PublicRouterEnum.PUBLIC_RDS_LIST
 const routeDetailName = PublicRouterEnum.PUBLIC_RDS_DETAIL
 export const publicRdsRoute: RouteRecordRaw = {

@@ -5,7 +5,7 @@ import type { ColorDto, CreateColorDto } from '@/api/Api'
 import { ref } from 'vue'
 import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
-import { getI18NPrefix } from '@/enum/I18NSuffix.enum'
+import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
 
 export const useColorStore = defineStore('color-store', () => {
   // Appel API
@@ -15,7 +15,7 @@ export const useColorStore = defineStore('color-store', () => {
   // Refs
   const submitSuccess = ref(false)
   // Private Attibute
-  const _I18N_PREFIX = 'color'
+  const _I18N_PREFIX = I18nPrefix.COLOR
   const _GET_ALL_FN = 'getAllColor'
   const _GET_BY_ID_FN = 'getColorById'
   // *******************Methodes***************
@@ -81,6 +81,6 @@ export const useColorStore = defineStore('color-store', () => {
     formBuilder: useColorForm,
     getAll: getAllQuery,
     submitSuccess,
-    getI18NPrefix: getI18NPrefix(_I18N_PREFIX)
+    getI18NPrefix: _I18N_PREFIX
   }
 })

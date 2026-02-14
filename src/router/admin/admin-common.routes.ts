@@ -2,6 +2,7 @@ import type { RouteRecordRaw } from 'vue-router'
 import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 import { GlobalRouterEnum } from '@/enum/router/global-router.enum'
 import { useBreadcrumbStore } from '@/stores/breadcrumb.store'
+import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
 
 export const colorRoutes: RouteRecordRaw = {
   path: 'couleurs',
@@ -14,7 +15,7 @@ export const colorRoutes: RouteRecordRaw = {
           const store = useBreadcrumbStore()
           return [
             {
-              label: store.createLabel('color', 'breadcrumbAdd'),
+              label: store.createLabel(I18nPrefix.COLOR, 'breadcrumbAdd'),
               index: 1,
               to: {
                 name: AdminRouterEnum.COLOR_NEW
@@ -64,7 +65,7 @@ export const headTypeRoutes: RouteRecordRaw = {
           const store = useBreadcrumbStore()
           return [
             {
-              label: store.createLabel('headType', 'breadcrumbAdd'),
+              label: store.createLabel(I18nPrefix.HEADTYPE, 'breadcrumbAdd'),
               index: 1,
               to: {
                 name: AdminRouterEnum.HEAD_TYPE_NEW
@@ -89,7 +90,7 @@ export const bodyTypeRoutes: RouteRecordRaw = {
           const store = useBreadcrumbStore()
           return [
             {
-              label: store.createLabel('bodyType', 'breadcrumbAdd'),
+              label: store.createLabel(I18nPrefix.BODY_TYPE, 'breadcrumbAdd'),
               index: 1,
               to: {
                 name: AdminRouterEnum.BODY_TYPE_NEW
@@ -139,7 +140,7 @@ export const caliberRoutes: RouteRecordRaw = {
           const store = useBreadcrumbStore()
           return [
             {
-              label: store.createLabel('caliber', 'breadcrumbAdd'),
+              label: store.createLabel(I18nPrefix.CALIBER, 'breadcrumbAdd'),
               index: 1,
               to: {
                 name: AdminRouterEnum.CALIBER_NEW

@@ -3,10 +3,10 @@
     <DataTable :value="bodyTypes$?.data" :loading="isLoading">
       <template #header>
         <div class="flex flex-wrap items-center justify-between gap-2">
-          <span class="text-xl font-bold">{{ t('bodyType.existingList') }}</span>
+          <span class="text-xl font-bold">{{ t(i18nPrefix + 'existingList') }}</span>
         </div>
       </template>
-      <Column field="name" :header="t('bodyType.weapon-type')"></Column>
+      <Column field="name" :header="t(i18nPrefix + 'weapon-type')"></Column>
       <Column field="ref" :header="t('global.ref')"></Column>
     </DataTable>
   </div>
@@ -20,6 +20,7 @@ import { useI18n } from 'vue-i18n'
 const store = useBodyTypeStore()
 const { data: bodyTypes$, isLoading, isSuccess } = store.getAll()
 const { t } = useI18n()
+const i18nPrefix = store.getI18NPrefix
 </script>
 
 <style scoped></style>

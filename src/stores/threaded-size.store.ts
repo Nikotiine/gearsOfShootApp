@@ -3,9 +3,9 @@ import { useApiStore } from '@/stores/api'
 import { ref } from 'vue'
 import type { CreateThreadedSizeDto, ThreadedSizeDto } from '@/api/Api'
 import { useMutation, useQuery } from '@tanstack/vue-query'
-import { getI18NPrefix } from '@/enum/I18NSuffix.enum'
 import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
+import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
 
 export const useThreadedSizeStore = defineStore('threaded-size.store', () => {
   // Appel API
@@ -14,7 +14,7 @@ export const useThreadedSizeStore = defineStore('threaded-size.store', () => {
   // Refs
   const submitSuccess = ref(false)
   // Private Attibute
-  const _I18N_PREFIX = 'threadedSize'
+  const _I18N_PREFIX = I18nPrefix.THREADED_SIZE
   const _GET_ALL_FN = 'getAllThreadedSizes'
   const _GET_BY_ID_FN = 'getThreadedSizeById'
 
@@ -80,6 +80,6 @@ export const useThreadedSizeStore = defineStore('threaded-size.store', () => {
     formBuilder: useThreadedSizeForm,
     getAll: getAllQuery,
     submitSuccess,
-    getI18NPrefix: getI18NPrefix(_I18N_PREFIX)
+    getI18NPrefix: _I18N_PREFIX
   }
 })

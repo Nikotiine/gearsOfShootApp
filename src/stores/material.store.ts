@@ -5,7 +5,7 @@ import type { CreateMaterialDto, MaterialDto } from '@/api/Api'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
-import { getI18NPrefix } from '@/enum/I18NSuffix.enum'
+import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
 
 export const useMaterialStore = defineStore('material-store', () => {
   // Appel API
@@ -14,7 +14,7 @@ export const useMaterialStore = defineStore('material-store', () => {
   // Refs
   const submitSuccess = ref(false)
   // Private Attibute
-  const _I18N_PREFIX = 'material'
+  const _I18N_PREFIX = I18nPrefix.MATERIAL
   const _GET_ALL_FN = 'getAllMaterial'
   const _GET_BY_ID_FN = 'getMaterialById'
 
@@ -80,6 +80,6 @@ export const useMaterialStore = defineStore('material-store', () => {
     formBuilder: useMaterialForm,
     getAll: getAllQuery,
     submitSuccess,
-    getI18NPrefix: getI18NPrefix(_I18N_PREFIX)
+    getI18NPrefix: _I18N_PREFIX
   }
 })

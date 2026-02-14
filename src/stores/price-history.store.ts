@@ -1,14 +1,14 @@
 import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
 import { useQuery } from '@tanstack/vue-query'
-import { getI18NPrefix } from '@/enum/I18NSuffix.enum'
 import { ref } from 'vue'
 import type { PriceHistoryDto } from '@/api/Api'
+import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
 
 export const usePriceHistoryStore = defineStore('price-history-store', () => {
   const { api } = useApiStore()
   // Private Attibute
-  const _I18N_PREFIX = 'priceHistory'
+  const _I18N_PREFIX = I18nPrefix.PRICE_HISTORY
   const _GET_ALL_FN = 'getAllPriceHistory'
 
   // Refs
@@ -31,7 +31,7 @@ export const usePriceHistoryStore = defineStore('price-history-store', () => {
     })
 
   return {
-    getI18NPrefix: getI18NPrefix(_I18N_PREFIX),
+    getI18NPrefix: _I18N_PREFIX,
     findAll: queryFindAllPriceHistory
   }
 })

@@ -150,11 +150,6 @@
               :id="data.id"
               v-if="$route.meta.admin"
             />
-            <public-action-menu-component
-              :id="data.id"
-              @on-click-action="onPublicClickAction"
-              v-else
-            />
             <InvoiceAddItemComponent
               object="AMMUNITION"
               :object-id="data.id"
@@ -258,18 +253,7 @@ const onClickAction = (event: ActionMenuEmit | boolean, id: number) => {
       break
   }
 }
-const onPublicClickAction = (event: PublicActionMenuCEmit, id: number) => {
-  switch (event) {
-    case 'view':
-      router.push({
-        name: PublicRouterEnum.PUBLIC_AMMUNITION_DETAIL,
-        params: { id: id, category: category }
-      })
-      break
-    case 'add':
-      console.log('add')
-  }
-}
+
 watch(
   () => category,
   (newCategory) => {

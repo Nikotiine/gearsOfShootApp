@@ -1,19 +1,19 @@
 import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
-import { useToastStore } from '@/stores/toast'
+import { useToastStore } from '@/stores/shared/toast'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import {
   type CreateFactoryDto,
   type FactoryDto,
   type FactoryFilter,
-  type FactoryTypeDto,
   type UpdateFactoryDto
 } from '@/api/Api'
 import { ref } from 'vue'
 import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
-import { getI18NPrefix, I18NSuffix } from '@/enum/I18NSuffix.enum'
+import { I18NSuffix } from '@/enum/I18NSuffix.enum'
 import { buildFactoryFilter } from '@/shared/api-dto/query-filters.builder'
+import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
 
 export const useFactoryStore = defineStore('factory-store', () => {
   // Appel API
@@ -22,11 +22,10 @@ export const useFactoryStore = defineStore('factory-store', () => {
   const { successMessage } = useToastStore()
   // Refs
   const factories = ref<FactoryDto[]>([])
-  const factoryTypes = ref<FactoryTypeDto[]>([])
   const submitSuccess = ref(false)
   const queryFilters = ref<FactoryFilter>({ ...buildFactoryFilter() })
 
-  const _I18N_PREFIX = 'factory'
+  const _I18N_PREFIX = I18nPrefix.FACTORY
   const _GET_ALL_FN = 'getAllFactories'
   const _GET_ALL_BY_TYPE_FN = 'getAllByTypeFactory'
   const _PREREQUISITE_FN = 'getAllFactoryTypes'
@@ -135,8 +134,7 @@ export const useFactoryStore = defineStore('factory-store', () => {
       return await api.api.factoryControllerDelete(id)
     },
     onSuccess() {
-      const prefix = getI18NPrefix(_I18N_PREFIX)
-      successMessage(prefix + I18NSuffix.SUMMARY, prefix + I18NSuffix.DELETED)
+      successMessage(_I18N_PREFIX + I18NSuffix.SUMMARY, _I18N_PREFIX + I18NSuffix.DELETED)
     }
   })
 
@@ -151,7 +149,7 @@ export const useFactoryStore = defineStore('factory-store', () => {
     getFactoriesByType: getFactoriesByType,
     delete: deleteFunction,
     submitSuccess: submitSuccess,
-    getI18NPrefix: getI18NPrefix(_I18N_PREFIX),
+    getI18NPrefix: _I18N_PREFIX,
     factories$: factories,
     queryFilters$: queryFilters
   }

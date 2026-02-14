@@ -7,6 +7,8 @@ import { invoiceRoutes } from '@/router/admin/admin-invoice.routes'
 import { opticCollarRoutes } from '@/router/admin/admin-optic-collar.route'
 import { adminAccessoryRoute } from '@/router/admin/admin-accessory.route'
 import { adminInternalRefRoute } from '@/router/admin/admin-internal-ref.route'
+import { userRoutes } from '@/router/admin/admin-users.routes'
+import { useBreadcrumbStore } from '@/stores/breadcrumb.store'
 
 export const adminRoutes: RouteRecordRaw = {
   path: '/admin',
@@ -16,6 +18,21 @@ export const adminRoutes: RouteRecordRaw = {
     {
       path: '',
       name: AdminRouterEnum.ADMIN_DASHBOARD,
+      meta: {
+        breadcrumb: () => {
+          const store = useBreadcrumbStore()
+          return [
+            {
+              label: store.createLabel('admin.', 'home'),
+              index: 0,
+              to: {
+                name: AdminRouterEnum.ADMIN_DASHBOARD
+              },
+              icon: 'pi pi-home'
+            }
+          ]
+        }
+      },
       component: () => import('@/views/admin/AdminDashboardView.vue')
     },
     {
@@ -28,7 +45,8 @@ export const adminRoutes: RouteRecordRaw = {
         adminInternalRefRoute,
         opticCollarRoutes,
         adminAccessoryRoute,
-        invoiceRoutes
+        invoiceRoutes,
+        userRoutes
       ]
     }
   ]

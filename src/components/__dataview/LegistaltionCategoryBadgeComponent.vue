@@ -1,10 +1,5 @@
 <template>
-  <div
-    class="bg-surface-100 p-1"
-    style="border-radius: 30px"
-    v-if="category"
-    v-tooltip.bottom="tooltipText"
-  >
+  <div class="bg-surface-100 p-1" style="border-radius: 30px" v-tooltip.bottom="tooltipText">
     <div
       class="bg-surface-0 flex items-center gap-2 justify-center py-1 px-2"
       style="
@@ -15,7 +10,9 @@
       "
     >
       <i class="pi pi-verified text-blue-500"></i>
-      <span class="font-medium text-sm text-red-500">{{ t('global.category') }}:</span>
+      <span class="font-medium text-sm text-red-500"
+        >{{ category ? t('global.category') : t('global.noCategory') }}:</span
+      >
       <span class="font-medium text-sm text-red-500">{{ category }}</span>
     </div>
   </div>
@@ -37,7 +34,7 @@ const tooltipText = computed(() => {
     case 'C':
       return t('tooltip.isCatCItem')
     default:
-      return ''
+      return t('tooltip.isNoCategory')
   }
 })
 </script>

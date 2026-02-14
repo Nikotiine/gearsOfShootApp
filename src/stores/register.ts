@@ -3,7 +3,7 @@ import { computed, ref } from 'vue'
 import { useApiStore } from '@/stores/api'
 import { useMutation } from '@tanstack/vue-query'
 import { type CreateUserDto, CreateUserDtoRoleEnum } from '@/api/Api'
-import { useToastStore } from '@/stores/toast'
+import { useToastStore } from '@/stores/shared/toast'
 
 export const useRegisterStore = defineStore('register', () => {
   const _isVisible = ref(false)

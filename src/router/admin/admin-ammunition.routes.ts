@@ -2,8 +2,9 @@ import type { RouteRecordRaw } from 'vue-router'
 import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 import { GlobalRouterEnum } from '@/enum/router/global-router.enum'
 import { useBreadcrumbStore } from '@/stores/breadcrumb.store'
+import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
 const parentPath: string = 'munition'
-const prefix: string = 'ammunition'
+const prefix: string = I18nPrefix.AMMUNITION
 const routeFormName = AdminRouterEnum.AMMUNITION_NEW
 const routeListName = AdminRouterEnum.AMMUNITION_LIST
 const routeDetailName = AdminRouterEnum.AMMUNITION_DETAIL

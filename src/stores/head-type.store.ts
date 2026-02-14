@@ -3,9 +3,9 @@ import { useApiStore } from '@/stores/api'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import type { AmmunitionHeadTypeDto, CreateAmmunitionHeadTypeDto } from '@/api/Api'
 import { ref } from 'vue'
-import { getI18NPrefix } from '@/enum/I18NSuffix.enum'
 import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
+import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
 
 export const useHeadTypeStore = defineStore('head-weapon-type-store', () => {
   // Appel API
@@ -14,7 +14,7 @@ export const useHeadTypeStore = defineStore('head-weapon-type-store', () => {
   // Refs
   const submitSuccess = ref(false)
   // Private Attibute
-  const _I18N_PREFIX = 'headType'
+  const _I18N_PREFIX = I18nPrefix.HEADTYPE
   const _GET_ALL_FN = 'getAllHeadType'
   const _GET_BY_ID_FN = 'getHeadTypeById'
   // *******************Methodes***************
@@ -77,7 +77,7 @@ export const useHeadTypeStore = defineStore('head-weapon-type-store', () => {
   }
   return {
     getAll: getAllHeadTypesQuery,
-    getI18NPrefix: getI18NPrefix(_I18N_PREFIX),
+    getI18NPrefix: _I18N_PREFIX,
     submitSuccess,
     formBuilder: useHeadTypeForm
   }

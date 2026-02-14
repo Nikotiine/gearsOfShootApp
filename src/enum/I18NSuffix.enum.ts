@@ -4,6 +4,3 @@ export enum I18NSuffix {
   UPDATED = 'updated',
   CREATED = 'created'
 }
-export function getI18NPrefix(name: string): string {
-  return name + '.'
-}

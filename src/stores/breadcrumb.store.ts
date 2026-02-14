@@ -54,10 +54,10 @@ export const useBreadcrumbStore = defineStore('breadcrumb-store', () => {
     category?: string,
     label: string = 'breadcrumbList'
   ) {
-    return `${t(`${prefix}.${label}`, { key: category })}`
+    return `${t(`${prefix}${label}`, { key: category })}`
   }
   function createLabel(prefix: string, label: string = 'detail') {
-    return `${t(`${prefix}.${label}`)}`
+    return `${t(`${prefix}${label}`)}`
   }
   return {
     breadcrumbs,

@@ -33,7 +33,6 @@
         <div class="flex flex-col">
           <div v-for="(item, index) in slotProps.items" :key="index">
             <div
-              @click="onClick(item.id, item.category)"
               class="flex flex-col sm:flex-row sm:items-center p-6 gap-4 hover-card"
               :class="{ 'border-t border-surface-200 dark:border-surface-700': index !== 0 }"
             >
@@ -52,7 +51,10 @@
               </div>
               <div class="flex flex-col md:flex-row justify-between md:items-center flex-1 gap-6">
                 <div class="flex flex-row md:flex-col justify-between items-start gap-2">
-                  <div class="text-lg font-medium">
+                  <div
+                    class="text-lg font-medium"
+                    @click="onCardClick(item.id, item.object, item.category)"
+                  >
                     <p>
                       <span class="font-medium text-surface-500 dark:text-surface-400 text-lg">
                         {{ t('global.factory') }}:
@@ -78,21 +80,6 @@
                       :category="item.category ? item.category.name : null"
                     />
                   </div>
-
-                  <!--                  <div class="bg-surface-100 p-1" style="border-radius: 30px">
-                    <div
-                      class="bg-surface-0 flex items-center gap-2 justify-center py-1 px-2"
-                      style="
-                        border-radius: 30px;
-                        box-shadow:
-                          0px 1px 2px 0px rgba(0, 0, 0, 0.04),
-                          0px 1px 2px 0px rgba(0, 0, 0, 0.06);
-                      "
-                    >
-                      <span class="text-surface-900 font-medium text-sm">5</span>
-                      <i class="pi pi-star-fill text-yellow-500"></i>
-                    </div>
-                  </div>-->
                 </div>
                 <div class="flex flex-col md:items-end gap-6">
                   <p
@@ -111,13 +98,7 @@
                     {{ NumberFormatter(item.discountedPrice, 'euro') }}
                   </p>
                   <div class="flex flex-row-reverse md:flex-row gap-2">
-                    <!--                    <Button icon="pi pi-heart" variant="outlined"></Button>-->
-                    <Button
-                      icon="pi pi-shopping-cart"
-                      :label="t(prefix + 'addToCart')"
-                      :disabled="item.stock === 0"
-                      class="flex-auto md:flex-initial whitespace-nowrap"
-                    ></Button>
+                    <add-to-cart-button :item="item" :type="type" />
                   </div>
                 </div>
               </div>
@@ -133,7 +114,7 @@
             class="col-span-12 sm:col-span-6 md:col-span-4 xl:col-span-6 p-2"
           >
             <div
-              @click="onClick(item.id, item.category)"
+              @click="onCardClick(item.id, item.object, item.category)"
               class="p-6 border border-surface-200 dark:border-surface-700 bg-surface-0 dark:bg-surface-900 rounded flex flex-col hover-card"
             >
               <div class="bg-surface-0 dark:bg-surface-900 flex justify-center rounded p-4">
@@ -201,13 +182,7 @@
                   </div>
 
                   <div class="flex gap-2">
-                    <Button
-                      icon="pi pi-shopping-cart"
-                      :label="t(prefix + 'addToCart')"
-                      :disabled="item.stock === 0"
-                      class="flex-auto whitespace-nowrap"
-                    ></Button>
-                    <!--                    <Button icon="pi pi-heart" variant="outlined"></Button>-->
+                    <add-to-cart-button :item="item" />
                   </div>
                 </div>
               </div>
@@ -227,7 +202,6 @@
 </template>
 <script setup lang="ts">
 import Tag from 'primevue/tag'
-import Button from 'primevue/button'
 import SelectButton from 'primevue/selectbutton'
 import Select from 'primevue/select'
 import DataView from 'primevue/dataview'
@@ -239,6 +213,8 @@ import { useI18n } from 'vue-i18n'
 import RatingComponent from '@/components/__dataview/RatingComponent.vue'
 import LegistaltionCategoryBadgeComponent from '@/components/__dataview/LegistaltionCategoryBadgeComponent.vue'
 import { NumberFormatter } from '@/shared/utils/formatter.utils'
+import type { RouteLocationRaw } from 'vue-router'
+import AddToCartButton from '@/components/cart/AddToCartButton.vue'
 
 export interface DataViewProps {
   id: number
@@ -250,10 +226,12 @@ export interface DataViewProps {
   description?: string
   category?: LegislationCategoryDto
   discountedPrice?: number
+  to: RouteLocationRaw
+  object: RoutableObjectType
 }
 const { t } = useI18n()
 const prefix = 'dataView.'
-const { data, type } = defineProps<{ data: DataViewProps[]; type: RoutableObjectType }>()
+const { data } = defineProps<{ data: DataViewProps[] }>()
 const dataViewStore = useDataViewStore()
 const {
   sortOptions,
@@ -269,8 +247,8 @@ const onSortChange = (event: any) => {
 const getSeverity = (item: DataViewProps) => {
   return dataViewStore.getSeverity(item.stock)
 }
-const onClick = (id: number, category?: LegislationCategoryDto) => {
-  dataViewStore.redirectToDetail(type, id, category)
+const onCardClick = (id: number, object: RoutableObjectType, category?: LegislationCategoryDto) => {
+  dataViewStore.redirectToDetail(object, id, category)
 }
 </script>
 

@@ -1,12 +1,14 @@
 import type {
   AmmunitionFilter,
+  ClientOrderFilter,
   FactoryFilter,
   HandGunFilter,
   MagazineFilter,
   OpticCollarFilter,
   OpticFilter,
   RiffleFilter,
-  SoundNoiseFilter
+  SoundNoiseFilter,
+  UserFilter
 } from '@/api/Api'
 
 export function buildAmmunitionFilters(): AmmunitionFilter {
@@ -103,5 +105,24 @@ export function buildHandGunFilter(): HandGunFilter {
     isOpticReady: undefined,
     triggerTypeId: undefined,
     slideMaterialId: undefined
+  }
+}
+
+export function buildUsersFilter(): UserFilter {
+  return {
+    limit: 10,
+    offset: 0,
+    costumerRole: '',
+    role: 'USER',
+    email: '',
+    lastName: ''
+  }
+}
+
+export function buildOrderFilter(): ClientOrderFilter {
+  return {
+    limit: 10,
+    offset: 0,
+    invoiceStatus: 'IN_ORDER'
   }
 }

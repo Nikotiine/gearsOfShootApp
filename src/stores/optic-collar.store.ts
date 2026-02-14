@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
-import { useToastStore } from '@/stores/toast'
+import { useToastStore } from '@/stores/shared/toast'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import type {
   CreateOpticCollarDto,
@@ -16,8 +16,9 @@ import type { AxiosResponse } from 'axios'
 import { getFactoryDto } from '@/shared/api-dto/get-factory.dto'
 import { getOpticRailSizeDto } from '@/shared/api-dto/get-optic-rail-size.dto'
 import { getPriceHistoryDto } from '@/shared/api-dto/get-price-history.dto'
-import { getI18NPrefix, I18NSuffix } from '@/enum/I18NSuffix.enum'
+import { I18NSuffix } from '@/enum/I18NSuffix.enum'
 import { buildOpticCollarFilter } from '@/shared/api-dto/query-filters.builder'
+import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
 
 export const useOpticCollarStore = defineStore('optic-collar-store', () => {
   // Appel API
@@ -31,7 +32,7 @@ export const useOpticCollarStore = defineStore('optic-collar-store', () => {
   const collar = ref<OpticCollarDto>()
   const queryFilters = ref<OpticCollarFilter>({ ...buildOpticCollarFilter() })
   // Private Attibute
-  const _I18N_PREFIX = 'opticCollar'
+  const _I18N_PREFIX = I18nPrefix.OPTIC_COLLAR
   const _GET_ALL_FN = 'getAllOpticCollar'
   const _GET_BY_ID_FN = 'getOpticCollarById'
 
@@ -72,10 +73,7 @@ export const useOpticCollarStore = defineStore('optic-collar-store', () => {
       return await api.api.opticCollarControllerDelete(collarId)
     },
     onSuccess() {
-      successMessage(
-        getI18NPrefix(_I18N_PREFIX) + I18NSuffix.SUMMARY,
-        getI18NPrefix(_I18N_PREFIX) + I18NSuffix.DELETED
-      )
+      successMessage(_I18N_PREFIX + I18NSuffix.SUMMARY, _I18N_PREFIX + I18NSuffix.DELETED)
     }
   })
 
@@ -129,7 +127,7 @@ export const useOpticCollarStore = defineStore('optic-collar-store', () => {
     delete: deleteFunction,
     collar$: collar,
     formBuilder: useOpticCollarForm,
-    getI18NPrefix: getI18NPrefix(_I18N_PREFIX),
+    getI18NPrefix: _I18N_PREFIX,
     queryFilters$: queryFilters
   }
 })

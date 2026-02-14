@@ -1,7 +1,7 @@
 import type { NavigationGuardNext, RouteLocationNormalized } from 'vue-router'
 import { useUserStore } from '@/stores/user.store'
 import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
-import { useToastStore } from '@/stores/toast'
+import { useToastStore } from '@/stores/shared/toast'
 
 /**
  * Guard qui protège les routes réservées aux administrateurs.

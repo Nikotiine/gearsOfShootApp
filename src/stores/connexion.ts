@@ -3,11 +3,12 @@ import { ref } from 'vue'
 import { useMutation } from '@tanstack/vue-query'
 import type { UserCredentialDto } from '@/api/Api'
 import { useApiStore } from '@/stores/api'
-import { useSecurityStore } from '@/stores/security.store'
-import { useToastStore } from '@/stores/toast'
+import { useSecurityStore } from '@/stores/shared/security.store'
+import { useToastStore } from '@/stores/shared/toast'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user.store'
 import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
+import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
 
 /**
  * 📦 Store de gestion de la connexion utilisateur (`useConnexionStore`).
@@ -130,6 +131,7 @@ export const useConnexionStore = defineStore('connexion', () => {
     isVisible$: isVisible,
     toggleConnexionDialog,
     login: loginMutation,
-    form$: form
+    form$: form,
+    getI18nPrefix: I18nPrefix.CONNEXION
   }
 })

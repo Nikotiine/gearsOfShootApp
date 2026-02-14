@@ -2,14 +2,14 @@ import { defineStore } from 'pinia'
 import { useApiStore } from '@/stores/api'
 
 import { useQuery } from '@tanstack/vue-query'
-import { getI18NPrefix } from '@/enum/I18NSuffix.enum'
+import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
 
 export const useFocalPlaneStore = defineStore('focal-plane-store', () => {
   // Appel API
   const { api } = useApiStore()
 
   // Private Attibute
-  const _I18N_PREFIX = 'focalPlane'
+  const _I18N_PREFIX = I18nPrefix.FOCAL_PLANE
   const _GET_ALL_FN = 'getAllFocalPlane'
   const getAllQuery = () =>
     useQuery({
@@ -23,6 +23,6 @@ export const useFocalPlaneStore = defineStore('focal-plane-store', () => {
   }
   return {
     getAll: getAllQuery,
-    getI18NPrefix: getI18NPrefix(_I18N_PREFIX)
+    getI18NPrefix: _I18N_PREFIX
   }
 })
