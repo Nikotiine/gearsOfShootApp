@@ -257,6 +257,18 @@ export interface CreatePriceHistoryDto {
   precentOfDiscount: number
 }
 
+export interface AddressDto {
+  firstName: string
+  lastName: string
+  street: string
+  city: string
+  state: string
+  additionalStreet: string
+  streetNumber: string
+  additionalInformation: string
+  zipCode: string
+}
+
 export interface UserDto {
   id: number
   email: string
@@ -265,6 +277,8 @@ export interface UserDto {
   phone: string
   role: UserDtoRoleEnum
   costumerRoles: UserDtoCostumerRolesEnum
+  addresses: AddressDto[]
+  inCartId: number | null
 }
 
 export interface StockHistoriesDto {
@@ -1064,6 +1078,36 @@ export interface PriceHistoryDto {
   updatedBy: UserDto | null
 }
 
+export interface CreateUserDto {
+  email: string
+  password: string
+  firstName: string
+  lastName: string
+  phone: string
+  role: CreateUserDtoRoleEnum
+}
+
+export interface UserFilter {
+  /**
+   * Nombre maximum de résultats à renvoyer
+   * @example 10
+   */
+  limit?: number
+  /**
+   * Décalage pour la pagination
+   * @example 0
+   */
+  offset?: number
+  /** Role utilisateur */
+  role?: string
+  /** Licence fftir / chasse / sans */
+  costumerRole?: string
+  /** Nom de famille */
+  lastName?: string
+  /** Email */
+  email?: string
+}
+
 export interface AmmunitionHeadTypeDto {
   /** @example "Full metal jacket" */
   name: string
@@ -1182,36 +1226,6 @@ export interface CreateAmmunitionBodyTypeDto {
   /** @example "Laiton" */
   name: string
   reference: string
-}
-
-export interface CreateUserDto {
-  email: string
-  password: string
-  firstName: string
-  lastName: string
-  phone: string
-  role: CreateUserDtoRoleEnum
-}
-
-export interface UserFilter {
-  /**
-   * Nombre maximum de résultats à renvoyer
-   * @example 10
-   */
-  limit?: number
-  /**
-   * Décalage pour la pagination
-   * @example 0
-   */
-  offset?: number
-  /** Role utilisateur */
-  role?: string
-  /** Licence fftir / chasse / sans */
-  costumerRole?: string
-  /** Nom de famille */
-  lastName?: string
-  /** Email */
-  email?: string
 }
 
 export interface UserCredentialDto {
@@ -1644,6 +1658,7 @@ export interface ClientOrderFilter {
 
 export interface RouteParamsDto {
   id: number
+  category: string
 }
 
 export interface RouteToDto {
@@ -1651,8 +1666,36 @@ export interface RouteToDto {
   params: RouteParamsDto
 }
 
-export interface CreateClientOrderItem {
+export interface ClientOrderItemDto {
   objectId: number
+  status: string
+  quantity: number
+  object: string
+  price: number
+  to: RouteToDto
+  name: string
+  factory: FactoryDto
+  comment: string
+  totalPrice: number
+  /** @example "C" */
+  category: LegislationCategoryDto | null
+  id: number
+}
+
+export interface ClientOrderDto {
+  id: number
+  shippingCost: number
+  vat: number
+  items: ClientOrderItemDto[]
+  status: string
+  message: string
+  shippingAddress: AddressDto | null
+  paymentAddress: AddressDto | null
+}
+
+export interface CreateClientOrderItemDto {
+  objectId: number
+  status: string
   quantity: number
   object: string
   price: number
@@ -1665,17 +1708,25 @@ export interface CreateClientOrderItem {
   category: LegislationCategoryDto | null
 }
 
-export interface ClientOrderDto {
-  shippingCost: number
-  vat: number
-  items: CreateClientOrderItem[]
-  id: number
-}
-
 export interface CreateClientOrderDto {
   shippingCost: number
   vat: number
-  items: CreateClientOrderItem[]
+  items: CreateClientOrderItemDto[]
+  status: string
+  message: string
+  shippingAddress: AddressDto | null
+  paymentAddress: AddressDto | null
+}
+
+export interface UpdateClientOrderDto {
+  shippingCost: number
+  vat: number
+  items: CreateClientOrderItemDto[]
+  status: string
+  message: string
+  shippingAddress: AddressDto | null
+  paymentAddress: AddressDto | null
+  id: number
 }
 
 export interface NewItemsDto {
@@ -3113,6 +3164,52 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       }),
 
     /**
+     * @description Point d entree pour creer un nouveau compte utilisateur (Client part defaut)
+     *
+     * @tags Users
+     * @name UserControllerRegister
+     * @summary Creation de compte
+     * @request POST:/api/user
+     */
+    userControllerRegister: (data: CreateUserDto, params: RequestParams = {}) =>
+      this.request<UserDto, any>({
+        path: `/api/user`,
+        method: 'POST',
+        body: data,
+        type: ContentType.Json,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne la liste des munitions filtre par calibre
+     *
+     * @tags Users
+     * @name UserControllerFindAll
+     * @summary Filtré par categorie
+     * @request GET:/api/user/all
+     */
+    userControllerFindAll: (
+      query?: {
+        /** Filtre de recherche pour reponse paginé */
+        filters?: UserFilter
+      },
+      params: RequestParams = {}
+    ) =>
+      this.request<
+        PaginatedResponseDto & {
+          data?: UserDto[]
+        },
+        any
+      >({
+        path: `/api/user/all`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params
+      }),
+
+    /**
      * @description Retourne la munition trouver par son id
      *
      * @tags Ammunition
@@ -3404,52 +3501,6 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
         path: `/api/ammunition-body-type/${id}`,
         method: 'DELETE',
         secure: true,
-        format: 'json',
-        ...params
-      }),
-
-    /**
-     * @description Point d entree pour creer un nouveau compte utilisateur (Client part defaut)
-     *
-     * @tags Users
-     * @name UserControllerRegister
-     * @summary Creation de compte
-     * @request POST:/api/user
-     */
-    userControllerRegister: (data: CreateUserDto, params: RequestParams = {}) =>
-      this.request<UserDto, any>({
-        path: `/api/user`,
-        method: 'POST',
-        body: data,
-        type: ContentType.Json,
-        format: 'json',
-        ...params
-      }),
-
-    /**
-     * @description Retourne la liste des munitions filtre par calibre
-     *
-     * @tags Users
-     * @name UserControllerFindAll
-     * @summary Filtré par categorie
-     * @request GET:/api/user/all
-     */
-    userControllerFindAll: (
-      query?: {
-        /** Filtre de recherche pour reponse paginé */
-        filters?: UserFilter
-      },
-      params: RequestParams = {}
-    ) =>
-      this.request<
-        PaginatedResponseDto & {
-          data?: UserDto[]
-        },
-        any
-      >({
-        path: `/api/user/all`,
-        method: 'GET',
-        query: query,
         format: 'json',
         ...params
       }),
@@ -4189,7 +4240,11 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @request PUT:/api/client-order/{id}
      * @secure
      */
-    clientOrderControllerEdit: (id: number, data: ClientOrderDto, params: RequestParams = {}) =>
+    clientOrderControllerEdit: (
+      id: number,
+      data: UpdateClientOrderDto,
+      params: RequestParams = {}
+    ) =>
       this.request<ClientOrderDto, any>({
         path: `/api/client-order/${id}`,
         method: 'PUT',

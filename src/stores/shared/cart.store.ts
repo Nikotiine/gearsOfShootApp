@@ -4,8 +4,9 @@ import type {
   ClientOrderDto,
   ClientOrderFilter,
   CreateClientOrderDto,
-  CreateClientOrderItem,
-  RouteToDto
+  CreateClientOrderItemDto,
+  RouteToDto,
+  UpdateClientOrderDto
 } from '@/api/Api'
 import { I18NSuffix } from '@/enum/I18NSuffix.enum'
 import { useToastStore } from '@/stores/shared/toast'
@@ -17,12 +18,16 @@ import { useApiStore } from '@/stores/api'
 import { useFormHandler } from '@/shared/useFormHandler'
 import type { AxiosResponse } from 'axios'
 import { buildOrderFilter } from '@/shared/api-dto/query-filters.builder'
+import { useUserStore } from '@/stores/user.store'
+import { useSecurityStore } from '@/stores/shared/security.store'
 
 export const useCartStore = defineStore('cart-store', () => {
   const _STORAGE_KEY = 'cart'
   const _GET_BY_ID_FN = 'getOrderById'
   const _GET_ALL_FN = 'getAllOrders'
   const { api } = useApiStore()
+  const userStore = useUserStore()
+  const securityStore = useSecurityStore()
   const _I18N_PREFIX = I18nPrefix.ORDER
 
   const toastStore = useToastStore()
@@ -36,6 +41,18 @@ export const useCartStore = defineStore('cart-store', () => {
     }
     return _cart$.value
   })
+
+  async function autoSaveCart(): Promise<void> {
+    if (securityStore.isLogged.value) {
+      _cart$.value.status = 'IN_CART'
+      const user = await userStore.getUserProfile()
+      if (user.data.inCartId) {
+        _updateMutation.mutate({ ...cart$.value, id: user.data.inCartId })
+      } else {
+        _createMutation.mutate(_cart$.value)
+      }
+    }
+  }
 
   function addToCart(item: DataViewProps) {
     if (_cart$.value) {
@@ -61,7 +78,7 @@ export const useCartStore = defineStore('cart-store', () => {
     sessionStorage.setItem(_STORAGE_KEY, JSON.stringify(_cart$.value))
   }
 
-  function removeFromCart(item: CreateClientOrderItem) {
+  function removeFromCart(item: CreateClientOrderItemDto) {
     const index = _cart$.value.items.findIndex(
       (inItem) => inItem.objectId === item.objectId && inItem.object === item.object
     )
@@ -72,9 +89,9 @@ export const useCartStore = defineStore('cart-store', () => {
     sessionStorage.setItem(_STORAGE_KEY, JSON.stringify(_cart$.value))
   }
 
-  function mapItemDataViewPropsToOrderItem(item: DataViewProps): CreateClientOrderItem {
+  function mapItemDataViewPropsToOrderItem(item: DataViewProps): CreateClientOrderItemDto {
     return {
-      object: item.object,
+      object: item.object.toUpperCase(),
       price: item.price,
       objectId: item.id,
       quantity: 1,
@@ -83,7 +100,8 @@ export const useCartStore = defineStore('cart-store', () => {
       factory: item.factory,
       comment: `${item.subTitle}`,
       category: item.category ?? null,
-      totalPrice: 0
+      totalPrice: 0,
+      status: ''
     }
   }
   const getByIdQuery = (id?: string) =>
@@ -112,7 +130,7 @@ export const useCartStore = defineStore('cart-store', () => {
   })
 
   const _updateMutation = useMutation({
-    mutationFn: async (order: ClientOrderDto) => {
+    mutationFn: async (order: UpdateClientOrderDto) => {
       return await api.api.clientOrderControllerEdit(order.id, order)
     },
     onSuccess() {
@@ -159,6 +177,7 @@ export const useCartStore = defineStore('cart-store', () => {
     formBuilder: useOrderForm,
     getI18NPrefix: _I18N_PREFIX,
     removeFromCart,
-    updateSavedCart
+    updateSavedCart,
+    autoSaveCart
   }
 })

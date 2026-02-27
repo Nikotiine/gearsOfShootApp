@@ -27,7 +27,7 @@
 
         <Column field="object" :header="t('global.category')" style="max-width: 6rem">
           <template #body="slotProps">
-            <legistaltion-category-badge-component
+            <legislation-category-badge-component
               :category="slotProps.data.category ? slotProps.data.category.name : null"
             />
           </template>
@@ -88,13 +88,15 @@ import DataTable from 'primevue/datatable'
 import Button from 'primevue/button'
 import { useI18n } from 'vue-i18n'
 import { NumberFormatter } from '@/shared/utils/formatter.utils'
-import type { CreateClientOrderItem } from '@/api/Api'
-import LegistaltionCategoryBadgeComponent from '@/components/__dataview/LegistaltionCategoryBadgeComponent.vue'
+import LegislationCategoryBadgeComponent from '@/components/__dataview/LegislationCategoryBadgeComponent.vue'
 import FormTitleComponent from '@/components/__form/FormTitleComponent.vue'
 import SaveButton from '@/components/__form/SaveButton.vue'
 import { computed, watch } from 'vue'
 import { useSecurityStore } from '@/stores/shared/security.store'
 import { useConnexionStore } from '@/stores/connexion'
+import { onBeforeRouteLeave } from 'vue-router'
+import { cartGuard } from '@/router/guards/cart.guard'
+import type { CreateClientOrderItemDto } from '@/api/Api'
 
 const { t } = useI18n()
 const store = useCartStore()
@@ -105,7 +107,7 @@ const { id } = defineProps<{
   id?: string
 }>()
 const { form, submit } = store.formBuilder(id)
-const remove = (item: CreateClientOrderItem) => {
+const remove = (item: CreateClientOrderItemDto) => {
   store.removeFromCart(item)
 }
 const totalItems = computed(() => {
@@ -116,7 +118,7 @@ const totalOrder = computed(() => {
 })
 //***********************Validateur*************************
 const isFormValid = computed(() => {
-  return form.value.items.every((item: CreateClientOrderItem) => {
+  return form.value.items.every((item: CreateClientOrderItemDto) => {
     return item.quantity > 0
   })
 })
@@ -128,14 +130,20 @@ const onSubmit = (data: any) => {
     console.log('Aller en step 2: adresse')
   }
 }
-
+let timeout: any = null
 watch(
   () => form.value.items.map((i) => i.quantity),
   () => {
+    clearTimeout(timeout)
     store.updateSavedCart(form.value)
+    timeout = setTimeout(() => {
+      store.autoSaveCart()
+      console.log('Aller en step 2: adresse')
+    }, 1000)
   },
   { deep: false }
 )
+//onBeforeRouteLeave(cartGuard)
 </script>
 
 <style scoped></style>
