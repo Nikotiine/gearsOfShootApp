@@ -713,6 +713,7 @@
     "0002": "Indentifiants invalides",
     "0100": "Type de douille deja existante",
     "0102": "Munition deja existante",
+    "0107": "Stock munition insuffisant",
     "0200": "Type d arme deja existante",
     "0201": "Arme deja existante",
     "0302": "Optique non trouve, veuillez recommencez",

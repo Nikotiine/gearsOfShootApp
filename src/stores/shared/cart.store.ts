@@ -122,10 +122,8 @@ export const useCartStore = defineStore('cart-store', () => {
       return await api.api.clientOrderControllerCreate(order)
     },
     onSuccess: async () => {
-      // submitSuccess.value = true
       sessionStorage.removeItem(_STORAGE_KEY)
       _cart$.value = getClientOrderDto()
-      //await router.push({ name: AdminRouterEnum.ADMIN_DASHBOARD })
     }
   })
 
@@ -135,7 +133,12 @@ export const useCartStore = defineStore('cart-store', () => {
     },
     onSuccess() {
       localStorage.removeItem(_STORAGE_KEY)
-      // submitSuccess.value = true
+    },
+    onError(error: any) {
+      toastStore.errorMessage(
+        _I18N_PREFIX + I18NSuffix.SUMMARY,
+        'error.' + error.response.data.message
+      )
     }
   })
   const getAllQuery = () => {
