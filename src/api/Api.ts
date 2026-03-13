@@ -1059,6 +1059,9 @@ export interface CreateStockDto {
   object: string
   objectId: number
   reason: string | null
+  /** @format date-time */
+  cartValidity: string | null
+  orderId: number | null
 }
 
 export interface PriceHistoryDto {
@@ -1666,33 +1669,6 @@ export interface RouteToDto {
   params: RouteParamsDto
 }
 
-export interface ClientOrderItemDto {
-  objectId: number
-  status: string
-  quantity: number
-  object: string
-  price: number
-  to: RouteToDto
-  name: string
-  factory: FactoryDto
-  comment: string
-  totalPrice: number
-  /** @example "C" */
-  category: LegislationCategoryDto | null
-  id: number
-}
-
-export interface ClientOrderDto {
-  id: number
-  shippingCost: number
-  vat: number
-  items: ClientOrderItemDto[]
-  status: string
-  message: string
-  shippingAddress: AddressDto | null
-  paymentAddress: AddressDto | null
-}
-
 export interface CreateClientOrderItemDto {
   objectId: number
   status: string
@@ -1706,6 +1682,19 @@ export interface CreateClientOrderItemDto {
   totalPrice: number
   /** @example "C" */
   category: LegislationCategoryDto | null
+  id: number | null
+  maxAvailableQuantity: number | null
+}
+
+export interface ClientOrderDto {
+  id: number
+  shippingCost: number
+  vat: number
+  items: CreateClientOrderItemDto[]
+  status: string
+  message: string
+  shippingAddress: AddressDto | null
+  paymentAddress: AddressDto | null
 }
 
 export interface CreateClientOrderDto {
@@ -1930,7 +1919,7 @@ export class HttpClient<SecurityDataType = unknown> {
 
 /**
  * @title Gears of shoot
- * @version 0.5.0
+ * @version 0.5.1
  * @contact
  *
  * Gears of shoot API

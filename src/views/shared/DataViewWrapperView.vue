@@ -98,7 +98,7 @@
                     {{ NumberFormatter(item.discountedPrice, 'euro') }}
                   </p>
                   <div class="flex flex-row-reverse md:flex-row gap-2">
-                    <add-to-cart-button :item="item" :type="type" />
+                    <add-to-cart-button :item="item" />
                   </div>
                 </div>
               </div>

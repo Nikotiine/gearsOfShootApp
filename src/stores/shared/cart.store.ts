@@ -33,6 +33,7 @@ export const useCartStore = defineStore('cart-store', () => {
   const toastStore = useToastStore()
   const _cart$ = ref<CreateClientOrderDto>({ ...getClientOrderDto() })
   const queryFilters = ref<ClientOrderFilter>({ ...buildOrderFilter() })
+  const handleErrorForm = ref()
   const cart$ = computed(() => {
     const orderInStorage = JSON.parse(<string>sessionStorage.getItem(_STORAGE_KEY))
 
@@ -42,6 +43,7 @@ export const useCartStore = defineStore('cart-store', () => {
     return _cart$.value
   })
 
+  //TODO: Ajouter l erreur dans le formulaire
   async function autoSaveCart(): Promise<void> {
     if (securityStore.isLogged.value) {
       _cart$.value.status = 'IN_CART'
@@ -101,7 +103,9 @@ export const useCartStore = defineStore('cart-store', () => {
       comment: `${item.subTitle}`,
       category: item.category ?? null,
       totalPrice: 0,
-      status: ''
+      status: '',
+      maxAvailableQuantity: item.stock,
+      id: null
     }
   }
   const getByIdQuery = (id?: string) =>
@@ -139,6 +143,7 @@ export const useCartStore = defineStore('cart-store', () => {
         _I18N_PREFIX + I18NSuffix.SUMMARY,
         'error.' + error.response.data.message
       )
+      handleErrorForm.value = error.response
     }
   })
   const getAllQuery = () => {
@@ -181,6 +186,7 @@ export const useCartStore = defineStore('cart-store', () => {
     getI18NPrefix: _I18N_PREFIX,
     removeFromCart,
     updateSavedCart,
-    autoSaveCart
+    autoSaveCart,
+    error: handleErrorForm
   }
 })

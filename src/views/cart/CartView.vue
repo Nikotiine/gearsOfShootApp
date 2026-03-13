@@ -48,6 +48,7 @@
                 inputId="quantity"
                 mode="decimal"
                 :min="0"
+                :max="slotProps.data.maxAvailableQuantity"
                 fluid
               />
               <Button
@@ -91,12 +92,11 @@ import { NumberFormatter } from '@/shared/utils/formatter.utils'
 import LegislationCategoryBadgeComponent from '@/components/__dataview/LegislationCategoryBadgeComponent.vue'
 import FormTitleComponent from '@/components/__form/FormTitleComponent.vue'
 import SaveButton from '@/components/__form/SaveButton.vue'
-import { computed, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useSecurityStore } from '@/stores/shared/security.store'
 import { useConnexionStore } from '@/stores/connexion'
-import { onBeforeRouteLeave } from 'vue-router'
-import { cartGuard } from '@/router/guards/cart.guard'
 import type { CreateClientOrderItemDto } from '@/api/Api'
+import { storeToRefs } from 'pinia'
 
 const { t } = useI18n()
 const store = useCartStore()
@@ -107,9 +107,11 @@ const { id } = defineProps<{
   id?: string
 }>()
 const { form, submit } = store.formBuilder(id)
+const { error } = storeToRefs(store)
 const remove = (item: CreateClientOrderItemDto) => {
   store.removeFromCart(item)
 }
+
 const totalItems = computed(() => {
   return form.value.items.reduce((acc, item) => acc + item.quantity, 0)
 })
@@ -142,6 +144,12 @@ watch(
     }, 1000)
   },
   { deep: false }
+)
+watch(
+  () => error,
+  (value) => {
+    console.log('error ', value)
+  }
 )
 //onBeforeRouteLeave(cartGuard)
 </script>
