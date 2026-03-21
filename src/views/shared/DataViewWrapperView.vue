@@ -214,7 +214,7 @@ import RatingComponent from '@/components/__dataview/RatingComponent.vue'
 import LegislationCategoryBadgeComponent from '@/components/__dataview/LegislationCategoryBadgeComponent.vue'
 import { NumberFormatter } from '@/shared/utils/formatter.utils'
 import type { RouteLocationRaw } from 'vue-router'
-import AddToCartButton from '@/components/cart/AddToCartButton.vue'
+import AddToCartButton from '@/components/__cart/AddToCartButton.vue'
 
 export interface DataViewProps {
   id: number

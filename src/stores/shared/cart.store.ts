@@ -21,19 +21,18 @@ import { buildOrderFilter } from '@/shared/api-dto/query-filters.builder'
 import { useUserStore } from '@/stores/user.store'
 import { useSecurityStore } from '@/stores/shared/security.store'
 
-export const useCartStore = defineStore('cart-store', () => {
-  const _STORAGE_KEY = 'cart'
+export const useCartStore = defineStore('__cart-store', () => {
+  const _STORAGE_KEY = '__cart'
   const _GET_BY_ID_FN = 'getOrderById'
   const _GET_ALL_FN = 'getAllOrders'
   const { api } = useApiStore()
   const userStore = useUserStore()
   const securityStore = useSecurityStore()
   const _I18N_PREFIX = I18nPrefix.ORDER
-
   const toastStore = useToastStore()
   const _cart$ = ref<CreateClientOrderDto>({ ...getClientOrderDto() })
   const queryFilters = ref<ClientOrderFilter>({ ...buildOrderFilter() })
-  const handleErrorForm = ref()
+
   const cart$ = computed(() => {
     const orderInStorage = JSON.parse(<string>sessionStorage.getItem(_STORAGE_KEY))
 
@@ -91,6 +90,12 @@ export const useCartStore = defineStore('cart-store', () => {
     sessionStorage.setItem(_STORAGE_KEY, JSON.stringify(_cart$.value))
   }
 
+  function clearCart() {
+    if (cart$.value) {
+      _cart$.value = getClientOrderDto()
+    }
+  }
+
   function mapItemDataViewPropsToOrderItem(item: DataViewProps): CreateClientOrderItemDto {
     return {
       object: item.object.toUpperCase(),
@@ -118,6 +123,7 @@ export const useCartStore = defineStore('cart-store', () => {
   const _fetchById = async (id?: string) => {
     if (!id) return null
     const res = await api.api.clientOrderControllerFindById(parseInt(id))
+    console.log('res', res.data)
     return res.data
   }
 
@@ -143,7 +149,6 @@ export const useCartStore = defineStore('cart-store', () => {
         _I18N_PREFIX + I18NSuffix.SUMMARY,
         'error.' + error.response.data.message
       )
-      handleErrorForm.value = error.response
     }
   })
   const getAllQuery = () => {
@@ -162,7 +167,8 @@ export const useCartStore = defineStore('cart-store', () => {
     return res.data
   }
 
-  function useOrderForm(id?: string) {
+  function useOrderForm() {
+    const id: string | undefined = userStore.getCartId?.toString() ?? undefined
     const emptyForm: CreateClientOrderDto = cart$.value
     return useFormHandler<CreateClientOrderDto, AxiosResponse<ClientOrderDto>>(
       emptyForm,
@@ -187,6 +193,6 @@ export const useCartStore = defineStore('cart-store', () => {
     removeFromCart,
     updateSavedCart,
     autoSaveCart,
-    error: handleErrorForm
+    clearCart
   }
 })

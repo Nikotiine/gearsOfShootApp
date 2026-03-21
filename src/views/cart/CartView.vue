@@ -96,18 +96,16 @@ import { computed, ref, watch } from 'vue'
 import { useSecurityStore } from '@/stores/shared/security.store'
 import { useConnexionStore } from '@/stores/connexion'
 import type { CreateClientOrderItemDto } from '@/api/Api'
-import { storeToRefs } from 'pinia'
+import { useUserStore } from '@/stores/user.store'
 
 const { t } = useI18n()
 const store = useCartStore()
 const securityStore = useSecurityStore()
 const connexionStore = useConnexionStore()
 const i18nPrefix = store.getI18NPrefix
-const { id } = defineProps<{
-  id?: string
-}>()
-const { form, submit } = store.formBuilder(id)
-const { error } = storeToRefs(store)
+
+const { form, submit } = store.formBuilder(undefined)
+
 const remove = (item: CreateClientOrderItemDto) => {
   store.removeFromCart(item)
 }
@@ -145,13 +143,6 @@ watch(
   },
   { deep: false }
 )
-watch(
-  () => error,
-  (value) => {
-    console.log('error ', value)
-  }
-)
-//onBeforeRouteLeave(cartGuard)
 </script>
 
 <style scoped></style>

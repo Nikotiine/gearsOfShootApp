@@ -4,6 +4,7 @@ import { useUserStore } from '@/stores/user.store'
 
 export const useSecurityStore = defineStore('security-store', () => {
   const _key = 'token'
+  const _CART_KEY = '__cart'
   const _isLogged = ref(false)
   const getToken = computed(() => sessionStorage.getItem(_key))
   const isLogged = computed(() => _isLogged)
@@ -34,7 +35,7 @@ export const useSecurityStore = defineStore('security-store', () => {
     _isLogged.value = true
   }
   function logout(): void {
-    sessionStorage.removeItem(_key)
+    sessionStorage.clear()
     _isLogged.value = false
     setUser(null)
   }

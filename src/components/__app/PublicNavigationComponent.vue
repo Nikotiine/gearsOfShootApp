@@ -81,7 +81,7 @@ import InvoiceButtonComponent from '@/components/__invoice/InvoiceButtonComponen
 import { useUserStore } from '@/stores/user.store'
 import { PublicRouterEnum } from '@/enum/router/public-router.enum'
 import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
-import CartButtonComponent from '@/components/cart/CartButtonComponent.vue'
+import CartButtonComponent from '@/components/__cart/CartButtonComponent.vue'
 
 const { push } = useRouter()
 const { t } = useI18n()
