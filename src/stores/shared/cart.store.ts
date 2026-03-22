@@ -21,8 +21,8 @@ import { buildOrderFilter } from '@/shared/api-dto/query-filters.builder'
 import { useUserStore } from '@/stores/user.store'
 import { useSecurityStore } from '@/stores/shared/security.store'
 
-export const useCartStore = defineStore('__cart-store', () => {
-  const _STORAGE_KEY = '__cart'
+export const useCartStore = defineStore('cart-store', () => {
+  const _STORAGE_KEY = 'cart'
   const _GET_BY_ID_FN = 'getOrderById'
   const _GET_ALL_FN = 'getAllOrders'
   const { api } = useApiStore()
@@ -121,9 +121,10 @@ export const useCartStore = defineStore('__cart-store', () => {
       retry: 0
     })
   const _fetchById = async (id?: string) => {
+    console.log('icicicicicicici', id)
     if (!id) return null
     const res = await api.api.clientOrderControllerFindById(parseInt(id))
-    console.log('res', res.data)
+    _cart$.value = res.data
     return res.data
   }
 
@@ -193,6 +194,7 @@ export const useCartStore = defineStore('__cart-store', () => {
     removeFromCart,
     updateSavedCart,
     autoSaveCart,
-    clearCart
+    clearCart,
+    setCartById: _fetchById
   }
 })

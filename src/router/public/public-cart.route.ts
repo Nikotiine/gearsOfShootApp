@@ -13,7 +13,7 @@ export const publicCartRoute: RouteRecordRaw = {
       const store = useBreadcrumbStore()
       return [
         {
-          label: store.createLabel(prefix, '__cart'),
+          label: store.createLabel(prefix, 'cart'),
           index: 1,
           to: {
             name: PublicRouterEnum.CART

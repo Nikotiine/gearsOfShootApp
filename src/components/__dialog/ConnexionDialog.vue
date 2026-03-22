@@ -25,7 +25,7 @@
           />
         </div>
         <div class="flex items-center gap-4 mb-8 text-red-500" v-if="store.login.isError">
-          {{ t('error.' + store.login.error.response.data.message) }}
+          <!--          {{ t('error.' + store.login.error.response.data.message) }}-->
         </div>
 
         <div class="flex justify-end gap-2">

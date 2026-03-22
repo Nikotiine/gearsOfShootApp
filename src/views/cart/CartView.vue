@@ -104,7 +104,7 @@ const securityStore = useSecurityStore()
 const connexionStore = useConnexionStore()
 const i18nPrefix = store.getI18NPrefix
 
-const { form, submit } = store.formBuilder(undefined)
+const { form, submit } = store.formBuilder()
 
 const remove = (item: CreateClientOrderItemDto) => {
   store.removeFromCart(item)
