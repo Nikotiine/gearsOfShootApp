@@ -1,55 +1,56 @@
 <template>
-  <div class="" v-if="optic">
-    <h2 class="text-2xl font-bold mb-4 text-center mt-10">
-      <span class="text-blue-500">{{ t('global.optic') }}</span> : {{ optic.factory.name }} -
-      {{ optic.name }}
-    </h2>
+  <h2 class="text-2xl font-bold mb-4 text-center mt-10" v-if="optic">
+    <span class="text-blue-500">{{ t('global.optic') }}</span> : {{ optic.factory.name }} -
+    {{ optic.name }}
+  </h2>
 
-    <div class="p-6 mt-6" v-if="optic">
-      <Tabs value="0">
-        <TabList>
-          <Tab value="0">{{ t('global.importantInformation') }}</Tab>
-          <Tab value="1">{{ t('global.otherInformation') }}</Tab>
-          <Tab value="2">{{ t('global.description') }}</Tab>
-          <Tab value="3">{{ t('global.associatedProducts') }}</Tab>
-          <Tab value="4" v-if="$route.meta.admin">{{ t('global.price') }}</Tab>
-          <Tab value="5" v-if="$route.meta.admin">{{ t('global.stock') }}</Tab>
-        </TabList>
-        <TabPanels>
-          <TabPanel value="0">
-            <TabCardComponent :props="importantInfo" v-if="importantInfo" />
-          </TabPanel>
-          <TabPanel value="1">
-            <TabCardComponent :props="otherInformation" v-if="otherInformation" />
-          </TabPanel>
-          <TabPanel value="2">
-            <p>
-              {{
-                optic.description && optic.description.length > 0
-                  ? optic.description
-                  : t('global.notRegistered')
-              }}
-            </p>
-          </TabPanel>
-          <TabPanel value="3">
-            <p>//</p>
-          </TabPanel>
-          <TabPanel value="4" v-if="$route.meta.admin">
-            <tab-price-component :id="id" type="OPTIC" :price="optic.priceHistory" />
-          </TabPanel>
-          <TabPanel value="5" v-if="$route.meta.admin">
-            <tab-stock-component :stock="optic.stock" />
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
-      <audit-info-component
-        :created-by="optic.createdBy"
-        :updated-by="optic.updatedBy"
-        :created-at="optic.createdAt"
-        :update-at="optic.updatedAt"
-        v-if="$route.meta.admin"
-      />
-    </div>
+  <div class="p-6 mt-6" v-if="optic">
+    <Tabs value="0">
+      <TabList>
+        <Tab value="0">{{ t('global.importantInformation') }}</Tab>
+        <Tab value="1">{{ t('global.otherInformation') }}</Tab>
+        <Tab value="2">{{ t('global.description') }}</Tab>
+        <Tab value="3">{{ t('global.associatedProducts') }}</Tab>
+        <Tab value="4" v-if="$route.meta.admin">{{ t('global.price') }}</Tab>
+        <Tab value="5" v-if="$route.meta.admin">{{ t('global.stock') }}</Tab>
+      </TabList>
+      <TabPanels>
+        <TabPanel value="0">
+          <TabCardComponent :props="importantInfo" v-if="importantInfo" />
+        </TabPanel>
+        <TabPanel value="1">
+          <TabCardComponent :props="otherInformation" v-if="otherInformation" />
+        </TabPanel>
+        <TabPanel value="2">
+          <p>
+            {{
+              optic.description && optic.description.length > 0
+                ? optic.description
+                : t('global.notRegistered')
+            }}
+          </p>
+        </TabPanel>
+        <TabPanel value="3">
+          <p>//</p>
+        </TabPanel>
+        <TabPanel value="4" v-if="$route.meta.admin">
+          <tab-price-component :id="id" type="OPTIC" :price="optic.priceHistory" />
+        </TabPanel>
+        <TabPanel value="5" v-if="$route.meta.admin">
+          <tab-stock-component :stock="optic.stock" />
+        </TabPanel>
+      </TabPanels>
+    </Tabs>
+    <audit-info-component
+      :created-by="optic.createdBy"
+      :updated-by="optic.updatedBy"
+      :created-at="optic.createdAt"
+      :update-at="optic.updatedAt"
+      v-if="$route.meta.admin"
+    />
+  </div>
+  <div class="flex justify-center">
+    <add-to-cart-button :item="item" v-if="item" />
   </div>
 </template>
 <script setup lang="ts">
@@ -72,6 +73,7 @@ import TabPanel from 'primevue/tabpanel'
 import AuditInfoComponent from '@/components/__detail/AuditInfoComponent.vue'
 import TabStockComponent from '@/components/__tabs/TabStockComponent.vue'
 import TabPriceComponent from '@/components/__tabs/TabPriceComponent.vue'
+import AddToCartButton from '@/components/__cart/AddToCartButton.vue'
 
 const { t } = useI18n()
 const store = useOpticStore()
@@ -80,6 +82,12 @@ const { id } = defineProps<{
 }>()
 
 const { data: optic } = store.getById(id)
+const item = computed(() => {
+  if (optic.value) {
+    return store.mapDtoToDataViewProps(optic.value)
+  }
+  return null
+})
 const importantInfo = computed(() => {
   if (!optic.value) return undefined
   return [

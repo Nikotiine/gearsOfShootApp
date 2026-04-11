@@ -9,25 +9,35 @@ import { computed } from 'vue'
 import type { SoundNoiseReducerDto } from '@/api/Api'
 import DataViewWrapperView, { type DataViewProps } from '@/views/shared/DataViewWrapperView.vue'
 import TableTitleComponent from '@/components/__table/TableTitleComponent.vue'
+import { PublicRouterEnum } from '@/enum/router/public-router.enum'
 
 const store = useSoundReducerStore()
 const i18nPrefix = store.getI18NPrefix
 const { data: rds, isError, isLoading } = store.getAll()
 const data = computed<DataViewProps[]>(() => {
-  if (!rds.value?.data) {
+  if (!rds.value) {
     return []
   }
 
-  return rds.value.data.map((rds: SoundNoiseReducerDto) => ({
-    id: rds.id,
-    name: rds.name ?? '',
-    stock: rds.inStock ?? 0,
-    price: rds.priceHistory.currentSalePrice ?? 0,
-    factory: rds.factory,
-    subTitle: `Calibre: ${rds.caliber.name}, Filetage: ${rds.threadedSize.size}`,
-    description: rds.description ?? '',
-    discountedPrice: rds.priceHistory.discountedPrice
-  }))
+  return rds.value.data.map((rds: SoundNoiseReducerDto) => {
+    return {
+      id: rds.id,
+      name: rds.name ?? '',
+      stock: rds.inStock ?? 0,
+      price: rds.priceHistory.currentSalePrice ?? 0,
+      factory: rds.factory,
+      subTitle: `Calibre: ${rds.caliber.name}, Filetage: ${rds.threadedSize.size}`,
+      description: rds.description ?? '',
+      discountedPrice: rds.priceHistory.discountedPrice,
+      to: {
+        name: PublicRouterEnum.PUBLIC_RDS_DETAIL,
+        params: {
+          id: rds.id
+        }
+      },
+      object: 'rds'
+    }
+  })
 })
 </script>
 

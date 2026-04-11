@@ -57,6 +57,9 @@
       :update-at="riffle.updatedAt"
     />
   </div>
+  <div class="flex justify-center">
+    <add-to-cart-button :item="item" v-if="item" />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -79,6 +82,7 @@ import {
 import AuditInfoComponent from '@/components/__detail/AuditInfoComponent.vue'
 import TabPriceComponent from '@/components/__tabs/TabPriceComponent.vue'
 import TabStockComponent from '@/components/__tabs/TabStockComponent.vue'
+import AddToCartButton from '@/components/__cart/AddToCartButton.vue'
 
 const { t } = useI18n()
 const store = useRiffleStore()
@@ -86,7 +90,12 @@ const { id } = defineProps<{
   id: string
 }>()
 const { data: riffle } = store.getRiffleById(id)
-
+const item = computed(() => {
+  if (riffle.value) {
+    return store.mapDtoToDataViewProps(riffle.value)
+  }
+  return null
+})
 const importantInfo = computed(() => {
   if (!riffle.value) return undefined
   return [

@@ -21,6 +21,8 @@ import { getPercussionTypeDto } from '@/shared/api-dto/get-percussion-type.dto'
 import { getPriceHistoryDto } from '@/shared/api-dto/get-price-history.dto'
 import { buildAmmunitionFilters } from '@/shared/api-dto/query-filters.builder'
 import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
+import type { DataViewProps } from '@/views/shared/DataViewWrapperView.vue'
+import { PublicRouterEnum } from '@/enum/router/public-router.enum'
 
 export const useAmmunitionStore = defineStore('ammunition-store', () => {
   // Appel API
@@ -124,6 +126,28 @@ export const useAmmunitionStore = defineStore('ammunition-store', () => {
     _deleteAmmunitionMutation.mutate(id)
   }
 
+  const mapDtoToDataViewProps = (ammo: AmmunitionDto): DataViewProps => {
+    return {
+      id: ammo.id,
+      name: ammo.name,
+      factory: ammo.factory,
+      category: ammo.category,
+      stock: ammo.inStock,
+      description: ammo.description ?? '',
+      subTitle: `Calibre ${ammo.caliber.name}, Packaging: ${ammo.packaging}`,
+      price: ammo.priceHistory.currentSalePrice,
+      discountedPrice: ammo.priceHistory.discountedPrice,
+      to: {
+        name: PublicRouterEnum.PUBLIC_AMMUNITION_DETAIL,
+        params: {
+          id: ammo.id,
+          category: ammo.category.name
+        }
+      },
+      object: 'ammunition'
+    }
+  }
+
   return {
     delete: deleteFunction,
     getByCategory: queryFindAllFilteredAmmunitions,
@@ -131,6 +155,7 @@ export const useAmmunitionStore = defineStore('ammunition-store', () => {
     ammunition$: ammunition,
     formBuilder: useAmmunitionForm,
     getI18NPrefix: _I18N_PREFIX,
-    queryFilters$: queryFilters
+    queryFilters$: queryFilters,
+    mapDtoToDataViewProps
   }
 })

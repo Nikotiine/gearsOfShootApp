@@ -12,6 +12,7 @@ export enum I18nPrefix {
   HEADTYPE = 'headType.',
   INVOICE = 'invoice.',
   ORDER = 'order.',
+  ADDRESS = 'address.',
   LEGALISATION_CATEGORY = 'legalisationCategory.',
   MLOCK = 'mLockOption.',
   MATERIAL = 'material.',

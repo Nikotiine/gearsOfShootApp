@@ -9,6 +9,7 @@ import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user.store'
 import { AdminRouterEnum } from '@/enum/router/admin-router.enum'
 import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
+import { useCartStore } from '@/stores/shared/cart.store'
 
 /**
  * 📦 Store de gestion de la connexion utilisateur (`useConnexionStore`).
@@ -68,7 +69,8 @@ import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
  */
 export const useConnexionStore = defineStore('connexion', () => {
   const { setToken } = useSecurityStore()
-  const { getUserProfile, isAdmin } = useUserStore()
+  const { getUserProfile, isAdmin, getCartId } = useUserStore()
+  const { setCartById } = useCartStore()
   const isVisible = ref(false)
   const router = useRouter()
   const form = ref({
@@ -116,10 +118,16 @@ export const useConnexionStore = defineStore('connexion', () => {
     onSuccess: async (res) => {
       await setToken(res.data.accessToken)
       successMessage('connexion.summary', `connexion.login.success`)
-      await getUserProfile()
+      const userProfile = await getUserProfile()
+      const inCartId = userProfile.data.inCartId
+      if (inCartId) {
+        // On met a jour le parnier si existant en bdd
+        await setCartById(inCartId.toString())
+      }
       if (isAdmin.value) {
         await router.push({ name: AdminRouterEnum.ADMIN_DASHBOARD })
       }
+
       toggleConnexionDialog()
     },
     onError() {

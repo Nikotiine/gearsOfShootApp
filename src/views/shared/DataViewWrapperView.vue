@@ -76,7 +76,7 @@
                   </div>
                   <div class="flex gap-2">
                     <rating-component :rating="5" />
-                    <legistaltion-category-badge-component
+                    <legislation-category-badge-component
                       :category="item.category ? item.category.name : null"
                     />
                   </div>
@@ -98,7 +98,7 @@
                     {{ NumberFormatter(item.discountedPrice, 'euro') }}
                   </p>
                   <div class="flex flex-row-reverse md:flex-row gap-2">
-                    <add-to-cart-button :item="item" :type="type" />
+                    <add-to-cart-button :item="item" />
                   </div>
                 </div>
               </div>
@@ -157,7 +157,7 @@
                   </div>
                   <div class="flex flex-col gap-2">
                     <rating-component :rating="5" />
-                    <legistaltion-category-badge-component
+                    <legislation-category-badge-component
                       :category="item.category ? item.category.name : null"
                     />
                   </div>
@@ -211,10 +211,10 @@ import type { RoutableObjectType } from '@/types/routable.type'
 import type { FactoryDto, LegislationCategoryDto } from '@/api/Api'
 import { useI18n } from 'vue-i18n'
 import RatingComponent from '@/components/__dataview/RatingComponent.vue'
-import LegistaltionCategoryBadgeComponent from '@/components/__dataview/LegistaltionCategoryBadgeComponent.vue'
+import LegislationCategoryBadgeComponent from '@/components/__dataview/LegislationCategoryBadgeComponent.vue'
 import { NumberFormatter } from '@/shared/utils/formatter.utils'
 import type { RouteLocationRaw } from 'vue-router'
-import AddToCartButton from '@/components/cart/AddToCartButton.vue'
+import AddToCartButton from '@/components/__cart/AddToCartButton.vue'
 
 export interface DataViewProps {
   id: number

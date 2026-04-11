@@ -13,11 +13,14 @@ import { ref } from 'vue'
 import { useSecurityStore } from '@/stores/shared/security.store'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user.store'
+import { PublicRouterEnum } from '@/enum/router/public-router.enum'
+import { useCartStore } from '@/stores/shared/cart.store'
 
 const { t, locale } = useI18n()
 const { push } = useRouter()
 const { logout } = useSecurityStore()
 const { isAdmin } = useUserStore()
+const { clearCart } = useCartStore()
 const items: MenuItem = ref([
   {
     label: t('connexion.myAccount'),
@@ -29,7 +32,7 @@ const items: MenuItem = ref([
   },
   {
     label: t('connexion.myInvoices'),
-    icon: 'pi pi-shopping-cart',
+    icon: 'pi pi-shopping-__cart',
     subtext: 'Subtext of item'
   },
 
@@ -60,7 +63,8 @@ const items: MenuItem = ref([
     icon: 'pi pi-unlock',
     command: () => {
       logout()
-      push('/')
+      clearCart()
+      push({ name: PublicRouterEnum.HOME })
     }
   }
 ])

@@ -4,11 +4,20 @@
       v-model:visible="isVisible$"
       modal
       :header="t(i18nPrefix + 'title')"
-      :style="{ width: '25rem' }"
+      :style="{ width: '30rem' }"
     >
-      <span class="text-surface-500 dark:text-surface-400 block mb-8">{{
-        t(i18nPrefix + 'subtitle')
-      }}</span>
+      <div class="flex justify-between">
+        <p class="text-surface-500 dark:text-surface-400 block mb-8">
+          {{ t(i18nPrefix + 'subtitle') }}
+        </p>
+        <p
+          class="text-blue-500 dark:text-blue-400 block mb-8 cursor-pointer"
+          @click="onClickToRegister"
+        >
+          {{ t(i18nPrefix + 'noAccount') }}
+        </p>
+      </div>
+
       <form @submit.prevent="submit">
         <div class="flex items-center gap-4 mb-4">
           <label for="email" class="font-semibold w-24">Email</label>
@@ -25,7 +34,7 @@
           />
         </div>
         <div class="flex items-center gap-4 mb-8 text-red-500" v-if="store.login.isError">
-          {{ t('error.' + store.login.error.response.data.message) }}
+          <!--          {{ t('error.' + store.login.error.response.data.message) }}-->
         </div>
 
         <div class="flex justify-end gap-2">
@@ -51,8 +60,9 @@ import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
 import { useEmailValidator } from '@/stores/email.validator'
 import { storeToRefs } from 'pinia'
-//TODO: Mettre u btn pour register depuis ce composant
+import { useRegisterStore } from '@/stores/register'
 const store = useConnexionStore()
+const registerStore = useRegisterStore()
 const { isVisible$, form$ } = storeToRefs(store)
 const { t } = useI18n()
 const { test } = useEmailValidator()
@@ -72,6 +82,10 @@ const isFormValid = computed(() => {
   }
   return isValid
 })
+const onClickToRegister = () => {
+  store.toggleConnexionDialog()
+  registerStore.toggleRegisterDialog()
+}
 </script>
 
 <style scoped></style>

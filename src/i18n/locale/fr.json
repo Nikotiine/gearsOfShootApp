@@ -151,7 +151,22 @@
     "logout": "Deconnexion",
     "myAccount": "Mon compte",
     "myInvoices": "Mes achats",
-    "admin": "Administration"
+    "admin": "Administration",
+    "noAccount": "Pas encore de compte ?"
+  },
+  "register": {
+    "title": "Creer votre compte",
+    "subtitle": "Remplisser les informations",
+    "firstName": "Prenom",
+    "lastName": "Nom",
+    "phone": "Telephone",
+    "city": "Ville",
+    "state": "Pays",
+    "address": "Adresse",
+    "zipCode": "Code postal",
+    "success": "Activez votre compte avec le code recu dans le mail",
+    "summary": "Gestion des comote",
+    "create": "Creation"
   },
   "dashboard": {
     "home": "Accueil",
@@ -171,7 +186,7 @@
     "cancel": "Annuler",
     "french": "Francais",
     "english": "Anglais",
-    "pleaseConnect": "Pour continuer veillez vus connecter",
+
     "next": "Suivant",
     "noCategory": "Vente libre",
     "name": "Nom",
@@ -713,6 +728,7 @@
     "0002": "Indentifiants invalides",
     "0100": "Type de douille deja existante",
     "0102": "Munition deja existante",
+    "0107": "Stock munition insuffisant",
     "0200": "Type d arme deja existante",
     "0201": "Arme deja existante",
     "0302": "Optique non trouve, veuillez recommencez",
@@ -733,7 +749,9 @@
     "isCatCItem": "Article sous a declaration",
     "isCatBItem": "Article sous a autorisation",
     "isCatDItem": "Vente uniquement aux majeurs",
-    "isNoCategory": "Vente libre"
+    "isNoCategory": "Vente libre",
+    "pleaseConnect": "Pour continuer veillez vus connecter",
+    "nextStep": "Etape suivante"
   },
   "inputText": {
     "label": "Saisir un texte"
@@ -851,6 +869,13 @@
     "object": "Rayon",
     "comment": "Details",
     "totalPriceItem": "Prix total",
-    "save": "Mon panier en cours"
+    "save": "Mon panier en cours",
+    "cartAddress": "Adresse"
+  },
+  "address": {
+    "sendToThisOne": "Envoyer a cette adresse",
+    "selectShippingAddress": "Selectionnez votre addresse de livraison",
+    "selectShop": "Retrait a la boutique",
+    "collect": "Click & collect"
   }
 }

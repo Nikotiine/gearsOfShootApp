@@ -10,9 +10,10 @@ export const useUserStore = defineStore('user-store', () => {
   const { api } = useApiStore()
   const _user = ref<UserDto | null>(null)
   const _isAdmin = ref(false)
-  const _GET_ALL_FN = 'getAllFactories'
+  const _GET_ALL_FN = 'getAllUsers'
   const queryFilters = ref<UserFilter>({ ...buildUsersFilter() })
   const user = computed(() => _user)
+  const cartId = computed(() => (_user.value && _user.value.inCartId ? _user.value.inCartId : null))
   const isAdmin = computed(() => _isAdmin)
   function setUser(user: UserDto | null): void {
     _user.value = user
@@ -22,7 +23,6 @@ export const useUserStore = defineStore('user-store', () => {
   async function getUserProfile() {
     const res = await api.api.authControllerMe()
     setUser(res.data)
-
     return res
   }
   const queryFindAll = () =>
@@ -46,6 +46,7 @@ export const useUserStore = defineStore('user-store', () => {
     getUserProfile,
     isAdmin,
     getAll: queryFindAll,
-    queryFilter$: queryFilters
+    queryFilter$: queryFilters,
+    getCartId: cartId
   }
 })

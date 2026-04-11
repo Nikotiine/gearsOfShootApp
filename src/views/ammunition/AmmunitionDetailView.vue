@@ -45,6 +45,9 @@
       v-if="$route.meta.admin"
     />
   </div>
+  <div class="flex justify-center">
+    <add-to-cart-button :item="item" v-if="item" />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -62,6 +65,7 @@ import TabPanel from 'primevue/tabpanel'
 import AuditInfoComponent from '@/components/__detail/AuditInfoComponent.vue'
 import TabPriceComponent from '@/components/__tabs/TabPriceComponent.vue'
 import TabStockComponent from '@/components/__tabs/TabStockComponent.vue'
+import AddToCartButton from '@/components/__cart/AddToCartButton.vue'
 
 const { id } = defineProps<{
   id: string
@@ -71,6 +75,13 @@ const store = useAmmunitionStore()
 const { t } = useI18n()
 
 const { data: ammo } = store.getById(id)
+
+const item = computed(() => {
+  if (ammo.value) {
+    return store.mapDtoToDataViewProps(ammo.value)
+  }
+  return null
+})
 const importantInfo = computed(() => {
   if (!ammo.value) return undefined
   return [

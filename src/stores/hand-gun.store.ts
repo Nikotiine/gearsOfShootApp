@@ -17,6 +17,8 @@ import { getTriggerTypeDto } from '@/shared/api-dto/get-trigger-type.dto'
 import { getPriceHistoryDto } from '@/shared/api-dto/get-price-history.dto'
 import { buildHandGunFilter } from '@/shared/api-dto/query-filters.builder'
 import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
+import type { DataViewProps } from '@/views/shared/DataViewWrapperView.vue'
+import { PublicRouterEnum } from '@/enum/router/public-router.enum'
 
 export const useHandGunStore = defineStore('hand-gun-store', () => {
   // Appel API
@@ -147,12 +149,35 @@ export const useHandGunStore = defineStore('hand-gun-store', () => {
     )
   }
 
+  const mapDtoToDataViewProps = (handgun: HandGunDto): DataViewProps => {
+    return {
+      id: handgun.id,
+      name: handgun.name,
+      factory: handgun.factory,
+      category: handgun.category,
+      stock: handgun.inStock,
+      description: handgun.description ?? '',
+      subTitle: `${handgun.type.name} - Calibre ${handgun.caliber.name} `,
+      price: handgun.priceHistory.currentSalePrice,
+      discountedPrice: handgun.priceHistory.discountedPrice,
+      to: {
+        name: PublicRouterEnum.PUBLIC_HANDGUN_DETAIL,
+        params: {
+          id: handgun.id,
+          category: handgun.category.name
+        }
+      },
+      object: 'magazine'
+    }
+  }
+
   return {
     formBuilder: useHandGunForm,
     delete: deleteFunction,
     getHandGunById: getByIdQuery,
     getAll: getAllHandgunQuery,
     getI18NPrefix: _I18N_PREFIX,
-    queryFilters$: queryFilters
+    queryFilters$: queryFilters,
+    mapDtoToDataViewProps
   }
 })

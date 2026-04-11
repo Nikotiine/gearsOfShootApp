@@ -24,6 +24,8 @@ import { getPriceHistoryDto } from '@/shared/api-dto/get-price-history.dto'
 import { I18NSuffix } from '@/enum/I18NSuffix.enum'
 import { buildOpticFilter } from '@/shared/api-dto/query-filters.builder'
 import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
+import { PublicRouterEnum } from '@/enum/router/public-router.enum'
+import type { DataViewProps } from '@/views/shared/DataViewWrapperView.vue'
 
 export const useOpticStore = defineStore('optic-store', () => {
   // Appel API
@@ -147,6 +149,26 @@ export const useOpticStore = defineStore('optic-store', () => {
       })
     )
   }
+  const mapDtoToDataViewProps = (optic: OpticDto): DataViewProps => {
+    return {
+      id: optic.id,
+      name: optic.name,
+      stock: optic.inStock ?? 0,
+      price: optic.priceHistory.currentSalePrice ?? 0,
+      factory: optic.factory,
+      subTitle: `Type: ${optic.opticType.name}| ${optic.minZoom}-${optic.maxZoom}x${optic.lensDiameter}`,
+      description: optic.description ?? '',
+      discountedPrice: optic.priceHistory.discountedPrice,
+      category: undefined,
+      to: {
+        name: PublicRouterEnum.PUBLIC_OPTIC_DETAIL,
+        params: {
+          id: optic.id
+        }
+      },
+      object: 'optic'
+    }
+  }
 
   return {
     delete: deleteFunction,
@@ -157,6 +179,7 @@ export const useOpticStore = defineStore('optic-store', () => {
     getById: getByIdQuery,
     formBuilder: useOpticForm,
     getI18NPrefix: _I18N_PREFIX,
-    queryFilter$: queryFilters
+    queryFilter$: queryFilters,
+    mapDtoToDataViewProps
   }
 })

@@ -4,7 +4,7 @@
       type="submit"
       :label="t('global.' + status)"
       :disabled="disabled"
-      v-tooltip.bottom="status === 'next' ? t('global.pleaseConnect') : ''"
+      v-tooltip.bottom="tooltip ? t('tooltip.' + tooltip) : ''"
     ></Button>
   </div>
 </template>
@@ -15,9 +15,14 @@ import type { FormStatus } from '@/types/form-status.type'
 
 const { t } = useI18n()
 
-const { disabled = false, status } = defineProps<{
+const {
+  disabled = false,
+  status,
+  tooltip = null
+} = defineProps<{
   disabled?: boolean
   status: FormStatus
+  tooltip?: string
 }>()
 </script>
 

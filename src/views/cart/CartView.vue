@@ -27,7 +27,7 @@
 
         <Column field="object" :header="t('global.category')" style="max-width: 6rem">
           <template #body="slotProps">
-            <legistaltion-category-badge-component
+            <legislation-category-badge-component
               :category="slotProps.data.category ? slotProps.data.category.name : null"
             />
           </template>
@@ -48,6 +48,7 @@
                 inputId="quantity"
                 mode="decimal"
                 :min="0"
+                :max="slotProps.data.maxAvailableQuantity"
                 fluid
               />
               <Button
@@ -76,7 +77,7 @@
       <p>Prix a regler : {{ NumberFormatter(totalOrder, 'euro') }}</p>
     </div>
     <div class="text-center">
-      <save-button :disabled="!isFormValid" status="next" />
+      <save-button :disabled="!isFormValid" status="next" :tooltip="tooltip" />
     </div>
   </form>
 </template>
@@ -88,26 +89,29 @@ import DataTable from 'primevue/datatable'
 import Button from 'primevue/button'
 import { useI18n } from 'vue-i18n'
 import { NumberFormatter } from '@/shared/utils/formatter.utils'
-import type { CreateClientOrderItem } from '@/api/Api'
-import LegistaltionCategoryBadgeComponent from '@/components/__dataview/LegistaltionCategoryBadgeComponent.vue'
+import LegislationCategoryBadgeComponent from '@/components/__dataview/LegislationCategoryBadgeComponent.vue'
 import FormTitleComponent from '@/components/__form/FormTitleComponent.vue'
 import SaveButton from '@/components/__form/SaveButton.vue'
 import { computed, watch } from 'vue'
 import { useSecurityStore } from '@/stores/shared/security.store'
 import { useConnexionStore } from '@/stores/connexion'
+import type { CreateClientOrderItemDto } from '@/api/Api'
+import { useRouter } from 'vue-router'
+import { PublicRouterEnum } from '@/enum/router/public-router.enum'
 
 const { t } = useI18n()
 const store = useCartStore()
 const securityStore = useSecurityStore()
 const connexionStore = useConnexionStore()
+const router = useRouter()
 const i18nPrefix = store.getI18NPrefix
-const { id } = defineProps<{
-  id?: string
-}>()
-const { form, submit } = store.formBuilder(id)
-const remove = (item: CreateClientOrderItem) => {
+
+const { form, submit } = store.formBuilder()
+
+const remove = (item: CreateClientOrderItemDto) => {
   store.removeFromCart(item)
 }
+
 const totalItems = computed(() => {
   return form.value.items.reduce((acc, item) => acc + item.quantity, 0)
 })
@@ -116,9 +120,16 @@ const totalOrder = computed(() => {
 })
 //***********************Validateur*************************
 const isFormValid = computed(() => {
-  return form.value.items.every((item: CreateClientOrderItem) => {
+  return form.value.items.every((item: CreateClientOrderItemDto) => {
     return item.quantity > 0
   })
+})
+
+const tooltip = computed(() => {
+  if (isFormValid.value && securityStore.isLogged.value) {
+    return 'nextStep'
+  }
+  return 'pleaseConnect'
 })
 
 const onSubmit = (data: any) => {
@@ -126,13 +137,19 @@ const onSubmit = (data: any) => {
     connexionStore.toggleConnexionDialog()
   } else {
     console.log('Aller en step 2: adresse')
+    router.push({ name: PublicRouterEnum.CART_ADDRESS })
   }
 }
-
+let timeout: any = null
 watch(
   () => form.value.items.map((i) => i.quantity),
   () => {
+    clearTimeout(timeout)
     store.updateSavedCart(form.value)
+    timeout = setTimeout(() => {
+      store.autoSaveCart()
+      console.log('Aller en step 2: adresse')
+    }, 1000)
   },
   { deep: false }
 )

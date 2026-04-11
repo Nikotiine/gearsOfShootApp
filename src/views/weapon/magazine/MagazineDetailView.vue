@@ -42,6 +42,9 @@
       v-if="$route.meta.admin"
     />
   </div>
+  <div class="flex justify-center">
+    <add-to-cart-button :item="item" v-if="item" />
+  </div>
 </template>
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
@@ -57,6 +60,7 @@ import { NumberFormatter } from '@/shared/utils/formatter.utils'
 import AuditInfoComponent from '@/components/__detail/AuditInfoComponent.vue'
 import TabPriceComponent from '@/components/__tabs/TabPriceComponent.vue'
 import TabStockComponent from '@/components/__tabs/TabStockComponent.vue'
+import AddToCartButton from '@/components/__cart/AddToCartButton.vue'
 
 const store = useWeaponMagazineStore()
 const { t } = useI18n()
@@ -64,6 +68,12 @@ const { id } = defineProps<{
   id: string
 }>()
 const { data: magazine } = store.getById(id)
+const item = computed(() => {
+  if (magazine.value) {
+    return store.mapDtoToDataViewProps(magazine.value)
+  }
+  return null
+})
 const importantInfo = computed(() => {
   if (!magazine.value) return undefined
   return [

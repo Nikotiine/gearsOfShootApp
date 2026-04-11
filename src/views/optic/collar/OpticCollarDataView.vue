@@ -9,6 +9,7 @@ import { computed } from 'vue'
 import DataViewWrapperView, { type DataViewProps } from '@/views/shared/DataViewWrapperView.vue'
 import type { OpticCollarDto } from '@/api/Api'
 import TableTitleComponent from '@/components/__table/TableTitleComponent.vue'
+import { PublicRouterEnum } from '@/enum/router/public-router.enum'
 
 const store = useOpticCollarStore()
 
@@ -27,7 +28,15 @@ const data = computed<DataViewProps[]>(() => {
       factory: collar.factory,
       subTitle: `Rail: ${collar.railSize.name}`,
       description: collar.description ?? '',
-      category: null
+      category: undefined,
+      discountedPrice: collar.priceHistory.discountedPrice,
+      to: {
+        name: PublicRouterEnum.PUBLIC_OPTIC_COLLAR_DETAIL,
+        params: {
+          id: collar.id
+        }
+      },
+      object: 'optic-collar'
     }
   })
 })

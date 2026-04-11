@@ -40,7 +40,8 @@ const data = computed<DataViewProps[]>(() => {
       to: {
         name: PublicRouterEnum.PUBLIC_AMMUNITION_DETAIL,
         params: {
-          id: ammo.id
+          id: ammo.id,
+          category: ammo.category.name
         }
       },
       object: 'ammunition'
