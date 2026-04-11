@@ -21,6 +21,8 @@ import { I18NSuffix } from '@/enum/I18NSuffix.enum'
 import { ref } from 'vue'
 import { buildRdsFilter } from '@/shared/api-dto/query-filters.builder'
 import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
+import { PublicRouterEnum } from '@/enum/router/public-router.enum'
+import type { DataViewProps } from '@/views/shared/DataViewWrapperView.vue'
 
 export const useSoundReducerStore = defineStore('sound-noise-reducer-store', () => {
   // Appel API
@@ -121,6 +123,25 @@ export const useSoundReducerStore = defineStore('sound-noise-reducer-store', () 
       })
     )
   }
+  const mapDtoToDataViewProps = (rds: SoundNoiseReducerDto): DataViewProps => {
+    return {
+      id: rds.id,
+      name: rds.name ?? '',
+      stock: rds.inStock ?? 0,
+      price: rds.priceHistory.currentSalePrice ?? 0,
+      factory: rds.factory,
+      subTitle: `Calibre: ${rds.caliber.name}, Filetage: ${rds.threadedSize.size}`,
+      description: rds.description ?? '',
+      discountedPrice: rds.priceHistory.discountedPrice,
+      to: {
+        name: PublicRouterEnum.PUBLIC_RDS_DETAIL,
+        params: {
+          id: rds.id
+        }
+      },
+      object: 'rds'
+    }
+  }
 
   return {
     getById: getByIdQuery,
@@ -128,6 +149,7 @@ export const useSoundReducerStore = defineStore('sound-noise-reducer-store', () 
     formBuilder: useSoundNoiseForm,
     getI18NPrefix: _I18N_PREFIX,
     delete: deleteFunction,
-    queryFilters$: queryFilters
+    queryFilters$: queryFilters,
+    mapDtoToDataViewProps
   }
 })

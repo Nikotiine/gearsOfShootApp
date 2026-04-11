@@ -9,6 +9,7 @@ import { computed, onBeforeMount, watch } from 'vue'
 import type { WeaponMagazineDto } from '@/api/Api'
 import DataViewWrapperView, { type DataViewProps } from '@/views/shared/DataViewWrapperView.vue'
 import TableTitleComponent from '@/components/__table/TableTitleComponent.vue'
+import { PublicRouterEnum } from '@/enum/router/public-router.enum'
 
 const { category } = defineProps<{
   category: string
@@ -35,7 +36,15 @@ const data = computed<DataViewProps[]>(() => {
       description: magazine.description ?? '',
       subTitle: `Calibre ${magazine.caliber.name} `,
       price: magazine.priceHistory.currentSalePrice,
-      discountedPrice: magazine.priceHistory.discountedPrice
+      discountedPrice: magazine.priceHistory.discountedPrice,
+      to: {
+        name: PublicRouterEnum.PUBLIC_MAGAZINE_DETAIL,
+        params: {
+          id: magazine.id,
+          category: magazine.category.name
+        }
+      },
+      object: 'magazine'
     }
   })
 })

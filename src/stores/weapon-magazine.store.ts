@@ -20,6 +20,8 @@ import { getPriceHistoryDto } from '@/shared/api-dto/get-price-history.dto'
 import { I18NSuffix } from '@/enum/I18NSuffix.enum'
 import { buildMagazineFilter } from '@/shared/api-dto/query-filters.builder'
 import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
+import type { DataViewProps } from '@/views/shared/DataViewWrapperView.vue'
+import { PublicRouterEnum } from '@/enum/router/public-router.enum'
 
 export const useWeaponMagazineStore = defineStore('weapon-magazine-store', () => {
   // Appel API
@@ -153,6 +155,28 @@ export const useWeaponMagazineStore = defineStore('weapon-magazine-store', () =>
     _deleteMagazineMutation.mutate(id)
   }
 
+  const mapDtoToDataViewProps = (magazine: WeaponMagazineDto): DataViewProps => {
+    return {
+      id: magazine.id,
+      name: magazine.reference,
+      factory: magazine.factory,
+      category: magazine.category,
+      stock: magazine.inStock,
+      description: magazine.description ?? '',
+      subTitle: `Calibre ${magazine.caliber.name} `,
+      price: magazine.priceHistory.currentSalePrice,
+      discountedPrice: magazine.priceHistory.discountedPrice,
+      to: {
+        name: PublicRouterEnum.PUBLIC_MAGAZINE_DETAIL,
+        params: {
+          id: magazine.id,
+          category: magazine.category.name
+        }
+      },
+      object: 'magazine'
+    }
+  }
+
   return {
     getAll: getAllQuery,
     getById: getByIdQuery,
@@ -165,6 +189,7 @@ export const useWeaponMagazineStore = defineStore('weapon-magazine-store', () =>
     compatibleWeapons$: weapons,
     getI18NPrefix: _I18N_PREFIX,
     submitSuccess,
-    queryFilters$: queryFilters
+    queryFilters$: queryFilters,
+    mapDtoToDataViewProps
   }
 })

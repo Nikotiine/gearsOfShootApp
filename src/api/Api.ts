@@ -159,6 +159,19 @@ export interface CreateOpticReadyPlateDto {
   reference: string
 }
 
+export interface AddressDto {
+  firstName: string
+  lastName: string
+  street: string
+  city: string
+  state: string
+  additionalStreet: string
+  streetNumber: string
+  additionalInformation: string
+  zipCode: string
+  id: number
+}
+
 export interface WeaponReloadModeDto {
   id: number
   name: string
@@ -255,18 +268,6 @@ export interface CreatePriceHistoryDto {
   isDiscounted: boolean
   discountedPrice: number
   precentOfDiscount: number
-}
-
-export interface AddressDto {
-  firstName: string
-  lastName: string
-  street: string
-  city: string
-  state: string
-  additionalStreet: string
-  streetNumber: string
-  additionalInformation: string
-  zipCode: string
 }
 
 export interface UserDto {
@@ -2558,6 +2559,44 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
       this.request<FactoryTypeDto[], any>({
         path: `/api/factory-type/all`,
         method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Get the addresses for the given address
+     *
+     * @tags Address
+     * @name AddressControllerGetUserAddresses
+     * @summary Get the addresses
+     * @request GET:/api/address
+     * @secure
+     */
+    addressControllerGetUserAddresses: (params: RequestParams = {}) =>
+      this.request<AddressDto[], any>({
+        path: `/api/address`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Create a new address
+     *
+     * @tags Address
+     * @name AddressControllerInsertUserAddress
+     * @summary Creation
+     * @request POST:/api/address
+     * @secure
+     */
+    addressControllerInsertUserAddress: (data: AddressDto, params: RequestParams = {}) =>
+      this.request<AddressDto, any>({
+        path: `/api/address`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
         format: 'json',
         ...params
       }),

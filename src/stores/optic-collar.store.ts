@@ -19,6 +19,8 @@ import { getPriceHistoryDto } from '@/shared/api-dto/get-price-history.dto'
 import { I18NSuffix } from '@/enum/I18NSuffix.enum'
 import { buildOpticCollarFilter } from '@/shared/api-dto/query-filters.builder'
 import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
+import { PublicRouterEnum } from '@/enum/router/public-router.enum'
+import type { DataViewProps } from '@/views/shared/DataViewWrapperView.vue'
 
 export const useOpticCollarStore = defineStore('optic-collar-store', () => {
   // Appel API
@@ -120,6 +122,26 @@ export const useOpticCollarStore = defineStore('optic-collar-store', () => {
       })
     )
   }
+  const mapDtoToDataViewProps = (collar: OpticCollarDto): DataViewProps => {
+    return {
+      id: collar.id,
+      name: collar.name,
+      stock: collar.inStock ?? 0,
+      price: collar.priceHistory.currentSalePrice ?? 0,
+      factory: collar.factory,
+      subTitle: `Rail: ${collar.railSize.name}`,
+      description: collar.description ?? '',
+      category: undefined,
+      discountedPrice: collar.priceHistory.discountedPrice,
+      to: {
+        name: PublicRouterEnum.PUBLIC_OPTIC_COLLAR_DETAIL,
+        params: {
+          id: collar.id
+        }
+      },
+      object: 'optic-collar'
+    }
+  }
   return {
     collars$: collars,
     getAll: getAllQuery,
@@ -128,6 +150,7 @@ export const useOpticCollarStore = defineStore('optic-collar-store', () => {
     collar$: collar,
     formBuilder: useOpticCollarForm,
     getI18NPrefix: _I18N_PREFIX,
-    queryFilters$: queryFilters
+    queryFilters$: queryFilters,
+    mapDtoToDataViewProps
   }
 })

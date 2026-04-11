@@ -16,6 +16,8 @@ import type { AxiosResponse } from 'axios'
 import { getPriceHistoryDto } from '@/shared/api-dto/get-price-history.dto'
 import { buildRiffleFilter } from '@/shared/api-dto/query-filters.builder'
 import { I18nPrefix } from '@/i18n/i18n-prefix.enum'
+import type { DataViewProps } from '@/views/shared/DataViewWrapperView.vue'
+import { PublicRouterEnum } from '@/enum/router/public-router.enum'
 
 export const useRiffleStore = defineStore('riffle-store', () => {
   // Appel API
@@ -143,12 +145,34 @@ export const useRiffleStore = defineStore('riffle-store', () => {
     )
   }
 
+  const mapDtoToDataViewProps = (riffle: RiffleDto): DataViewProps => {
+    return {
+      id: riffle.id,
+      name: riffle.name,
+      factory: riffle.factory,
+      category: riffle.category,
+      stock: riffle.inStock ?? 0,
+      description: riffle.description ?? '',
+      subTitle: `${riffle.type.name} - Calibre ${riffle.caliber.name} `,
+      price: riffle.priceHistory.currentSalePrice,
+      discountedPrice: riffle.priceHistory.discountedPrice,
+      object: 'riffle',
+      to: {
+        name: PublicRouterEnum.PUBLIC_RIFFLE_DETAIL,
+        params: {
+          id: riffle.id,
+          category: riffle.category.name
+        }
+      }
+    }
+  }
   return {
     delete: deleteFunction,
     getRiffleById: getByIdQuery,
     getAll: getAllRiffleQuery,
     getI18NPrefix: _I18N_PREFIX,
     formBuilder: useRiffleForm,
-    queryFilters$: queryFilters
+    queryFilters$: queryFilters,
+    mapDtoToDataViewProps
   }
 })

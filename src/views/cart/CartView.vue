@@ -77,7 +77,7 @@
       <p>Prix a regler : {{ NumberFormatter(totalOrder, 'euro') }}</p>
     </div>
     <div class="text-center">
-      <save-button :disabled="!isFormValid" status="next" />
+      <save-button :disabled="!isFormValid" status="next" :tooltip="tooltip" />
     </div>
   </form>
 </template>
@@ -92,16 +92,18 @@ import { NumberFormatter } from '@/shared/utils/formatter.utils'
 import LegislationCategoryBadgeComponent from '@/components/__dataview/LegislationCategoryBadgeComponent.vue'
 import FormTitleComponent from '@/components/__form/FormTitleComponent.vue'
 import SaveButton from '@/components/__form/SaveButton.vue'
-import { computed, ref, watch } from 'vue'
+import { computed, watch } from 'vue'
 import { useSecurityStore } from '@/stores/shared/security.store'
 import { useConnexionStore } from '@/stores/connexion'
 import type { CreateClientOrderItemDto } from '@/api/Api'
-import { useUserStore } from '@/stores/user.store'
+import { useRouter } from 'vue-router'
+import { PublicRouterEnum } from '@/enum/router/public-router.enum'
 
 const { t } = useI18n()
 const store = useCartStore()
 const securityStore = useSecurityStore()
 const connexionStore = useConnexionStore()
+const router = useRouter()
 const i18nPrefix = store.getI18NPrefix
 
 const { form, submit } = store.formBuilder()
@@ -123,11 +125,19 @@ const isFormValid = computed(() => {
   })
 })
 
+const tooltip = computed(() => {
+  if (isFormValid.value && securityStore.isLogged.value) {
+    return 'nextStep'
+  }
+  return 'pleaseConnect'
+})
+
 const onSubmit = (data: any) => {
   if (!securityStore.isLogged.value) {
     connexionStore.toggleConnexionDialog()
   } else {
     console.log('Aller en step 2: adresse')
+    router.push({ name: PublicRouterEnum.CART_ADDRESS })
   }
 }
 let timeout: any = null
