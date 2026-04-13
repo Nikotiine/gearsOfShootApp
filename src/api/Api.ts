@@ -169,7 +169,7 @@ export interface AddressDto {
   streetNumber: string
   additionalInformation: string
   zipCode: string
-  id: number
+  id: number | null
 }
 
 export interface WeaponReloadModeDto {
