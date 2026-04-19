@@ -121,7 +121,6 @@ export const useCartStore = defineStore('cart-store', () => {
       retry: 0
     })
   const _fetchById = async (id?: string) => {
-    console.log('icicicicicicici', id)
     if (!id) return null
     const res = await api.api.clientOrderControllerFindById(parseInt(id))
     _cart$.value = res.data

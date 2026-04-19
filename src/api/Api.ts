@@ -169,7 +169,19 @@ export interface AddressDto {
   streetNumber: string
   additionalInformation: string
   zipCode: string
-  id: number | null
+  id: number
+}
+
+export interface CreateAddressDto {
+  firstName: string
+  lastName: string
+  street: string
+  city: string
+  state: string
+  additionalStreet: string
+  streetNumber: string
+  additionalInformation: string
+  zipCode: string
 }
 
 export interface WeaponReloadModeDto {
@@ -2590,10 +2602,48 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @request POST:/api/address
      * @secure
      */
-    addressControllerInsertUserAddress: (data: AddressDto, params: RequestParams = {}) =>
+    addressControllerInsertUserAddress: (data: CreateAddressDto, params: RequestParams = {}) =>
       this.request<AddressDto, any>({
         path: `/api/address`,
         method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Get the addresses for the given address
+     *
+     * @tags Address
+     * @name AddressControllerGetById
+     * @summary Filtré par id
+     * @request GET:/api/address/by/id/{id}
+     * @secure
+     */
+    addressControllerGetById: (id: number, params: RequestParams = {}) =>
+      this.request<AddressDto, any>({
+        path: `/api/address/by/id/${id}`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Edition d une adresse
+     *
+     * @tags Address
+     * @name AddressControllerUpdate
+     * @summary Edition
+     * @request PUT:/api/address/{id}
+     * @secure
+     */
+    addressControllerUpdate: (id: number, data: AddressDto, params: RequestParams = {}) =>
+      this.request<AddressDto, any>({
+        path: `/api/address/${id}`,
+        method: 'PUT',
         body: data,
         secure: true,
         type: ContentType.Json,
