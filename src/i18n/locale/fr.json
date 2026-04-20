@@ -870,12 +870,24 @@
     "comment": "Details",
     "totalPriceItem": "Prix total",
     "save": "Mon panier en cours",
-    "cartAddress": "Adresse"
+    "cartAddress": "Adresse",
+    "newAddress": "Nouvelle adresse"
   },
   "address": {
     "sendToThisOne": "Envoyer a cette adresse",
     "selectShippingAddress": "Selectionnez votre addresse de livraison",
-    "selectShop": "Retrait a la boutique",
-    "collect": "Click & collect"
+    "selectShop": "Retrait en boutique",
+    "collect": "Click & collect",
+    "addNewAddress": "Ajouter une nouvelle adresse de livraison",
+    "lastName": "Nom",
+    "firstName": "Prenom",
+    "streetNumber": "Numero de rue",
+    "street": "rue / avenue ...",
+    "additionalStreet": "Information postale complementaire",
+    "additionalInformation": "Information pour le livreur",
+    "zipCode": "Code postal",
+    "city": "Ville",
+    "state": "Pays",
+    "routerToNewAddress": "Ajouter une autre adresse"
   }
 }

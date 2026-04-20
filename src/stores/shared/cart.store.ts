@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import type {
+  AddressDto,
   ClientOrderDto,
   ClientOrderFilter,
   CreateClientOrderDto,
@@ -77,6 +78,12 @@ export const useCartStore = defineStore('cart-store', () => {
   function updateSavedCart(cart: CreateClientOrderDto) {
     _cart$.value = cart
     sessionStorage.setItem(_STORAGE_KEY, JSON.stringify(_cart$.value))
+  }
+
+  function setShippingAddress(shippingAddress: AddressDto) {
+    console.log(shippingAddress)
+    _cart$.value.shippingAddress = shippingAddress
+    console.log(cart$.value)
   }
 
   function removeFromCart(item: CreateClientOrderItemDto) {
@@ -194,6 +201,7 @@ export const useCartStore = defineStore('cart-store', () => {
     updateSavedCart,
     autoSaveCart,
     clearCart,
-    setCartById: _fetchById
+    setCartById: _fetchById,
+    setShippingAddress
   }
 })

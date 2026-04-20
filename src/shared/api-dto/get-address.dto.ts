@@ -1,13 +1,12 @@
-import type { AddressDto } from '@/api/Api'
+import type { AddressDto, CreateAddressDto } from '@/api/Api'
 
-export const getAddressDto = (): AddressDto => {
+export const getAddressDto = (): CreateAddressDto => {
   return {
-    id: null,
     street: '',
     streetNumber: '',
     additionalInformation: '',
     city: '',
-    state: '',
+    state: 'France',
     additionalStreet: '',
     firstName: '',
     lastName: '',

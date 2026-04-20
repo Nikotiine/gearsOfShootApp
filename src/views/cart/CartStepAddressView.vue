@@ -1,5 +1,6 @@
 <template>
-  <h2 class="text-center text-2xl">{{ t(i18nPrefix + 'selectShippingAddress') }}</h2>
+  <h2 class="text-center text-xl text-blue-500">{{ t(i18nPrefix + 'selectShippingAddress') }}</h2>
+
   <DataView :value="addresses" layout="grid">
     <template #grid="slotProps">
       <div class="grid grid-cols-12 gap-4">
@@ -30,6 +31,7 @@
                     :label="t(i18nPrefix + 'sendToThisOne')"
                     severity="info"
                     class="flex-auto md:flex-initial whitespace-nowrap"
+                    @click="onSelectAddress(item.id)"
                   ></Button>
                 </div>
               </div>
@@ -39,6 +41,14 @@
       </div>
     </template>
   </DataView>
+  <div class="text-center mt-4">
+    <Button v-slot="slotProps">
+      <RouterLink :to="{ name: PublicRouterEnum.CART_NEW_ADDRESS }" :class="slotProps.class">{{
+        t(i18nPrefix + 'routerToNewAddress')
+      }}</RouterLink>
+    </Button>
+  </div>
+
   <store-select-adress-component />
 </template>
 <script setup lang="ts">
@@ -48,8 +58,14 @@ import Button from 'primevue/button'
 import DataView from 'primevue/dataview'
 import StoreSelectAdressComponent from '@/components/__cart/StoreSelectAdressComponent.vue'
 import { useI18n } from 'vue-i18n'
+import { PublicRouterEnum } from '@/enum/router/public-router.enum'
+import { useCartStore } from '@/stores/shared/cart.store'
+import type { AddressDto } from '@/api/Api'
+import { storeToRefs } from 'pinia'
 const { t } = useI18n()
 const store = useAddressStore()
+const cartStore = useCartStore()
+
 const i18nPrefix = store.getI18NPrefix
 const { data } = store.getAllUserAddress()
 const addresses = computed(() => {
@@ -58,6 +74,12 @@ const addresses = computed(() => {
   }
   return data.value
 })
+const onSelectAddress = (addressId: number) => {
+  const address = addresses.value.find((item) => item.id === addressId)
+  if (address) {
+    cartStore.setShippingAddress(address)
+  }
+}
 </script>
 
 <style scoped></style>

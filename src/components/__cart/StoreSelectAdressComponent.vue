@@ -1,5 +1,5 @@
 <template>
-  <h2 class="text-center text-2xl">{{ t(i18nPrefix + 'selectShop') }}</h2>
+  <h2 class="text-center text-xl mt-4 text-orange-500">{{ t(i18nPrefix + 'selectShop') }}</h2>
   <div class="grid grid-cols-12 gap-4">
     <div class="col-span-12 sm:col-span-6 md:col-span-4 xl:col-span-6 p-2">
       <div
@@ -38,6 +38,7 @@ import Button from 'primevue/button'
 import { useI18n } from 'vue-i18n'
 import { useAddressStore } from '@/stores/address.store'
 const { t } = useI18n()
+//TODO: Mettre en place une table d'adress boutique et gere ca en admin
 const store = useAddressStore()
 const i18nPrefix = store.getI18NPrefix
 </script>
