@@ -30,7 +30,7 @@ export const publicCartRoute: RouteRecordRaw = {
       component: () => import('@/views/cart/CartView.vue')
     },
     {
-      path: 'adresse',
+      path: 'adresse-livraison',
       name: PublicRouterEnum.CART_ADDRESS,
       meta: {
         breadcrumb: () => {
@@ -44,7 +44,7 @@ export const publicCartRoute: RouteRecordRaw = {
               }
             },
             {
-              label: store.createLabel(prefix, 'cartAddress'),
+              label: store.createLabel(prefix, 'shippingAddress'),
               index: 2,
               to: {
                 name: PublicRouterEnum.CART_ADDRESS
@@ -54,6 +54,79 @@ export const publicCartRoute: RouteRecordRaw = {
         }
       },
       component: () => import('@/views/cart/CartStepAddressView.vue')
+    },
+    {
+      path: 'adresse-facturation',
+      name: PublicRouterEnum.CART_PAYMENT_ADDRESS,
+      meta: {
+        breadcrumb: () => {
+          const store = useBreadcrumbStore()
+          return [
+            {
+              label: store.createLabel(prefix, 'cart'),
+              index: 1,
+              to: {
+                name: PublicRouterEnum.CART
+              }
+            },
+            {
+              label: store.createLabel(prefix, 'shippingAddress'),
+              index: 2,
+              to: {
+                name: PublicRouterEnum.CART_ADDRESS
+              }
+            },
+            {
+              label: store.createLabel(prefix, 'paymentAddress'),
+              index: 3,
+              to: {
+                name: PublicRouterEnum.CART_PAYMENT_ADDRESS
+              }
+            }
+          ]
+        }
+      },
+      component: () => import('@/views/cart/CartStepAddressView.vue')
+    },
+    {
+      path: 'resume-du-panier',
+      name: PublicRouterEnum.CART_RESUME,
+      meta: {
+        breadcrumb: () => {
+          const store = useBreadcrumbStore()
+          return [
+            {
+              label: store.createLabel(prefix, 'cart'),
+              index: 1,
+              to: {
+                name: PublicRouterEnum.CART
+              }
+            },
+            {
+              label: store.createLabel(prefix, 'shippingAddress'),
+              index: 2,
+              to: {
+                name: PublicRouterEnum.CART_ADDRESS
+              }
+            },
+            {
+              label: store.createLabel(prefix, 'paymentAddress'),
+              index: 3,
+              to: {
+                name: PublicRouterEnum.CART_PAYMENT_ADDRESS
+              }
+            },
+            {
+              label: store.createLabel(prefix, 'resume'),
+              index: 4,
+              to: {
+                name: PublicRouterEnum.CART_RESUME
+              }
+            }
+          ]
+        }
+      },
+      component: () => import('@/views/cart/CartStepResume.vue')
     },
     {
       path: 'nouvelle-adresse',

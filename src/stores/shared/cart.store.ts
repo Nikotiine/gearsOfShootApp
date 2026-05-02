@@ -35,7 +35,9 @@ export const useCartStore = defineStore('cart-store', () => {
   const queryFilters = ref<ClientOrderFilter>({ ...buildOrderFilter() })
 
   const cart$ = computed(() => {
-    const orderInStorage = JSON.parse(<string>sessionStorage.getItem(_STORAGE_KEY))
+    const orderInStorage: CreateClientOrderDto = JSON.parse(
+      <string>sessionStorage.getItem(_STORAGE_KEY)
+    )
 
     if (orderInStorage) {
       _cart$.value = orderInStorage
@@ -80,10 +82,34 @@ export const useCartStore = defineStore('cart-store', () => {
     sessionStorage.setItem(_STORAGE_KEY, JSON.stringify(_cart$.value))
   }
 
-  function setShippingAddress(shippingAddress: AddressDto) {
-    console.log(shippingAddress)
-    _cart$.value.shippingAddress = shippingAddress
-    console.log(cart$.value)
+  function setShippingAddress(address: AddressDto) {
+    _cart$.value.shippingAddress = address
+    sessionStorage.setItem(_STORAGE_KEY, JSON.stringify(_cart$.value))
+  }
+
+  function setPaymentAddress(address: AddressDto) {
+    _cart$.value.paymentAddress = address
+    sessionStorage.setItem(_STORAGE_KEY, JSON.stringify(_cart$.value))
+  }
+
+  function getShippingAddress() {
+    const orderInStorage: CreateClientOrderDto = JSON.parse(
+      <string>sessionStorage.getItem(_STORAGE_KEY)
+    )
+    if (orderInStorage) {
+      return orderInStorage.shippingAddress
+    }
+    return null
+  }
+
+  function getPaymentAddress() {
+    const orderInStorage: CreateClientOrderDto = JSON.parse(
+      <string>sessionStorage.getItem(_STORAGE_KEY)
+    )
+    if (orderInStorage) {
+      return orderInStorage.paymentAddress
+    }
+    return null
   }
 
   function removeFromCart(item: CreateClientOrderItemDto) {
@@ -202,6 +228,9 @@ export const useCartStore = defineStore('cart-store', () => {
     autoSaveCart,
     clearCart,
     setCartById: _fetchById,
-    setShippingAddress
+    setShippingAddress,
+    setPaymentAddress,
+    getShippingAddress,
+    getPaymentAddress
   }
 })
