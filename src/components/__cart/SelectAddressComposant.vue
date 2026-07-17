@@ -51,7 +51,7 @@ import Button from 'primevue/button'
 import DataView from 'primevue/dataview'
 import { useI18n } from 'vue-i18n'
 import type { AddressDto } from '@/api/Api'
-import { computed, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 export type SelectAddressType = 'shipping' | 'payment'
 const { t } = useI18n()
 const emit = defineEmits(['select-address'])

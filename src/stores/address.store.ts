@@ -16,6 +16,7 @@ import { useRouter } from 'vue-router'
 export const useAddressStore = defineStore('address-store', () => {
   const { api } = useApiStore()
   const _GET_ALL_FN = 'getAllAddress'
+  const _GET_ALL_STORE_FN = 'getAllStoreAddresses'
   const _GET_BY_ID_FN = 'getAddressById'
   const _I18N_PREFIX = I18nPrefix.ADDRESS
   const toastStore = useToastStore()
@@ -30,6 +31,16 @@ export const useAddressStore = defineStore('address-store', () => {
 
   const _fetchAll = async () => {
     const res = await api.api.addressControllerGetUserAddresses()
+    return res.data
+  }
+  const queryFindStoreAddresses = () =>
+    useQuery({
+      queryKey: [_GET_ALL_STORE_FN],
+      queryFn: async () => await _fetchStoreAddresses()
+    })
+
+  const _fetchStoreAddresses = async () => {
+    const res = await api.api.storeControllerFindAll()
     return res.data
   }
   const getByIdQuery = (id?: string) =>
@@ -95,6 +106,7 @@ export const useAddressStore = defineStore('address-store', () => {
     getAllUserAddress: queryFindAllUserAddress,
     getI18NPrefix: _I18N_PREFIX,
     formBuilder: useAddressForm,
-    setOriginURl
+    setOriginURl,
+    getStoreAddresses: queryFindStoreAddresses
   }
 })

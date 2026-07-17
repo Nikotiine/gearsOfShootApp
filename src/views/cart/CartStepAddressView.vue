@@ -52,6 +52,7 @@ const addresses = computed(() => {
 const selectShippingAddress = ref<number>(0)
 
 const isAAddressSelected = ref(false)
+// TODO : Gere le click and collect
 const onSelectAddress = async (addressId: number) => {
   const address = addresses.value.find((item) => item.id === addressId)
   const isPaymentAddressStep: boolean = route.name === 'CART_PAYMENT_ADDRESS'
