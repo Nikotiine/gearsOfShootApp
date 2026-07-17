@@ -172,6 +172,18 @@ export interface AddressDto {
   id: number
 }
 
+export interface CreateAddressDto {
+  firstName: string
+  lastName: string
+  street: string
+  city: string
+  state: string
+  additionalStreet: string
+  streetNumber: string
+  additionalInformation: string
+  zipCode: string
+}
+
 export interface WeaponReloadModeDto {
   id: number
   name: string
@@ -1743,6 +1755,18 @@ export interface DiscountedItemDto {
   precentOfDiscount: number
 }
 
+export interface StoreDto {
+  name: string
+  street: string
+  streetNumber: string
+  city: string
+  zipCode: string
+  state: string
+  phone: string
+  email: string
+  id: number
+}
+
 export enum WeaponTypeDtoTypeEnum {
   Handgun = 'handgun',
   Riffle = 'riffle'
@@ -2569,12 +2593,30 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @tags Address
      * @name AddressControllerGetUserAddresses
      * @summary Get the addresses
-     * @request GET:/api/address
+     * @request GET:/api/address/user
      * @secure
      */
     addressControllerGetUserAddresses: (params: RequestParams = {}) =>
       this.request<AddressDto[], any>({
-        path: `/api/address`,
+        path: `/api/address/user`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Get the addresses for the given address
+     *
+     * @tags Address
+     * @name AddressControllerGetById
+     * @summary Filtré par id
+     * @request GET:/api/address/by/id/{id}
+     * @secure
+     */
+    addressControllerGetById: (id: number, params: RequestParams = {}) =>
+      this.request<AddressDto, any>({
+        path: `/api/address/by/id/${id}`,
         method: 'GET',
         secure: true,
         format: 'json',
@@ -2590,10 +2632,30 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
      * @request POST:/api/address
      * @secure
      */
-    addressControllerInsertUserAddress: (data: AddressDto, params: RequestParams = {}) =>
+    addressControllerInsertUserAddress: (data: CreateAddressDto, params: RequestParams = {}) =>
       this.request<AddressDto, any>({
         path: `/api/address`,
         method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Edition d une adresse
+     *
+     * @tags Address
+     * @name AddressControllerUpdate
+     * @summary Edition
+     * @request PUT:/api/address/{id}
+     * @secure
+     */
+    addressControllerUpdate: (id: number, data: AddressDto, params: RequestParams = {}) =>
+      this.request<AddressDto, any>({
+        path: `/api/address/${id}`,
+        method: 'PUT',
         body: data,
         secure: true,
         type: ContentType.Json,
@@ -4310,6 +4372,22 @@ export class ApiService<SecurityDataType extends unknown> extends HttpClient<Sec
     dashboardControllerGetAllDiscountedItems: (params: RequestParams = {}) =>
       this.request<DiscountedItemDto[], any>({
         path: `/api/dashboard/discount`,
+        method: 'GET',
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Retourne la liste complete des plans focal
+     *
+     * @tags Store
+     * @name StoreControllerFindAll
+     * @summary Liste complète
+     * @request GET:/api/store/all
+     */
+    storeControllerFindAll: (params: RequestParams = {}) =>
+      this.request<StoreDto[], any>({
+        path: `/api/store/all`,
         method: 'GET',
         format: 'json',
         ...params

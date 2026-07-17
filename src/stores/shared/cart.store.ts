@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import type {
+  AddressDto,
   ClientOrderDto,
   ClientOrderFilter,
   CreateClientOrderDto,
@@ -34,7 +35,9 @@ export const useCartStore = defineStore('cart-store', () => {
   const queryFilters = ref<ClientOrderFilter>({ ...buildOrderFilter() })
 
   const cart$ = computed(() => {
-    const orderInStorage = JSON.parse(<string>sessionStorage.getItem(_STORAGE_KEY))
+    const orderInStorage: CreateClientOrderDto = JSON.parse(
+      <string>sessionStorage.getItem(_STORAGE_KEY)
+    )
 
     if (orderInStorage) {
       _cart$.value = orderInStorage
@@ -79,6 +82,36 @@ export const useCartStore = defineStore('cart-store', () => {
     sessionStorage.setItem(_STORAGE_KEY, JSON.stringify(_cart$.value))
   }
 
+  function setShippingAddress(address: AddressDto) {
+    _cart$.value.shippingAddress = address
+    sessionStorage.setItem(_STORAGE_KEY, JSON.stringify(_cart$.value))
+  }
+
+  function setPaymentAddress(address: AddressDto) {
+    _cart$.value.paymentAddress = address
+    sessionStorage.setItem(_STORAGE_KEY, JSON.stringify(_cart$.value))
+  }
+
+  function getShippingAddress() {
+    const orderInStorage: CreateClientOrderDto = JSON.parse(
+      <string>sessionStorage.getItem(_STORAGE_KEY)
+    )
+    if (orderInStorage) {
+      return orderInStorage.shippingAddress
+    }
+    return null
+  }
+
+  function getPaymentAddress() {
+    const orderInStorage: CreateClientOrderDto = JSON.parse(
+      <string>sessionStorage.getItem(_STORAGE_KEY)
+    )
+    if (orderInStorage) {
+      return orderInStorage.paymentAddress
+    }
+    return null
+  }
+
   function removeFromCart(item: CreateClientOrderItemDto) {
     const index = _cart$.value.items.findIndex(
       (inItem) => inItem.objectId === item.objectId && inItem.object === item.object
@@ -121,7 +154,6 @@ export const useCartStore = defineStore('cart-store', () => {
       retry: 0
     })
   const _fetchById = async (id?: string) => {
-    console.log('icicicicicicici', id)
     if (!id) return null
     const res = await api.api.clientOrderControllerFindById(parseInt(id))
     _cart$.value = res.data
@@ -195,6 +227,10 @@ export const useCartStore = defineStore('cart-store', () => {
     updateSavedCart,
     autoSaveCart,
     clearCart,
-    setCartById: _fetchById
+    setCartById: _fetchById,
+    setShippingAddress,
+    setPaymentAddress,
+    getShippingAddress,
+    getPaymentAddress
   }
 })

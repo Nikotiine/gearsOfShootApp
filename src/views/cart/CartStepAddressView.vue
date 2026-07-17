@@ -1,55 +1,46 @@
 <template>
-  <h2 class="text-center text-2xl">{{ t(i18nPrefix + 'selectShippingAddress') }}</h2>
-  <DataView :value="addresses" layout="grid">
-    <template #grid="slotProps">
-      <div class="grid grid-cols-12 gap-4">
-        <div
-          v-for="(item, index) in slotProps.items"
-          :key="index"
-          class="col-span-12 sm:col-span-6 md:col-span-4 xl:col-span-6 p-2"
-        >
-          <div
-            class="p-6 border border-surface-200 dark:border-surface-700 bg-surface-0 dark:bg-surface-900 rounded flex flex-col hover-card"
-          >
-            <div class="bg-surface-0 dark:bg-surface-900 flex justify-between rounded p-4">
-              <div>
-                <div>
-                  <span class=""> {{ item.firstName }} - {{ item.firstName }}</span>
-                </div>
-                <div class="" style="border-radius: 30px">
-                  <p>{{ item.streetNumber }} {{ item.street }}</p>
-                  <p>{{ item.zipCode }} {{ item.city }}</p>
-                  <p>{{ item.state }}</p>
-                </div>
-              </div>
-              <div class="flex flex-col md:items-end gap-8">
-                <span class="text-xl font-semibold"></span>
-                <div class="flex flex-row-reverse md:flex-row gap-2">
-                  <Button
-                    icon="pi pi-address-book"
-                    :label="t(i18nPrefix + 'sendToThisOne')"
-                    severity="info"
-                    class="flex-auto md:flex-initial whitespace-nowrap"
-                  ></Button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </template>
-  </DataView>
-  <store-select-adress-component />
+  <select-address-composant
+    :addresses="addresses"
+    :i18n-prefix="i18nPrefix"
+    @select-address="(args) => onSelectAddress(args)"
+    :addressType="type"
+    :selected-address-initial-value="selectShippingAddress"
+    :key="route.name"
+  />
+  <div class="text-center mt-4">
+    <Button v-slot="slotProps">
+      <RouterLink :to="{ name: PublicRouterEnum.CART_NEW_ADDRESS }" :class="slotProps.class">{{
+        t(i18nPrefix + 'routerToNewAddress')
+      }}</RouterLink>
+    </Button>
+  </div>
+
+  <store-select-address-component v-if="!isPaymentAddressStep" />
+  <div class="text-center mt-4" v-if="isAAddressSelected">
+    <Button v-slot="slotProps" severity="info">
+      <RouterLink :to="{ name: nexStepUrl }" :class="slotProps.class">{{
+        t(i18nPrefix + 'resume')
+      }}</RouterLink>
+    </Button>
+  </div>
 </template>
 <script setup lang="ts">
 import { useAddressStore } from '@/stores/address.store'
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
 import Button from 'primevue/button'
-import DataView from 'primevue/dataview'
-import StoreSelectAdressComponent from '@/components/__cart/StoreSelectAdressComponent.vue'
+import StoreSelectAddressComponent from '@/components/__cart/StoreSelectAddressComponent.vue'
 import { useI18n } from 'vue-i18n'
+import { PublicRouterEnum } from '@/enum/router/public-router.enum'
+import { useCartStore } from '@/stores/shared/cart.store'
+import SelectAddressComposant from '@/components/__cart/SelectAddressComposant.vue'
+import { useRoute } from 'vue-router'
+
 const { t } = useI18n()
 const store = useAddressStore()
+const cartStore = useCartStore()
+
+const route = useRoute()
+
 const i18nPrefix = store.getI18NPrefix
 const { data } = store.getAllUserAddress()
 const addresses = computed(() => {
@@ -58,6 +49,46 @@ const addresses = computed(() => {
   }
   return data.value
 })
+const selectShippingAddress = ref<number>(0)
+
+const isAAddressSelected = ref(false)
+// TODO : Gere le click and collect
+const onSelectAddress = async (addressId: number) => {
+  const address = addresses.value.find((item) => item.id === addressId)
+  const isPaymentAddressStep: boolean = route.name === 'CART_PAYMENT_ADDRESS'
+  if (address) {
+    if (isPaymentAddressStep) {
+      cartStore.setPaymentAddress(address)
+    } else {
+      cartStore.setShippingAddress(address)
+      cartStore.setPaymentAddress(address)
+      selectShippingAddress.value = address.id
+      isAAddressSelected.value = true
+    }
+  }
+}
+const type = computed(() => {
+  const isPaymentAddressStep: boolean = route.name === 'CART_PAYMENT_ADDRESS'
+  return isPaymentAddressStep ? 'payment' : 'shipping'
+})
+const nexStepUrl = computed(() => {
+  const isPaymentAddressStep: boolean = route.name === 'CART_PAYMENT_ADDRESS'
+  return isPaymentAddressStep ? PublicRouterEnum.CART_RESUME : PublicRouterEnum.CART_PAYMENT_ADDRESS
+})
+
+const isPaymentAddressStep = computed(() => {
+  return route.name === 'CART_PAYMENT_ADDRESS'
+})
+
+watch(
+  () => route.name,
+  (value) => {
+    const isPaymentAddressStep: boolean = value === 'CART_PAYMENT_ADDRESS'
+    isPaymentAddressStep
+      ? (selectShippingAddress.value = cartStore.getPaymentAddress()?.id ?? 0)
+      : (selectShippingAddress.value = cartStore.getShippingAddress()?.id ?? 0)
+  }
+)
 </script>
 
 <style scoped></style>

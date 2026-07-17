@@ -7,6 +7,7 @@
       @focus="onFocus"
       :invalid="isInvalid"
       @change="onChange"
+      :disabled="disabled"
     />
     <label :for="inputId">{{ t(i18nPrefix + label) + isRequiredText }}</label>
   </IftaLabel>
@@ -26,7 +27,8 @@ const {
   required = false,
   initialValue = '',
   i18nPrefix = 'global.',
-  placeholder = 'defaultPlaceHolder'
+  placeholder = 'defaultPlaceHolder',
+  disabled = false
 } = defineProps<{
   i18nPrefix?: string
   minLength?: number
@@ -35,6 +37,7 @@ const {
   required?: boolean
   inputId: string
   initialValue?: string
+  disabled?: boolean
 }>()
 const emit = defineEmits(['value'])
 const { t } = useI18n()

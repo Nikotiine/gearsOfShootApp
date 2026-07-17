@@ -33,5 +33,7 @@ export enum I18nPrefix {
   WEAPON_TYPE = 'weaponType.',
   RELOAD_MODE = 'reloadMode.',
   TOPBAR = 'topbar.',
-  CONNEXION = 'connexion.'
+  CONNEXION = 'connexion.',
+  CONFIRMATION_DIALOG = 'confirmDialog.',
+  GLOBAL = 'global.'
 }

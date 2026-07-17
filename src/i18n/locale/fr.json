@@ -766,7 +766,10 @@
   },
   "confirmDialog": {
     "deleteConfirmation": "Etes vous sur de vouloir supprimer :",
-    "withReference": "avec la reference :"
+    "withReference": "avec la reference :",
+    "confirmThisAddress": "Utliser la meme addresse pour la facturation",
+    "paymentAddressConfirmation": "Utliser la meme addresse pour la facturation ?",
+    "address": "Addresse :"
   },
   "deleteMessage": {
     "000": "Optique supprimeée"
@@ -870,12 +873,29 @@
     "comment": "Details",
     "totalPriceItem": "Prix total",
     "save": "Mon panier en cours",
-    "cartAddress": "Adresse"
+    "shippingAddress": "Adresse de livraison",
+    "newAddress": "Nouvelle adresse",
+    "paymentAddress": "Adresse de facuration",
+    "resume": "Votre panier"
   },
   "address": {
     "sendToThisOne": "Envoyer a cette adresse",
+    "useThisOne": "Utliser cette adresse",
     "selectShippingAddress": "Selectionnez votre addresse de livraison",
-    "selectShop": "Retrait a la boutique",
-    "collect": "Click & collect"
+    "selectPaymentAddress": "Selectionnez votre addresse de facturation",
+    "selectShop": "Retrait en boutique",
+    "collect": "Click & collect",
+    "addNewAddress": "Ajouter une nouvelle adresse de livraison",
+    "lastName": "Nom",
+    "firstName": "Prenom",
+    "streetNumber": "Numero de rue",
+    "street": "rue / avenue ...",
+    "additionalStreet": "Information postale complementaire",
+    "additionalInformation": "Information pour le livreur",
+    "zipCode": "Code postal",
+    "city": "Ville",
+    "state": "Pays",
+    "routerToNewAddress": "Ajouter une autre adresse",
+    "resume": "Valider votre panier"
   }
 }
